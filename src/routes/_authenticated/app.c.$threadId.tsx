@@ -1,6 +1,7 @@
 import { createFileRoute, useParams } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
+import type { UIMessage } from "ai";
 import { getThreadMessages } from "@/lib/threads.functions";
 import { ChatWindow } from "@/components/chat/ChatWindow";
 
@@ -26,6 +27,11 @@ function ThreadPage() {
   }
 
   return (
-    <ChatWindow key={threadId} threadId={threadId} initialMessages={messages} />
+    <ChatWindow
+      key={threadId}
+      threadId={threadId}
+      initialMessages={messages as unknown as UIMessage[]}
+    />
   );
 }
+
