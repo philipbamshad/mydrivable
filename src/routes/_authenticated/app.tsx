@@ -1,0 +1,17 @@
+import { createFileRoute, Outlet } from "@tanstack/react-router";
+import { ThreadSidebar } from "@/components/chat/ThreadSidebar";
+
+export const Route = createFileRoute("/_authenticated/app")({
+  component: AppLayout,
+});
+
+function AppLayout() {
+  return (
+    <div className="flex h-screen w-screen overflow-hidden bg-background">
+      <ThreadSidebar />
+      <main className="flex-1 min-w-0">
+        <Outlet />
+      </main>
+    </div>
+  );
+}
