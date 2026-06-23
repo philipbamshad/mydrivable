@@ -129,7 +129,7 @@ export function ChatWindow({
                       )}
                     </MessageContent>
                   ) : (
-                    <MessageContent variant="flat" className="px-0">
+                    <MessageContent className="px-0 group-[.is-assistant]:bg-transparent">
                       {m.parts.map((p, i) =>
                         p.type === "text" ? (
                           <MessageResponse key={i}>{p.text}</MessageResponse>
@@ -141,7 +141,7 @@ export function ChatWindow({
               ))}
               {status === "submitted" && (
                 <Message from="assistant">
-                  <MessageContent variant="flat" className="px-0">
+                  <MessageContent className="px-0 group-[.is-assistant]:bg-transparent">
                     <Shimmer>Thinking...</Shimmer>
                   </MessageContent>
                 </Message>
