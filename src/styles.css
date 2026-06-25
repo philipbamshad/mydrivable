@@ -69,34 +69,34 @@
 :root {
   --radius: 0.875rem;
 
-  /* Deep charcoal canvas with cool blue undertone */
-  --background: oklch(0.16 0.012 250);
+  /* Near-black canvas with the faintest cool tint */
+  --background: oklch(0.10 0.008 240);
   --foreground: oklch(0.97 0.008 230);
 
   /* Translucent glass cards */
-  --card: oklch(0.22 0.018 250 / 0.72);
+  --card: oklch(0.18 0.014 240 / 0.68);
   --card-foreground: oklch(0.97 0.008 230);
-  --popover: oklch(0.20 0.018 250);
+  --popover: oklch(0.16 0.014 240);
   --popover-foreground: oklch(0.97 0.008 230);
 
-  /* Electric blue primary */
+  /* Electric blue primary (kept) */
   --primary: oklch(0.72 0.20 240);
-  --primary-foreground: oklch(0.15 0.02 250);
+  --primary-foreground: oklch(0.12 0.02 250);
 
-  --secondary: oklch(0.27 0.02 250);
+  --secondary: oklch(0.22 0.018 240);
   --secondary-foreground: oklch(0.97 0.008 230);
 
-  --muted: oklch(0.25 0.018 250);
+  --muted: oklch(0.20 0.014 240);
   --muted-foreground: oklch(0.74 0.025 230);
 
-  --accent: oklch(0.34 0.08 220);
+  --accent: oklch(0.30 0.08 220);
   --accent-foreground: oklch(0.97 0.008 230);
 
   --destructive: oklch(0.62 0.22 25);
   --destructive-foreground: oklch(0.98 0.005 320);
 
-  --border: oklch(0.72 0.20 240 / 0.20);
-  --input: oklch(0.25 0.018 250);
+  --border: oklch(0.72 0.20 240 / 0.18);
+  --input: oklch(0.20 0.014 240);
   --ring: oklch(0.78 0.18 220);
 
   --chart-1: oklch(0.72 0.20 240);
@@ -105,13 +105,13 @@
   --chart-4: oklch(0.78 0.18 195);
   --chart-5: oklch(0.65 0.18 260);
 
-  --sidebar: oklch(0.13 0.012 250 / 0.88);
+  --sidebar: oklch(0.09 0.010 240 / 0.85);
   --sidebar-foreground: oklch(0.93 0.01 230);
   --sidebar-primary: oklch(0.72 0.20 240);
-  --sidebar-primary-foreground: oklch(0.15 0.02 250);
+  --sidebar-primary-foreground: oklch(0.12 0.02 250);
   --sidebar-accent: oklch(0.72 0.20 240 / 0.14);
   --sidebar-accent-foreground: oklch(0.97 0.008 230);
-  --sidebar-border: oklch(0.72 0.20 240 / 0.18);
+  --sidebar-border: oklch(0.72 0.20 240 / 0.16);
   --sidebar-ring: oklch(0.78 0.18 220);
 
   /* Bespoke electric blue / cyan */
@@ -120,20 +120,25 @@
 
   /* Layered ambient neon glows */
   --shadow-glow-soft:
-    0 0 0 1px oklch(0.72 0.20 240 / 0.22),
-    0 8px 30px -10px oklch(0.72 0.20 240 / 0.55);
+    0 0 0 1px oklch(0.72 0.20 240 / 0.20),
+    0 8px 30px -10px oklch(0.72 0.20 240 / 0.45);
   --shadow-glow-strong:
-    0 0 0 1px oklch(0.78 0.18 220 / 0.45),
-    0 12px 40px -8px oklch(0.72 0.20 240 / 0.75),
-    0 0 24px -4px oklch(0.82 0.15 210 / 0.4);
+    0 0 0 1px oklch(0.78 0.18 220 / 0.40),
+    0 12px 40px -8px oklch(0.72 0.20 240 / 0.70),
+    0 0 24px -4px oklch(0.82 0.15 210 / 0.35);
 
   --gradient-rose: linear-gradient(135deg,
     oklch(0.72 0.20 240) 0%,
     oklch(0.82 0.15 200) 100%);
-  --gradient-shell: radial-gradient(1200px 600px at 90% -10%,
-    oklch(0.72 0.20 240 / 0.22) 0%, transparent 60%),
-    radial-gradient(900px 500px at -10% 110%,
-    oklch(0.82 0.15 200 / 0.16) 0%, transparent 60%);
+
+  /* Deep black canvas with soft blue corner glows — top-right + bottom-left */
+  --gradient-shell:
+    radial-gradient(900px 600px at 100% 0%,
+      oklch(0.55 0.13 235 / 0.32) 0%, transparent 60%),
+    radial-gradient(700px 500px at 0% 100%,
+      oklch(0.50 0.12 220 / 0.22) 0%, transparent 65%),
+    radial-gradient(1200px 800px at 50% 50%,
+      oklch(0.18 0.02 240 / 0.5) 0%, transparent 70%);
 }
 
 .dark {
