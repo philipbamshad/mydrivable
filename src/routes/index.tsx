@@ -8,33 +8,31 @@ import {
   Sparkles,
   Star,
   MessageSquare,
-  LayoutDashboard,
   ClipboardCheck,
   Car,
-  Wrench,
   MapPin,
 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "DriveGuide AI — The #1 Teen Driving Prep Platform" },
+      { title: "DriveGuide AI — Master Your Permit & Ace Your Road Test" },
       {
         name: "description",
         content:
-          "DriveGuide AI is the AI-powered coach for the permit test, road test, and first car — state-aware, no fluff, built for new drivers.",
+          "Master your permit and ace your road test on the first try. AI-powered test simulator, targeted section quizzes, and behind-the-wheel checklists tuned to your state.",
       },
       { property: "og:title", content: "DriveGuide AI" },
       {
         property: "og:description",
-        content: "The #1 AI driving prep platform for teens.",
+        content:
+          "Master your permit and ace your road test on the first try.",
       },
     ],
   }),
   component: Landing,
 });
 
-// Local theme scoped to landing page only — black + deep blue + glass gradient
 const SHELL =
   "relative min-h-screen overflow-hidden text-white [color-scheme:dark] [font-family:'Inter',ui-sans-serif,system-ui]";
 const SHELL_BG: React.CSSProperties = {
@@ -47,7 +45,6 @@ const SHELL_BG: React.CSSProperties = {
 
 function Landing() {
   const navigate = useNavigate();
-
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
       if (data.user) navigate({ to: "/app", replace: true });
@@ -59,9 +56,7 @@ function Landing() {
       <Nav />
       <Hero />
       <LogoStrip />
-      <FeaturesIntro />
-      <FeatureShowcase />
-      <FeatureBullets />
+      <Features />
       <StatsBand />
       <Pricing />
       <FAQ />
@@ -71,7 +66,6 @@ function Landing() {
   );
 }
 
-/* ────────────────────────────────────────────────────────── NAV ── */
 function Nav() {
   return (
     <header className="sticky top-4 z-50 px-4">
@@ -85,13 +79,13 @@ function Nav() {
           </span>
         </Link>
         <nav className="hidden items-center gap-7 text-[15px] font-medium text-white/70 sm:flex">
-          <a href="#app" className="transition hover:text-white">App</a>
           <a href="#features" className="transition hover:text-white">Features</a>
           <a href="#pricing" className="transition hover:text-white">Pricing</a>
+          <a href="#faq" className="transition hover:text-white">FAQ</a>
         </nav>
         <Link
           to="/auth"
-          className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-500 to-blue-700 px-5 py-2.5 text-sm font-semibold text-white shadow-[0_8px_24px_-8px_rgba(59,130,246,0.7)] transition hover:scale-[1.02]"
+          className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-500 to-blue-700 px-5 py-2.5 text-sm font-semibold text-white shadow-[0_8px_24px_-8px_rgba(59,130,246,0.7)] transition hover:scale-[1.03] active:scale-[0.97]"
         >
           Sign Up
           <span className="grid h-6 w-6 place-items-center rounded-full bg-white/20 transition group-hover:translate-x-0.5">
@@ -103,29 +97,25 @@ function Nav() {
   );
 }
 
-/* ────────────────────────────────────────────────────────── HERO ── */
 function Hero() {
   return (
     <section className="relative overflow-hidden px-6 pt-24 pb-28 text-center">
-      {/* floating logo tile */}
       <div className="mx-auto mb-10 grid h-24 w-24 place-items-center rounded-3xl border border-white/10 bg-white/[0.04] shadow-[0_20px_60px_-20px_rgba(59,130,246,0.6)] backdrop-blur-xl">
         <div className="grid h-16 w-16 place-items-center rounded-2xl bg-gradient-to-br from-blue-500 to-blue-800 shadow-[inset_0_1px_0_rgba(255,255,255,0.2)]">
           <img src={logo} alt="DriveGuide" className="h-9 w-9" />
         </div>
       </div>
 
-      {/* whats new pill */}
       <div className="mx-auto mb-10 inline-flex max-w-[640px] items-center gap-3 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-sm backdrop-blur-xl">
         <span className="inline-flex items-center gap-1.5 text-blue-300">
           <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-blue-400 shadow-[0_0_8px_rgba(96,165,250,0.9)]" />
           New
         </span>
         <span className="hidden text-white/80 sm:inline">
-          50-state DMV packs + AI road-test examiner now live
+          Real-time sign recognition drills now in beta
         </span>
       </div>
 
-      {/* gradient blur behind headline */}
       <div className="relative mx-auto max-w-5xl">
         <div
           aria-hidden
@@ -136,30 +126,31 @@ function Hero() {
           }}
         />
         <h1 className="relative text-5xl font-semibold leading-[1.02] tracking-[-0.03em] sm:text-7xl">
-          The Driving Coach
+          Master Your Permit and
           <br />
-          That{" "}
+          Ace Your Road Test on the{" "}
           <span className="italic font-medium [font-family:'Cormorant_Garamond',Georgia,serif] bg-gradient-to-r from-blue-300 via-blue-400 to-cyan-300 bg-clip-text text-transparent">
-            Actually Shows Up
+            First Try
           </span>
         </h1>
       </div>
 
       <p className="relative mx-auto mt-8 max-w-2xl text-lg text-white/70">
-        Permit, road test, first car — DriveGuide AI walks every new driver through
-        the only three tests that matter, with rules tuned to your exact state.
+        An AI driving coach trained on every official DMV handbook —
+        live test simulator, targeted section drills, and behind-the-wheel
+        action checklists. No fluff.
       </p>
 
       <div className="relative mt-10 flex flex-wrap items-center justify-center gap-3">
         <Link
           to="/auth"
-          className="rounded-full bg-gradient-to-r from-blue-500 to-blue-700 px-10 py-5 text-base font-semibold text-white shadow-[0_20px_50px_-15px_rgba(59,130,246,0.8)] transition hover:scale-[1.03]"
+          className="rounded-full bg-gradient-to-r from-blue-500 to-blue-700 px-10 py-5 text-base font-semibold text-white shadow-[0_20px_50px_-15px_rgba(59,130,246,0.8)] transition hover:scale-[1.03] active:scale-[0.97]"
         >
-          Start Practicing
+          Get Started
         </Link>
         <a
           href="#features"
-          className="rounded-full border border-white/15 bg-white/[0.04] px-8 py-5 text-base font-medium text-white/90 backdrop-blur-xl transition hover:bg-white/10"
+          className="rounded-full border border-white/15 bg-white/[0.04] px-8 py-5 text-base font-medium text-white/90 backdrop-blur-xl transition hover:bg-white/10 hover:scale-[1.03] active:scale-[0.97]"
         >
           See how it works
         </a>
@@ -172,13 +163,12 @@ function Hero() {
           ))}
         </div>
         <span className="h-4 w-px bg-white/20" />
-        <span>Loved By Drivers From 1,200+ High Schools</span>
+        <span>Trusted by 50,000+ new drivers nationwide</span>
       </div>
     </section>
   );
 }
 
-/* ────────────────────────────────────────────────── LOGO STRIP ── */
 function LogoStrip() {
   const states = ["California", "Texas", "Florida", "New York", "Illinois", "Washington", "Georgia"];
   return (
@@ -198,202 +188,64 @@ function LogoStrip() {
   );
 }
 
-/* ─────────────────────────────────────────── FEATURES INTRO ── */
-function FeaturesIntro() {
+function Features() {
+  const features = [
+    {
+      icon: MessageSquare,
+      title: "AI-Powered Test Simulator",
+      body: "A conversational coach that runs full mock permit exams and explains every wrong answer — interactive, instant, state-aware.",
+    },
+    {
+      icon: ClipboardCheck,
+      title: "Targeted Section Quizzes",
+      body: "Drill the topics examiners punish: signs, intersections, substance laws, and speed limits — 5-question rounds with instant scoring.",
+    },
+    {
+      icon: Car,
+      title: "Behind-the-Wheel Checklists",
+      body: "Every maneuver mapped step-by-step with the exact thresholds that auto-fail a road test, so you walk in knowing what counts.",
+    },
+  ];
+
   return (
-    <section id="features" className="px-6 pt-28 pb-10 text-center">
-      <div className="mx-auto inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 text-sm text-white/80 backdrop-blur-xl">
-        <Sparkles className="h-4 w-4 text-blue-300" />
-        Built for new drivers
-      </div>
-      <h2 className="mx-auto mt-8 max-w-4xl text-5xl font-semibold tracking-[-0.03em] sm:text-6xl">
-        Everything Between You
-        <br />
-        and a{" "}
-        <span className="italic font-medium [font-family:'Cormorant_Garamond',Georgia,serif] bg-gradient-to-r from-blue-300 to-cyan-300 bg-clip-text text-transparent">
-          Real License
-        </span>
-      </h2>
-      <p className="mx-auto mt-6 max-w-xl text-lg text-white/60">
-        DriveGuide AI pairs a sharp coaching model with official, state-specific
-        DMV material — so every answer matches the test you'll actually take.
-      </p>
-    </section>
-  );
-}
-
-/* ──────────────────────────────────────── FEATURE SHOWCASE ── */
-function FeatureShowcase() {
-  return (
-    <section className="mx-auto grid max-w-7xl gap-6 px-6 py-12 md:grid-cols-2">
-      {/* mock dashboard card */}
-      <div className="rounded-[28px] border border-white/10 bg-white/[0.04] p-6 shadow-[0_30px_80px_-30px_rgba(59,130,246,0.5)] backdrop-blur-xl">
-        <div className="rounded-2xl border border-white/5 bg-black/30 p-5">
-          <MockExamCard
-            firm="California DMV"
-            chip="Completed"
-            title="Permit Practice Test"
-            sub="Right of Way · 18 questions"
-            date="11/14/2025 · 15 min"
-            score="9/10"
-            tone="good"
-          />
-          <div className="h-4" />
-          <MockExamCard
-            firm="Texas DMV"
-            chip="Completed"
-            title="Mock Road Test"
-            sub="Parallel Parking · First Round"
-            date="11/13/2025 · 30 min"
-            score="7.9/10"
-            tone="warn"
-          />
-        </div>
-      </div>
-
-      {/* mock topic cards */}
-      <div className="rounded-[28px] border border-white/10 bg-white/[0.04] p-6 shadow-[0_30px_80px_-30px_rgba(59,130,246,0.5)] backdrop-blur-xl">
-        <div className="grid grid-cols-2 gap-4">
-          <TopicCard title="Road Signs" sub="Warning, Regulatory, Guide" count="120 questions" score="9.5/10" tone="good" />
-          <TopicCard title="Maneuvers" sub="3-point turn, Parallel, Hill" count="18 drills" score="6.2/10" tone="warn" />
-          <TopicCard title="Traffic Laws" sub="Right of way, Yielding" count="80 questions" score="8.4/10" tone="good" />
-          <TopicCard title="First Car" sub="Used listings, Insurance" count="Guided" score="—" tone="neutral" />
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function MockExamCard({
-  firm, chip, title, sub, date, score, tone,
-}: {
-  firm: string; chip: string; title: string; sub: string; date: string; score: string;
-  tone: "good" | "warn";
-}) {
-  const scoreBg =
-    tone === "good"
-      ? "bg-blue-500/15 text-blue-200 ring-blue-400/30"
-      : "bg-amber-400/10 text-amber-200 ring-amber-300/30";
-  const bar = tone === "good" ? "bg-gradient-to-r from-blue-400 to-cyan-300" : "bg-gradient-to-r from-amber-400 to-orange-400";
-  return (
-    <div className="rounded-xl border border-white/5 bg-white/[0.03] p-4">
-      <div className="mb-2 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <span className="text-sm font-semibold text-white">{firm}</span>
-          <span className="rounded-md bg-white/5 px-2 py-0.5 text-[10px] uppercase tracking-wide text-white/60">
-            {chip}
-          </span>
-        </div>
-        <span className={`rounded-md px-2 py-1 text-xs font-bold ring-1 ${scoreBg}`}>{score}</span>
-      </div>
-      <div className="text-[15px] font-medium text-white">{title}</div>
-      <div className="text-xs text-white/60">{sub}</div>
-      <div className="mt-2 text-[11px] text-white/40">{date}</div>
-      <div className="mt-3 h-1 w-full rounded-full bg-white/5">
-        <div className={`h-1 rounded-full ${bar}`} style={{ width: tone === "good" ? "90%" : "60%" }} />
-      </div>
-    </div>
-  );
-}
-
-function TopicCard({
-  title, sub, count, score, tone,
-}: {
-  title: string; sub: string; count: string; score: string;
-  tone: "good" | "warn" | "neutral";
-}) {
-  const tones = {
-    good: "bg-blue-500/15 text-blue-200 ring-blue-400/30",
-    warn: "bg-amber-400/10 text-amber-200 ring-amber-300/30",
-    neutral: "bg-white/5 text-white/60 ring-white/10",
-  } as const;
-  return (
-    <div className="rounded-2xl border border-white/5 bg-white/[0.03] p-4">
-      <div className="mb-3 flex items-center justify-between">
-        <span className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 text-white shadow-[0_0_16px_-4px_rgba(59,130,246,0.7)]">
-          <Star className="h-4 w-4 fill-white" />
-        </span>
-        <span className={`rounded-md px-2 py-0.5 text-[11px] font-bold ring-1 ${tones[tone]}`}>{score}</span>
-      </div>
-      <div className="text-sm font-semibold text-white">{title}</div>
-      <div className="text-xs text-white/60">{sub}</div>
-      <div className="mt-3 flex items-center justify-between text-[11px]">
-        <span className="text-white/40">{count}</span>
-        <span className="font-medium text-blue-300">Start Practice ›</span>
-      </div>
-    </div>
-  );
-}
-
-/* ──────────────────────────────────────── FEATURE BULLETS ── */
-function FeatureBullets() {
-  return (
-    <section className="mx-auto grid max-w-7xl items-center gap-12 px-6 py-24 md:grid-cols-2">
-      <div className="rounded-[28px] border border-white/10 bg-white/[0.04] p-2 shadow-[0_30px_80px_-30px_rgba(59,130,246,0.5)] backdrop-blur-xl">
-        <div className="rounded-[22px] bg-gradient-to-br from-[#0a0f1f] to-[#070b18] p-6 text-white ring-1 ring-white/5">
-          <div className="mb-5 flex items-center gap-2">
-            <span className="grid h-8 w-8 place-items-center rounded-lg bg-blue-500/15 ring-1 ring-blue-400/30">
-              <MessageSquare className="h-4 w-4 text-blue-300" />
-            </span>
-            <span className="text-sm font-semibold">DriveGuide Main Chat</span>
-          </div>
-          <div className="mb-4 mx-auto grid h-12 w-12 place-items-center rounded-full bg-gradient-to-br from-blue-500 to-blue-700 shadow-[0_0_24px_-4px_rgba(59,130,246,0.8)]">
-            <img src={logo} alt="" className="h-7 w-7" />
-          </div>
-          <p className="mb-5 text-center text-sm text-white/70">
-            Your AI Driving Coach
-          </p>
-          <div className="rounded-xl bg-blue-500/10 p-3 text-sm ring-1 ring-blue-400/20">
-            What's the rule on right-of-way at a 4-way stop?
-          </div>
-          <div className="mt-3 grid grid-cols-2 gap-2 text-xs">
-            {["Permit", "Road Test", "First Car", "State Laws"].map((t) => (
-              <span key={t} className="rounded-lg bg-white/5 px-3 py-2 text-white/80 ring-1 ring-white/10">
-                {t}
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 text-sm text-white/80 backdrop-blur-xl">
+    <section id="features" className="px-6 pt-28 pb-20">
+      <div className="mx-auto max-w-3xl text-center">
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 text-sm text-white/80 backdrop-blur-xl">
           <Sparkles className="h-4 w-4 text-blue-300" />
-          Smarter prep
+          Three pillars
         </div>
-        <h2 className="text-5xl font-semibold leading-[1.05] tracking-[-0.03em]">
-          Trained on the
-          <br />
-          test you'll{" "}
+        <h2 className="mt-8 text-5xl font-semibold tracking-[-0.03em] sm:text-6xl">
+          Everything Between You and a{" "}
           <span className="italic font-medium [font-family:'Cormorant_Garamond',Georgia,serif] bg-gradient-to-r from-blue-300 to-cyan-300 bg-clip-text text-transparent">
-            actually take
+            Real License
           </span>
         </h2>
-        <p className="mt-5 text-lg text-white/60">
-          Drill every section, master every maneuver, and walk into the DMV with
-          the same confidence as someone who's already passed.
+        <p className="mx-auto mt-6 max-w-xl text-lg text-white/60">
+          Three focused tools, one outcome — pass on the first try.
         </p>
-        <ul className="mt-8 space-y-4">
-          {[
-            "Infinite AI drills generated from every official DMV handbook",
-            "Upload your state's drivers ed PDFs for personal coaching",
-            "Mock road-test examiner walks every maneuver, step by step",
-            "First-car coach: used listings, insurance, and red-flag checks",
-          ].map((t) => (
-            <li key={t} className="flex items-center gap-3 text-[15px] text-white/85">
-              <span className="grid h-6 w-6 shrink-0 place-items-center rounded-md bg-gradient-to-br from-blue-500 to-blue-700 text-white shadow-[0_0_14px_-4px_rgba(59,130,246,0.8)]">
-                <Check className="h-3.5 w-3.5" />
+      </div>
+
+      <div className="mx-auto mt-14 grid max-w-6xl gap-6 md:grid-cols-3">
+        {features.map((f) => {
+          const Icon = f.icon;
+          return (
+            <div
+              key={f.title}
+              className="group relative rounded-[28px] border border-white/10 bg-white/[0.04] p-8 shadow-[0_30px_80px_-30px_rgba(59,130,246,0.5)] backdrop-blur-xl transition hover:scale-[1.02] hover:border-blue-400/30"
+            >
+              <span className="grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700 text-white shadow-[0_0_24px_-4px_rgba(59,130,246,0.8)]">
+                <Icon className="h-5 w-5" />
               </span>
-              {t}
-            </li>
-          ))}
-        </ul>
+              <h3 className="mt-6 text-xl font-semibold tracking-tight">{f.title}</h3>
+              <p className="mt-3 text-[15px] leading-relaxed text-white/65">{f.body}</p>
+            </div>
+          );
+        })}
       </div>
     </section>
   );
 }
 
-/* ──────────────────────────────────────────── STATS BAND ── */
 function StatsBand() {
   const stats = [
     { v: "98%", l: "First-try permit pass rate" },
@@ -423,20 +275,21 @@ function StatsBand() {
   );
 }
 
-/* ──────────────────────────────────────────── PRICING ── */
 function Pricing() {
   const features = [
-    "Unlimited AI chat",
-    "Unlimited mock permit tests",
-    "Unlimited maneuver drills",
+    "Unlimited AI test simulator chat",
+    "All targeted section quizzes",
+    "Behind-the-wheel checklists",
+    "Real-time sign recognition drills",
     "All 50 state rule packs",
-    "First car buying guide",
+    "Cancel anytime — no contracts",
   ];
+
   return (
     <section id="pricing" className="px-6 py-28">
       <div className="mx-auto mb-14 max-w-3xl text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 text-sm text-white/80 backdrop-blur-xl">
-          Simple Pricing
+          One plan
         </div>
         <h2 className="mt-6 text-5xl font-semibold tracking-[-0.03em] sm:text-6xl">
           Pick Your{" "}
@@ -444,90 +297,59 @@ function Pricing() {
             Lane
           </span>
         </h2>
-        <p className="mt-4 text-white/60">Cancel anytime. Drive forever.</p>
+        <p className="mt-4 text-white/60">No tiers. No upsell. Just the test you're about to take.</p>
       </div>
 
-      <div className="mx-auto grid max-w-6xl gap-8 md:grid-cols-3">
-        <PriceCard plan="Monthly" price="$14.00" features={features} highlight={false} />
-        <PriceCard plan="Quarterly" price="$11.67" features={features} highlight badge="Most Popular" />
-        <PriceCard plan="Yearly" price="$9.17" features={features} highlight={false} />
+      <div className="mx-auto max-w-md">
+        <div
+          className="relative rounded-[28px] p-[1.5px]"
+          style={{
+            background: "linear-gradient(135deg, #60a5fa 0%, #2563eb 50%, #0ea5e9 100%)",
+          }}
+        >
+          <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-blue-500 to-cyan-400 px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-white shadow-[0_8px_24px_-8px_rgba(59,130,246,0.8)]">
+            Pro Pass
+          </span>
+          <div className="rounded-[26px] bg-[#070b18]/85 p-8 backdrop-blur-xl">
+            <div
+              className="rounded-2xl p-7"
+              style={{
+                background:
+                  "linear-gradient(135deg, #1e40af 0%, #2563eb 55%, #0ea5e9 100%)",
+                boxShadow:
+                  "0 20px 50px -20px rgba(59,130,246,0.7), inset 0 1px 0 rgba(255,255,255,0.15)",
+              }}
+            >
+              <div className="text-lg font-medium text-white/90">Pro Pass</div>
+              <div className="mt-8 flex items-end gap-2 text-white">
+                <span className="text-6xl font-semibold tracking-[-0.03em]">$9</span>
+                <span className="mb-2 text-sm text-white/85">/ month</span>
+              </div>
+              <p className="mt-2 text-sm text-white/75">Everything DriveGuide builds, included.</p>
+            </div>
+
+            <Link
+              to="/auth"
+              className="mt-7 block rounded-full bg-gradient-to-r from-blue-500 to-blue-700 py-4 text-center text-sm font-semibold text-white shadow-[0_15px_35px_-12px_rgba(59,130,246,0.8)] transition hover:scale-[1.03] active:scale-[0.97]"
+            >
+              Get Started
+            </Link>
+
+            <ul className="mt-7 space-y-3 text-[15px]">
+              {features.map((f) => (
+                <li key={f} className="flex items-center gap-3 text-white/85">
+                  <Check className="h-4 w-4 shrink-0 text-blue-300" />
+                  {f}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
       </div>
     </section>
   );
 }
 
-function PriceCard({
-  plan, price, features, highlight, badge,
-}: {
-  plan: string; price: string; features: string[]; highlight: boolean; badge?: string;
-}) {
-  return (
-    <div
-      className="relative rounded-[28px] p-[1.5px]"
-      style={{
-        background: highlight
-          ? "linear-gradient(135deg, #60a5fa 0%, #2563eb 50%, #1e40af 100%)"
-          : "linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.04))",
-      }}
-    >
-      {badge && (
-        <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-blue-500 to-cyan-400 px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-white shadow-[0_8px_24px_-8px_rgba(59,130,246,0.8)]">
-          {badge}
-        </span>
-      )}
-      <div className="rounded-[26px] bg-[#070b18]/80 p-6 backdrop-blur-xl">
-        <div
-          className="rounded-2xl p-7"
-          style={
-            highlight
-              ? {
-                  background:
-                    "linear-gradient(135deg, #1e40af 0%, #2563eb 55%, #0ea5e9 100%)",
-                  boxShadow:
-                    "0 20px 50px -20px rgba(59,130,246,0.7), inset 0 1px 0 rgba(255,255,255,0.15)",
-                }
-              : {
-                  background: "rgba(255,255,255,0.03)",
-                  border: "1px solid rgba(255,255,255,0.06)",
-                }
-          }
-        >
-          <div className={highlight ? "text-lg font-medium text-white/90" : "text-lg font-medium text-white/70"}>
-            {plan}
-          </div>
-          <div className="mt-10 flex items-end gap-2 text-white">
-            <span className="text-5xl font-semibold tracking-[-0.03em] sm:text-6xl">{price}</span>
-            <span className={highlight ? "mb-2 text-sm text-white/80" : "mb-2 text-sm text-white/60"}>
-              / month
-            </span>
-          </div>
-        </div>
-
-        <Link
-          to="/auth"
-          className={
-            highlight
-              ? "mt-6 block rounded-full bg-gradient-to-r from-blue-500 to-blue-700 py-4 text-center text-sm font-semibold text-white shadow-[0_15px_35px_-12px_rgba(59,130,246,0.8)] transition hover:scale-[1.02]"
-              : "mt-6 block rounded-full bg-white/[0.06] py-4 text-center text-sm font-semibold text-white ring-1 ring-white/10 transition hover:bg-white/[0.1]"
-          }
-        >
-          Get Started
-        </Link>
-
-        <ul className="mt-6 space-y-3 text-[15px]">
-          {features.map((f) => (
-            <li key={f} className="flex items-center gap-3 text-white/80">
-              <Check className="h-4 w-4 shrink-0 text-blue-300" />
-              {f}
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
-  );
-}
-
-/* ──────────────────────────────────────────── FAQ ── */
 function FAQ() {
   const items = [
     {
@@ -536,19 +358,19 @@ function FAQ() {
     },
     {
       q: "Can it actually prep me for the road test?",
-      a: "Each maneuver gets a walkthrough, common-fail checklist, and a mock examiner Q&A — parallel parking, hill parks, lane changes, yielding, all of it.",
+      a: "Each maneuver gets a walkthrough, an examiner-style fail checklist, and step-by-step mechanical breakdown — parallel parking, hill parks, lane changes, yielding, all of it.",
     },
     {
-      q: "Is there a free version?",
-      a: "Yes — start free with limited daily drills. Upgrade for unlimited chat, mock tests, and the first-car coach.",
+      q: "How does the section quiz center work?",
+      a: "Pick a topic — signs, intersections, substance laws, or speed — and run a 5-question round with instant green/red feedback and a final score.",
     },
     {
-      q: "Will it help me buy my first car?",
-      a: "Paste a used-listing URL and DriveGuide returns a risk breakdown, cost-of-ownership range, and an inspection checklist before you hand over a dime.",
+      q: "What's in Pro Pass?",
+      a: "Unlimited AI chat, all section quizzes, the sign-recognition drill, the behind-the-wheel checklists, and every state rule pack — $9/month, cancel anytime.",
     },
   ];
   return (
-    <section className="mx-auto max-w-3xl px-6 py-24">
+    <section id="faq" className="mx-auto max-w-3xl px-6 py-24">
       <h2 className="mb-12 text-center text-5xl font-semibold tracking-[-0.03em]">
         Questions,{" "}
         <span className="italic font-medium [font-family:'Cormorant_Garamond',Georgia,serif] bg-gradient-to-r from-blue-300 to-cyan-300 bg-clip-text text-transparent">
@@ -575,7 +397,6 @@ function FAQ() {
   );
 }
 
-/* ──────────────────────────────────────────── CTA ── */
 function CTA() {
   return (
     <section className="px-6 pb-24">
@@ -588,14 +409,6 @@ function CTA() {
               "linear-gradient(135deg, #050813 0%, #0a1230 60%, #050813 100%), radial-gradient(700px 350px at 50% 0%, rgba(59,130,246,0.45), transparent 60%), radial-gradient(700px 350px at 50% 100%, rgba(14,165,233,0.35), transparent 60%)",
           }}
         />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-full"
-          style={{
-            background:
-              "radial-gradient(600px 300px at 50% 0%, rgba(96,165,250,0.4), transparent 60%), radial-gradient(600px 300px at 50% 100%, rgba(37,99,235,0.4), transparent 60%)",
-          }}
-        />
         <h2 className="text-5xl font-semibold tracking-[-0.03em] sm:text-6xl">
           Get your license.
           <br />
@@ -604,12 +417,11 @@ function CTA() {
           </span>
         </h2>
         <p className="mx-auto mt-6 max-w-xl text-white/70">
-          Join thousands of new drivers who walked into the DMV ready, calm, and
-          one answer ahead.
+          Join thousands of new drivers who walked into the DMV ready, calm, and one answer ahead.
         </p>
         <Link
           to="/auth"
-          className="mt-10 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-400 to-cyan-300 px-10 py-5 text-base font-semibold text-[#04060d] shadow-[0_20px_50px_-15px_rgba(96,165,250,0.8)] transition hover:scale-[1.03]"
+          className="mt-10 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-400 to-cyan-300 px-10 py-5 text-base font-semibold text-[#04060d] shadow-[0_20px_50px_-15px_rgba(96,165,250,0.8)] transition hover:scale-[1.03] active:scale-[0.97]"
         >
           Start Practicing
           <ArrowRight className="h-4 w-4" />
@@ -619,7 +431,6 @@ function CTA() {
   );
 }
 
-/* ──────────────────────────────────────────── FOOTER ── */
 function Footer() {
   return (
     <footer className="border-t border-white/5 px-6 py-10 text-sm text-white/50">
