@@ -16,7 +16,7 @@ import {
   MessageSquare,
   LayoutDashboard,
   Car,
-  Wrench,
+  TrafficCone,
   UserCog,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -28,7 +28,7 @@ const PRIMARY_NAV = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
   { id: "test-hub", label: "Test Hub", icon: MessageSquare },
   { id: "road-prep", label: "Behind-the-Wheel", icon: Car },
-  { id: "car-care", label: "Car Care", icon: Wrench },
+  { id: "sign-quiz", label: "Sign Quiz", icon: TrafficCone },
   { id: "account", label: "Plan & Location", icon: UserCog },
 ] as const;
 
