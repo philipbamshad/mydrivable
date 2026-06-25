@@ -1,8 +1,10 @@
 import { useMemo, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CalendarDays, Target, ListChecks } from "lucide-react";
+import { CalendarDays, Target, ListChecks, Lock, Sparkles } from "lucide-react";
 import { useUserProfile } from "@/lib/user-profile";
+import { toast } from "sonner";
+
 
 function ReadinessRing({ value }: { value: number }) {
   const size = 120;
@@ -36,8 +38,9 @@ function EmptyRing({ icon: Icon }: { icon: typeof Target }) {
 }
 
 export function HeaderWidgets() {
-  const { readiness, targetDate, setTargetDate } = useUserProfile();
+  const { readiness, targetDate, setTargetDate, isPro, unlockPro } = useUserProfile();
   const [editing, setEditing] = useState(false);
+
 
   const daysLeft = useMemo(() => {
     if (!targetDate) return null;
@@ -52,7 +55,7 @@ export function HeaderWidgets() {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-      <Card className="glass glow-soft p-5 rounded-2xl flex items-center gap-5">
+      <Card className="glass glow-soft p-5 rounded-2xl flex items-center gap-5 relative overflow-hidden">
         {readiness === null ? (
           <>
             <EmptyRing icon={ListChecks} />
@@ -82,7 +85,30 @@ export function HeaderWidgets() {
             </div>
           </>
         )}
+
+        {!isPro && (
+          <div className="absolute inset-0 z-10 flex items-center justify-center rounded-[inherit] backdrop-blur-sm bg-background/30">
+            <div className="flex flex-col items-center text-center px-4">
+              <div
+                className="grid h-11 w-11 place-items-center rounded-full bg-primary/15 border border-primary/40 mb-2"
+                style={{ boxShadow: "0 0 22px -2px var(--color-primary)" }}
+              >
+                <Lock className="w-4 h-4 text-primary" />
+              </div>
+              <p className="font-display text-sm font-bold mb-2">Pro Feature</p>
+              <Button
+                size="sm"
+                onClick={() => { unlockPro(); toast.success("Pro Pass unlocked"); }}
+                className="press bg-primary text-primary-foreground hover:bg-primary text-xs h-8"
+                style={{ boxShadow: "0 0 18px -2px var(--color-primary)" }}
+              >
+                <Sparkles className="w-3 h-3" /> Upgrade
+              </Button>
+            </div>
+          </div>
+        )}
       </Card>
+
 
       <Card className="glass glow-soft p-5 rounded-2xl flex items-center gap-5">
         {!targetDate ? (
