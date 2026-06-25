@@ -202,21 +202,21 @@ function LogoStrip() {
 function FeaturesIntro() {
   return (
     <section id="features" className="px-6 pt-28 pb-10 text-center">
-      <div className="mx-auto inline-flex items-center gap-2 rounded-full bg-white px-4 py-1.5 text-sm shadow-sm ring-1 ring-black/5">
-        <Sparkles className="h-4 w-4" />
-        Powerful Features
+      <div className="mx-auto inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 text-sm text-white/80 backdrop-blur-xl">
+        <Sparkles className="h-4 w-4 text-blue-300" />
+        Built for new drivers
       </div>
       <h2 className="mx-auto mt-8 max-w-4xl text-5xl font-semibold tracking-[-0.03em] sm:text-6xl">
-        Everything You Need
+        Everything Between You
         <br />
-        to{" "}
-        <span className="italic [font-family:'Cormorant_Garamond',Georgia,serif] font-medium">
-          Pass First Try
+        and a{" "}
+        <span className="italic font-medium [font-family:'Cormorant_Garamond',Georgia,serif] bg-gradient-to-r from-blue-300 to-cyan-300 bg-clip-text text-transparent">
+          Real License
         </span>
       </h2>
-      <p className="mx-auto mt-6 max-w-xl text-lg text-[#0d0d0d]/60">
-        DriveGuide AI combines the power of advanced AI with official, state-specific
-        DMV training data.
+      <p className="mx-auto mt-6 max-w-xl text-lg text-white/60">
+        DriveGuide AI pairs a sharp coaching model with official, state-specific
+        DMV material — so every answer matches the test you'll actually take.
       </p>
     </section>
   );
