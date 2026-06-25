@@ -228,13 +228,24 @@
   color: var(--color-primary-foreground);
   font-weight: 600;
   background: linear-gradient(135deg,
-    color-mix(in oklab, var(--color-primary) 95%, transparent),
-    color-mix(in oklab, oklch(0.82 0.15 200) 90%, transparent));
+    color-mix(in oklab, var(--color-primary) 85%, transparent),
+    color-mix(in oklab, oklch(0.82 0.15 200) 80%, transparent));
   box-shadow:
     0 0 0 1px color-mix(in oklab, var(--color-primary) 60%, transparent),
     0 0 24px -4px var(--color-primary),
     0 10px 30px -10px oklch(0.82 0.15 200 / 0.6);
   &::before { opacity: 0; }
+  &::after {
+    content: "";
+    position: absolute;
+    left: -8px;
+    top: 18%;
+    bottom: 18%;
+    width: 3px;
+    border-radius: 999px;
+    background: var(--color-primary);
+    box-shadow: 0 0 12px var(--color-primary), 0 0 24px var(--color-primary);
+  }
 }
 
 /* Lane divider kept for visual continuity */

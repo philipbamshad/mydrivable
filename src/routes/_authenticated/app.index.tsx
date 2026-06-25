@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import type { UIMessage } from "ai";
@@ -13,25 +13,24 @@ import {
   LayoutDashboard,
   MessageSquare,
   Car,
-  Wrench,
+  TrafficCone,
   UserCog,
 } from "lucide-react";
-import { MetricsRow } from "@/components/dashboard/MetricsRow";
-import { WeeklyMatrix } from "@/components/dashboard/WeeklyMatrix";
+import { HeaderWidgets } from "@/components/dashboard/HeaderWidgets";
+import { DailyChecklist } from "@/components/dashboard/DailyChecklist";
 import { ExamProgressChart } from "@/components/dashboard/ExamProgressChart";
-import { TopicMasteryPanel } from "@/components/dashboard/TopicMasteryPanel";
-import { RoadPrepMatrix } from "@/components/dashboard/RoadPrepMatrix";
-import { CarCare } from "@/components/dashboard/CarCare";
+import { ModuleQuizCenter } from "@/components/dashboard/ModuleQuizCenter";
+import { RoadPrepGuide } from "@/components/dashboard/RoadPrepGuide";
+import { SignQuiz } from "@/components/dashboard/SignQuiz";
 import { AccountPanel } from "@/components/dashboard/AccountPanel";
 import { ChatWindow } from "@/components/chat/ChatWindow";
-import { toast } from "sonner";
 
-type TabId = "dashboard" | "test-hub" | "road-prep" | "car-care" | "account";
+type TabId = "dashboard" | "test-hub" | "road-prep" | "sign-quiz" | "account";
 
 export const Route = createFileRoute("/_authenticated/app/")({
   validateSearch: (s: Record<string, unknown>): { tab?: TabId } => {
     const t = s.tab;
-    if (t === "dashboard" || t === "test-hub" || t === "road-prep" || t === "car-care" || t === "account") {
+    if (t === "dashboard" || t === "test-hub" || t === "road-prep" || t === "sign-quiz" || t === "account") {
       return { tab: t };
     }
     return {};
@@ -43,7 +42,7 @@ const TABS = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
   { id: "test-hub", label: "Test Hub", icon: MessageSquare },
   { id: "road-prep", label: "Behind-the-Wheel", icon: Car },
-  { id: "car-care", label: "Car Care", icon: Wrench },
+  { id: "sign-quiz", label: "Sign Quiz", icon: TrafficCone },
   { id: "account", label: "Plan & Location", icon: UserCog },
 ] as const;
 
@@ -51,8 +50,7 @@ function AppDashboard() {
   const search = Route.useSearch();
   const navigate = Route.useNavigate();
   const tab: TabId = search.tab ?? "dashboard";
-  const setTab = (v: TabId) =>
-    navigate({ search: { tab: v }, replace: true });
+  const setTab = (v: TabId) => navigate({ search: { tab: v }, replace: true });
 
   return (
     <div className="flex flex-col h-full">
@@ -63,21 +61,21 @@ function AppDashboard() {
       >
         <header className="px-5 sm:px-7 pt-5 pb-4 border-b border-primary/10">
           <div className="flex items-center justify-between">
-            <div>
-              <h1 className="font-display font-bold text-xl leading-tight">
+            <div className="min-w-0">
+              <h1 className="font-display font-bold text-xl leading-tight truncate">
                 {TABS.find((t) => t.id === tab)?.label}
               </h1>
               <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground mt-0.5">
                 DriveGuide control panel
               </p>
             </div>
-            <div className="hidden md:flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] text-muted-foreground glass px-3 py-1.5 rounded-full">
+            <div className="hidden md:flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] text-muted-foreground glass px-3 py-1.5 rounded-full shrink-0">
               <span className="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_12px_var(--color-primary)] animate-pulse" />
               State index · California
             </div>
           </div>
         </header>
-        {/* sidebar drives primary nav; hidden TabsList keeps Tabs API happy */}
+
         <TabsList className="sr-only">
           {TABS.map(({ id, label }) => (
             <TabsTrigger key={id} value={id}>{label}</TabsTrigger>
@@ -87,9 +85,9 @@ function AppDashboard() {
         <div className="flex-1 min-h-0 overflow-hidden">
           <TabsContent value="dashboard" className="h-full overflow-y-auto m-0 p-5 sm:p-7">
             <div className="max-w-7xl mx-auto space-y-6">
-              <MetricsRow />
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <WeeklyMatrix />
+              <HeaderWidgets />
+              <div className="grid grid-cols-1 lg:grid-cols-[2fr_3fr] gap-6">
+                <DailyChecklist />
                 <ExamProgressChart />
               </div>
             </div>
@@ -100,15 +98,13 @@ function AppDashboard() {
           </TabsContent>
 
           <TabsContent value="road-prep" className="h-full overflow-y-auto m-0 p-5 sm:p-7">
-            <div className="max-w-7xl mx-auto">
-              <RoadPrepMatrix />
+            <div className="max-w-6xl mx-auto">
+              <RoadPrepGuide />
             </div>
           </TabsContent>
 
-          <TabsContent value="car-care" className="h-full overflow-y-auto m-0 p-5 sm:p-7">
-            <div className="max-w-7xl mx-auto">
-              <CarCare />
-            </div>
+          <TabsContent value="sign-quiz" className="h-full overflow-y-auto m-0 p-5 sm:p-7">
+            <SignQuiz />
           </TabsContent>
 
           <TabsContent value="account" className="h-full overflow-y-auto m-0 p-5 sm:p-7">
@@ -164,22 +160,18 @@ function TestHub() {
     );
   }
 
-  const handleFocus = (_id: string, label: string) => {
-    toast.success(`Focus set: ${label}`, {
-      description: "Next chat message will prioritize this module.",
-    });
-  };
-
   return (
-    <div className="flex h-full">
-      <div className="flex-1 min-w-0">
+    <div className="flex h-full flex-col lg:flex-row">
+      <div className="flex-1 min-w-0 lg:basis-3/5 border-b lg:border-b-0 lg:border-r border-border">
         <ChatWindow
           key={activeThread.id}
           threadId={activeThread.id}
           initialMessages={messages as unknown as UIMessage[]}
         />
       </div>
-      <TopicMasteryPanel onFocus={handleFocus} />
+      <div className="lg:basis-2/5 lg:max-w-[460px] h-full min-h-0">
+        <ModuleQuizCenter />
+      </div>
     </div>
   );
 }
