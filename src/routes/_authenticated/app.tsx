@@ -7,9 +7,9 @@ export const Route = createFileRoute("/_authenticated/app")({
 
 function AppLayout() {
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-background">
+    <div className="flex h-screen w-screen overflow-hidden bg-background p-3 gap-3">
       <ThreadSidebar />
-      <main className="flex-1 min-w-0">
+      <main className="flex-1 min-w-0 rounded-2xl glass glow-soft overflow-hidden">
         <Outlet />
       </main>
     </div>
