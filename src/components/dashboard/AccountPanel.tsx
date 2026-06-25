@@ -39,7 +39,7 @@ export function AccountPanel() {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
       {/* Profile */}
-      <Card className="lg:col-span-2 p-6 bg-card border-border">
+      <Card className="lg:col-span-2 p-6 glass glow-soft">
         <div className="flex items-start justify-between mb-6">
           <div className="flex items-center gap-4">
             <div className="w-14 h-14 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-display font-bold text-xl">
@@ -190,7 +190,7 @@ function Pref({
   onChange: (v: boolean) => void;
 }) {
   return (
-    <div className="flex items-start justify-between gap-4 rounded-lg border border-border bg-background/40 p-4">
+    <div className="flex items-start justify-between gap-4 rounded-lg border border-border bg-background/30 backdrop-blur-sm border-primary/15 p-4">
       <div>
         <div className="font-semibold text-sm">{title}</div>
         <div className="text-xs text-muted-foreground">{desc}</div>

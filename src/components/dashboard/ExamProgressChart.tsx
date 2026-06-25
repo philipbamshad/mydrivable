@@ -34,7 +34,7 @@ export function ExamProgressChart() {
   const delta = latest - first;
 
   return (
-    <Card className="p-5 bg-card border-border h-full flex flex-col">
+    <Card className="p-5 glass glow-soft h-full flex flex-col">
       <div className="flex items-center justify-between mb-4">
         <div>
           <h3 className="font-display text-lg font-bold">Mock Exam Progression</h3>
