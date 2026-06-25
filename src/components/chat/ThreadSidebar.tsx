@@ -1,46 +1,41 @@
 "use client";
 
-import { Link, useNavigate, useParams, useRouterState } from "@tanstack/react-router";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useServerFn } from "@tanstack/react-start";
-import {
-  listThreads,
-  createThread,
-  deleteThread,
-} from "@/lib/threads.functions";
+import { useState } from "react";
+import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import {
-  Plus,
-  Trash2,
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import {
   LogOut,
   MessageSquare,
   LayoutDashboard,
   Car,
-  TrafficCone,
-  UserCog,
+  ClipboardCheck,
+  Settings,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import logo from "@/assets/driveguide-logo.png";
 import { cn } from "@/lib/utils";
+import { AccountPanel } from "@/components/dashboard/AccountPanel";
+import { useUserProfile } from "@/lib/user-profile";
 
 const PRIMARY_NAV = [
-  { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { id: "test-hub", label: "Test Hub", icon: MessageSquare },
+  { id: "dashboard", label: "Dashboard Overview", icon: LayoutDashboard },
+  { id: "test-hub", label: "Test Hub", icon: ClipboardCheck },
   { id: "road-prep", label: "Behind-the-Wheel", icon: Car },
-  { id: "sign-quiz", label: "Sign Quiz", icon: TrafficCone },
-  { id: "account", label: "Plan & Location", icon: UserCog },
+  { id: "chat", label: "Chat AI Assistant", icon: MessageSquare },
 ] as const;
 
 export function ThreadSidebar() {
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
-  const listFn = useServerFn(listThreads);
-  const createFn = useServerFn(createThread);
-  const deleteFn = useServerFn(deleteThread);
-
-  const params = useParams({ strict: false }) as { threadId?: string };
-  const activeId = params.threadId;
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const { state: userState, isPro } = useUserProfile();
 
   const { pathname, search } = useRouterState({
     select: (s) => ({ pathname: s.location.pathname, search: s.location.search }),
@@ -48,27 +43,6 @@ export function ThreadSidebar() {
   const activeTab =
     (search as { tab?: string }).tab ??
     (pathname === "/app" ? "dashboard" : null);
-
-  const { data: threads = [] } = useQuery({
-    queryKey: ["threads"],
-    queryFn: () => listFn({ data: undefined as never }),
-  });
-
-  const createMut = useMutation({
-    mutationFn: () => createFn({ data: {} }),
-    onSuccess: (t) => {
-      queryClient.invalidateQueries({ queryKey: ["threads"] });
-      navigate({ to: "/app/c/$threadId", params: { threadId: t.id } });
-    },
-  });
-
-  const deleteMut = useMutation({
-    mutationFn: (id: string) => deleteFn({ data: { id } }),
-    onSuccess: (_, id) => {
-      queryClient.invalidateQueries({ queryKey: ["threads"] });
-      if (activeId === id) navigate({ to: "/app" });
-    },
-  });
 
   const signOut = async () => {
     await supabase.auth.signOut();
@@ -103,66 +77,49 @@ export function ThreadSidebar() {
                 className={cn("nav-link", isActive && "nav-link-active")}
               >
                 <Icon className="w-4 h-4 shrink-0" />
-                <span>{label}</span>
+                <span className="truncate">{label}</span>
               </Link>
             );
           })}
         </nav>
       </div>
 
-      <div className="px-4 pt-2 pb-2 flex items-center justify-between">
-        <span className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
-          Chats
-        </span>
-        <button
-          onClick={() => createMut.mutate()}
-          disabled={createMut.isPending}
-          aria-label="New chat"
-          className="p-1.5 rounded-full text-muted-foreground hover:text-primary hover:bg-primary/10 press"
-        >
-          <Plus className="w-3.5 h-3.5" />
-        </button>
+      <div className="flex-1" />
+
+      <div className="px-4 py-3 mx-3 mb-2 rounded-xl border border-primary/20 bg-primary/5">
+        <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Active state</p>
+        <p className="text-sm font-semibold mt-0.5 flex items-center gap-2">
+          <span className="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_8px_var(--color-primary)]" />
+          {userState || "Not set"}
+        </p>
+        <p className="text-[10px] text-muted-foreground mt-1">
+          {isPro ? "Pro · all modules unlocked" : "Free tier"}
+        </p>
       </div>
 
-      <div className="flex-1 overflow-y-auto px-2 pb-3 space-y-1">
-        {threads.length === 0 ? (
-          <p className="text-xs text-muted-foreground px-3 py-3">
-            No chats yet.
-          </p>
-        ) : (
-          threads.map((t) => {
-            const isActive = activeId === t.id;
-            return (
-              <div key={t.id} className="group flex items-stretch">
-                <Link
-                  to="/app/c/$threadId"
-                  params={{ threadId: t.id }}
-                  className={cn("nav-link flex-1 min-w-0", isActive && "nav-link-active")}
-                >
-                  <MessageSquare className="w-3.5 h-3.5 shrink-0 opacity-70" />
-                  <span className="truncate">{t.title}</span>
-                </Link>
-                <button
-                  aria-label="Delete chat"
-                  onClick={() => {
-                    if (confirm("Delete this chat?")) deleteMut.mutate(t.id);
-                  }}
-                  className="ml-1 opacity-0 group-hover:opacity-100 transition-opacity p-1.5 rounded-md hover:bg-destructive/20 hover:text-destructive self-center"
-                >
-                  <Trash2 className="w-3.5 h-3.5" />
-                </button>
-              </div>
-            );
-          })
-        )}
-      </div>
+      <div className="p-3 border-t border-sidebar-border space-y-1">
+        <Sheet open={settingsOpen} onOpenChange={setSettingsOpen}>
+          <SheetTrigger asChild>
+            <Button variant="ghost" size="sm" className="w-full justify-start text-muted-foreground hover:text-foreground press">
+              <Settings className="w-4 h-4" />
+              Settings
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="right" className="w-full sm:max-w-lg overflow-y-auto">
+            <SheetHeader>
+              <SheetTitle>Settings</SheetTitle>
+            </SheetHeader>
+            <div className="mt-4">
+              <AccountPanel />
+            </div>
+          </SheetContent>
+        </Sheet>
 
-      <div className="p-3 border-t border-sidebar-border">
         <Button
           variant="ghost"
           size="sm"
           onClick={signOut}
-          className="w-full justify-start text-muted-foreground hover:text-foreground"
+          className="w-full justify-start text-muted-foreground hover:text-foreground press"
         >
           <LogOut className="w-4 h-4" />
           Sign out

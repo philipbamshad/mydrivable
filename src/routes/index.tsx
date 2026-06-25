@@ -112,7 +112,7 @@ function Hero() {
           New
         </span>
         <span className="hidden text-white/80 sm:inline">
-          Real-time sign recognition drills now in beta
+          State-aware AI coach now syncs every quiz and answer to your DMV handbook
         </span>
       </div>
 
@@ -278,9 +278,9 @@ function StatsBand() {
 function Pricing() {
   const features = [
     "Unlimited AI test simulator chat",
-    "All targeted section quizzes",
-    "Behind-the-wheel checklists",
-    "Real-time sign recognition drills",
+    "All 4 targeted pillar quizzes",
+    "Behind-the-wheel checklists & session tracker",
+    "Sign recognition drills baked into the quiz hub",
     "All 50 state rule packs",
     "Cancel anytime — no contracts",
   ];

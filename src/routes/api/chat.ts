@@ -1,17 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { convertToModelMessages, streamText, type UIMessage } from "ai";
 import { createLovableAiGatewayProvider } from "@/lib/ai-gateway.server";
-import { DRIVEGUIDE_SYSTEM_PROMPT } from "@/lib/system-prompt";
+import { buildSystemPrompt } from "@/lib/system-prompt";
 import { createClient } from "@supabase/supabase-js";
 import type { Database } from "@/integrations/supabase/types";
 
-type Body = { messages?: UIMessage[]; threadId?: string };
+type Body = { messages?: UIMessage[]; threadId?: string; userState?: string };
 
 export const Route = createFileRoute("/api/chat")({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        const { messages, threadId } = (await request.json()) as Body;
+        const { messages, threadId, userState } = (await request.json()) as Body;
         if (!Array.isArray(messages) || !threadId) {
           return new Response("messages and threadId are required", { status: 400 });
         }
@@ -40,7 +40,6 @@ export const Route = createFileRoute("/api/chat")({
         }
         const userId = userData.user.id;
 
-        // Verify the thread belongs to the user
         const { data: thread } = await supabase
           .from("threads")
           .select("id, title")
@@ -49,7 +48,6 @@ export const Route = createFileRoute("/api/chat")({
           .maybeSingle();
         if (!thread) return new Response("Thread not found", { status: 404 });
 
-        // Persist the latest user message (the last one in the incoming list)
         const lastUser = [...messages].reverse().find((m) => m.role === "user");
         if (lastUser) {
           await supabase.from("messages").insert({
@@ -57,7 +55,6 @@ export const Route = createFileRoute("/api/chat")({
             role: "user",
             parts: lastUser.parts as never,
           });
-          // If thread title is still default, set it from the first user message.
           if (thread.title === "New chat") {
             const textPart = lastUser.parts.find(
               (p): p is { type: "text"; text: string } => p.type === "text",
@@ -78,7 +75,7 @@ export const Route = createFileRoute("/api/chat")({
 
         const result = streamText({
           model,
-          system: DRIVEGUIDE_SYSTEM_PROMPT,
+          system: buildSystemPrompt(userState),
           messages: await convertToModelMessages(messages),
         });
 

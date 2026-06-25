@@ -1,16 +1,29 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+const KEY = "driveguide-checklist-v1";
+
 const INITIAL = [
   { id: 1, label: "Review Night Curfew Laws", done: false },
-  { id: 2, label: "Log Parallel Parking Attempt", done: true },
+  { id: 2, label: "Log Parallel Parking Attempt", done: false },
   { id: 3, label: "Complete 5 Sign Quizzes", done: false },
 ];
 
 export function DailyChecklist() {
   const [items, setItems] = useState(INITIAL);
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(KEY);
+      if (raw) setItems(JSON.parse(raw));
+    } catch { /* ignore */ }
+  }, []);
+  useEffect(() => {
+    try { localStorage.setItem(KEY, JSON.stringify(items)); } catch { /* ignore */ }
+  }, [items]);
+
   const done = items.filter((i) => i.done).length;
 
   return (
@@ -27,39 +40,22 @@ export function DailyChecklist() {
         {items.map((it) => (
           <li key={it.id}>
             <button
-              onClick={() =>
-                setItems((prev) =>
-                  prev.map((p) => (p.id === it.id ? { ...p, done: !p.done } : p))
-                )
-              }
+              onClick={() => setItems((prev) => prev.map((p) => (p.id === it.id ? { ...p, done: !p.done } : p)))}
               className={cn(
                 "w-full flex items-center gap-3 p-3 rounded-xl border text-left transition-all duration-200 press",
-                it.done
-                  ? "border-primary/40 bg-primary/10"
-                  : "border-border bg-card/40 hover:border-primary/30"
+                it.done ? "border-primary/40 bg-primary/10" : "border-border bg-card/40 hover:border-primary/30",
               )}
             >
               <span
                 className={cn(
                   "grid place-items-center h-6 w-6 rounded-md border transition-all duration-200",
-                  it.done
-                    ? "border-primary bg-primary text-primary-foreground scale-110"
-                    : "border-border bg-background/50"
+                  it.done ? "border-primary bg-primary text-primary-foreground scale-110" : "border-border bg-background/50",
                 )}
-                style={
-                  it.done
-                    ? { boxShadow: "0 0 14px var(--color-primary)" }
-                    : undefined
-                }
+                style={it.done ? { boxShadow: "0 0 14px var(--color-primary)" } : undefined}
               >
                 {it.done && <Check className="w-3.5 h-3.5" />}
               </span>
-              <span
-                className={cn(
-                  "text-sm transition-all duration-200",
-                  it.done && "line-through text-muted-foreground"
-                )}
-              >
+              <span className={cn("text-sm transition-all duration-200", it.done && "line-through text-muted-foreground")}>
                 {it.label}
               </span>
             </button>
@@ -69,13 +65,8 @@ export function DailyChecklist() {
 
       <div className="mt-5 pt-4 border-t border-border">
         <div className="h-1.5 w-full rounded-full bg-muted overflow-hidden">
-          <div
-            className="h-full rounded-full bg-primary transition-all duration-500"
-            style={{
-              width: `${(done / items.length) * 100}%`,
-              boxShadow: "0 0 12px var(--color-primary)",
-            }}
-          />
+          <div className="h-full rounded-full bg-primary transition-all duration-500"
+            style={{ width: `${(done / items.length) * 100}%`, boxShadow: "0 0 12px var(--color-primary)" }} />
         </div>
       </div>
     </Card>
