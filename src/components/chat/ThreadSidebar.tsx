@@ -53,10 +53,14 @@ export function ThreadSidebar() {
   };
 
   return (
-    <aside className="w-72 shrink-0 flex flex-col bg-sidebar text-sidebar-foreground border-r border-sidebar-border h-full">
+    <aside className="w-72 shrink-0 flex flex-col bg-sidebar/80 backdrop-blur-xl text-sidebar-foreground border-r border-sidebar-border h-full relative">
+      <div className="absolute inset-y-0 right-0 w-px bg-gradient-to-b from-transparent via-primary/30 to-transparent pointer-events-none" />
       <div className="p-4 border-b border-sidebar-border">
-        <Link to="/app" className="flex items-center gap-2.5 mb-4">
-          <img src={logo} alt="" width={32} height={32} />
+        <Link to="/app" className="flex items-center gap-2.5 mb-4 group">
+          <div className="relative">
+            <div className="absolute inset-0 rounded-lg bg-primary/30 blur-md opacity-60 group-hover:opacity-100 transition-opacity" />
+            <img src={logo} alt="" width={32} height={32} className="relative" />
+          </div>
           <div>
             <div className="font-bold tracking-tight text-sm">DriveGuide AI</div>
             <div className="text-[10px] text-muted-foreground uppercase tracking-[0.2em]">
@@ -74,41 +78,36 @@ export function ThreadSidebar() {
         </Button>
       </div>
 
-      <div className="flex-1 overflow-y-auto px-2 py-2 space-y-0.5">
+      <div className="flex-1 overflow-y-auto px-2 py-3 space-y-1">
         {threads.length === 0 ? (
           <p className="text-xs text-muted-foreground px-3 py-4">
             No chats yet. Start one above.
           </p>
         ) : (
-          threads.map((t) => (
-            <div
-              key={t.id}
-              className={cn(
-                "group flex items-center gap-2 rounded-lg px-2 py-2 text-sm transition-colors",
-                activeId === t.id
-                  ? "bg-sidebar-accent text-sidebar-accent-foreground"
-                  : "hover:bg-sidebar-accent/60 text-sidebar-foreground/90",
-              )}
-            >
-              <Link
-                to="/app/c/$threadId"
-                params={{ threadId: t.id }}
-                className="flex-1 flex items-center gap-2 min-w-0"
-              >
-                <MessageSquare className="w-3.5 h-3.5 shrink-0 opacity-70" />
-                <span className="truncate">{t.title}</span>
-              </Link>
-              <button
-                aria-label="Delete chat"
-                onClick={() => {
-                  if (confirm("Delete this chat?")) deleteMut.mutate(t.id);
-                }}
-                className="opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded hover:bg-destructive/20 hover:text-destructive"
-              >
-                <Trash2 className="w-3.5 h-3.5" />
-              </button>
-            </div>
-          ))
+          threads.map((t) => {
+            const isActive = activeId === t.id;
+            return (
+              <div key={t.id} className="group flex items-stretch">
+                <Link
+                  to="/app/c/$threadId"
+                  params={{ threadId: t.id }}
+                  className={cn("nav-link flex-1 min-w-0", isActive && "nav-link-active")}
+                >
+                  <MessageSquare className="w-3.5 h-3.5 shrink-0 opacity-70" />
+                  <span className="truncate">{t.title}</span>
+                </Link>
+                <button
+                  aria-label="Delete chat"
+                  onClick={() => {
+                    if (confirm("Delete this chat?")) deleteMut.mutate(t.id);
+                  }}
+                  className="ml-1 opacity-0 group-hover:opacity-100 transition-opacity p-1.5 rounded-md hover:bg-destructive/20 hover:text-destructive self-center"
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            );
+          })
         )}
       </div>
 
