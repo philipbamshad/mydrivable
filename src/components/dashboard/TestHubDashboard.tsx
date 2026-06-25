@@ -536,10 +536,8 @@ export function TestHubDashboard() {
               Unlock all 4 pillar quizzes, endless randomized sets, and instant explanations.
             </p>
             <Button
-              onClick={() => {
-                unlockPro();
-                toast.success("Pro Pass unlocked");
-              }}
+              onClick={() => unlockPro()}
+
               className="press mt-5 bg-primary text-primary-foreground hover:bg-primary"
               style={{ boxShadow: "0 0 18px -2px var(--color-primary)" }}
             >

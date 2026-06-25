@@ -8,17 +8,40 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Globe, Crown, CheckCircle2, Lock, Sparkles } from "lucide-react";
+import { Globe, Crown, CheckCircle2, Lock, Sparkles, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useUserProfile, US_STATES } from "@/lib/user-profile";
+import { useState } from "react";
+import { createPortalSession } from "@/lib/payments.functions";
+import { getStripeEnvironment } from "@/lib/stripe";
 
 export function AccountPanel() {
-  const { state, setState, isPro, unlockPro, targetDate, setTargetDate } = useUserProfile();
+  const { state, setState, isPro, openCheckout, targetDate, setTargetDate } = useUserProfile();
+  const [loadingPortal, setLoadingPortal] = useState(false);
 
   const onChangeState = (next: string) => {
     setState(next);
     toast.success(`AI knowledge base recalibrated to ${next}`);
   };
+
+  const onManageSubscription = async () => {
+    setLoadingPortal(true);
+    try {
+      const result = await createPortalSession({
+        data: {
+          environment: getStripeEnvironment(),
+          returnUrl: `${window.location.origin}/app`,
+        },
+      });
+      if ("error" in result) throw new Error(result.error);
+      window.open(result.url, "_blank", "noopener,noreferrer");
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Could not open billing portal");
+    } finally {
+      setLoadingPortal(false);
+    }
+  };
+
 
   return (
     <div className="space-y-6">
@@ -103,16 +126,25 @@ export function AccountPanel() {
           </div>
 
           {isPro ? (
-            <Button variant="outline" className="press">Manage Subscription</Button>
+            <Button
+              variant="outline"
+              className="press"
+              onClick={onManageSubscription}
+              disabled={loadingPortal}
+            >
+              {loadingPortal ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
+              Manage Subscription
+            </Button>
           ) : (
             <Button
-              onClick={() => { unlockPro(); toast.success("Pro Pass unlocked"); }}
+              onClick={() => openCheckout()}
               className="press bg-primary text-primary-foreground hover:bg-primary"
               style={{ boxShadow: "0 0 18px -2px var(--color-primary)" }}
             >
               <Sparkles className="w-4 h-4" /> Unlock Pro
             </Button>
           )}
+
         </div>
       </Card>
     </div>

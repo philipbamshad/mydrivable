@@ -319,7 +319,7 @@ export function RoadPrepGuide() {
               Unlock all maneuver checklists with Pro Pass.
             </p>
             <Button
-              onClick={() => { unlockPro(); toast.success("Pro Pass unlocked"); }}
+              onClick={() => unlockPro()}
               className="press mt-5 bg-primary text-primary-foreground hover:bg-primary"
               style={{ boxShadow: "0 0 18px -2px var(--color-primary)" }}
             >

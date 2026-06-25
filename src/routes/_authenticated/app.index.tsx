@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+
 import {
   LayoutDashboard,
   MessageSquare,
@@ -17,12 +19,17 @@ import { useUserProfile } from "@/lib/user-profile";
 type TabId = "dashboard" | "test-hub" | "road-prep" | "chat";
 
 export const Route = createFileRoute("/_authenticated/app/")({
-  validateSearch: (s: Record<string, unknown>): { tab?: TabId } => {
+  validateSearch: (
+    s: Record<string, unknown>,
+  ): { tab?: TabId; checkout?: string; intent?: string } => {
     const t = s.tab;
+    const out: { tab?: TabId; checkout?: string; intent?: string } = {};
     if (t === "dashboard" || t === "test-hub" || t === "road-prep" || t === "chat") {
-      return { tab: t };
+      out.tab = t;
     }
-    return {};
+    if (typeof s.checkout === "string") out.checkout = s.checkout;
+    if (typeof s.intent === "string") out.intent = s.intent;
+    return out;
   },
   component: AppDashboard,
 });
@@ -39,7 +46,16 @@ function AppDashboard() {
   const navigate = Route.useNavigate();
   const tab: TabId = search.tab ?? "dashboard";
   const setTab = (v: TabId) => navigate({ search: { tab: v }, replace: true });
-  const { state: userState } = useUserProfile();
+  const { state: userState, openCheckout, isPro } = useUserProfile();
+
+  // Auto-open checkout when arriving with ?intent=upgrade; clear the query.
+  useEffect(() => {
+    if (search.intent === "upgrade" && !isPro) {
+      openCheckout();
+      navigate({ search: { tab }, replace: true });
+    }
+  }, [search.intent, isPro, openCheckout, navigate, tab]);
+
 
   return (
     <div className="flex flex-col h-full">
