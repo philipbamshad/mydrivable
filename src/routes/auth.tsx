@@ -82,7 +82,8 @@ function AuthPage() {
         return;
       }
       if (result.redirected) return;
-      navigate({ to: "/app" });
+      goNext();
+
     } finally {
       setLoading(false);
     }
