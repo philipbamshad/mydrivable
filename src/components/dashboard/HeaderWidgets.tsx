@@ -102,7 +102,7 @@ export function HeaderWidgets() {
             <p className="font-display text-sm font-bold mb-2">Pro Feature</p>
             <Button
               size="sm"
-              onClick={() => { unlockPro(); toast.success("Pro Pass unlocked"); }}
+              onClick={() => unlockPro()}
               className="press bg-primary text-primary-foreground hover:bg-primary text-xs h-8"
               style={{ boxShadow: "0 0 18px -2px var(--color-primary)" }}
             >
