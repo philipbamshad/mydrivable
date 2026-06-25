@@ -79,7 +79,7 @@ export function WeeklyMatrix() {
   const totalGoals = WEEK.reduce((a, d) => a + d.goals.length, 0);
 
   return (
-    <Card className="p-5 bg-card border-border h-full flex flex-col">
+    <Card className="p-5 glass glow-soft h-full flex flex-col">
       <div className="flex items-center justify-between mb-4">
         <div>
           <h3 className="font-display text-lg font-bold">Weekly Training Matrix</h3>
@@ -95,7 +95,7 @@ export function WeeklyMatrix() {
         {WEEK.map((day) => (
           <div
             key={day.day}
-            className="rounded-lg border border-border bg-background/40 p-3"
+            className="rounded-lg border border-border bg-background/30 backdrop-blur-sm border-primary/15 p-3"
           >
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-baseline gap-2">

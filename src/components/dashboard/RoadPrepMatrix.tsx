@@ -148,7 +148,7 @@ export function RoadPrepMatrix() {
             </Badge>
           </div>
 
-          <Card className="bg-card border-border overflow-hidden">
+          <Card className="glass glow-soft overflow-hidden">
             <Accordion type="multiple" className="divide-y divide-border">
               {tier.maneuvers.map((m) => (
                 <AccordionItem

@@ -39,7 +39,7 @@ export function CarCare() {
   return (
     <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
       {/* Card A — Marketplace Analyzer */}
-      <Card className="p-5 bg-card border-border">
+      <Card className="p-5 glass glow-soft">
         <div className="flex items-center gap-2 mb-1">
           <Search className="w-4 h-4 text-primary" />
           <h3 className="font-display font-bold text-lg">Marketplace Analyzer</h3>
@@ -93,7 +93,7 @@ export function CarCare() {
               {FLAGS.map((f) => (
                 <label
                   key={f.id}
-                  className="flex items-center gap-2 rounded-lg border border-border bg-background/40 px-3 py-2 cursor-pointer hover:border-primary/40"
+                  className="flex items-center gap-2 rounded-lg border border-border bg-background/30 backdrop-blur-sm border-primary/15 px-3 py-2 cursor-pointer hover:border-primary/55 hover:shadow-[0_8px_28px_-12px_var(--color-primary)]"
                 >
                   <Checkbox
                     checked={!!flagged[f.id]}
@@ -115,7 +115,7 @@ export function CarCare() {
       </Card>
 
       {/* Card B — Vehicle Health Ledger */}
-      <Card className="p-5 bg-card border-border">
+      <Card className="p-5 glass glow-soft">
         <div className="flex items-center gap-2 mb-1">
           <Stethoscope className="w-4 h-4 text-primary" />
           <h3 className="font-display font-bold text-lg">Vehicle Health Ledger</h3>
@@ -125,7 +125,7 @@ export function CarCare() {
         </p>
 
         {/* Oil life */}
-        <div className="rounded-lg border border-border bg-background/40 p-4 mb-4">
+        <div className="rounded-lg border border-border bg-background/30 backdrop-blur-sm border-primary/15 p-4 mb-4">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2">
               <Droplet className="w-4 h-4 text-primary" />

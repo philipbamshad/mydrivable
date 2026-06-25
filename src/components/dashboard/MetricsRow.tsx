@@ -60,7 +60,7 @@ export function MetricsRow() {
       {METRICS.map((m) => (
         <Card
           key={m.label}
-          className="p-4 bg-card border-border hover:border-primary/40 transition-colors"
+          className="p-4 glass glow-soft hover:border-primary/55 hover:shadow-[0_8px_28px_-12px_var(--color-primary)] transition-colors"
         >
           <div className="flex items-start justify-between gap-2">
             <div className="flex items-center gap-2 text-muted-foreground text-xs uppercase tracking-wider">
