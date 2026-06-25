@@ -26,12 +26,13 @@ import {
 import { Shimmer } from "@/components/ai-elements/shimmer";
 import { toast } from "sonner";
 import logo from "@/assets/driveguide-logo.png";
+import { useUserProfile } from "@/lib/user-profile";
 
 const SUGGESTIONS = [
   "I'm starting permit prep — where do I begin?",
   "Quiz me on right-of-way rules.",
   "What does the examiner watch for during parallel parking?",
-  "I'm looking at a 2014 Honda Civic with 130k miles — analyze it.",
+  "Walk me through a smooth highway merge.",
 ];
 
 export function ChatWindow({
@@ -43,6 +44,7 @@ export function ChatWindow({
 }) {
   const queryClient = useQueryClient();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const { state: userState } = useUserProfile();
 
   const transport = useMemo(
     () =>
@@ -56,11 +58,11 @@ export function ChatWindow({
               "Content-Type": "application/json",
               ...(token ? { Authorization: `Bearer ${token}` } : {}),
             },
-            body: { messages, threadId, ...body },
+            body: { messages, threadId, userState, ...body },
           };
         },
       }),
-    [threadId],
+    [threadId, userState],
   );
 
   const { messages, sendMessage, status, error } = useChat({
@@ -90,28 +92,35 @@ export function ChatWindow({
 
   return (
     <div className="flex flex-col h-full bg-background">
+      <div className="border-b border-border bg-background/60 backdrop-blur px-4 py-2.5">
+        <div className="max-w-3xl mx-auto flex items-center gap-2.5 text-xs">
+          <span className="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_10px_var(--color-primary)] animate-pulse" />
+          <span className="text-foreground/90">
+            AI Assistant Active — {userState
+              ? <>Synced with the official <span className="font-semibold text-primary">{userState}</span> DMV Handbook</>
+              : <span className="text-muted-foreground">No state set. Pick one in Settings for state-specific rules.</span>}
+          </span>
+        </div>
+      </div>
+
       <Conversation className="flex-1">
         <ConversationContent className="max-w-3xl mx-auto w-full px-4 py-6">
           {messages.length === 0 ? (
             <ConversationEmptyState
-              icon={
-                <img
-                  src={logo}
-                  alt=""
-                  width={56}
-                  height={56}
-                  className="opacity-90"
-                />
-              }
+              icon={<img src={logo} alt="" width={56} height={56} className="opacity-90" />}
               title="What are we tackling?"
-              description="Permit, road test, or first car — pick a starting point or just ask."
+              description={
+                userState
+                  ? `Permit, road test, or specific ${userState} rules — pick a starter or just ask.`
+                  : "Permit prep, road-test maneuvers, or sign meanings — pick a starter or just ask."
+              }
             >
               <div className="mt-6 grid sm:grid-cols-2 gap-2 w-full max-w-xl">
                 {SUGGESTIONS.map((s) => (
                   <button
                     key={s}
                     onClick={() => handleSuggestion(s)}
-                    className="text-left text-sm rounded-xl border border-border bg-card hover:border-primary/60 hover:bg-accent transition-colors px-4 py-3"
+                    className="text-left text-sm rounded-xl border border-border bg-card hover:border-primary/60 hover:bg-accent transition-colors px-4 py-3 press"
                   >
                     {s}
                   </button>
@@ -131,9 +140,7 @@ export function ChatWindow({
                   ) : (
                     <MessageContent className="px-0 group-[.is-assistant]:bg-transparent">
                       {m.parts.map((p, i) =>
-                        p.type === "text" ? (
-                          <MessageResponse key={i}>{p.text}</MessageResponse>
-                        ) : null,
+                        p.type === "text" ? <MessageResponse key={i}>{p.text}</MessageResponse> : null,
                       )}
                     </MessageContent>
                   )}
@@ -146,9 +153,7 @@ export function ChatWindow({
                   </MessageContent>
                 </Message>
               )}
-              {error && (
-                <p className="text-sm text-destructive">{error.message}</p>
-              )}
+              {error && <p className="text-sm text-destructive">{error.message}</p>}
             </div>
           )}
         </ConversationContent>
@@ -160,7 +165,7 @@ export function ChatWindow({
           <PromptInput onSubmit={handleSubmit}>
             <PromptInputTextarea
               ref={textareaRef}
-              placeholder="Ask DriveGuide anything — sign meanings, parallel parking, brake squeal..."
+              placeholder="Ask DriveGuide anything — sign meanings, right-of-way, parallel parking…"
               disabled={isBusy}
             />
             <PromptInputFooter className="justify-end">
