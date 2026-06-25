@@ -126,16 +126,25 @@ export function AccountPanel() {
           </div>
 
           {isPro ? (
-            <Button variant="outline" className="press">Manage Subscription</Button>
+            <Button
+              variant="outline"
+              className="press"
+              onClick={onManageSubscription}
+              disabled={loadingPortal}
+            >
+              {loadingPortal ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
+              Manage Subscription
+            </Button>
           ) : (
             <Button
-              onClick={() => { unlockPro(); toast.success("Pro Pass unlocked"); }}
+              onClick={() => openCheckout()}
               className="press bg-primary text-primary-foreground hover:bg-primary"
               style={{ boxShadow: "0 0 18px -2px var(--color-primary)" }}
             >
               <Sparkles className="w-4 h-4" /> Unlock Pro
             </Button>
           )}
+
         </div>
       </Card>
     </div>
