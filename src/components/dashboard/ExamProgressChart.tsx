@@ -4,37 +4,23 @@ import {
   Line,
   XAxis,
   YAxis,
-  Tooltip,
   ResponsiveContainer,
   CartesianGrid,
   ReferenceLine,
 } from "recharts";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Lock, Sparkles } from "lucide-react";
 
-const DATA = [
-  { day: "D1", score: 58 },
-  { day: "D2", score: 61 },
-  { day: "D3", score: 60 },
-  { day: "D4", score: 65 },
-  { day: "D5", score: 68 },
-  { day: "D6", score: 67 },
-  { day: "D7", score: 72 },
-  { day: "D8", score: 74 },
-  { day: "D9", score: 71 },
-  { day: "D10", score: 78 },
-  { day: "D11", score: 80 },
-  { day: "D12", score: 79 },
-  { day: "D13", score: 83 },
-  { day: "D14", score: 84 },
-];
+// Empty dataset — new users start with no exam history.
+const DATA: { day: string; score: number | null }[] = Array.from({ length: 14 }, (_, i) => ({
+  day: `D${i + 1}`,
+  score: null,
+}));
 
 export function ExamProgressChart() {
-  const latest = DATA[DATA.length - 1].score;
-  const first = DATA[0].score;
-  const delta = latest - first;
-
   return (
-    <Card className="p-5 glass glow-soft h-full flex flex-col">
+    <Card className="p-5 glass glow-soft h-full flex flex-col relative overflow-hidden">
       <div className="flex items-center justify-between mb-4">
         <div>
           <h3 className="font-display text-lg font-bold">Mock Exam Progression</h3>
@@ -42,12 +28,12 @@ export function ExamProgressChart() {
             Rolling 14-day window · pass line at 80%
           </p>
         </div>
-        <Badge variant="outline" className="text-xs bg-emerald-500/15 text-emerald-300 border-emerald-500/30">
-          +{delta} pts
+        <Badge variant="outline" className="text-xs bg-primary/15 text-primary border-primary/30">
+          <Lock className="w-3 h-3 mr-1" /> Pro
         </Badge>
       </div>
 
-      <div className="flex-1 min-h-[260px]">
+      <div className="flex-1 min-h-[260px] relative">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={DATA} margin={{ top: 8, right: 8, left: -16, bottom: 0 }}>
             <CartesianGrid stroke="var(--color-border)" strokeDasharray="3 6" vertical={false} />
@@ -66,31 +52,44 @@ export function ExamProgressChart() {
               tickLine={false}
             />
             <ReferenceLine y={80} stroke="var(--color-primary)" strokeDasharray="4 4" />
-            <Tooltip
-              contentStyle={{
-                background: "var(--color-popover)",
-                border: "1px solid var(--color-border)",
-                borderRadius: 8,
-                fontSize: 12,
-              }}
-              labelStyle={{ color: "var(--color-muted-foreground)" }}
-            />
             <Line
               type="monotone"
               dataKey="score"
               stroke="var(--color-primary)"
               strokeWidth={2.5}
-              dot={{ r: 3, fill: "var(--color-primary)" }}
-              activeDot={{ r: 5 }}
+              dot={false}
+              connectNulls={false}
             />
           </LineChart>
         </ResponsiveContainer>
       </div>
 
       <div className="grid grid-cols-3 gap-2 mt-4 pt-4 border-t border-border">
-        <Stat label="Latest" value={`${latest}%`} />
-        <Stat label="Best" value={`${Math.max(...DATA.map((d) => d.score))}%`} />
-        <Stat label="Avg" value={`${Math.round(DATA.reduce((a, d) => a + d.score, 0) / DATA.length)}%`} />
+        <Stat label="Latest" value="—" />
+        <Stat label="Best" value="—" />
+        <Stat label="Avg" value="—" />
+      </div>
+
+      {/* Glass lock overlay */}
+      <div className="absolute inset-0 z-10 flex items-center justify-center rounded-[inherit] backdrop-blur-md bg-background/40">
+        <div className="glass glow-soft rounded-2xl px-6 py-5 max-w-xs text-center border border-primary/30 shadow-[0_0_40px_-8px_oklch(0.72_0.20_240_/_0.55)]">
+          <div className="mx-auto mb-3 w-10 h-10 rounded-full bg-primary/15 border border-primary/40 flex items-center justify-center">
+            <Lock className="w-4 h-4 text-primary" />
+          </div>
+          <h4 className="font-display text-sm font-bold leading-snug mb-1">
+            Unlock Performance Trajectory Analytics
+          </h4>
+          <p className="text-xs text-muted-foreground mb-4">
+            with Pro Pass · $9/mo
+          </p>
+          <Button
+            size="sm"
+            className="w-full bg-primary hover:bg-primary text-primary-foreground shadow-[0_0_24px_-2px_oklch(0.72_0.20_240_/_0.75)] hover:shadow-[0_0_36px_-2px_oklch(0.72_0.20_240_/_0.95)] transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+          >
+            <Sparkles className="w-3.5 h-3.5 mr-1.5" />
+            Upgrade to Pro
+          </Button>
+        </div>
       </div>
     </Card>
   );
