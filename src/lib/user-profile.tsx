@@ -120,11 +120,12 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
       setIsPro(false);
       return;
     }
-    const row = data as {
+    const row = data as unknown as {
       status: string;
       current_period_end: string | null;
       cancel_at_period_end: boolean | null;
     };
+
     const periodOk =
       !row.current_period_end || new Date(row.current_period_end) > new Date();
     const active =
