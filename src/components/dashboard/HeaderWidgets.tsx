@@ -38,8 +38,9 @@ function EmptyRing({ icon: Icon }: { icon: typeof Target }) {
 }
 
 export function HeaderWidgets() {
-  const { readiness, targetDate, setTargetDate } = useUserProfile();
+  const { readiness, targetDate, setTargetDate, isPro, unlockPro } = useUserProfile();
   const [editing, setEditing] = useState(false);
+
 
   const daysLeft = useMemo(() => {
     if (!targetDate) return null;
