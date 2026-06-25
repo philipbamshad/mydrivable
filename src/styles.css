@@ -12,8 +12,8 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * DriveGuide AI — asphalt + signal yellow.
- * Dark by default. Single theme.
+ * DriveGuide AI — muted charcoal glass + sophisticated pastel rose.
+ * Single dark theme. Soft glow accents everywhere.
  */
 
 @theme inline {
@@ -62,64 +62,77 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  --color-signal: var(--signal);
-  --color-signal-foreground: var(--signal-foreground);
-  --color-asphalt: var(--asphalt);
-  --color-lane: var(--lane);
+  --color-rose-glow: var(--rose-glow);
+  --color-rose-soft: var(--rose-soft);
 }
 
 :root {
-  --radius: 0.75rem;
+  --radius: 0.875rem;
 
-  /* Deep asphalt */
-  --background: oklch(0.18 0.012 250);
-  --foreground: oklch(0.97 0.005 90);
+  /* Charcoal canvas with the faintest cool undertone */
+  --background: oklch(0.17 0.008 300);
+  --foreground: oklch(0.97 0.005 320);
 
-  --card: oklch(0.22 0.014 250);
-  --card-foreground: oklch(0.97 0.005 90);
-  --popover: oklch(0.22 0.014 250);
-  --popover-foreground: oklch(0.97 0.005 90);
+  /* Translucent glass cards */
+  --card: oklch(0.23 0.012 305 / 0.72);
+  --card-foreground: oklch(0.97 0.005 320);
+  --popover: oklch(0.22 0.012 305);
+  --popover-foreground: oklch(0.97 0.005 320);
 
-  /* Signal yellow */
-  --primary: oklch(0.88 0.17 95);
-  --primary-foreground: oklch(0.18 0.012 250);
+  /* Pastel rose primary */
+  --primary: oklch(0.82 0.11 5);
+  --primary-foreground: oklch(0.18 0.012 290);
 
-  --secondary: oklch(0.28 0.015 250);
-  --secondary-foreground: oklch(0.97 0.005 90);
+  --secondary: oklch(0.28 0.014 300);
+  --secondary-foreground: oklch(0.97 0.005 320);
 
-  --muted: oklch(0.26 0.013 250);
-  --muted-foreground: oklch(0.68 0.015 240);
+  --muted: oklch(0.26 0.012 300);
+  --muted-foreground: oklch(0.72 0.018 320);
 
-  --accent: oklch(0.32 0.018 245);
-  --accent-foreground: oklch(0.97 0.005 90);
+  --accent: oklch(0.34 0.04 5);
+  --accent-foreground: oklch(0.97 0.005 320);
 
   --destructive: oklch(0.62 0.22 25);
-  --destructive-foreground: oklch(0.98 0.005 90);
+  --destructive-foreground: oklch(0.98 0.005 320);
 
-  --border: oklch(0.32 0.014 250);
-  --input: oklch(0.26 0.013 250);
-  --ring: oklch(0.88 0.17 95);
+  --border: oklch(0.82 0.11 5 / 0.18);
+  --input: oklch(0.26 0.012 300);
+  --ring: oklch(0.82 0.11 5);
 
-  --chart-1: oklch(0.88 0.17 95);
-  --chart-2: oklch(0.7 0.15 200);
+  --chart-1: oklch(0.82 0.11 5);
+  --chart-2: oklch(0.74 0.12 340);
   --chart-3: oklch(0.62 0.22 25);
-  --chart-4: oklch(0.72 0.12 145);
-  --chart-5: oklch(0.6 0.18 290);
+  --chart-4: oklch(0.72 0.08 220);
+  --chart-5: oklch(0.65 0.14 300);
 
-  --sidebar: oklch(0.16 0.011 250);
-  --sidebar-foreground: oklch(0.92 0.006 90);
-  --sidebar-primary: oklch(0.88 0.17 95);
-  --sidebar-primary-foreground: oklch(0.18 0.012 250);
-  --sidebar-accent: oklch(0.24 0.014 250);
-  --sidebar-accent-foreground: oklch(0.97 0.005 90);
-  --sidebar-border: oklch(0.28 0.013 250);
-  --sidebar-ring: oklch(0.88 0.17 95);
+  --sidebar: oklch(0.15 0.008 300 / 0.85);
+  --sidebar-foreground: oklch(0.93 0.006 320);
+  --sidebar-primary: oklch(0.82 0.11 5);
+  --sidebar-primary-foreground: oklch(0.18 0.012 290);
+  --sidebar-accent: oklch(0.82 0.11 5 / 0.12);
+  --sidebar-accent-foreground: oklch(0.97 0.005 320);
+  --sidebar-border: oklch(0.82 0.11 5 / 0.14);
+  --sidebar-ring: oklch(0.82 0.11 5);
 
-  /* Bespoke */
-  --signal: oklch(0.88 0.17 95);
-  --signal-foreground: oklch(0.18 0.012 250);
-  --asphalt: oklch(0.14 0.01 250);
-  --lane: oklch(0.97 0.005 90);
+  /* Bespoke rose */
+  --rose-glow: oklch(0.82 0.11 5);
+  --rose-soft: oklch(0.92 0.045 5);
+
+  /* Layered ambient pink glows */
+  --shadow-glow-soft:
+    0 0 0 1px oklch(0.82 0.11 5 / 0.18),
+    0 8px 30px -10px oklch(0.82 0.11 5 / 0.35);
+  --shadow-glow-strong:
+    0 0 0 1px oklch(0.82 0.11 5 / 0.35),
+    0 12px 40px -8px oklch(0.82 0.11 5 / 0.6);
+
+  --gradient-rose: linear-gradient(135deg,
+    oklch(0.86 0.085 12) 0%,
+    oklch(0.78 0.13 355) 100%);
+  --gradient-shell: radial-gradient(1200px 600px at 90% -10%,
+    oklch(0.82 0.11 5 / 0.18) 0%, transparent 60%),
+    radial-gradient(900px 500px at -10% 110%,
+    oklch(0.74 0.12 340 / 0.14) 0%, transparent 60%);
 }
 
 .dark {
@@ -133,6 +146,8 @@
 
   html, body {
     background-color: var(--color-background);
+    background-image: var(--gradient-shell);
+    background-attachment: fixed;
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
@@ -144,21 +159,89 @@
   }
 }
 
-/* Subtle lane-marking divider used across the app */
+/* ===== Custom utilities ===== */
+
+/* Frosted glass surface */
+@utility glass {
+  background: color-mix(in oklab, var(--card) 80%, transparent);
+  backdrop-filter: blur(18px) saturate(140%);
+  border: 1px solid var(--color-border);
+}
+
+@utility glass-strong {
+  background: color-mix(in oklab, var(--card) 92%, transparent);
+  backdrop-filter: blur(22px) saturate(150%);
+  border: 1px solid color-mix(in oklab, var(--color-primary) 22%, transparent);
+  box-shadow: var(--shadow-glow-soft);
+}
+
+/* Pink ambient glow */
+@utility glow-soft {
+  box-shadow: var(--shadow-glow-soft);
+}
+@utility glow-strong {
+  box-shadow: var(--shadow-glow-strong);
+}
+
+/* Press-and-lift micro-interaction for buttons / cards */
+@utility press {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+  &:hover { transform: scale(1.02); }
+  &:active { transform: scale(0.98); }
+}
+
+/* Sidebar nav link with sliding pastel pill + active accent */
+@utility nav-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.55rem 0.85rem 0.55rem 1rem;
+  border-radius: 0.65rem;
+  font-size: 0.875rem;
+  color: color-mix(in oklab, var(--color-sidebar-foreground) 88%, transparent);
+  transition: color 0.2s ease;
+  isolation: isolate;
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(135deg,
+      color-mix(in oklab, var(--color-primary) 22%, transparent),
+      color-mix(in oklab, var(--color-primary) 8%, transparent));
+    opacity: 0;
+    transform: scale(0.96);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    z-index: -1;
+  }
+  &:hover { color: var(--color-foreground); }
+  &:hover::before { opacity: 1; transform: scale(1); }
+}
+@utility nav-link-active {
+  color: var(--color-foreground);
+  font-weight: 600;
+  box-shadow: inset 3px 0 0 0 var(--color-primary);
+  &::before { opacity: 1; transform: scale(1); }
+}
+
+/* Lane divider kept for visual continuity */
 .lane-divider {
   background-image: repeating-linear-gradient(
     90deg,
-    var(--color-signal) 0 14px,
+    var(--color-primary) 0 14px,
     transparent 14px 26px
   );
   height: 2px;
-  opacity: 0.6;
+  opacity: 0.5;
 }
 
 /* Scrollbar tweaks */
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-thumb {
-  background: var(--color-border);
+  background: color-mix(in oklab, var(--color-primary) 30%, transparent);
   border-radius: 999px;
 }
-::-webkit-scrollbar-thumb:hover { background: var(--color-muted-foreground); }
+::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in oklab, var(--color-primary) 55%, transparent);
+}
