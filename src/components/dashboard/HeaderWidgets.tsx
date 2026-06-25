@@ -1,8 +1,10 @@
 import { useMemo, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CalendarDays, Target, ListChecks } from "lucide-react";
+import { CalendarDays, Target, ListChecks, Lock, Sparkles } from "lucide-react";
 import { useUserProfile } from "@/lib/user-profile";
+import { toast } from "sonner";
+
 
 function ReadinessRing({ value }: { value: number }) {
   const size = 120;
