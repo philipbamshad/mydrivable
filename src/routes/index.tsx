@@ -75,27 +75,26 @@ function Landing() {
 function Nav() {
   return (
     <header className="sticky top-4 z-50 px-4">
-      <div className="mx-auto flex max-w-5xl items-center justify-between rounded-full bg-white/95 px-3 py-2 shadow-[0_8px_30px_-12px_rgba(0,0,0,0.18)] ring-1 ring-black/5 backdrop-blur">
+      <div className="mx-auto flex max-w-5xl items-center justify-between rounded-full border border-white/10 bg-white/5 px-3 py-2 shadow-[0_8px_30px_-12px_rgba(0,0,0,0.6)] backdrop-blur-xl">
         <Link to="/" className="flex items-center gap-2 pl-2">
-          <span className="grid h-9 w-9 place-items-center rounded-full bg-[#0d0d0d]">
+          <span className="grid h-9 w-9 place-items-center rounded-full bg-gradient-to-br from-blue-500 to-blue-700 shadow-[0_0_20px_-2px_rgba(59,130,246,0.6)]">
             <img src={logo} alt="" className="h-5 w-5" />
           </span>
-          <span className="hidden text-[15px] font-semibold tracking-tight sm:inline">
+          <span className="hidden text-[15px] font-semibold tracking-tight text-white sm:inline">
             DriveGuide
           </span>
         </Link>
-        <nav className="hidden items-center gap-7 text-[15px] font-medium text-[#0d0d0d] sm:flex">
-          <a href="#app" className="hover:opacity-70">App</a>
-          <a href="#features" className="hover:opacity-70">Features</a>
-          <a href="#pricing" className="hover:opacity-70">Pricing</a>
-          <a href="#schools" className="hover:opacity-70">For Schools</a>
+        <nav className="hidden items-center gap-7 text-[15px] font-medium text-white/70 sm:flex">
+          <a href="#app" className="transition hover:text-white">App</a>
+          <a href="#features" className="transition hover:text-white">Features</a>
+          <a href="#pricing" className="transition hover:text-white">Pricing</a>
         </nav>
         <Link
           to="/auth"
-          className="group inline-flex items-center gap-2 rounded-full bg-[#0d0d0d] px-5 py-2.5 text-sm font-semibold text-white transition hover:scale-[1.02]"
+          className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-500 to-blue-700 px-5 py-2.5 text-sm font-semibold text-white shadow-[0_8px_24px_-8px_rgba(59,130,246,0.7)] transition hover:scale-[1.02]"
         >
           Sign Up
-          <span className="grid h-6 w-6 place-items-center rounded-full bg-white/15 transition group-hover:translate-x-0.5">
+          <span className="grid h-6 w-6 place-items-center rounded-full bg-white/20 transition group-hover:translate-x-0.5">
             <ArrowRight className="h-3.5 w-3.5" />
           </span>
         </Link>
