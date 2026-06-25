@@ -34,11 +34,15 @@ export const Route = createFileRoute("/")({
   component: Landing,
 });
 
-// Local light theme scoped to landing page only
+// Local theme scoped to landing page only — black + deep blue + glass gradient
 const SHELL =
-  "min-h-screen text-[#0d0d0d] [color-scheme:light] [font-family:'Inter',ui-sans-serif,system-ui]";
+  "relative min-h-screen overflow-hidden text-white [color-scheme:dark] [font-family:'Inter',ui-sans-serif,system-ui]";
 const SHELL_BG: React.CSSProperties = {
-  background: "#f5f3ee",
+  background:
+    "radial-gradient(1200px 700px at 85% -10%, rgba(96,165,250,0.35), transparent 60%)," +
+    "radial-gradient(900px 600px at -10% 20%, rgba(37,99,235,0.28), transparent 65%)," +
+    "radial-gradient(1000px 800px at 50% 110%, rgba(59,130,246,0.22), transparent 65%)," +
+    "linear-gradient(180deg, #05070d 0%, #070b18 40%, #04060d 100%)",
 };
 
 function Landing() {
