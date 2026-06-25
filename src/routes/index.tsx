@@ -329,26 +329,26 @@ function TopicCard({
 function FeatureBullets() {
   return (
     <section className="mx-auto grid max-w-7xl items-center gap-12 px-6 py-24 md:grid-cols-2">
-      <div className="rounded-[28px] bg-white p-2 shadow-[0_30px_60px_-30px_rgba(0,0,0,0.2)] ring-1 ring-black/5">
-        <div className="rounded-[22px] bg-[#0d0d0d] p-6 text-white">
+      <div className="rounded-[28px] border border-white/10 bg-white/[0.04] p-2 shadow-[0_30px_80px_-30px_rgba(59,130,246,0.5)] backdrop-blur-xl">
+        <div className="rounded-[22px] bg-gradient-to-br from-[#0a0f1f] to-[#070b18] p-6 text-white ring-1 ring-white/5">
           <div className="mb-5 flex items-center gap-2">
-            <span className="grid h-8 w-8 place-items-center rounded-lg bg-white/10">
-              <MessageSquare className="h-4 w-4" />
+            <span className="grid h-8 w-8 place-items-center rounded-lg bg-blue-500/15 ring-1 ring-blue-400/30">
+              <MessageSquare className="h-4 w-4 text-blue-300" />
             </span>
             <span className="text-sm font-semibold">DriveGuide Main Chat</span>
           </div>
-          <div className="mb-4 grid h-12 w-12 place-items-center rounded-full bg-white/10 mx-auto">
+          <div className="mb-4 mx-auto grid h-12 w-12 place-items-center rounded-full bg-gradient-to-br from-blue-500 to-blue-700 shadow-[0_0_24px_-4px_rgba(59,130,246,0.8)]">
             <img src={logo} alt="" className="h-7 w-7" />
           </div>
-          <p className="mb-5 text-center text-sm opacity-80">
+          <p className="mb-5 text-center text-sm text-white/70">
             Your AI Driving Coach
           </p>
-          <div className="rounded-xl bg-white/5 p-3 text-sm ring-1 ring-white/10">
+          <div className="rounded-xl bg-blue-500/10 p-3 text-sm ring-1 ring-blue-400/20">
             What's the rule on right-of-way at a 4-way stop?
           </div>
           <div className="mt-3 grid grid-cols-2 gap-2 text-xs">
             {["Permit", "Road Test", "First Car", "State Laws"].map((t) => (
-              <span key={t} className="rounded-lg bg-white/5 px-3 py-2 ring-1 ring-white/10">
+              <span key={t} className="rounded-lg bg-white/5 px-3 py-2 text-white/80 ring-1 ring-white/10">
                 {t}
               </span>
             ))}
@@ -357,28 +357,31 @@ function FeatureBullets() {
       </div>
 
       <div>
-        <div className="mb-5 inline-flex items-center gap-2 rounded-full bg-white px-4 py-1.5 text-sm shadow-sm ring-1 ring-black/5">
-          <Sparkles className="h-4 w-4" />
-          Powerful Features
+        <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 text-sm text-white/80 backdrop-blur-xl">
+          <Sparkles className="h-4 w-4 text-blue-300" />
+          Smarter prep
         </div>
         <h2 className="text-5xl font-semibold leading-[1.05] tracking-[-0.03em]">
-          Learn Smarter with
+          Trained on the
           <br />
-          AI That Knows Your State
+          test you'll{" "}
+          <span className="italic font-medium [font-family:'Cormorant_Garamond',Georgia,serif] bg-gradient-to-r from-blue-300 to-cyan-300 bg-clip-text text-transparent">
+            actually take
+          </span>
         </h2>
-        <p className="mt-5 text-lg text-[#0d0d0d]/60">
-          Effortlessly drill every section of the test and master maneuvers faster
-          than anyone else — trust us, it'll show on test day.
+        <p className="mt-5 text-lg text-white/60">
+          Drill every section, master every maneuver, and walk into the DMV with
+          the same confidence as someone who's already passed.
         </p>
         <ul className="mt-8 space-y-4">
           {[
-            "Infinite AI-generated permit drills — trained on every DMV handbook",
-            "Customized to you — upload your state's drivers ed PDFs",
-            "Road-test realism — mock examiner walks every maneuver",
-            "First-car coach — listings, insurance, and red-flag checks",
+            "Infinite AI drills generated from every official DMV handbook",
+            "Upload your state's drivers ed PDFs for personal coaching",
+            "Mock road-test examiner walks every maneuver, step by step",
+            "First-car coach: used listings, insurance, and red-flag checks",
           ].map((t) => (
-            <li key={t} className="flex items-center gap-3 text-[15px]">
-              <span className="grid h-6 w-6 place-items-center rounded-md bg-[#0d0d0d] text-white">
+            <li key={t} className="flex items-center gap-3 text-[15px] text-white/85">
+              <span className="grid h-6 w-6 shrink-0 place-items-center rounded-md bg-gradient-to-br from-blue-500 to-blue-700 text-white shadow-[0_0_14px_-4px_rgba(59,130,246,0.8)]">
                 <Check className="h-3.5 w-3.5" />
               </span>
               {t}
@@ -399,11 +402,19 @@ function StatsBand() {
     { v: "4.9★", l: "Avg student rating" },
   ];
   return (
-    <section className="bg-[#0d0d0d] py-20 text-white">
+    <section className="relative overflow-hidden border-y border-white/5 py-20">
+      <div
+        aria-hidden
+        className="absolute inset-0 -z-10"
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(7,11,24,0.85), rgba(4,6,13,0.95)), radial-gradient(800px 300px at 50% 50%, rgba(59,130,246,0.25), transparent 60%)",
+        }}
+      />
       <div className="mx-auto grid max-w-6xl grid-cols-2 gap-8 px-6 md:grid-cols-4">
         {stats.map((s) => (
           <div key={s.l} className="text-center">
-            <div className="text-5xl font-semibold tracking-[-0.03em]">{s.v}</div>
+            <div className="bg-gradient-to-b from-white to-blue-200 bg-clip-text text-5xl font-semibold tracking-[-0.03em] text-transparent">{s.v}</div>
             <div className="mt-2 text-sm text-white/60">{s.l}</div>
           </div>
         ))}
