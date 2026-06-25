@@ -7,22 +7,30 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import { StripeEmbeddedCheckout } from "@/components/payments/StripeEmbeddedCheckout";
 
 const STORAGE_KEY = "driveguide-profile-v1";
 
 export type DriveSession = {
   id: string;
-  date: string; // ISO
+  date: string;
   hours: number;
   maneuver: string;
   note: string;
 };
 
 export type ProfileState = {
-  state: string; // "" = not selected
-  targetDate: string | null; // ISO yyyy-mm-dd
-  isPro: boolean;
-  quizScores: number[]; // 0..100, most recent last
+  state: string;
+  targetDate: string | null;
+  quizScores: number[];
   driveSessions: DriveSession[];
 };
 
@@ -30,9 +38,11 @@ type ProfileContextValue = ProfileState & {
   driveHours: number;
   readiness: number | null;
   hasActivity: boolean;
+  isPro: boolean;
   setState: (s: string) => void;
   setTargetDate: (d: string | null) => void;
-  unlockPro: () => void;
+  unlockPro: () => void; // back-compat alias → opens checkout
+  openCheckout: (priceId?: string) => void;
   recordQuizScore: (pct: number) => void;
   addDriveSession: (s: Omit<DriveSession, "id" | "date">) => void;
   reset: () => void;
@@ -41,7 +51,6 @@ type ProfileContextValue = ProfileState & {
 const DEFAULT: ProfileState = {
   state: "",
   targetDate: null,
-  isPro: false,
   quizScores: [],
   driveSessions: [],
 };
@@ -59,10 +68,16 @@ function load(): ProfileState {
   }
 }
 
+const PRO_PASS_PRICE_ID = "pro_pass_monthly";
+
 export function UserProfileProvider({ children }: { children: ReactNode }) {
   const [profile, setProfile] = useState<ProfileState>(DEFAULT);
   const [hydrated, setHydrated] = useState(false);
+  const [isPro, setIsPro] = useState(false);
+  const [userId, setUserId] = useState<string | null>(null);
+  const [checkoutPriceId, setCheckoutPriceId] = useState<string | null>(null);
 
+  // Hydrate local-only profile from localStorage.
   useEffect(() => {
     setProfile(load());
     setHydrated(true);
@@ -77,6 +92,76 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
     }
   }, [profile, hydrated]);
 
+  // Track current user.
+  useEffect(() => {
+    let mounted = true;
+    supabase.auth.getUser().then(({ data }) => {
+      if (mounted) setUserId(data.user?.id ?? null);
+    });
+    const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUserId(session?.user?.id ?? null);
+    });
+    return () => {
+      mounted = false;
+      sub.subscription.unsubscribe();
+    };
+  }, []);
+
+  // Read subscription status for current user (live via realtime).
+  const refreshPro = useCallback(async (uid: string) => {
+    const { data } = await supabase
+      .from("subscriptions" as any)
+      .select("status, current_period_end, cancel_at_period_end")
+      .eq("user_id", uid)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    if (!data) {
+      setIsPro(false);
+      return;
+    }
+    const row = data as {
+      status: string;
+      current_period_end: string | null;
+      cancel_at_period_end: boolean | null;
+    };
+    const periodOk =
+      !row.current_period_end || new Date(row.current_period_end) > new Date();
+    const active =
+      ((row.status === "active" || row.status === "trialing" || row.status === "past_due") &&
+        periodOk) ||
+      (row.status === "canceled" && periodOk);
+    setIsPro(active);
+  }, []);
+
+  useEffect(() => {
+    if (!userId) {
+      setIsPro(false);
+      return;
+    }
+    refreshPro(userId);
+    const channel = supabase
+      .channel(`subscriptions:${userId}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "subscriptions",
+          filter: `user_id=eq.${userId}`,
+        },
+        () => refreshPro(userId),
+      )
+      .subscribe();
+
+    // Poll for a short window after opening checkout in case realtime is delayed.
+    const poll = setInterval(() => refreshPro(userId), 4000);
+    return () => {
+      supabase.removeChannel(channel);
+      clearInterval(poll);
+    };
+  }, [userId, refreshPro]);
+
   const setStateName = useCallback(
     (s: string) => setProfile((p) => ({ ...p, state: s })),
     [],
@@ -85,10 +170,10 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
     (d: string | null) => setProfile((p) => ({ ...p, targetDate: d })),
     [],
   );
-  const unlockPro = useCallback(
-    () => setProfile((p) => ({ ...p, isPro: true })),
-    [],
-  );
+  const openCheckout = useCallback((priceId?: string) => {
+    setCheckoutPriceId(priceId || PRO_PASS_PRICE_ID);
+  }, []);
+  const unlockPro = useCallback(() => openCheckout(), [openCheckout]);
   const recordQuizScore = useCallback(
     (pct: number) =>
       setProfile((p) => ({
@@ -103,11 +188,7 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
         ...p,
         driveSessions: [
           ...p.driveSessions,
-          {
-            ...s,
-            id: crypto.randomUUID(),
-            date: new Date().toISOString(),
-          },
+          { ...s, id: crypto.randomUUID(), date: new Date().toISOString() },
         ],
       })),
     [],
@@ -133,15 +214,52 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
     driveHours,
     readiness,
     hasActivity,
+    isPro,
     setState: setStateName,
     setTargetDate,
     unlockPro,
+    openCheckout,
     recordQuizScore,
     addDriveSession,
     reset,
   };
 
-  return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
+  return (
+    <Ctx.Provider value={value}>
+      {children}
+      <Dialog
+        open={!!checkoutPriceId}
+        onOpenChange={(o) => {
+          if (!o) setCheckoutPriceId(null);
+        }}
+      >
+        <DialogContent className="glass-strong border-primary/30 max-w-2xl max-h-[90vh] overflow-y-auto p-0">
+          <DialogHeader className="p-6 pb-2">
+            <DialogTitle className="font-display text-xl">
+              Unlock Pro Pass
+            </DialogTitle>
+            <DialogDescription>
+              $9 / month · cancel anytime. Test mode is active in preview — use card{" "}
+              <span className="font-mono">4242 4242 4242 4242</span>.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="p-4">
+            {checkoutPriceId && (
+              <StripeEmbeddedCheckout
+                key={checkoutPriceId}
+                priceId={checkoutPriceId}
+                returnUrl={
+                  typeof window !== "undefined"
+                    ? `${window.location.origin}/app?checkout=success`
+                    : undefined
+                }
+              />
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
+    </Ctx.Provider>
+  );
 }
 
 export function useUserProfile() {
