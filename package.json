@@ -100,11 +100,11 @@
     "vite": "^8.0.16"
   },
   "overrides": {
-    "undici": "^8.5.0",
+    "undici": "7.28.0",
     "js-yaml": "^4.1.0"
   },
   "resolutions": {
-    "undici": "^8.5.0",
+    "undici": "7.28.0",
     "js-yaml": "^4.1.0"
   }
 }
