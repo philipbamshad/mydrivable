@@ -106,22 +106,22 @@ function Nav() {
 /* ────────────────────────────────────────────────────────── HERO ── */
 function Hero() {
   return (
-    <section className="relative overflow-hidden px-6 pt-20 pb-24 text-center">
+    <section className="relative overflow-hidden px-6 pt-24 pb-28 text-center">
       {/* floating logo tile */}
-      <div className="mx-auto mb-10 grid h-24 w-24 place-items-center rounded-3xl bg-white shadow-[0_20px_50px_-20px_rgba(0,0,0,0.25),0_4px_10px_-4px_rgba(0,0,0,0.1)] ring-1 ring-black/5">
-        <div className="grid h-16 w-16 place-items-center rounded-2xl bg-[#0d0d0d]">
+      <div className="mx-auto mb-10 grid h-24 w-24 place-items-center rounded-3xl border border-white/10 bg-white/[0.04] shadow-[0_20px_60px_-20px_rgba(59,130,246,0.6)] backdrop-blur-xl">
+        <div className="grid h-16 w-16 place-items-center rounded-2xl bg-gradient-to-br from-blue-500 to-blue-800 shadow-[inset_0_1px_0_rgba(255,255,255,0.2)]">
           <img src={logo} alt="DriveGuide" className="h-9 w-9" />
         </div>
       </div>
 
       {/* whats new pill */}
-      <div className="mx-auto mb-10 inline-flex max-w-[640px] items-center gap-3 rounded-full bg-white/90 px-4 py-2 text-sm shadow-[0_10px_30px_-15px_rgba(0,0,0,0.15)] ring-1 ring-black/5 backdrop-blur">
-        <span className="inline-flex items-center gap-1.5 text-emerald-600">
-          <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-          What's new
+      <div className="mx-auto mb-10 inline-flex max-w-[640px] items-center gap-3 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-sm backdrop-blur-xl">
+        <span className="inline-flex items-center gap-1.5 text-blue-300">
+          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-blue-400 shadow-[0_0_8px_rgba(96,165,250,0.9)]" />
+          New
         </span>
-        <span className="hidden text-[#0d0d0d]/80 sm:inline">
-          Infinite AI-generated permit drills + 50-state road test packs
+        <span className="hidden text-white/80 sm:inline">
+          50-state DMV packs + AI road-test examiner now live
         </span>
       </div>
 
@@ -129,41 +129,50 @@ function Hero() {
       <div className="relative mx-auto max-w-5xl">
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-1/2 mx-auto h-[480px] w-[820px] -translate-y-1/2 rounded-full blur-3xl"
+          className="pointer-events-none absolute inset-x-0 top-1/2 mx-auto h-[520px] w-[900px] -translate-y-1/2 rounded-full blur-3xl"
           style={{
             background:
-              "radial-gradient(closest-side, rgba(255,150,200,0.55), transparent 60%), radial-gradient(closest-side at 20% 40%, rgba(120,180,255,0.55), transparent 65%), radial-gradient(closest-side at 80% 60%, rgba(180,140,255,0.5), transparent 65%)",
+              "radial-gradient(closest-side, rgba(59,130,246,0.55), transparent 60%), radial-gradient(closest-side at 20% 40%, rgba(37,99,235,0.5), transparent 65%), radial-gradient(closest-side at 80% 60%, rgba(14,165,233,0.45), transparent 65%)",
           }}
         />
         <h1 className="relative text-5xl font-semibold leading-[1.02] tracking-[-0.03em] sm:text-7xl">
-          Pass The Permit With The
+          The Driving Coach
           <br />
-          #1 Teen Driving Platform
+          That{" "}
+          <span className="italic font-medium [font-family:'Cormorant_Garamond',Georgia,serif] bg-gradient-to-r from-blue-300 via-blue-400 to-cyan-300 bg-clip-text text-transparent">
+            Actually Shows Up
+          </span>
         </h1>
       </div>
 
-      <p className="relative mx-auto mt-8 max-w-2xl text-lg italic text-[#0d0d0d]/70 [font-family:'Cormorant_Garamond',Georgia,serif]">
-        For the first test that actually matters on the road — DriveGuide AI gives
-        you every state rule, every maneuver, every answer.
+      <p className="relative mx-auto mt-8 max-w-2xl text-lg text-white/70">
+        Permit, road test, first car — DriveGuide AI walks every new driver through
+        the only three tests that matter, with rules tuned to your exact state.
       </p>
 
-      <div className="relative mt-10 flex justify-center">
+      <div className="relative mt-10 flex flex-wrap items-center justify-center gap-3">
         <Link
           to="/auth"
-          className="rounded-full bg-[#0d0d0d] px-10 py-5 text-base font-semibold text-white shadow-[0_20px_40px_-15px_rgba(0,0,0,0.4)] transition hover:scale-[1.03]"
+          className="rounded-full bg-gradient-to-r from-blue-500 to-blue-700 px-10 py-5 text-base font-semibold text-white shadow-[0_20px_50px_-15px_rgba(59,130,246,0.8)] transition hover:scale-[1.03]"
         >
           Start Practicing
         </Link>
+        <a
+          href="#features"
+          className="rounded-full border border-white/15 bg-white/[0.04] px-8 py-5 text-base font-medium text-white/90 backdrop-blur-xl transition hover:bg-white/10"
+        >
+          See how it works
+        </a>
       </div>
 
-      <div className="relative mt-10 inline-flex items-center gap-3 text-sm text-[#0d0d0d]/70">
-        <div className="flex gap-0.5 text-amber-400">
+      <div className="relative mt-10 inline-flex items-center gap-3 text-sm text-white/60">
+        <div className="flex gap-0.5 text-amber-300">
           {Array.from({ length: 5 }).map((_, i) => (
-            <Star key={i} className="h-4 w-4 fill-amber-400" />
+            <Star key={i} className="h-4 w-4 fill-amber-300" />
           ))}
         </div>
-        <span className="h-4 w-px bg-black/15" />
-        <span>Loved By Drivers From 1,200+ Schools</span>
+        <span className="h-4 w-px bg-white/20" />
+        <span>Loved By Drivers From 1,200+ High Schools</span>
       </div>
     </section>
   );
@@ -173,11 +182,11 @@ function Hero() {
 function LogoStrip() {
   const states = ["California", "Texas", "Florida", "New York", "Illinois", "Washington", "Georgia"];
   return (
-    <section className="border-y border-black/5 bg-white/40 py-10">
-      <p className="mb-6 text-center text-xs font-semibold uppercase tracking-[0.2em] text-[#0d0d0d]/50">
+    <section className="border-y border-white/5 bg-white/[0.02] py-10 backdrop-blur-sm">
+      <p className="mb-6 text-center text-xs font-semibold uppercase tracking-[0.2em] text-white/40">
         Built on official DMV handbooks from
       </p>
-      <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-center gap-x-10 gap-y-3 px-6 text-base font-medium text-[#0d0d0d]/60">
+      <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-center gap-x-10 gap-y-3 px-6 text-base font-medium text-white/60">
         {states.map((s) => (
           <span key={s} className="inline-flex items-center gap-2">
             <MapPin className="h-4 w-4" />
