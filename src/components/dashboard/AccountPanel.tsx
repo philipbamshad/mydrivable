@@ -9,16 +9,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { MapPin, Shield, Sparkles, CheckCircle2, Crown } from "lucide-react";
+import { Globe, Crown, Loader2, CheckCircle2 } from "lucide-react";
+import { toast } from "sonner";
 
 const STATES = [
   "Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware",
@@ -30,172 +22,125 @@ const STATES = [
   "Virginia","Washington","West Virginia","Wisconsin","Wyoming",
 ];
 
+const INVOICES = [
+  { id: "INV-2026-06", date: "Jun 1, 2026", amount: "$9.00", status: "Paid" },
+  { id: "INV-2026-05", date: "May 1, 2026", amount: "$9.00", status: "Paid" },
+  { id: "INV-2026-04", date: "Apr 1, 2026", amount: "$9.00", status: "Paid" },
+  { id: "INV-2026-03", date: "Mar 1, 2026", amount: "$9.00", status: "Paid" },
+];
+
 export function AccountPanel() {
   const [state, setState] = useState("California");
-  const [emails, setEmails] = useState(true);
-  const [streak, setStreak] = useState(true);
-  const [upgradeOpen, setUpgradeOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const onChangeState = (next: string) => {
+    setLoading(true);
+    setState(next);
+    setTimeout(() => {
+      setLoading(false);
+      toast.success(`Knowledge base recalibrated to ${next}`);
+    }, 900);
+  };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      {/* Profile */}
-      <Card className="lg:col-span-2 p-6 glass glow-soft">
-        <div className="flex items-start justify-between mb-6">
-          <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-display font-bold text-xl">
-              AM
-            </div>
-            <div>
-              <h2 className="font-display font-bold text-xl">Alex Morgan</h2>
-              <p className="text-sm text-muted-foreground">alex.morgan@example.com</p>
-              <Badge variant="outline" className="mt-2 text-[10px] uppercase tracking-wider bg-muted">
-                Free plan · Permit Prep
-              </Badge>
-            </div>
-          </div>
-          <Button onClick={() => setUpgradeOpen(true)} className="font-semibold">
-            <Crown className="w-4 h-4" />
-            Upgrade
-          </Button>
+    <div className="space-y-6">
+      {/* Region selector */}
+      <Card className="glass glow-soft p-6 rounded-2xl">
+        <div className="flex items-baseline justify-between mb-1">
+          <h2 className="font-display text-lg font-bold">Local Rules Engine</h2>
+          {loading && (
+            <span className="text-[11px] uppercase tracking-[0.2em] text-primary flex items-center gap-1.5">
+              <Loader2 className="w-3 h-3 animate-spin" /> Recalibrating
+            </span>
+          )}
         </div>
+        <p className="text-sm text-muted-foreground mb-5">
+          Set your jurisdiction. All quizzes and AI answers conform to local code.
+        </p>
 
-        {/* Geo-location rules engine */}
-        <div className="rounded-xl border-2 border-primary/40 bg-primary/5 p-5 mb-6">
-          <div className="flex items-center gap-2 mb-3">
-            <MapPin className="w-4 h-4 text-primary" />
-            <h3 className="font-display font-bold text-base">Local Rules Engine</h3>
-            <Badge className="ml-auto bg-primary text-primary-foreground text-[10px] uppercase tracking-wider">
-              High priority
-            </Badge>
-          </div>
-
-          <label className="text-[10px] uppercase tracking-widest text-muted-foreground">
-            Your state
-          </label>
-          <Select value={state} onValueChange={setState}>
-            <SelectTrigger className="mt-1 bg-background">
+        <div className="grid sm:grid-cols-[260px_1fr] gap-4 items-start">
+          <Select value={state} onValueChange={onChangeState}>
+            <SelectTrigger className="press">
               <SelectValue />
             </SelectTrigger>
-            <SelectContent className="max-h-72">
+            <SelectContent>
               {STATES.map((s) => (
                 <SelectItem key={s} value={s}>{s}</SelectItem>
               ))}
             </SelectContent>
           </Select>
 
-          <div className="mt-4 flex items-start gap-2 text-xs text-muted-foreground">
-            <Shield className="w-3.5 h-3.5 mt-0.5 text-primary shrink-0" />
-            <p>
-              <span className="text-foreground font-medium">Verification notice:</span>{" "}
-              DriveGuide&apos;s AI vector index will switch to{" "}
-              <span className="text-primary font-semibold">{state}</span> DMV
-              statutes, GDL restrictions, and road-test scoring rubrics. Active
-              index updates on next chat message.
+          <div className="flex items-start gap-3 rounded-xl border border-primary/30 bg-primary/10 p-3.5">
+            <Globe className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+            <p className="text-xs text-foreground/85 leading-relaxed">
+              AI Knowledge Base and mock question arrays have dynamically
+              recalibrated to match the specific vehicle code and legal
+              traffic codes of <span className="font-bold text-primary">{state}</span>.
             </p>
           </div>
         </div>
-
-        {/* Preferences */}
-        <div className="space-y-3">
-          <Pref
-            title="Weekly progress emails"
-            desc="Recap of mock exam scores and missed topics."
-            checked={emails}
-            onChange={setEmails}
-          />
-          <Pref
-            title="Maintain practice streak"
-            desc="Streak protection — one rest day per week allowed."
-            checked={streak}
-            onChange={setStreak}
-          />
-        </div>
       </Card>
 
-      {/* Subscription card */}
-      <Card className="p-6 bg-gradient-to-br from-card to-card/40 border-primary/30">
-        <Badge className="bg-primary text-primary-foreground text-[10px] uppercase tracking-widest">
-          <Sparkles className="w-3 h-3" />
-          DriveGuide Pro
-        </Badge>
-        <div className="font-display font-bold text-3xl mt-3">$8<span className="text-muted-foreground text-base font-normal">/mo</span></div>
-        <p className="text-xs text-muted-foreground mt-1">
-          Until you pass. Cancel anytime.
-        </p>
-        <ul className="mt-5 space-y-2 text-sm">
-          {[
-            "Unlimited mock exams",
-            "Live road-test scoring rubric",
-            "Marketplace listing scans (10/mo)",
-            "VIN-level health ledger",
-            "State law alerts & updates",
-          ].map((f) => (
-            <li key={f} className="flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-primary shrink-0" />
-              <span>{f}</span>
-            </li>
-          ))}
-        </ul>
-        <Button
-          className="w-full mt-5 font-semibold"
-          onClick={() => setUpgradeOpen(true)}
-        >
-          Start 7-day free trial
-        </Button>
-      </Card>
-
-      {/* Upgrade modal */}
-      <Dialog open={upgradeOpen} onOpenChange={setUpgradeOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle className="font-display flex items-center gap-2">
+      {/* Subscription */}
+      <Card className="glass glow-soft p-6 rounded-2xl">
+        <div className="flex items-start justify-between gap-4 flex-wrap">
+          <div className="flex items-center gap-3 min-w-0">
+            <span className="grid h-12 w-12 place-items-center rounded-xl bg-primary/20 border border-primary/40 shrink-0"
+              style={{ boxShadow: "0 0 18px -4px var(--color-primary)" }}>
               <Crown className="w-5 h-5 text-primary" />
-              Upgrade to DriveGuide Pro
-            </DialogTitle>
-            <DialogDescription>
-              Unlock unlimited mock exams, live road-test scoring, and full
-              marketplace + maintenance tooling. 7 days free, then $8/mo.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="rounded-lg border border-border bg-muted/40 p-4 text-sm">
-            <div className="flex justify-between"><span>Pro plan</span><span>$8.00</span></div>
-            <div className="flex justify-between text-muted-foreground"><span>7-day trial</span><span>−$8.00</span></div>
-            <div className="flex justify-between font-semibold border-t border-border mt-2 pt-2">
-              <span>Due today</span><span>$0.00</span>
+            </span>
+            <div className="min-w-0">
+              <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
+                Subscription
+              </p>
+              <h3 className="font-display text-lg font-bold truncate">
+                Premium Pro Membership
+              </h3>
+              <div className="flex items-center gap-2 mt-1">
+                <Badge className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+                  <CheckCircle2 className="w-3 h-3" /> Active
+                </Badge>
+                <span className="text-xs text-muted-foreground">$9.00 / month</span>
+              </div>
             </div>
           </div>
-          <DialogFooter>
-            <Button variant="ghost" onClick={() => setUpgradeOpen(false)}>
-              Not now
-            </Button>
-            <Button onClick={() => setUpgradeOpen(false)}>
-              Start free trial
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    </div>
-  );
-}
+          <Button variant="outline" className="press">
+            Manage Subscription / Cancel
+          </Button>
+        </div>
 
-function Pref({
-  title,
-  desc,
-  checked,
-  onChange,
-}: {
-  title: string;
-  desc: string;
-  checked: boolean;
-  onChange: (v: boolean) => void;
-}) {
-  return (
-    <div className="flex items-start justify-between gap-4 rounded-lg border border-border bg-background/30 backdrop-blur-sm border-primary/15 p-4">
-      <div>
-        <div className="font-semibold text-sm">{title}</div>
-        <div className="text-xs text-muted-foreground">{desc}</div>
-      </div>
-      <Switch checked={checked} onCheckedChange={onChange} />
+        <div className="mt-6 pt-5 border-t border-border">
+          <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground mb-3">
+            Billing history
+          </p>
+          <div className="rounded-xl border border-border overflow-hidden">
+            <table className="w-full text-sm">
+              <thead className="bg-card/50 text-xs uppercase tracking-wider text-muted-foreground">
+                <tr>
+                  <th className="text-left px-4 py-2.5 font-medium">Invoice</th>
+                  <th className="text-left px-4 py-2.5 font-medium">Date</th>
+                  <th className="text-left px-4 py-2.5 font-medium">Amount</th>
+                  <th className="text-left px-4 py-2.5 font-medium">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {INVOICES.map((inv) => (
+                  <tr key={inv.id} className="border-t border-border">
+                    <td className="px-4 py-3 font-mono text-xs">{inv.id}</td>
+                    <td className="px-4 py-3 text-muted-foreground">{inv.date}</td>
+                    <td className="px-4 py-3">{inv.amount}</td>
+                    <td className="px-4 py-3">
+                      <Badge className="bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+                        {inv.status}
+                      </Badge>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </Card>
     </div>
   );
 }
