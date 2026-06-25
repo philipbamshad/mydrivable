@@ -9,6 +9,10 @@ import { toast } from "sonner";
 import logo from "@/assets/driveguide-logo.png";
 
 export const Route = createFileRoute("/auth")({
+  validateSearch: (s: Record<string, unknown>): { next?: string } => {
+    const next = typeof s.next === "string" && s.next.startsWith("/") ? s.next : undefined;
+    return next ? { next } : {};
+  },
   head: () => ({
     meta: [
       { title: "Sign in — DriveGuide AI" },
@@ -20,6 +24,15 @@ export const Route = createFileRoute("/auth")({
 
 function AuthPage() {
   const navigate = useNavigate();
+  const { next } = Route.useSearch();
+  const goNext = () => {
+    if (next) {
+      window.location.assign(next);
+    } else {
+      navigate({ to: "/app" });
+    }
+  };
+
   const [mode, setMode] = useState<"sign-in" | "sign-up">("sign-in");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -27,9 +40,11 @@ function AuthPage() {
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
-      if (data.user) navigate({ to: "/app" });
+      if (data.user) goNext();
     });
-  }, [navigate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
 
   const handleEmail = async (e: React.FormEvent) => {
     e.preventDefault();
