@@ -435,98 +435,69 @@ function Pricing() {
   return (
     <section id="pricing" className="px-6 py-28">
       <div className="mx-auto mb-14 max-w-3xl text-center">
-        <div className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-1.5 text-sm shadow-sm ring-1 ring-black/5">
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 text-sm text-white/80 backdrop-blur-xl">
           Simple Pricing
         </div>
         <h2 className="mt-6 text-5xl font-semibold tracking-[-0.03em] sm:text-6xl">
           Pick Your{" "}
-          <span className="italic [font-family:'Cormorant_Garamond',Georgia,serif] font-medium">
-            Road
+          <span className="italic font-medium [font-family:'Cormorant_Garamond',Georgia,serif] bg-gradient-to-r from-blue-300 to-cyan-300 bg-clip-text text-transparent">
+            Lane
           </span>
         </h2>
+        <p className="mt-4 text-white/60">Cancel anytime. Drive forever.</p>
       </div>
 
       <div className="mx-auto grid max-w-6xl gap-8 md:grid-cols-3">
-        <PriceCard
-          plan="Monthly"
-          price="$14.00"
-          features={features}
-          highlight={false}
-        />
-        <PriceCard
-          plan="Quarterly"
-          price="$11.67"
-          features={features}
-          highlight
-        />
-        <PriceCard
-          plan="Yearly"
-          price="$9.17"
-          features={features}
-          highlight={false}
-        />
+        <PriceCard plan="Monthly" price="$14.00" features={features} highlight={false} />
+        <PriceCard plan="Quarterly" price="$11.67" features={features} highlight badge="Most Popular" />
+        <PriceCard plan="Yearly" price="$9.17" features={features} highlight={false} />
       </div>
     </section>
   );
 }
 
 function PriceCard({
-  plan,
-  price,
-  features,
-  highlight,
+  plan, price, features, highlight, badge,
 }: {
-  plan: string;
-  price: string;
-  features: string[];
-  highlight: boolean;
+  plan: string; price: string; features: string[]; highlight: boolean; badge?: string;
 }) {
   return (
     <div
-      className={
-        highlight
-          ? "rounded-[28px] p-[2px]"
-          : "rounded-[28px] bg-white p-6 shadow-[0_25px_60px_-30px_rgba(0,0,0,0.2)] ring-1 ring-black/5"
-      }
-      style={
-        highlight
-          ? {
-              background:
-                "linear-gradient(135deg, #ff2bd1 0%, #4d6bff 100%)",
-            }
-          : undefined
-      }
+      className="relative rounded-[28px] p-[1.5px]"
+      style={{
+        background: highlight
+          ? "linear-gradient(135deg, #60a5fa 0%, #2563eb 50%, #1e40af 100%)"
+          : "linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.04))",
+      }}
     >
-      <div
-        className={
-          highlight
-            ? "rounded-[26px] bg-white p-6"
-            : ""
-        }
-      >
+      {badge && (
+        <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-blue-500 to-cyan-400 px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-white shadow-[0_8px_24px_-8px_rgba(59,130,246,0.8)]">
+          {badge}
+        </span>
+      )}
+      <div className="rounded-[26px] bg-[#070b18]/80 p-6 backdrop-blur-xl">
         <div
-          className={
-            highlight
-              ? "rounded-2xl p-7 text-white shadow-[0_20px_40px_-20px_rgba(77,107,255,0.5)]"
-              : "rounded-2xl bg-[#fafaf7] p-7 ring-1 ring-black/5"
-          }
+          className="rounded-2xl p-7"
           style={
             highlight
               ? {
                   background:
-                    "linear-gradient(135deg, #4d6bff 0%, #a855f7 100%)",
+                    "linear-gradient(135deg, #1e40af 0%, #2563eb 55%, #0ea5e9 100%)",
+                  boxShadow:
+                    "0 20px 50px -20px rgba(59,130,246,0.7), inset 0 1px 0 rgba(255,255,255,0.15)",
                 }
-              : undefined
+              : {
+                  background: "rgba(255,255,255,0.03)",
+                  border: "1px solid rgba(255,255,255,0.06)",
+                }
           }
         >
-          <div className={highlight ? "text-lg font-medium text-white/90" : "text-lg font-medium text-[#0d0d0d]/70"}>
+          <div className={highlight ? "text-lg font-medium text-white/90" : "text-lg font-medium text-white/70"}>
             {plan}
           </div>
-          <div className="mt-12 flex items-end gap-2">
-            <span className="text-5xl font-semibold tracking-[-0.03em] sm:text-6xl">
-              {price}
-            </span>
-            <span className={highlight ? "mb-2 text-sm text-white/80" : "mb-2 text-sm text-[#0d0d0d]/60"}>
+          <div className="mt-10 flex items-end gap-2 text-white">
+            <span className="text-5xl font-semibold tracking-[-0.03em] sm:text-6xl">{price}</span>
+            <span className={highlight ? "mb-2 text-sm text-white/80" : "mb-2 text-sm text-white/60"}>
               / month
             </span>
           </div>
@@ -534,15 +505,19 @@ function PriceCard({
 
         <Link
           to="/auth"
-          className="mt-6 block rounded-full bg-[#0d0d0d] py-4 text-center text-sm font-semibold text-white transition hover:scale-[1.02]"
+          className={
+            highlight
+              ? "mt-6 block rounded-full bg-gradient-to-r from-blue-500 to-blue-700 py-4 text-center text-sm font-semibold text-white shadow-[0_15px_35px_-12px_rgba(59,130,246,0.8)] transition hover:scale-[1.02]"
+              : "mt-6 block rounded-full bg-white/[0.06] py-4 text-center text-sm font-semibold text-white ring-1 ring-white/10 transition hover:bg-white/[0.1]"
+          }
         >
           Get Started
         </Link>
 
         <ul className="mt-6 space-y-3 text-[15px]">
           {features.map((f) => (
-            <li key={f} className="flex items-center gap-3 text-[#0d0d0d]/80">
-              <Check className="h-4 w-4 text-blue-500" />
+            <li key={f} className="flex items-center gap-3 text-white/80">
+              <Check className="h-4 w-4 shrink-0 text-blue-300" />
               {f}
             </li>
           ))}
@@ -561,35 +536,38 @@ function FAQ() {
     },
     {
       q: "Can it actually prep me for the road test?",
-      a: "Each maneuver gets a walkthrough, common-fail checklist, and a mock examiner Q&A — including parallel parking, hill parks, lane changes and yielding.",
+      a: "Each maneuver gets a walkthrough, common-fail checklist, and a mock examiner Q&A — parallel parking, hill parks, lane changes, yielding, all of it.",
     },
     {
       q: "Is there a free version?",
-      a: "You can try DriveGuide free with limited daily drills. Upgrade for unlimited chat, mock tests and the first-car coach.",
+      a: "Yes — start free with limited daily drills. Upgrade for unlimited chat, mock tests, and the first-car coach.",
     },
     {
       q: "Will it help me buy my first car?",
-      a: "Paste a used-listing URL and DriveGuide returns a risk breakdown, cost-of-ownership range and an inspection checklist before you hand over a dime.",
+      a: "Paste a used-listing URL and DriveGuide returns a risk breakdown, cost-of-ownership range, and an inspection checklist before you hand over a dime.",
     },
   ];
   return (
     <section className="mx-auto max-w-3xl px-6 py-24">
       <h2 className="mb-12 text-center text-5xl font-semibold tracking-[-0.03em]">
-        Questions, answered.
+        Questions,{" "}
+        <span className="italic font-medium [font-family:'Cormorant_Garamond',Georgia,serif] bg-gradient-to-r from-blue-300 to-cyan-300 bg-clip-text text-transparent">
+          answered
+        </span>
       </h2>
-      <div className="space-y-4">
+      <div className="space-y-3">
         {items.map((it) => (
           <details
             key={it.q}
-            className="group rounded-2xl bg-white p-6 ring-1 ring-black/5 transition open:shadow-[0_20px_40px_-25px_rgba(0,0,0,0.2)]"
+            className="group rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-xl transition open:bg-white/[0.05] open:shadow-[0_20px_50px_-25px_rgba(59,130,246,0.5)]"
           >
-            <summary className="flex cursor-pointer list-none items-center justify-between text-base font-medium">
+            <summary className="flex cursor-pointer list-none items-center justify-between text-base font-medium text-white">
               {it.q}
-              <span className="ml-4 grid h-7 w-7 place-items-center rounded-full bg-black/5 text-sm transition group-open:rotate-45">
+              <span className="ml-4 grid h-7 w-7 place-items-center rounded-full bg-blue-500/15 text-sm text-blue-300 ring-1 ring-blue-400/30 transition group-open:rotate-45">
                 +
               </span>
             </summary>
-            <p className="mt-4 text-[15px] text-[#0d0d0d]/70">{it.a}</p>
+            <p className="mt-4 text-[15px] text-white/70">{it.a}</p>
           </details>
         ))}
       </div>
@@ -601,35 +579,41 @@ function FAQ() {
 function CTA() {
   return (
     <section className="px-6 pb-24">
-      <div className="relative mx-auto max-w-5xl overflow-hidden rounded-[36px] bg-[#0d0d0d] p-16 text-center text-white">
+      <div className="relative mx-auto max-w-5xl overflow-hidden rounded-[36px] border border-white/10 p-16 text-center text-white backdrop-blur-xl">
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0"
+          className="pointer-events-none absolute inset-0 -z-10"
           style={{
             background:
-              "radial-gradient(600px 300px at 50% 0%, rgba(168,85,247,0.35), transparent 60%), radial-gradient(600px 300px at 50% 100%, rgba(77,107,255,0.35), transparent 60%)",
+              "linear-gradient(135deg, #050813 0%, #0a1230 60%, #050813 100%), radial-gradient(700px 350px at 50% 0%, rgba(59,130,246,0.45), transparent 60%), radial-gradient(700px 350px at 50% 100%, rgba(14,165,233,0.35), transparent 60%)",
           }}
         />
-        <div className="relative">
-          <h2 className="text-5xl font-semibold tracking-[-0.03em] sm:text-6xl">
-            Get your license.
-            <br />
-            <span className="italic [font-family:'Cormorant_Garamond',Georgia,serif] font-medium opacity-90">
-              First try.
-            </span>
-          </h2>
-          <p className="mx-auto mt-6 max-w-xl text-white/70">
-            Join thousands of teens who walked into the DMV ready, calm, and one
-            answer ahead.
-          </p>
-          <Link
-            to="/auth"
-            className="mt-10 inline-flex items-center gap-2 rounded-full bg-white px-10 py-5 text-base font-semibold text-[#0d0d0d] shadow-[0_20px_40px_-15px_rgba(255,255,255,0.4)] transition hover:scale-[1.03]"
-          >
-            Start Practicing
-            <ArrowRight className="h-4 w-4" />
-          </Link>
-        </div>
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-full"
+          style={{
+            background:
+              "radial-gradient(600px 300px at 50% 0%, rgba(96,165,250,0.4), transparent 60%), radial-gradient(600px 300px at 50% 100%, rgba(37,99,235,0.4), transparent 60%)",
+          }}
+        />
+        <h2 className="text-5xl font-semibold tracking-[-0.03em] sm:text-6xl">
+          Get your license.
+          <br />
+          <span className="italic font-medium [font-family:'Cormorant_Garamond',Georgia,serif] bg-gradient-to-r from-blue-200 via-cyan-200 to-blue-300 bg-clip-text text-transparent">
+            First try.
+          </span>
+        </h2>
+        <p className="mx-auto mt-6 max-w-xl text-white/70">
+          Join thousands of new drivers who walked into the DMV ready, calm, and
+          one answer ahead.
+        </p>
+        <Link
+          to="/auth"
+          className="mt-10 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-400 to-cyan-300 px-10 py-5 text-base font-semibold text-[#04060d] shadow-[0_20px_50px_-15px_rgba(96,165,250,0.8)] transition hover:scale-[1.03]"
+        >
+          Start Practicing
+          <ArrowRight className="h-4 w-4" />
+        </Link>
       </div>
     </section>
   );
@@ -638,13 +622,13 @@ function CTA() {
 /* ──────────────────────────────────────────── FOOTER ── */
 function Footer() {
   return (
-    <footer className="border-t border-black/5 px-6 py-10 text-sm text-[#0d0d0d]/60">
+    <footer className="border-t border-white/5 px-6 py-10 text-sm text-white/50">
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 sm:flex-row">
         <div className="flex items-center gap-2">
-          <span className="grid h-7 w-7 place-items-center rounded-full bg-[#0d0d0d]">
+          <span className="grid h-7 w-7 place-items-center rounded-full bg-gradient-to-br from-blue-500 to-blue-700">
             <img src={logo} alt="" className="h-4 w-4" />
           </span>
-          <span className="font-semibold text-[#0d0d0d]">DriveGuide AI</span>
+          <span className="font-semibold text-white">DriveGuide AI</span>
         </div>
         <span>© {new Date().getFullYear()} DriveGuide AI · Drive safe. Drive legal.</span>
       </div>
