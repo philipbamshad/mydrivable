@@ -227,16 +227,16 @@ function FeatureShowcase() {
   return (
     <section className="mx-auto grid max-w-7xl gap-6 px-6 py-12 md:grid-cols-2">
       {/* mock dashboard card */}
-      <div className="rounded-[28px] bg-white p-6 shadow-[0_30px_60px_-30px_rgba(0,0,0,0.2)] ring-1 ring-black/5">
-        <div className="rounded-2xl bg-[#fafaf7] p-5 ring-1 ring-black/5">
+      <div className="rounded-[28px] border border-white/10 bg-white/[0.04] p-6 shadow-[0_30px_80px_-30px_rgba(59,130,246,0.5)] backdrop-blur-xl">
+        <div className="rounded-2xl border border-white/5 bg-black/30 p-5">
           <MockExamCard
             firm="California DMV"
             chip="Completed"
             title="Permit Practice Test"
             sub="Right of Way · 18 questions"
-            date="11/14/2025 at 11:20:58 PM · 15 min"
+            date="11/14/2025 · 15 min"
             score="9/10"
-            tone="green"
+            tone="good"
           />
           <div className="h-4" />
           <MockExamCard
@@ -244,44 +244,20 @@ function FeatureShowcase() {
             chip="Completed"
             title="Mock Road Test"
             sub="Parallel Parking · First Round"
-            date="11/13/2025 at 11:38 AM · 30 min"
+            date="11/13/2025 · 30 min"
             score="7.9/10"
-            tone="amber"
+            tone="warn"
           />
         </div>
       </div>
 
       {/* mock topic cards */}
-      <div className="rounded-[28px] bg-white p-6 shadow-[0_30px_60px_-30px_rgba(0,0,0,0.2)] ring-1 ring-black/5">
+      <div className="rounded-[28px] border border-white/10 bg-white/[0.04] p-6 shadow-[0_30px_80px_-30px_rgba(59,130,246,0.5)] backdrop-blur-xl">
         <div className="grid grid-cols-2 gap-4">
-          <TopicCard
-            title="Road Signs"
-            sub="Warning, Regulatory, Guide"
-            count="120 questions"
-            score="9.5/10"
-            tone="green"
-          />
-          <TopicCard
-            title="Maneuvers"
-            sub="3-point turn, Parallel, Hill park"
-            count="18 drills"
-            score="6.2/10"
-            tone="amber"
-          />
-          <TopicCard
-            title="Traffic Laws"
-            sub="Right of way, Yielding"
-            count="80 questions"
-            score="8.4/10"
-            tone="green"
-          />
-          <TopicCard
-            title="First Car"
-            sub="Used listings, Insurance"
-            count="Guided"
-            score="—"
-            tone="neutral"
-          />
+          <TopicCard title="Road Signs" sub="Warning, Regulatory, Guide" count="120 questions" score="9.5/10" tone="good" />
+          <TopicCard title="Maneuvers" sub="3-point turn, Parallel, Hill" count="18 drills" score="6.2/10" tone="warn" />
+          <TopicCard title="Traffic Laws" sub="Right of way, Yielding" count="80 questions" score="8.4/10" tone="good" />
+          <TopicCard title="First Car" sub="Used listings, Insurance" count="Guided" score="—" tone="neutral" />
         </div>
       </div>
     </section>
@@ -289,84 +265,61 @@ function FeatureShowcase() {
 }
 
 function MockExamCard({
-  firm,
-  chip,
-  title,
-  sub,
-  date,
-  score,
-  tone,
+  firm, chip, title, sub, date, score, tone,
 }: {
-  firm: string;
-  chip: string;
-  title: string;
-  sub: string;
-  date: string;
-  score: string;
-  tone: "green" | "amber";
+  firm: string; chip: string; title: string; sub: string; date: string; score: string;
+  tone: "good" | "warn";
 }) {
   const scoreBg =
-    tone === "green"
-      ? "bg-emerald-50 text-emerald-700 ring-emerald-200"
-      : "bg-amber-50 text-amber-700 ring-amber-200";
-  const bar =
-    tone === "green" ? "bg-emerald-500" : "bg-amber-500";
+    tone === "good"
+      ? "bg-blue-500/15 text-blue-200 ring-blue-400/30"
+      : "bg-amber-400/10 text-amber-200 ring-amber-300/30";
+  const bar = tone === "good" ? "bg-gradient-to-r from-blue-400 to-cyan-300" : "bg-gradient-to-r from-amber-400 to-orange-400";
   return (
-    <div className="rounded-xl bg-white p-4 ring-1 ring-black/5">
+    <div className="rounded-xl border border-white/5 bg-white/[0.03] p-4">
       <div className="mb-2 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-sm font-semibold">{firm}</span>
-          <span className="rounded-md bg-black/5 px-2 py-0.5 text-[10px] uppercase tracking-wide">
+          <span className="text-sm font-semibold text-white">{firm}</span>
+          <span className="rounded-md bg-white/5 px-2 py-0.5 text-[10px] uppercase tracking-wide text-white/60">
             {chip}
           </span>
         </div>
-        <span className={`rounded-md px-2 py-1 text-xs font-bold ring-1 ${scoreBg}`}>
-          {score}
-        </span>
+        <span className={`rounded-md px-2 py-1 text-xs font-bold ring-1 ${scoreBg}`}>{score}</span>
       </div>
-      <div className="text-[15px] font-medium">{title}</div>
-      <div className="text-xs text-[#0d0d0d]/60">{sub}</div>
-      <div className="mt-2 text-[11px] text-[#0d0d0d]/50">{date}</div>
-      <div className="mt-3 h-1 w-full rounded-full bg-black/5">
-        <div className={`h-1 rounded-full ${bar}`} style={{ width: tone === "green" ? "90%" : "60%" }} />
+      <div className="text-[15px] font-medium text-white">{title}</div>
+      <div className="text-xs text-white/60">{sub}</div>
+      <div className="mt-2 text-[11px] text-white/40">{date}</div>
+      <div className="mt-3 h-1 w-full rounded-full bg-white/5">
+        <div className={`h-1 rounded-full ${bar}`} style={{ width: tone === "good" ? "90%" : "60%" }} />
       </div>
     </div>
   );
 }
 
 function TopicCard({
-  title,
-  sub,
-  count,
-  score,
-  tone,
+  title, sub, count, score, tone,
 }: {
-  title: string;
-  sub: string;
-  count: string;
-  score: string;
-  tone: "green" | "amber" | "neutral";
+  title: string; sub: string; count: string; score: string;
+  tone: "good" | "warn" | "neutral";
 }) {
   const tones = {
-    green: "bg-emerald-50 text-emerald-700 ring-emerald-200",
-    amber: "bg-amber-50 text-amber-700 ring-amber-200",
-    neutral: "bg-black/5 text-[#0d0d0d]/60 ring-black/10",
+    good: "bg-blue-500/15 text-blue-200 ring-blue-400/30",
+    warn: "bg-amber-400/10 text-amber-200 ring-amber-300/30",
+    neutral: "bg-white/5 text-white/60 ring-white/10",
   } as const;
   return (
-    <div className="rounded-2xl bg-[#fafaf7] p-4 ring-1 ring-black/5">
+    <div className="rounded-2xl border border-white/5 bg-white/[0.03] p-4">
       <div className="mb-3 flex items-center justify-between">
-        <span className="grid h-8 w-8 place-items-center rounded-lg bg-blue-500 text-white">
+        <span className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 text-white shadow-[0_0_16px_-4px_rgba(59,130,246,0.7)]">
           <Star className="h-4 w-4 fill-white" />
         </span>
-        <span className={`rounded-md px-2 py-0.5 text-[11px] font-bold ring-1 ${tones[tone]}`}>
-          {score}
-        </span>
+        <span className={`rounded-md px-2 py-0.5 text-[11px] font-bold ring-1 ${tones[tone]}`}>{score}</span>
       </div>
-      <div className="text-sm font-semibold">{title}</div>
-      <div className="text-xs text-[#0d0d0d]/60">{sub}</div>
+      <div className="text-sm font-semibold text-white">{title}</div>
+      <div className="text-xs text-white/60">{sub}</div>
       <div className="mt-3 flex items-center justify-between text-[11px]">
-        <span className="text-[#0d0d0d]/50">{count}</span>
-        <span className="font-medium text-blue-600">Start Practice ›</span>
+        <span className="text-white/40">{count}</span>
+        <span className="font-medium text-blue-300">Start Practice ›</span>
       </div>
     </div>
   );
