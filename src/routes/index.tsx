@@ -330,10 +330,12 @@ function Pricing() {
 
             <Link
               to="/auth"
+              search={{ next: "/app?intent=upgrade" }}
               className="mt-7 block rounded-full bg-gradient-to-r from-blue-500 to-blue-700 py-4 text-center text-sm font-semibold text-white shadow-[0_15px_35px_-12px_rgba(59,130,246,0.8)] transition hover:scale-[1.03] active:scale-[0.97]"
             >
-              Get Started
+              Start Pro Pass — $9 / mo
             </Link>
+
 
             <ul className="mt-7 space-y-3 text-[15px]">
               {features.map((f) => (
