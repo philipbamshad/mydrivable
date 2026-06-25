@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import {
   Accordion,
@@ -6,10 +6,18 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { AlertTriangle, Check, Lock, Play, Pause, Save, Timer } from "lucide-react";
+import { AlertTriangle, Check, Lock, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useUserProfile } from "@/lib/user-profile";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { toast } from "sonner";
 
 type Maneuver = {
@@ -111,104 +119,6 @@ const GROUPS: Group[] = [
   },
 ];
 
-function formatTime(ms: number) {
-  const total = Math.floor(ms / 1000);
-  const m = Math.floor(total / 60);
-  const s = total % 60;
-  return `${m}:${String(s).padStart(2, "0")}`;
-}
-
-function SessionTracker({ maneuverName, maneuverId }: { maneuverName: string; maneuverId: string }) {
-  const { addDriveSession } = useUserProfile();
-  const [open, setOpen] = useState(false);
-  const [running, setRunning] = useState(false);
-  const [elapsed, setElapsed] = useState(0);
-  const [note, setNote] = useState("");
-  const startedAt = useRef<number | null>(null);
-  const rafRef = useRef<number | null>(null);
-
-  useEffect(() => {
-    if (!running) return;
-    const tick = () => {
-      if (startedAt.current !== null) {
-        setElapsed(Date.now() - startedAt.current);
-      }
-      rafRef.current = requestAnimationFrame(tick);
-    };
-    rafRef.current = requestAnimationFrame(tick);
-    return () => {
-      if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
-    };
-  }, [running]);
-
-  const toggle = () => {
-    if (running) {
-      setRunning(false);
-    } else {
-      startedAt.current = Date.now() - elapsed;
-      setRunning(true);
-    }
-  };
-
-  const save = () => {
-    const hours = elapsed / 3_600_000;
-    if (hours < 0.001) {
-      toast.error("Run the timer before saving");
-      return;
-    }
-    addDriveSession({ hours, maneuver: maneuverName, note });
-    toast.success(`Logged ${formatTime(elapsed)} for ${maneuverName}`);
-    setRunning(false);
-    setElapsed(0);
-    setNote("");
-  };
-
-  if (!open) {
-    return (
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={() => setOpen(true)}
-        className="press mt-3 border-primary/40 text-primary hover:bg-primary/10 hover:text-primary"
-      >
-        <Timer className="w-3.5 h-3.5" /> Session Practice Tracker
-      </Button>
-    );
-  }
-
-  return (
-    <div className="mt-3 rounded-xl border border-primary/30 bg-primary/5 p-4 space-y-3">
-      <div className="flex items-center justify-between">
-        <p className="text-[10px] uppercase tracking-[0.22em] text-primary font-bold">
-          Log Active Drive Time
-        </p>
-        <button onClick={() => setOpen(false)} className="text-[10px] text-muted-foreground hover:text-foreground">
-          close
-        </button>
-      </div>
-      <div className="flex items-center gap-3">
-        <div className="font-display text-3xl font-bold text-primary tabular-nums"
-          style={{ textShadow: "0 0 16px var(--color-primary)" }}>
-          {formatTime(elapsed)}
-        </div>
-        <Button size="sm" onClick={toggle} className="press bg-primary text-primary-foreground hover:bg-primary">
-          {running ? <><Pause className="w-3.5 h-3.5" /> Pause</> : <><Play className="w-3.5 h-3.5" /> Start</>}
-        </Button>
-        <Button size="sm" variant="outline" onClick={save} className="press">
-          <Save className="w-3.5 h-3.5" /> Save
-        </Button>
-      </div>
-      <textarea
-        value={note}
-        onChange={(e) => setNote(e.target.value)}
-        placeholder={`Notes on ${maneuverName.toLowerCase()}…`}
-        className="w-full min-h-[60px] rounded-lg bg-background/50 border border-border p-2.5 text-xs placeholder:text-muted-foreground focus:outline-none focus:border-primary/50"
-        data-maneuver={maneuverId}
-      />
-    </div>
-  );
-}
-
 function ManeuverCard({ m }: { m: Maneuver }) {
   const [checks, setChecks] = useState<boolean[]>(() => m.steps.slice(0, 5).map(() => false));
 
@@ -255,9 +165,86 @@ function ManeuverCard({ m }: { m: Maneuver }) {
           {m.fails.map((f, i) => <li key={i}>{f}</li>)}
         </ul>
       </div>
-
-      <SessionTracker maneuverId={m.id} maneuverName={m.name} />
     </div>
+  );
+}
+
+function AddHoursDialog() {
+  const { addDriveSession } = useUserProfile();
+  const [open, setOpen] = useState(false);
+  const [hours, setHours] = useState("0.5");
+  const [note, setNote] = useState("");
+
+  const submit = () => {
+    const h = parseFloat(hours);
+    if (!h || h <= 0) {
+      toast.error("Enter a valid number of hours");
+      return;
+    }
+    addDriveSession({ hours: h, maneuver: "General practice", note });
+    toast.success(`Logged ${h} hr${h === 1 ? "" : "s"}`);
+    setOpen(false);
+    setHours("0.5");
+    setNote("");
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <Button
+        size="sm"
+        onClick={() => setOpen(true)}
+        className="press bg-primary text-primary-foreground hover:bg-primary"
+        style={{ boxShadow: "0 0 18px -2px var(--color-primary)" }}
+      >
+        <Plus className="w-3.5 h-3.5" /> Add Hours
+      </Button>
+      <DialogContent className="glass-strong border-primary/30">
+        <DialogHeader>
+          <DialogTitle className="font-display">Log Drive Hours</DialogTitle>
+          <DialogDescription>
+            Add supervised practice time to your 50-hour log.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="space-y-4">
+          <div>
+            <label className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+              Hours
+            </label>
+            <input
+              type="number"
+              step="0.25"
+              min="0"
+              value={hours}
+              onChange={(e) => setHours(e.target.value)}
+              className="mt-1 w-full rounded-lg bg-background/50 border border-border px-3 py-2 text-sm focus:outline-none focus:border-primary"
+            />
+          </div>
+          <div>
+            <label className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+              Note (optional)
+            </label>
+            <textarea
+              value={note}
+              onChange={(e) => setNote(e.target.value)}
+              placeholder="Night drive, highway merge practice…"
+              className="mt-1 w-full min-h-[70px] rounded-lg bg-background/50 border border-border p-2.5 text-sm placeholder:text-muted-foreground focus:outline-none focus:border-primary"
+            />
+          </div>
+        </div>
+        <DialogFooter>
+          <Button variant="outline" onClick={() => setOpen(false)} className="press">
+            Cancel
+          </Button>
+          <Button
+            onClick={submit}
+            className="press bg-primary text-primary-foreground hover:bg-primary"
+            style={{ boxShadow: "0 0 18px -2px var(--color-primary)" }}
+          >
+            Log Hours
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -271,16 +258,19 @@ export function RoadPrepGuide() {
       <div>
         <h2 className="font-display text-xl font-bold">Behind-the-Wheel Practice</h2>
         <p className="text-sm text-muted-foreground mt-1">
-          Maneuver checklists, examiner failure thresholds, and live session logging.
+          Maneuver checklists, examiner failure thresholds, and supervised driving log.
         </p>
       </div>
 
       <Card className="glass glow-soft p-5 rounded-2xl">
-        <div className="flex items-baseline justify-between mb-2">
-          <h3 className="font-display text-base font-bold">Cumulative Drive Hours</h3>
-          <span className="text-xs text-muted-foreground">
-            {driveHours.toFixed(1)} / {goalHours} hrs · {driveSessions.length} sessions
-          </span>
+        <div className="flex items-center justify-between gap-4 mb-3">
+          <div>
+            <h3 className="font-display text-base font-bold">Supervised Driving Log</h3>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              {driveHours.toFixed(1)} / {goalHours} hrs · {driveSessions.length} sessions
+            </p>
+          </div>
+          <AddHoursDialog />
         </div>
         <div className="h-2 w-full rounded-full bg-muted overflow-hidden">
           <div className="h-full rounded-full bg-primary transition-all duration-500"
@@ -317,7 +307,7 @@ export function RoadPrepGuide() {
             </div>
             <h3 className="font-display text-xl font-bold">Pro Pass required</h3>
             <p className="text-sm text-muted-foreground mt-2">
-              Unlock all maneuver checklists and the session tracker.
+              Unlock all maneuver checklists with Pro Pass.
             </p>
             <Button
               onClick={() => { unlockPro(); toast.success("Pro Pass unlocked"); }}
