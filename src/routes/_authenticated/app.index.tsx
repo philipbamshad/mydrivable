@@ -48,7 +48,8 @@ function AppDashboard() {
         onValueChange={(v) => setTab(v as typeof tab)}
         className="flex flex-col h-full"
       >
-        <header className="border-b border-border bg-background/80 backdrop-blur px-4 sm:px-6">
+        <header className="border-b border-border bg-background/40 backdrop-blur-xl px-4 sm:px-6 relative">
+          <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
           <div className="flex items-center justify-between py-3">
             <div>
               <h1 className="font-display font-bold text-lg leading-tight">
@@ -58,8 +59,8 @@ function AppDashboard() {
                 DriveGuide control panel
               </p>
             </div>
-            <div className="hidden md:flex items-center gap-2 text-[10px] uppercase tracking-widest text-muted-foreground">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <div className="hidden md:flex items-center gap-2 text-[10px] uppercase tracking-widest text-muted-foreground glass px-3 py-1.5 rounded-full">
+              <span className="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_10px_var(--color-primary)] animate-pulse" />
               State index · California
             </div>
           </div>
@@ -68,7 +69,7 @@ function AppDashboard() {
               <TabsTrigger
                 key={id}
                 value={id}
-                className="data-[state=active]:bg-card data-[state=active]:border-border data-[state=active]:border-x data-[state=active]:border-t data-[state=active]:text-foreground rounded-t-lg rounded-b-none border border-transparent border-b-0 px-4 py-2.5 text-sm text-muted-foreground data-[state=active]:shadow-none"
+                className="relative data-[state=active]:bg-card/60 data-[state=active]:backdrop-blur-md data-[state=active]:border-primary/30 data-[state=active]:border-x data-[state=active]:border-t data-[state=active]:text-foreground data-[state=active]:shadow-[0_-6px_24px_-12px_var(--color-primary)] rounded-t-xl rounded-b-none border border-transparent border-b-0 px-4 py-2.5 text-sm text-muted-foreground hover:text-foreground hover:bg-primary/5 transition-all duration-200 data-[state=active]:before:content-[''] data-[state=active]:before:absolute data-[state=active]:before:top-0 data-[state=active]:before:left-3 data-[state=active]:before:right-3 data-[state=active]:before:h-[2px] data-[state=active]:before:bg-gradient-to-r data-[state=active]:before:from-transparent data-[state=active]:before:via-primary data-[state=active]:before:to-transparent"
               >
                 <Icon className="w-4 h-4 mr-2" />
                 {label}
