@@ -53,49 +53,12 @@ export function ExamProgressChart() {
       <div className="flex-1 min-h-[220px] flex flex-col items-center justify-center">
         <ScoreDial value={latest ?? 0} threshold={PASS_THRESHOLD} hasData={latest !== null} />
 
-        {/* Bar history */}
+        {/* Line chart history */}
         <div className="w-full mt-6">
-          <div className="flex items-end justify-between gap-2 h-20 relative">
-            {/* threshold line */}
-            <div
-              className="absolute left-0 right-0 border-t border-dashed border-primary/50 pointer-events-none"
-              style={{ bottom: `${PASS_THRESHOLD}%` }}
-            >
-              <span className="absolute -top-4 right-0 text-[9px] uppercase tracking-widest text-primary/80">
-                Pass {PASS_THRESHOLD}%
-              </span>
-            </div>
-            {Array.from({ length: 6 }).map((_, i) => {
-              const v = attempts[i];
-              const pct = v ?? 0;
-              const has = v !== undefined;
-              const pass = has && v >= PASS_THRESHOLD;
-              return (
-                <div key={i} className="flex-1 flex flex-col items-center gap-1">
-                  <div
-                    className="w-full rounded-md transition-all duration-500"
-                    style={{
-                      height: `${has ? Math.max(pct, 4) : 4}%`,
-                      background: !has
-                        ? "var(--color-muted)"
-                        : pass
-                          ? "linear-gradient(180deg, rgb(74,222,128), rgb(34,197,94))"
-                          : "linear-gradient(180deg, rgb(251,191,36), rgb(239,68,68))",
-                      boxShadow: has
-                        ? pass
-                          ? "0 0 14px -2px rgb(74,222,128)"
-                          : "0 0 14px -2px rgb(248,113,113)"
-                        : "none",
-                      opacity: has ? 1 : 0.35,
-                    }}
-                  />
-                  <span className="text-[9px] text-muted-foreground">#{i + 1}</span>
-                </div>
-              );
-            })}
-          </div>
+          <ScoreLineChart attempts={attempts} threshold={PASS_THRESHOLD} slots={6} />
         </div>
       </div>
+
 
       <div className="grid grid-cols-3 gap-2 mt-4 pt-4 border-t border-border">
         <Stat label="Latest" value={isPro && latest !== null ? `${latest}%` : "—"} />
@@ -177,6 +140,119 @@ function ScoreDial({ value, threshold, hasData }: { value: number; threshold: nu
     </div>
   );
 }
+
+function ScoreLineChart({
+  attempts,
+  threshold,
+  slots,
+}: {
+  attempts: number[];
+  threshold: number;
+  slots: number;
+}) {
+  const W = 300;
+  const H = 110;
+  const padX = 14;
+  const padTop = 10;
+  const padBottom = 22;
+  const innerW = W - padX * 2;
+  const innerH = H - padTop - padBottom;
+
+  const xAt = (i: number) =>
+    padX + (slots === 1 ? innerW / 2 : (i / (slots - 1)) * innerW);
+  const yAt = (v: number) => padTop + (1 - Math.min(100, Math.max(0, v)) / 100) * innerH;
+  const yThreshold = yAt(threshold);
+
+  const points = attempts.map((v, i) => ({ i, v, x: xAt(i), y: yAt(v) }));
+  const path = points
+    .map((p, i) => `${i === 0 ? "M" : "L"} ${p.x.toFixed(1)} ${p.y.toFixed(1)}`)
+    .join(" ");
+
+  return (
+    <svg
+      viewBox={`0 0 ${W} ${H}`}
+      className="w-full h-28"
+      role="img"
+      aria-label="Mock exam score history"
+    >
+      <defs>
+        <linearGradient id="score-fill" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="var(--color-primary)" stopOpacity="0.35" />
+          <stop offset="100%" stopColor="var(--color-primary)" stopOpacity="0" />
+        </linearGradient>
+      </defs>
+
+      {/* Pass threshold line */}
+      <line
+        x1={padX}
+        x2={W - padX}
+        y1={yThreshold}
+        y2={yThreshold}
+        stroke="var(--color-primary)"
+        strokeOpacity="0.55"
+        strokeWidth="1"
+        strokeDasharray="4 4"
+      />
+      <text
+        x={W - padX}
+        y={yThreshold - 4}
+        textAnchor="end"
+        className="fill-primary"
+        style={{ fontSize: 9, letterSpacing: "0.18em", textTransform: "uppercase", opacity: 0.85 }}
+      >
+        Pass {threshold}%
+      </text>
+
+      {/* Filled area under line */}
+      {points.length > 1 && (
+        <path
+          d={`${path} L ${points[points.length - 1].x} ${padTop + innerH} L ${points[0].x} ${padTop + innerH} Z`}
+          fill="url(#score-fill)"
+        />
+      )}
+
+      {/* Line */}
+      {points.length > 1 && (
+        <path
+          d={path}
+          fill="none"
+          stroke="var(--color-primary)"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          style={{ filter: "drop-shadow(0 0 6px var(--color-primary))" }}
+        />
+      )}
+
+      {/* Score dots */}
+      {points.map((p) => {
+        const pass = p.v >= threshold;
+        const color = pass ? "rgb(74,222,128)" : p.v >= 60 ? "rgb(251,191,36)" : "rgb(248,113,113)";
+        return (
+          <g key={p.i}>
+            <circle cx={p.x} cy={p.y} r={4} fill={color} stroke="var(--color-background)" strokeWidth="1.5"
+              style={{ filter: `drop-shadow(0 0 5px ${color})` }} />
+          </g>
+        );
+      })}
+
+      {/* X-axis attempt labels */}
+      {Array.from({ length: slots }).map((_, i) => (
+        <text
+          key={i}
+          x={xAt(i)}
+          y={H - 6}
+          textAnchor="middle"
+          className="fill-muted-foreground"
+          style={{ fontSize: 9 }}
+        >
+          #{i + 1}
+        </text>
+      ))}
+    </svg>
+  );
+}
+
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
