@@ -140,12 +140,14 @@ function ExamRunner({
   state,
   count,
   passPct,
+  pool,
   onExit,
   onComplete,
 }: {
   state: string;
   count: number;
   passPct: number;
+  pool: Q[];
   onExit: () => void;
   onComplete: (pct: number) => void;
 }) {
@@ -155,7 +157,8 @@ function ExamRunner({
     let key = "";
     let tries = 0;
     do {
-      candidate = shuffle(POOL).slice(0, count);
+      candidate = shuffle(pool).slice(0, count);
+
       key = candidate.map((q) => q.q).join("|");
       tries++;
     } while (key === lastSetRef.current && tries < 5);
