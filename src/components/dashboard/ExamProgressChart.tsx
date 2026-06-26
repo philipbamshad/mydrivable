@@ -53,49 +53,12 @@ export function ExamProgressChart() {
       <div className="flex-1 min-h-[220px] flex flex-col items-center justify-center">
         <ScoreDial value={latest ?? 0} threshold={PASS_THRESHOLD} hasData={latest !== null} />
 
-        {/* Bar history */}
+        {/* Line chart history */}
         <div className="w-full mt-6">
-          <div className="flex items-end justify-between gap-2 h-20 relative">
-            {/* threshold line */}
-            <div
-              className="absolute left-0 right-0 border-t border-dashed border-primary/50 pointer-events-none"
-              style={{ bottom: `${PASS_THRESHOLD}%` }}
-            >
-              <span className="absolute -top-4 right-0 text-[9px] uppercase tracking-widest text-primary/80">
-                Pass {PASS_THRESHOLD}%
-              </span>
-            </div>
-            {Array.from({ length: 6 }).map((_, i) => {
-              const v = attempts[i];
-              const pct = v ?? 0;
-              const has = v !== undefined;
-              const pass = has && v >= PASS_THRESHOLD;
-              return (
-                <div key={i} className="flex-1 flex flex-col items-center gap-1">
-                  <div
-                    className="w-full rounded-md transition-all duration-500"
-                    style={{
-                      height: `${has ? Math.max(pct, 4) : 4}%`,
-                      background: !has
-                        ? "var(--color-muted)"
-                        : pass
-                          ? "linear-gradient(180deg, rgb(74,222,128), rgb(34,197,94))"
-                          : "linear-gradient(180deg, rgb(251,191,36), rgb(239,68,68))",
-                      boxShadow: has
-                        ? pass
-                          ? "0 0 14px -2px rgb(74,222,128)"
-                          : "0 0 14px -2px rgb(248,113,113)"
-                        : "none",
-                      opacity: has ? 1 : 0.35,
-                    }}
-                  />
-                  <span className="text-[9px] text-muted-foreground">#{i + 1}</span>
-                </div>
-              );
-            })}
-          </div>
+          <ScoreLineChart attempts={attempts} threshold={PASS_THRESHOLD} slots={6} />
         </div>
       </div>
+
 
       <div className="grid grid-cols-3 gap-2 mt-4 pt-4 border-t border-border">
         <Stat label="Latest" value={isPro && latest !== null ? `${latest}%` : "—"} />
