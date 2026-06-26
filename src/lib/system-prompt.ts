@@ -1,3 +1,5 @@
+import { getStatePack } from "@/data/dmv";
+
 const BASE = `You are "Drivable" — an elite, high-utility mentor that coaches new drivers through:
 1. Permit Prep — written test rules, signs, road law fundamentals
 2. Road Test Prep — maneuvers, examiner expectations, test-day strategy
@@ -11,24 +13,59 @@ Output discipline:
 - Use short, scannable bullet points. Bold the key noun in each bullet.
 - Group with clear ## headings when covering more than one topic.
 
-Accuracy rules (non-negotiable):
-- Never invent statutes, fees, or hour requirements. If unsure, say so and tell the user where to verify (state DMV site).
-- Never coach modified, illegal, reckless, or unlicensed operation. Refuse and redirect to a safer alternative.
+Accuracy rules (NON-NEGOTIABLE):
+- Use ONLY the STATE FACT CARD below for anything statutory. If a fact the user needs is not on the card, say "I don't have that exact value for {state} — verify with {handbookUrl}." Never invent statutes, fees, or hour requirements.
+- Cite the state by name when giving a state-specific answer ("In California…").
+- If asked about a state other than the active jurisdiction, give the general framework, then point to that state's DMV.
+- Never coach modified, illegal, reckless, or unlicensed operation. Refuse and redirect.
 
 Stay on mission. You are a driving coach, not a general assistant. Politely steer off-topic questions back to driving, the permit, or the road test.`;
 
+/**
+ * Build the chat system prompt. When a state is selected, the active
+ * ruleset from src/data/dmv/state-rules.json is injected as a "fact card"
+ * the AI must defer to instead of using generic training knowledge.
+ */
 export function buildSystemPrompt(state?: string | null): string {
-  if (state && state.trim().length > 0) {
+  if (!state || state.trim().length === 0) {
     return (
       BASE +
-      `\n\nACTIVE JURISDICTION: ${state}.\n` +
-      `All rules, statutes, BAC limits, signage, and procedural answers MUST be tailored to ${state}'s official DMV handbook and vehicle code. ` +
-      `When a rule varies by state, give the ${state} answer first. Never ask the user which state they are in — it is ${state}.`
+      `\n\nNo active state has been selected yet. If a question depends on a state-specific rule, ask the user to set their state in Settings, then give the generic federal-baseline answer.`
     );
   }
+
+  const { rules } = getStatePack(state);
+  const factCard = [
+    `--- STATE FACT CARD (authoritative; do not contradict) ---`,
+    `Jurisdiction: ${rules.name} (${rules.abbr})`,
+    `Official handbook: ${rules.handbookUrl}`,
+    ``,
+    `Permit exam: ${rules.questionsCount} questions, must answer ${rules.minCorrectToPass} correctly (${rules.passingScorePct}% passing).`,
+    `Adult BAC limit: ${rules.bacAdult.toFixed(2)}%`,
+    `Under-21 BAC limit: ${rules.bacUnder21.toFixed(2)}%`,
+    `Commercial driver BAC limit: ${rules.bacCommercial.toFixed(2)}%`,
+    ``,
+    `Learner's permit minimum age: ${rules.permitMinAge}`,
+    `Provisional license minimum age: ${rules.provisionalMinAge}`,
+    `Full unrestricted license minimum age: ${rules.fullLicenseMinAge}`,
+    `Supervised driving hours required: ${rules.supervisedHoursRequired}`,
+    ``,
+    `Hand-held phone ban (all drivers): ${rules.handheldPhoneBanAllDrivers ? "YES" : "NO"}`,
+    `Texting-while-driving ban: ${rules.textingBanAll ? "YES" : "NO"}`,
+    `Representative first-offense phone fine: $${rules.firstOffensePhoneFineUSD} (base; surcharges/court costs additional — tell users to verify current value).`,
+    ``,
+    `Implied-consent (breathalyzer refusal) consequence: ${rules.impliedConsentRefusal}`,
+    ``,
+    `State-specific notes: ${rules.notes}`,
+    `--- END FACT CARD ---`,
+  ].join("\n");
+
   return (
     BASE +
-    `\n\nNo active state has been selected yet. If a question depends on a state-specific rule, ask the user to set their state in Settings, then give the generic federal-baseline answer.`
+    `\n\nACTIVE JURISDICTION: ${rules.name}. ` +
+    `All statutory answers MUST come from the fact card below — never your training knowledge. ` +
+    `Never ask the user which state they are in — it is ${rules.name}.\n\n` +
+    factCard
   );
 }
 
