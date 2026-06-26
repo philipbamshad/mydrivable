@@ -7,16 +7,18 @@ import {
   MessageSquare,
   Car,
   ClipboardCheck,
+  Timer,
 } from "lucide-react";
 import { HeaderWidgets } from "@/components/dashboard/HeaderWidgets";
 import { DailyChecklist } from "@/components/dashboard/DailyChecklist";
 import { ExamProgressChart } from "@/components/dashboard/ExamProgressChart";
 import { RoadPrepGuide } from "@/components/dashboard/RoadPrepGuide";
 import { TestHubDashboard } from "@/components/dashboard/TestHubDashboard";
+import { PermitExamSimulator } from "@/components/dashboard/PermitExamSimulator";
 import { ChatTab } from "@/components/chat/ChatTab";
 import { useUserProfile } from "@/lib/user-profile";
 
-type TabId = "dashboard" | "test-hub" | "road-prep" | "chat";
+type TabId = "dashboard" | "test-hub" | "state-exam" | "road-prep" | "chat";
 
 export const Route = createFileRoute("/_authenticated/app/")({
   validateSearch: (
@@ -24,7 +26,13 @@ export const Route = createFileRoute("/_authenticated/app/")({
   ): { tab?: TabId; checkout?: string; intent?: string } => {
     const t = s.tab;
     const out: { tab?: TabId; checkout?: string; intent?: string } = {};
-    if (t === "dashboard" || t === "test-hub" || t === "road-prep" || t === "chat") {
+    if (
+      t === "dashboard" ||
+      t === "test-hub" ||
+      t === "state-exam" ||
+      t === "road-prep" ||
+      t === "chat"
+    ) {
       out.tab = t;
     }
     if (typeof s.checkout === "string") out.checkout = s.checkout;
@@ -37,6 +45,7 @@ export const Route = createFileRoute("/_authenticated/app/")({
 const TABS = [
   { id: "dashboard", label: "Dashboard Overview", icon: LayoutDashboard },
   { id: "test-hub", label: "Test Hub", icon: ClipboardCheck },
+  { id: "state-exam", label: "State Permit Exam", icon: Timer },
   { id: "road-prep", label: "Behind-the-Wheel", icon: Car },
   { id: "chat", label: "Chat AI Assistant", icon: MessageSquare },
 ] as const;
@@ -96,6 +105,10 @@ function AppDashboard() {
 
           <TabsContent value="test-hub" className="h-full overflow-y-auto m-0 p-5 sm:p-7 data-[state=inactive]:hidden">
             <TestHubDashboard />
+          </TabsContent>
+
+          <TabsContent value="state-exam" className="h-full overflow-y-auto m-0 p-5 sm:p-7 data-[state=inactive]:hidden">
+            <PermitExamSimulator />
           </TabsContent>
 
           <TabsContent value="road-prep" className="h-full overflow-y-auto m-0 p-5 sm:p-7 data-[state=inactive]:hidden">
