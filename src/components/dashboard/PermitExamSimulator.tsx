@@ -31,8 +31,11 @@ function shuffle<T>(arr: T[]): T[] {
 
 export function PermitExamSimulator() {
   const { isPro, unlockPro, state, recordQuizScore } = useUserProfile();
-  const cfg = (state && STATE_EXAM[state]) || DEFAULT_EXAM;
+  const pack = getStatePack(state);
+  const cfg = { count: pack.rules.questionsCount, pass: pack.rules.passingScorePct };
+  const pool = pack.questions;
   const [running, setRunning] = useState(false);
+
 
   if (!isPro) {
     return (
