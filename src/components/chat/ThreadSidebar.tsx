@@ -56,10 +56,8 @@ export function ThreadSidebar() {
     <aside className="w-64 shrink-0 flex flex-col rounded-2xl glass glow-soft bg-sidebar/85 backdrop-blur-xl text-sidebar-foreground border border-sidebar-border h-full overflow-hidden">
       <div className="p-4">
         <Link to="/app" className="flex items-center gap-2.5 mb-5 group">
-          <div className="relative">
-            <div className="absolute inset-0 rounded-lg bg-primary/50 blur-md opacity-70 group-hover:opacity-100 transition-opacity" />
-            <img src={logo} alt="" width={32} height={32} className="relative" />
-          </div>
+          <img src={logo} alt="" width={32} height={32} className="rounded-md" />
+
           <div>
             <div className="font-bold tracking-tight text-sm">Drivable</div>
             <div className="text-[10px] text-muted-foreground uppercase tracking-[0.2em]">
