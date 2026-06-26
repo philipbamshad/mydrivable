@@ -1,33 +1,11 @@
 import { useMemo, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CalendarDays, Target, ListChecks, Lock, Sparkles } from "lucide-react";
+import { CalendarDays, Target } from "lucide-react";
 import { useUserProfile } from "@/lib/user-profile";
-import { toast } from "sonner";
+import logo from "@/assets/drivable-logo.png";
 
 
-function ReadinessRing({ value }: { value: number }) {
-  const size = 120;
-  const stroke = 10;
-  const r = (size - stroke) / 2;
-  const c = 2 * Math.PI * r;
-  const offset = c - (value / 100) * c;
-  return (
-    <div className="relative" style={{ width: size, height: size }}>
-      <svg width={size} height={size} className="-rotate-90">
-        <circle cx={size / 2} cy={size / 2} r={r} stroke="var(--color-border)" strokeWidth={stroke} fill="none" />
-        <circle cx={size / 2} cy={size / 2} r={r} stroke="var(--color-primary)" strokeWidth={stroke}
-          fill="none" strokeLinecap="round" strokeDasharray={c} strokeDashoffset={offset}
-          style={{ filter: "drop-shadow(0 0 8px var(--color-primary))", transition: "stroke-dashoffset 600ms ease" }} />
-      </svg>
-      <div className="absolute inset-0 grid place-items-center">
-        <div className="font-display text-3xl font-bold text-primary" style={{ textShadow: "0 0 18px var(--color-primary)" }}>
-          {value}%
-        </div>
-      </div>
-    </div>
-  );
-}
 
 function EmptyRing({ icon: Icon }: { icon: typeof Target }) {
   return (
@@ -36,6 +14,7 @@ function EmptyRing({ icon: Icon }: { icon: typeof Target }) {
     </div>
   );
 }
+
 
 export function HeaderWidgets() {
   const { readiness, targetDate, setTargetDate, isPro, unlockPro } = useUserProfile();
