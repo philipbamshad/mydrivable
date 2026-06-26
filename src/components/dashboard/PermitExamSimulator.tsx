@@ -279,7 +279,7 @@ function ExamRunner({
   if (done) {
     const pct = Math.round((score / questions.length) * 100);
     const passed = pct >= passPct;
-    return useMemo(() => null, []) ?? (
+    return (
       <div className="max-w-2xl mx-auto p-5 space-y-5">
         <button onClick={onExit} className="flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground">
           <ArrowLeft className="w-3.5 h-3.5" /> Back to exam
