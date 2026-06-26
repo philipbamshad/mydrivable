@@ -247,8 +247,10 @@ function ExamRunner({
   const [questions, setQuestions] = useState<Q[]>(() => buildSet());
   const [idx, setIdx] = useState(0);
   const [picked, setPicked] = useState<number | null>(null);
+  const [answers, setAnswers] = useState<(number | null)[]>(() => Array(count).fill(null));
   const [score, setScore] = useState(0);
   const [done, setDone] = useState(false);
+  const [reviewing, setReviewing] = useState(false);
 
   const q = questions[idx];
   const reveal = picked !== null;
@@ -256,6 +258,11 @@ function ExamRunner({
   const choose = (i: number) => {
     if (reveal) return;
     setPicked(i);
+    setAnswers((prev) => {
+      const next = prev.slice();
+      next[idx] = i;
+      return next;
+    });
     if (i === q.correct) setScore((s) => s + 1);
   };
 
@@ -271,12 +278,27 @@ function ExamRunner({
   };
 
   const restartFresh = () => {
-    setQuestions(buildSet());
+    const next = buildSet();
+    setQuestions(next);
+    setAnswers(Array(next.length).fill(null));
     setIdx(0);
     setPicked(null);
     setScore(0);
     setDone(false);
+    setReviewing(false);
   };
+
+  if (done && reviewing) {
+    return (
+      <ReviewScreen
+        state={state}
+        questions={questions}
+        answers={answers}
+        onBack={() => setReviewing(false)}
+        onExit={onExit}
+      />
+    );
+  }
 
   if (done) {
     const pct = Math.round((score / questions.length) * 100);
@@ -312,20 +334,28 @@ function ExamRunner({
           >
             {passed ? <><Trophy className="w-3 h-3 mr-1" /> Exam Ready</> : <><AlertTriangle className="w-3 h-3 mr-1" /> Not Ready</>}
           </Badge>
-          <div className="flex gap-2 justify-center mt-6">
+          <div className="flex flex-wrap gap-2 justify-center mt-6">
             <Button
-              onClick={restartFresh}
+              onClick={() => setReviewing(true)}
               className="press bg-primary text-primary-foreground hover:bg-primary"
               style={{ boxShadow: "0 0 18px -2px var(--color-primary)" }}
             >
+              <BookOpen className="w-4 h-4" /> Review Answers
+            </Button>
+            <Button
+              variant="outline"
+              onClick={restartFresh}
+              className="press"
+            >
               <RefreshCw className="w-4 h-4" /> Take Another Test
             </Button>
-            <Button variant="outline" className="press" onClick={onExit}>Exit</Button>
+            <Button variant="ghost" className="press" onClick={onExit}>Exit</Button>
           </div>
         </Card>
       </div>
     );
   }
+
 
   return (
     <div className="max-w-3xl mx-auto p-5 space-y-5">
