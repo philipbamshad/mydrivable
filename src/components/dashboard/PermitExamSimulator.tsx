@@ -73,13 +73,15 @@ export function PermitExamSimulator() {
     return (
       <ExamRunner
         state={state || "your state"}
-        count={Math.min(cfg.count, POOL.length)}
+        count={Math.min(cfg.count, pool.length)}
         passPct={cfg.pass}
+        pool={pool}
         onExit={() => setRunning(false)}
         onComplete={(pct) => recordQuizScore(pct)}
       />
     );
   }
+
 
   return (
     <div className="max-w-3xl mx-auto space-y-6">
