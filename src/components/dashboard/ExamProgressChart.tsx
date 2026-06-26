@@ -3,11 +3,11 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Lock, Sparkles, Trophy, AlertTriangle } from "lucide-react";
 import { useUserProfile } from "@/lib/user-profile";
-
-const PASS_THRESHOLD = 80;
+import { getStatePack } from "@/data/dmv";
 
 export function ExamProgressChart() {
   const { isPro, unlockPro, quizScores, state } = useUserProfile();
+  const PASS_THRESHOLD = getStatePack(state).rules.passingScorePct;
 
   // Treat the most recent quiz scores as mock-exam attempts.
   const attempts = quizScores.slice(-6);
