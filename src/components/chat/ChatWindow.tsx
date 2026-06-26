@@ -25,7 +25,7 @@ import {
 } from "@/components/ai-elements/prompt-input";
 import { Shimmer } from "@/components/ai-elements/shimmer";
 import { toast } from "sonner";
-import logo from "@/assets/driveguide-logo.png";
+import logo from "@/assets/drivable-logo.png";
 import { useUserProfile } from "@/lib/user-profile";
 
 const SUGGESTIONS = [
@@ -165,7 +165,7 @@ export function ChatWindow({
           <PromptInput onSubmit={handleSubmit}>
             <PromptInputTextarea
               ref={textareaRef}
-              placeholder="Ask DriveGuide anything — sign meanings, right-of-way, parallel parking…"
+              placeholder="Ask drivable anything — sign meanings, right-of-way, parallel parking…"
               disabled={isBusy}
             />
             <PromptInputFooter className="justify-end">
@@ -173,7 +173,7 @@ export function ChatWindow({
             </PromptInputFooter>
           </PromptInput>
           <p className="text-[10px] text-muted-foreground mt-2 text-center">
-            DriveGuide can be wrong on state-specific rules. Always verify with your state DMV.
+            drivable can be wrong on state-specific rules. Always verify with your state DMV.
           </p>
         </div>
       </div>
