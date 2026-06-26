@@ -61,7 +61,7 @@ export function ThreadSidebar() {
             <img src={logo} alt="" width={32} height={32} className="relative" />
           </div>
           <div>
-            <div className="font-bold tracking-tight text-sm">drivable</div>
+            <div className="font-bold tracking-tight text-sm">Drivable</div>
             <div className="text-[10px] text-muted-foreground uppercase tracking-[0.2em]">
               Your road coach
             </div>

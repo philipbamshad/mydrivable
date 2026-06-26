@@ -165,7 +165,7 @@ export function ChatWindow({
           <PromptInput onSubmit={handleSubmit}>
             <PromptInputTextarea
               ref={textareaRef}
-              placeholder="Ask drivable anything — sign meanings, right-of-way, parallel parking…"
+              placeholder="Ask Drivable anything — sign meanings, right-of-way, parallel parking…"
               disabled={isBusy}
             />
             <PromptInputFooter className="justify-end">
@@ -173,7 +173,7 @@ export function ChatWindow({
             </PromptInputFooter>
           </PromptInput>
           <p className="text-[10px] text-muted-foreground mt-2 text-center">
-            drivable can be wrong on state-specific rules. Always verify with your state DMV.
+            Drivable can be wrong on state-specific rules. Always verify with your state DMV.
           </p>
         </div>
       </div>
