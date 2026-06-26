@@ -100,11 +100,10 @@ function Nav() {
 function Hero() {
   return (
     <section className="relative overflow-hidden px-6 pt-24 pb-28 text-center">
-      <div className="mx-auto mb-10 grid h-24 w-24 place-items-center rounded-3xl border border-white/10 bg-white/[0.04] shadow-[0_20px_60px_-20px_rgba(59,130,246,0.6)] backdrop-blur-xl">
-        <div className="grid h-16 w-16 place-items-center rounded-2xl bg-gradient-to-br from-blue-500 to-blue-800 shadow-[inset_0_1px_0_rgba(255,255,255,0.2)]">
-          <img src={logo} alt="Drivable" className="h-9 w-9" />
-        </div>
+      <div className="mx-auto mb-10 grid h-24 w-24 place-items-center rounded-3xl">
+        <img src={logo} alt="Drivable" className="h-24 w-24 rounded-3xl" />
       </div>
+
 
       <div className="mx-auto mb-10 inline-flex max-w-[640px] items-center gap-3 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-sm backdrop-blur-xl">
         <span className="inline-flex items-center gap-1.5 text-blue-300">
