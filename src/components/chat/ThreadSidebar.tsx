@@ -21,7 +21,7 @@ import {
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import logo from "@/assets/drivable-logo.png";
+import logo from "@/assets/Drivable-logo.png";
 import { cn } from "@/lib/utils";
 import { AccountPanel } from "@/components/dashboard/AccountPanel";
 import { useUserProfile } from "@/lib/user-profile";
@@ -61,7 +61,7 @@ export function ThreadSidebar() {
             <img src={logo} alt="" width={32} height={32} className="relative" />
           </div>
           <div>
-            <div className="font-bold tracking-tight text-sm">drivable</div>
+            <div className="font-bold tracking-tight text-sm">Drivable</div>
             <div className="text-[10px] text-muted-foreground uppercase tracking-[0.2em]">
               Your road coach
             </div>

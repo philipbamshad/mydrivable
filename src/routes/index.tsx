@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import logo from "@/assets/drivable-logo.png";
+import logo from "@/assets/Drivable-logo.png";
 import {
   ArrowRight,
   Check,
@@ -17,13 +17,13 @@ import { US_STATES } from "@/lib/user-profile";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "drivable — Master Your Permit & Ace Your Road Test" },
+      { title: "Drivable — Master Your Permit & Ace Your Road Test" },
       {
         name: "description",
         content:
           "Master your permit and ace your road test on the first try. AI coach, full-length mock permit exam simulator, targeted section quizzes, and behind-the-wheel checklists tuned to your state.",
       },
-      { property: "og:title", content: "drivable" },
+      { property: "og:title", content: "Drivable" },
       {
         property: "og:description",
         content:
@@ -75,7 +75,7 @@ function Nav() {
             <img src={logo} alt="" className="h-5 w-5" />
           </span>
           <span className="hidden text-[15px] font-semibold tracking-tight text-white sm:inline">
-            drivable
+            Drivable
           </span>
         </Link>
         <nav className="hidden items-center gap-7 text-[15px] font-medium text-white/70 sm:flex">
@@ -103,7 +103,7 @@ function Hero() {
     <section className="relative overflow-hidden px-6 pt-24 pb-28 text-center">
       <div className="mx-auto mb-10 grid h-24 w-24 place-items-center rounded-3xl border border-white/10 bg-white/[0.04] shadow-[0_20px_60px_-20px_rgba(59,130,246,0.6)] backdrop-blur-xl">
         <div className="grid h-16 w-16 place-items-center rounded-2xl bg-gradient-to-br from-blue-500 to-blue-800 shadow-[inset_0_1px_0_rgba(255,255,255,0.2)]">
-          <img src={logo} alt="drivable" className="h-9 w-9" />
+          <img src={logo} alt="Drivable" className="h-9 w-9" />
         </div>
       </div>
 
@@ -324,7 +324,7 @@ function Pricing() {
                 <span className="text-6xl font-semibold tracking-[-0.03em]">$9</span>
                 <span className="mb-2 text-sm text-white/85">/ month</span>
               </div>
-              <p className="mt-2 text-sm text-white/75">Everything drivable builds, included.</p>
+              <p className="mt-2 text-sm text-white/75">Everything Drivable builds, included.</p>
             </div>
 
             <Link
@@ -354,7 +354,7 @@ function Pricing() {
 function FAQ() {
   const items = [
     {
-      q: "Does drivable cover every U.S. state?",
+      q: "Does Drivable cover every U.S. state?",
       a: "Yes — all 50 states. Every prompt and mock exam is grounded in the official DMV handbook for the state you select. Switch states anytime in Settings.",
     },
     {
@@ -440,9 +440,9 @@ function Footer() {
           <span className="grid h-7 w-7 place-items-center rounded-full bg-gradient-to-br from-blue-500 to-blue-700">
             <img src={logo} alt="" className="h-4 w-4" />
           </span>
-          <span className="font-semibold text-white">drivable</span>
+          <span className="font-semibold text-white">Drivable</span>
         </div>
-        <span>© {new Date().getFullYear()} drivable · Drive safe. Drive legal.</span>
+        <span>© {new Date().getFullYear()} Drivable · Drive safe. Drive legal.</span>
       </div>
     </footer>
   );

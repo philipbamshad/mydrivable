@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import logo from "@/assets/drivable-logo.png";
+import logo from "@/assets/Drivable-logo.png";
 
 export const Route = createFileRoute("/auth")({
   validateSearch: (s: Record<string, unknown>): { next?: string } => {
@@ -15,8 +15,8 @@ export const Route = createFileRoute("/auth")({
   },
   head: () => ({
     meta: [
-      { title: "Sign in — drivable" },
-      { name: "description", content: "Sign in to drivable to start coaching toward your permit and road test." },
+      { title: "Sign in — Drivable" },
+      { name: "description", content: "Sign in to Drivable to start coaching toward your permit and road test." },
     ],
   }),
   component: AuthPage,
@@ -93,9 +93,9 @@ function AuthPage() {
     <div className="min-h-screen flex flex-col items-center justify-center px-4 bg-background">
       <div className="w-full max-w-sm">
         <Link to="/" className="flex flex-col items-center gap-3 mb-8">
-          <img src={logo} alt="drivable" width={56} height={56} />
+          <img src={logo} alt="Drivable" width={56} height={56} />
           <div className="text-center">
-            <h1 className="text-2xl font-bold tracking-tight">drivable</h1>
+            <h1 className="text-2xl font-bold tracking-tight">Drivable</h1>
             <p className="text-xs text-muted-foreground mt-1 uppercase tracking-[0.2em]">
               Permit · Road Test
             </p>
