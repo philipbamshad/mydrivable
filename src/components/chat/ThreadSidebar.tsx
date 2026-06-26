@@ -21,7 +21,7 @@ import {
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import logo from "@/assets/Drivable-logo.png";
+import logo from "@/assets/drivable-logo.png";
 import { cn } from "@/lib/utils";
 import { AccountPanel } from "@/components/dashboard/AccountPanel";
 import { useUserProfile } from "@/lib/user-profile";

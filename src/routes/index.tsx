@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import logo from "@/assets/Drivable-logo.png";
+import logo from "@/assets/drivable-logo.png";
 import {
   ArrowRight,
   Check,

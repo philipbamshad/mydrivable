@@ -25,7 +25,7 @@ import {
 } from "@/components/ai-elements/prompt-input";
 import { Shimmer } from "@/components/ai-elements/shimmer";
 import { toast } from "sonner";
-import logo from "@/assets/Drivable-logo.png";
+import logo from "@/assets/drivable-logo.png";
 import { useUserProfile } from "@/lib/user-profile";
 
 const SUGGESTIONS = [
