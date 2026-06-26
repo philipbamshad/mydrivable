@@ -148,7 +148,7 @@ export function ThreadSidebar() {
   return (
     <>
       {/* Desktop sidebar — unchanged from before */}
-      <aside className="hidden md:flex w-64 shrink-0 flex-col rounded-2xl glass glow-soft bg-sidebar/85 backdrop-blur-xl text-sidebar-foreground border border-sidebar-border h-full overflow-hidden">
+      <aside className="hidden md:flex w-64 max-w-[256px] shrink-0 flex-col rounded-2xl glass glow-soft bg-sidebar/85 backdrop-blur-xl text-sidebar-foreground border border-sidebar-border h-full overflow-hidden">
         {body}
       </aside>
 

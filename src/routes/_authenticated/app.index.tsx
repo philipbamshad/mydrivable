@@ -96,7 +96,7 @@ function AppDashboard() {
           <TabsContent value="dashboard" className="h-full overflow-y-auto m-0 p-5 sm:p-7 data-[state=inactive]:hidden">
             <div className="max-w-7xl mx-auto space-y-6">
               <HeaderWidgets />
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
                 <DailyChecklist />
                 <ExamProgressChart />
               </div>
