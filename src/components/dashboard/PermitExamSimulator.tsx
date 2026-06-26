@@ -12,6 +12,8 @@ import {
   Timer,
   Trophy,
   AlertTriangle,
+  BookOpen,
+  MinusCircle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useUserProfile } from "@/lib/user-profile";
