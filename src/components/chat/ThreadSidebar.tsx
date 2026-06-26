@@ -69,8 +69,10 @@ export function ThreadSidebar() {
         </Link>
 
         <nav className="space-y-1">
-          {PRIMARY_NAV.map(({ id, label, icon: Icon }) => {
+          {PRIMARY_NAV.map((item) => {
+            const { id, label, icon: Icon } = item;
             const isActive = activeTab === id;
+            const showProBadge = "pro" in item && item.pro && !isPro;
             return (
               <Link
                 key={id}
@@ -79,7 +81,12 @@ export function ThreadSidebar() {
                 className={cn("nav-link", isActive && "nav-link-active")}
               >
                 <Icon className="w-4 h-4 shrink-0" />
-                <span className="truncate">{label}</span>
+                <span className="truncate flex-1">{label}</span>
+                {showProBadge && (
+                  <span className="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-primary/20 text-primary border border-primary/40">
+                    Pro
+                  </span>
+                )}
               </Link>
             );
           })}
