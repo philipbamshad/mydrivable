@@ -12,6 +12,8 @@ import {
   Timer,
   Trophy,
   AlertTriangle,
+  BookOpen,
+  MinusCircle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useUserProfile } from "@/lib/user-profile";
@@ -245,8 +247,10 @@ function ExamRunner({
   const [questions, setQuestions] = useState<Q[]>(() => buildSet());
   const [idx, setIdx] = useState(0);
   const [picked, setPicked] = useState<number | null>(null);
+  const [answers, setAnswers] = useState<(number | null)[]>(() => Array(count).fill(null));
   const [score, setScore] = useState(0);
   const [done, setDone] = useState(false);
+  const [reviewing, setReviewing] = useState(false);
 
   const q = questions[idx];
   const reveal = picked !== null;
@@ -254,6 +258,11 @@ function ExamRunner({
   const choose = (i: number) => {
     if (reveal) return;
     setPicked(i);
+    setAnswers((prev) => {
+      const next = prev.slice();
+      next[idx] = i;
+      return next;
+    });
     if (i === q.correct) setScore((s) => s + 1);
   };
 
@@ -269,12 +278,27 @@ function ExamRunner({
   };
 
   const restartFresh = () => {
-    setQuestions(buildSet());
+    const next = buildSet();
+    setQuestions(next);
+    setAnswers(Array(next.length).fill(null));
     setIdx(0);
     setPicked(null);
     setScore(0);
     setDone(false);
+    setReviewing(false);
   };
+
+  if (done && reviewing) {
+    return (
+      <ReviewScreen
+        state={state}
+        questions={questions}
+        answers={answers}
+        onBack={() => setReviewing(false)}
+        onExit={onExit}
+      />
+    );
+  }
 
   if (done) {
     const pct = Math.round((score / questions.length) * 100);
@@ -310,20 +334,28 @@ function ExamRunner({
           >
             {passed ? <><Trophy className="w-3 h-3 mr-1" /> Exam Ready</> : <><AlertTriangle className="w-3 h-3 mr-1" /> Not Ready</>}
           </Badge>
-          <div className="flex gap-2 justify-center mt-6">
+          <div className="flex flex-wrap gap-2 justify-center mt-6">
             <Button
-              onClick={restartFresh}
+              onClick={() => setReviewing(true)}
               className="press bg-primary text-primary-foreground hover:bg-primary"
               style={{ boxShadow: "0 0 18px -2px var(--color-primary)" }}
             >
+              <BookOpen className="w-4 h-4" /> Review Answers
+            </Button>
+            <Button
+              variant="outline"
+              onClick={restartFresh}
+              className="press"
+            >
               <RefreshCw className="w-4 h-4" /> Take Another Test
             </Button>
-            <Button variant="outline" className="press" onClick={onExit}>Exit</Button>
+            <Button variant="ghost" className="press" onClick={onExit}>Exit</Button>
           </div>
         </Card>
       </div>
     );
   }
+
 
   return (
     <div className="max-w-3xl mx-auto p-5 space-y-5">
@@ -404,3 +436,152 @@ function Stat({ label, value }: { label: string; value: string }) {
     </div>
   );
 }
+
+function ReviewScreen({
+  state,
+  questions,
+  answers,
+  onBack,
+  onExit,
+}: {
+  state: string;
+  questions: Q[];
+  answers: (number | null)[];
+  onBack: () => void;
+  onExit: () => void;
+}) {
+  const correctCount = questions.reduce(
+    (n, q, i) => n + (answers[i] === q.correct ? 1 : 0),
+    0,
+  );
+  const skippedCount = answers.filter((a) => a === null).length;
+
+  return (
+    <div className="max-w-3xl mx-auto p-5 space-y-5">
+      <div className="flex items-center justify-between gap-2">
+        <button
+          onClick={onBack}
+          className="flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground transition-colors"
+        >
+          <ArrowLeft className="w-3.5 h-3.5" /> Back to results
+        </button>
+        <span className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
+          {state} · Answer Review
+        </span>
+      </div>
+
+      <Card className="glass glow-soft p-5 rounded-2xl">
+        <div className="grid grid-cols-3 gap-3">
+          <Stat label="Correct" value={`${correctCount}`} />
+          <Stat label="Incorrect" value={`${questions.length - correctCount - skippedCount}`} />
+          <Stat label="Skipped" value={`${skippedCount}`} />
+        </div>
+      </Card>
+
+      <div className="space-y-4">
+        {questions.map((q, i) => {
+          const pick = answers[i];
+          const isCorrect = pick === q.correct;
+          const isSkipped = pick === null;
+          return (
+            <Card
+              key={i}
+              className={cn(
+                "glass p-5 rounded-2xl border transition-all duration-200",
+                isSkipped
+                  ? "border-muted-foreground/30"
+                  : isCorrect
+                  ? "border-emerald-500/40 shadow-[0_0_22px_-6px_rgb(74,222,128)]"
+                  : "border-red-500/40 shadow-[0_0_22px_-6px_rgb(248,113,113)]",
+              )}
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex items-start gap-3 min-w-0">
+                  <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-bold mt-1 shrink-0">
+                    Q{i + 1}
+                  </span>
+                  <h3 className="font-display text-base font-semibold leading-snug">
+                    {q.q}
+                  </h3>
+                </div>
+                <Badge
+                  className={cn(
+                    "border shrink-0",
+                    isSkipped
+                      ? "bg-muted/30 text-muted-foreground border-muted-foreground/30"
+                      : isCorrect
+                      ? "bg-emerald-500/15 text-emerald-300 border-emerald-500/40"
+                      : "bg-red-500/15 text-red-300 border-red-500/40",
+                  )}
+                >
+                  {isSkipped ? (
+                    <><MinusCircle className="w-3 h-3 mr-1" /> Skipped</>
+                  ) : isCorrect ? (
+                    <><Check className="w-3 h-3 mr-1" /> Correct</>
+                  ) : (
+                    <><X className="w-3 h-3 mr-1" /> Incorrect</>
+                  )}
+                </Badge>
+              </div>
+
+              <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                {q.options.map((opt, j) => {
+                  const optCorrect = j === q.correct;
+                  const optPicked = pick === j;
+                  return (
+                    <div
+                      key={j}
+                      className={cn(
+                        "p-3 rounded-xl border text-sm flex items-center justify-between gap-2 transition-all duration-200",
+                        optCorrect &&
+                          "border-emerald-400 bg-emerald-500/20 text-emerald-100",
+                        optPicked && !optCorrect &&
+                          "border-red-400 bg-red-500/20 text-red-100",
+                        !optCorrect && !optPicked && "border-border bg-card/40 opacity-60",
+                      )}
+                    >
+                      <span>{opt}</span>
+                      {optCorrect && <Check className="w-4 h-4 shrink-0" />}
+                      {optPicked && !optCorrect && <X className="w-4 h-4 shrink-0" />}
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="mt-4 rounded-xl border border-primary/30 bg-primary/10 p-4">
+                <p className="text-[10px] uppercase tracking-[0.22em] text-primary font-bold mb-2">
+                  Step-by-step explanation
+                </p>
+                <p className="text-sm text-foreground/90 leading-relaxed">
+                  <span className="font-semibold text-foreground">Correct answer: </span>
+                  {q.options[q.correct]}
+                </p>
+                <p className="text-sm text-foreground/80 leading-relaxed mt-2">
+                  {q.explanation}
+                </p>
+              </div>
+            </Card>
+          );
+        })}
+      </div>
+
+      <div className="flex flex-wrap gap-2 justify-center pt-2">
+        <Button
+          onClick={onBack}
+          variant="outline"
+          className="press"
+        >
+          <ArrowLeft className="w-4 h-4" /> Back to results
+        </Button>
+        <Button
+          onClick={onExit}
+          className="press bg-primary text-primary-foreground hover:bg-primary"
+          style={{ boxShadow: "0 0 18px -2px var(--color-primary)" }}
+        >
+          Done
+        </Button>
+      </div>
+    </div>
+  );
+}
+
