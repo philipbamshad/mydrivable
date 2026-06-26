@@ -1,17 +1,18 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import logo from "@/assets/driveguide-logo.png";
 import {
   ArrowRight,
   Check,
   Sparkles,
-  Star,
   MessageSquare,
   ClipboardCheck,
   Car,
+  Timer,
   MapPin,
 } from "lucide-react";
+import { US_STATES } from "@/lib/user-profile";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -20,7 +21,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Master your permit and ace your road test on the first try. AI-powered test simulator, targeted section quizzes, and behind-the-wheel checklists tuned to your state.",
+          "Master your permit and ace your road test on the first try. AI coach, full-length mock permit exam simulator, targeted section quizzes, and behind-the-wheel checklists tuned to your state.",
       },
       { property: "og:title", content: "DriveGuide AI" },
       {
@@ -55,9 +56,8 @@ function Landing() {
     <div className={SHELL} style={SHELL_BG}>
       <Nav />
       <Hero />
-      <LogoStrip />
+      <StatesMarquee />
       <Features />
-      <StatsBand />
       <Pricing />
       <FAQ />
       <CTA />
@@ -80,6 +80,7 @@ function Nav() {
         </Link>
         <nav className="hidden items-center gap-7 text-[15px] font-medium text-white/70 sm:flex">
           <a href="#features" className="transition hover:text-white">Features</a>
+          <a href="#states" className="transition hover:text-white">States</a>
           <a href="#pricing" className="transition hover:text-white">Pricing</a>
           <a href="#faq" className="transition hover:text-white">FAQ</a>
         </nav>
@@ -112,7 +113,7 @@ function Hero() {
           New
         </span>
         <span className="hidden text-white/80 sm:inline">
-          State-aware AI coach now syncs every quiz and answer to your DMV handbook
+          Full-length state-specific Mock Permit Exam simulator — now live
         </span>
       </div>
 
@@ -137,7 +138,7 @@ function Hero() {
 
       <p className="relative mx-auto mt-8 max-w-2xl text-lg text-white/70">
         An AI driving coach trained on every official DMV handbook —
-        live test simulator, targeted section drills, and behind-the-wheel
+        full-length mock permit exams, targeted section drills, and behind-the-wheel
         action checklists. No fluff.
       </p>
 
@@ -155,34 +156,49 @@ function Hero() {
           See how it works
         </a>
       </div>
-
-      <div className="relative mt-10 inline-flex items-center gap-3 text-sm text-white/60">
-        <div className="flex gap-0.5 text-amber-300">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <Star key={i} className="h-4 w-4 fill-amber-300" />
-          ))}
-        </div>
-        <span className="h-4 w-px bg-white/20" />
-        <span>Trusted by 50,000+ new drivers nationwide</span>
-      </div>
     </section>
   );
 }
 
-function LogoStrip() {
-  const states = ["California", "Texas", "Florida", "New York", "Illinois", "Washington", "Georgia"];
+function StatesMarquee() {
+  const ref = useRef<HTMLDivElement | null>(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => entry.isIntersecting && setVisible(true),
+      { threshold: 0.15 },
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
   return (
-    <section className="border-y border-white/5 bg-white/[0.02] py-10 backdrop-blur-sm">
-      <p className="mb-6 text-center text-xs font-semibold uppercase tracking-[0.2em] text-white/40">
-        Built on official DMV handbooks from
-      </p>
-      <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-center gap-x-10 gap-y-3 px-6 text-base font-medium text-white/60">
-        {states.map((s) => (
-          <span key={s} className="inline-flex items-center gap-2">
-            <MapPin className="h-4 w-4" />
-            {s}
-          </span>
-        ))}
+    <section id="states" ref={ref} className="border-y border-white/5 bg-white/[0.02] py-16 backdrop-blur-sm">
+      <div className="mx-auto max-w-6xl px-6 text-center">
+        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-blue-300/80">
+          All 50 states · grounded in official DMV handbooks
+        </p>
+        <h2 className="mb-10 text-3xl font-semibold tracking-[-0.02em] sm:text-4xl">
+          Wherever you take the test, we've got you
+        </h2>
+        <div className="flex flex-wrap justify-center gap-2.5 sm:gap-3">
+          {US_STATES.map((s, i) => (
+            <span
+              key={s}
+              className="inline-flex items-center gap-1.5 rounded-full border border-blue-400/30 bg-blue-500/[0.06] px-3.5 py-1.5 text-[13px] font-medium text-white/85 shadow-[0_0_18px_-6px_rgba(96,165,250,0.55)] backdrop-blur-md transition-all hover:scale-[1.05] hover:border-blue-300/60 hover:bg-blue-500/15 hover:text-white"
+              style={{
+                opacity: visible ? 1 : 0,
+                transform: visible ? "translateY(0)" : "translateY(8px)",
+                transition: `opacity 0.4s ease-out ${i * 0.012}s, transform 0.4s ease-out ${i * 0.012}s, background 0.2s, border-color 0.2s`,
+              }}
+            >
+              <MapPin className="h-3 w-3 text-blue-300" />
+              {s}
+            </span>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -191,14 +207,20 @@ function LogoStrip() {
 function Features() {
   const features = [
     {
+      icon: Timer,
+      title: "Full-Length Mock Permit Exam Simulator",
+      body: "Replicates the real state DMV test — exact question count, timing, and passing threshold for your state, from California's 46-question exam to Texas's 30-question test.",
+      tag: "PRO",
+    },
+    {
       icon: MessageSquare,
-      title: "AI-Powered Test Simulator",
-      body: "A conversational coach that runs full mock permit exams and explains every wrong answer — interactive, instant, state-aware.",
+      title: "AI Driving Coach",
+      body: "A conversational coach that explains every wrong answer, runs scenario drills, and stays synced with your state's official DMV handbook.",
     },
     {
       icon: ClipboardCheck,
       title: "Targeted Section Quizzes",
-      body: "Drill the topics examiners punish: signs, intersections, substance laws, and speed limits — 5-question rounds with instant scoring.",
+      body: "Drill the topics examiners punish: signs, intersections, substance laws, and speed limits — short rounds with instant scoring and explanations.",
     },
     {
       icon: Car,
@@ -212,7 +234,7 @@ function Features() {
       <div className="mx-auto max-w-3xl text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 text-sm text-white/80 backdrop-blur-xl">
           <Sparkles className="h-4 w-4 text-blue-300" />
-          Three pillars
+          Four pillars
         </div>
         <h2 className="mt-8 text-5xl font-semibold tracking-[-0.03em] sm:text-6xl">
           Everything Between You and a{" "}
@@ -221,11 +243,11 @@ function Features() {
           </span>
         </h2>
         <p className="mx-auto mt-6 max-w-xl text-lg text-white/60">
-          Three focused tools, one outcome — pass on the first try.
+          Four focused tools, one outcome — pass on the first try.
         </p>
       </div>
 
-      <div className="mx-auto mt-14 grid max-w-6xl gap-6 md:grid-cols-3">
+      <div className="mx-auto mt-14 grid max-w-6xl gap-6 md:grid-cols-2">
         {features.map((f) => {
           const Icon = f.icon;
           return (
@@ -233,6 +255,11 @@ function Features() {
               key={f.title}
               className="group relative rounded-[28px] border border-white/10 bg-white/[0.04] p-8 shadow-[0_30px_80px_-30px_rgba(59,130,246,0.5)] backdrop-blur-xl transition hover:scale-[1.02] hover:border-blue-400/30"
             >
+              {f.tag && (
+                <span className="absolute right-6 top-6 rounded-full bg-gradient-to-r from-blue-400 to-cyan-300 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#04060d] shadow-[0_0_18px_-2px_rgba(96,165,250,0.8)]">
+                  {f.tag}
+                </span>
+              )}
               <span className="grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700 text-white shadow-[0_0_24px_-4px_rgba(59,130,246,0.8)]">
                 <Icon className="h-5 w-5" />
               </span>
@@ -246,40 +273,12 @@ function Features() {
   );
 }
 
-function StatsBand() {
-  const stats = [
-    { v: "98%", l: "First-try permit pass rate" },
-    { v: "50", l: "U.S. states fully covered" },
-    { v: "2.4M+", l: "Practice questions answered" },
-    { v: "4.9★", l: "Avg student rating" },
-  ];
-  return (
-    <section className="relative overflow-hidden border-y border-white/5 py-20">
-      <div
-        aria-hidden
-        className="absolute inset-0 -z-10"
-        style={{
-          background:
-            "linear-gradient(180deg, rgba(7,11,24,0.85), rgba(4,6,13,0.95)), radial-gradient(800px 300px at 50% 50%, rgba(59,130,246,0.25), transparent 60%)",
-        }}
-      />
-      <div className="mx-auto grid max-w-6xl grid-cols-2 gap-8 px-6 md:grid-cols-4">
-        {stats.map((s) => (
-          <div key={s.l} className="text-center">
-            <div className="bg-gradient-to-b from-white to-blue-200 bg-clip-text text-5xl font-semibold tracking-[-0.03em] text-transparent">{s.v}</div>
-            <div className="mt-2 text-sm text-white/60">{s.l}</div>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-}
-
 function Pricing() {
   const features = [
-    "Unlimited AI test simulator chat",
-    "All 4 targeted pillar quizzes",
-    "Behind-the-wheel checklists & session tracker",
+    "Full-length state-specific Mock Permit Exam simulator",
+    "Unlimited AI coach chat synced to your DMV handbook",
+    "All 4 targeted pillar quizzes with infinite question pool",
+    "Behind-the-wheel checklists & 50-hour log",
     "Sign recognition drills baked into the quiz hub",
     "All 50 state rule packs",
     "Cancel anytime — no contracts",
@@ -356,19 +355,19 @@ function FAQ() {
   const items = [
     {
       q: "Does DriveGuide cover every U.S. state?",
-      a: "Yes — every prompt is grounded in the official DMV handbook for the state you select. Switch states anytime in Settings.",
+      a: "Yes — all 50 states. Every prompt and mock exam is grounded in the official DMV handbook for the state you select. Switch states anytime in Settings.",
+    },
+    {
+      q: "How does the Mock Permit Exam simulator work?",
+      a: "It replicates your state's real DMV permit test — exact number of questions, exact passing threshold, randomized each attempt so you never see the same exam twice.",
     },
     {
       q: "Can it actually prep me for the road test?",
-      a: "Each maneuver gets a walkthrough, an examiner-style fail checklist, and step-by-step mechanical breakdown — parallel parking, hill parks, lane changes, yielding, all of it.",
-    },
-    {
-      q: "How does the section quiz center work?",
-      a: "Pick a topic — signs, intersections, substance laws, or speed — and run a 5-question round with instant green/red feedback and a final score.",
+      a: "Each maneuver gets a walkthrough, an examiner-style fail checklist, and a step-by-step mechanical breakdown — parallel parking, hill parks, lane changes, yielding, all of it.",
     },
     {
       q: "What's in Pro Pass?",
-      a: "Unlimited AI chat, all section quizzes, the sign-recognition drill, the behind-the-wheel checklists, and every state rule pack — $9/month, cancel anytime.",
+      a: "Full-length state-specific mock exams, unlimited AI chat, all section quizzes, the sign-recognition drill, the behind-the-wheel checklists, and every state rule pack — $9/month, cancel anytime.",
     },
   ];
   return (
@@ -419,7 +418,7 @@ function CTA() {
           </span>
         </h2>
         <p className="mx-auto mt-6 max-w-xl text-white/70">
-          Join thousands of new drivers who walked into the DMV ready, calm, and one answer ahead.
+          Sign up, pick your state, and start your first mock exam in under a minute.
         </p>
         <Link
           to="/auth"
