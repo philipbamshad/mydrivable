@@ -97,7 +97,7 @@ function AuthPage() {
           <div className="text-center">
             <h1 className="text-2xl font-bold tracking-tight">drivable</h1>
             <p className="text-xs text-muted-foreground mt-1 uppercase tracking-[0.2em]">
-              Permit · Road Test · First Car
+              Permit · Road Test
             </p>
           </div>
         </Link>
