@@ -11,6 +11,8 @@ import {
   Car,
   Timer,
   MapPin,
+  Menu,
+  X,
 } from "lucide-react";
 import { US_STATES } from "@/lib/user-profile";
 
@@ -67,6 +69,7 @@ function Landing() {
 }
 
 function Nav() {
+  const [open, setOpen] = useState(false);
   return (
     <header className="sticky top-4 z-50 px-4">
       <div className="mx-auto flex max-w-5xl items-center justify-between rounded-full border border-white/10 bg-white/5 px-3 py-2 shadow-[0_8px_30px_-12px_rgba(0,0,0,0.6)] backdrop-blur-xl">
@@ -83,16 +86,56 @@ function Nav() {
           <a href="#pricing" className="transition hover:text-white">Pricing</a>
           <a href="#faq" className="transition hover:text-white">FAQ</a>
         </nav>
-        <Link
-          to="/auth"
-          className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-500 to-blue-700 px-5 py-2.5 text-sm font-semibold text-white shadow-[0_8px_24px_-8px_rgba(59,130,246,0.7)] transition hover:scale-[1.03] active:scale-[0.97]"
-        >
-          Sign Up
-          <span className="grid h-6 w-6 place-items-center rounded-full bg-white/20 transition group-hover:translate-x-0.5">
-            <ArrowRight className="h-3.5 w-3.5" />
-          </span>
-        </Link>
+
+        <div className="flex items-center gap-2">
+          <Link
+            to="/auth"
+            className="group hidden sm:inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-500 to-blue-700 px-5 py-2.5 text-sm font-semibold text-white shadow-[0_8px_24px_-8px_rgba(59,130,246,0.7)] transition hover:scale-[1.03] active:scale-[0.97]"
+          >
+            Sign Up
+            <span className="grid h-6 w-6 place-items-center rounded-full bg-white/20 transition group-hover:translate-x-0.5">
+              <ArrowRight className="h-3.5 w-3.5" />
+            </span>
+          </Link>
+          <button
+            type="button"
+            aria-label={open ? "Close menu" : "Open menu"}
+            onClick={() => setOpen((v) => !v)}
+            className="sm:hidden grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-white/5 text-white"
+          >
+            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
       </div>
+
+      {open && (
+        <div className="sm:hidden mx-auto mt-2 max-w-5xl rounded-2xl border border-white/10 bg-[#070b18]/95 p-4 backdrop-blur-xl shadow-[0_20px_50px_-20px_rgba(0,0,0,0.8)]">
+          <nav className="flex flex-col text-base font-medium text-white/85">
+            {[
+              ["Features", "#features"],
+              ["States", "#states"],
+              ["Pricing", "#pricing"],
+              ["FAQ", "#faq"],
+            ].map(([label, href]) => (
+              <a
+                key={href}
+                href={href}
+                onClick={() => setOpen(false)}
+                className="rounded-lg px-3 py-3 hover:bg-white/5"
+              >
+                {label}
+              </a>
+            ))}
+            <Link
+              to="/auth"
+              onClick={() => setOpen(false)}
+              className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-blue-500 to-blue-700 px-5 py-3 text-sm font-semibold text-white"
+            >
+              Sign Up <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
+          </nav>
+        </div>
+      )}
     </header>
   );
 }

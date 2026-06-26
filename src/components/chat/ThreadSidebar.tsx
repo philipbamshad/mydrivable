@@ -18,6 +18,7 @@ import {
   ClipboardCheck,
   Timer,
   Settings,
+  Menu,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -37,6 +38,7 @@ const PRIMARY_NAV = [
 export function ThreadSidebar() {
   const navigate = useNavigate();
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const { state: userState, isPro } = useUserProfile();
 
   const { pathname, search } = useRouterState({
@@ -52,10 +54,14 @@ export function ThreadSidebar() {
     navigate({ to: "/auth" });
   };
 
-  return (
-    <aside className="w-64 shrink-0 flex flex-col rounded-2xl glass glow-soft bg-sidebar/85 backdrop-blur-xl text-sidebar-foreground border border-sidebar-border h-full overflow-hidden">
+  const body = (
+    <>
       <div className="p-4">
-        <Link to="/app" className="flex items-center gap-2.5 mb-5 group">
+        <Link
+          to="/app"
+          onClick={() => setMobileOpen(false)}
+          className="flex items-center gap-2.5 mb-5 group"
+        >
           <img src={logo} alt="" width={32} height={32} className="rounded-md" />
 
           <div>
@@ -76,7 +82,11 @@ export function ThreadSidebar() {
                 key={id}
                 to="/app"
                 search={{ tab: id }}
-                className={cn("nav-link", isActive && "nav-link-active")}
+                onClick={() => setMobileOpen(false)}
+                className={cn(
+                  "nav-link min-h-11",
+                  isActive && "nav-link-active",
+                )}
               >
                 <Icon className="w-4 h-4 shrink-0" />
                 <span className="truncate flex-1">{label}</span>
@@ -107,7 +117,7 @@ export function ThreadSidebar() {
       <div className="p-3 border-t border-sidebar-border space-y-1">
         <Sheet open={settingsOpen} onOpenChange={setSettingsOpen}>
           <SheetTrigger asChild>
-            <Button variant="ghost" size="sm" className="w-full justify-start text-muted-foreground hover:text-foreground press">
+            <Button variant="ghost" size="sm" className="w-full justify-start text-muted-foreground hover:text-foreground press min-h-11">
               <Settings className="w-4 h-4" />
               Settings
             </Button>
@@ -126,12 +136,45 @@ export function ThreadSidebar() {
           variant="ghost"
           size="sm"
           onClick={signOut}
-          className="w-full justify-start text-muted-foreground hover:text-foreground press"
+          className="w-full justify-start text-muted-foreground hover:text-foreground press min-h-11"
         >
           <LogOut className="w-4 h-4" />
           Sign out
         </Button>
       </div>
-    </aside>
+    </>
+  );
+
+  return (
+    <>
+      {/* Desktop sidebar — unchanged from before */}
+      <aside className="hidden md:flex w-64 shrink-0 flex-col rounded-2xl glass glow-soft bg-sidebar/85 backdrop-blur-xl text-sidebar-foreground border border-sidebar-border h-full overflow-hidden">
+        {body}
+      </aside>
+
+      {/* Mobile hamburger trigger — fixed top-left */}
+      <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+        <SheetTrigger asChild>
+          <Button
+            variant="ghost"
+            size="icon"
+            aria-label="Open menu"
+            className="md:hidden fixed top-3 left-3 z-50 h-10 w-10 rounded-xl glass border border-sidebar-border bg-sidebar/85 backdrop-blur-xl"
+          >
+            <Menu className="w-5 h-5" />
+          </Button>
+        </SheetTrigger>
+        <SheetContent
+          side="left"
+          className="p-0 w-72 max-w-[85vw] flex flex-col bg-sidebar/95 backdrop-blur-xl text-sidebar-foreground border-sidebar-border"
+        >
+          <SheetHeader className="sr-only">
+            <SheetTitle>Navigation</SheetTitle>
+          </SheetHeader>
+          {body}
+        </SheetContent>
+      </Sheet>
+    </>
   );
 }
+
