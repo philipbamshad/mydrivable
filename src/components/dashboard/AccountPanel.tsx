@@ -49,6 +49,34 @@ export function AccountPanel() {
   return (
     <div className="space-y-6">
       <Card className="glass glow-soft p-6 rounded-2xl">
+        <div className="flex items-start justify-between gap-4 flex-wrap">
+          <div className="flex items-center gap-3 min-w-0">
+            <span
+              className="grid h-12 w-12 place-items-center rounded-xl bg-primary/15 border border-primary/40 shrink-0"
+              style={{ boxShadow: "0 0 18px -4px var(--color-primary)" }}
+            >
+              {theme === "dark" ? (
+                <Moon className="w-5 h-5 text-primary" />
+              ) : (
+                <Sun className="w-5 h-5 text-primary" />
+              )}
+            </span>
+            <div className="min-w-0">
+              <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground">Appearance</p>
+              <h2 className="font-display text-lg font-bold">
+                {theme === "dark" ? "Dark Mode" : "Light Mode"}
+              </h2>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                Switch between our neon-on-charcoal night theme and the frosty daylight palette. Your choice is saved.
+              </p>
+            </div>
+          </div>
+          <ThemeToggle />
+        </div>
+      </Card>
+
+
+      <Card className="glass glow-soft p-6 rounded-2xl">
         <h2 className="font-display text-lg font-bold">Local Rules Engine</h2>
         <p className="text-sm text-muted-foreground mb-5">
           Set your jurisdiction. All quizzes and AI answers conform to local code.
