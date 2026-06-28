@@ -103,7 +103,7 @@ export function ExamProgressChart() {
 function ScoreDial({ value, threshold, hasData }: { value: number; threshold: number; hasData: boolean }) {
   const r = 56;
   const c = 2 * Math.PI * r;
-  const pct = Math.min(100, Math.max(0, value));
+  const pct = hasData ? Math.min(100, Math.max(0, value)) : 0;
   const offset = c - (c * pct) / 100;
   const pass = pct >= threshold;
   const color = !hasData
@@ -114,25 +114,43 @@ function ScoreDial({ value, threshold, hasData }: { value: number; threshold: nu
         ? "rgb(251,191,36)"
         : "rgb(248,113,113)";
 
+  // Empty-state: keep the cool outline, but no fake fill.
+  const emptyDash = hasData ? undefined : `2 6`;
+
   return (
     <div className="relative w-[140px] h-[140px]">
       <svg viewBox="0 0 140 140" className="w-full h-full -rotate-90">
         <circle cx="70" cy="70" r={r} fill="none" stroke="var(--color-border)" strokeWidth="10" />
-        <circle
-          cx="70"
-          cy="70"
-          r={r}
-          fill="none"
-          stroke={color}
-          strokeWidth="10"
-          strokeLinecap="round"
-          strokeDasharray={c}
-          strokeDashoffset={offset}
-          style={{
-            transition: "stroke-dashoffset 0.6s ease-out, stroke 0.3s",
-            filter: hasData ? `drop-shadow(0 0 8px ${color})` : "none",
-          }}
-        />
+        {hasData ? (
+          <circle
+            cx="70"
+            cy="70"
+            r={r}
+            fill="none"
+            stroke={color}
+            strokeWidth="10"
+            strokeLinecap="round"
+            strokeDasharray={c}
+            strokeDashoffset={offset}
+            style={{
+              transition: "stroke-dashoffset 0.6s ease-out, stroke 0.3s",
+              filter: `drop-shadow(0 0 8px ${color})`,
+            }}
+          />
+        ) : (
+          <circle
+            cx="70"
+            cy="70"
+            r={r}
+            fill="none"
+            stroke="var(--color-primary)"
+            strokeOpacity="0.45"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeDasharray={emptyDash}
+            style={{ filter: "drop-shadow(0 0 6px var(--color-primary))" }}
+          />
+        )}
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
         <div className="font-display text-3xl font-bold" style={{ color }}>
