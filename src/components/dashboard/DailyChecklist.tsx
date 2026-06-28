@@ -61,7 +61,7 @@ function todayKey(): string {
 }
 
 export function DailyChecklist() {
-  const { state } = useUserProfile();
+  const { state, dailyDone, dailyDoneDate, toggleDailyTask } = useUserProfile();
   const stateLabel = state || "Default";
 
   const today = useMemo(todayKey, []);
@@ -70,25 +70,8 @@ export function DailyChecklist() {
     return pickDaily(pool, hash(`${today}|${stateLabel}`), DAILY_COUNT);
   }, [today, state, stateLabel]);
 
-  // Done state, keyed by date+state so it resets every 24h.
-  const storageKey = `${KEY}:${today}:${stateLabel}`;
-  const [done, setDone] = useState<Record<string, boolean>>({});
-
-  useEffect(() => {
-    try {
-      // Wipe any prior days for this storage prefix.
-      for (let i = localStorage.length - 1; i >= 0; i--) {
-        const k = localStorage.key(i);
-        if (k && k.startsWith(`${KEY}:`) && k !== storageKey) localStorage.removeItem(k);
-      }
-      const raw = localStorage.getItem(storageKey);
-      setDone(raw ? JSON.parse(raw) : {});
-    } catch { /* ignore */ }
-  }, [storageKey]);
-
-  useEffect(() => {
-    try { localStorage.setItem(storageKey, JSON.stringify(done)); } catch { /* ignore */ }
-  }, [storageKey, done]);
+  const done = dailyDoneDate === today ? dailyDone : {};
+  const setDoneToggle = (id: string) => toggleDailyTask(id, today);
 
   const completed = items.filter((i) => done[i.id]).length;
 
