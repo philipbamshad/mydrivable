@@ -247,8 +247,34 @@ function ScoreLineChart({
         />
       )}
 
+      {/* Empty-state hint */}
+      {points.length === 0 && (
+        <text
+          x={W / 2}
+          y={padTop + innerH / 2 + 3}
+          textAnchor="middle"
+          className="fill-muted-foreground"
+          style={{ fontSize: 10, letterSpacing: "0.18em", textTransform: "uppercase" }}
+        >
+          Awaiting first attempt
+        </text>
+      )}
+
+      {/* Single-point marker */}
+      {points.length === 1 && (
+        <circle
+          cx={points[0].x}
+          cy={points[0].y}
+          r={5}
+          fill={points[0].v >= threshold ? "rgb(74,222,128)" : points[0].v >= 60 ? "rgb(251,191,36)" : "rgb(248,113,113)"}
+          stroke="var(--color-background)"
+          strokeWidth="1.5"
+          style={{ filter: "drop-shadow(0 0 6px var(--color-primary))" }}
+        />
+      )}
+
       {/* Score dots */}
-      {points.map((p) => {
+      {points.length > 1 && points.map((p) => {
         const pass = p.v >= threshold;
         const color = pass ? "rgb(74,222,128)" : p.v >= 60 ? "rgb(251,191,36)" : "rgb(248,113,113)";
         return (
