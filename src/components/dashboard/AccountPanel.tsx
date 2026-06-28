@@ -110,19 +110,7 @@ export function AccountPanel() {
         <p className="text-sm text-muted-foreground mb-4">
           Set the day you plan to take the exam — drives the countdown on your dashboard.
         </p>
-        <div className="flex flex-wrap items-center gap-3">
-          <input
-            type="date"
-            value={targetDate ?? ""}
-            onChange={(e) => setTargetDate(e.target.value || null)}
-            className="rounded-md bg-card/60 border border-border px-3 py-2 text-sm focus:outline-none focus:border-primary"
-          />
-          {targetDate && (
-            <button onClick={() => setTargetDate(null)} className="text-xs text-muted-foreground hover:text-foreground underline underline-offset-2">
-              clear
-            </button>
-          )}
-        </div>
+        <TargetDatePicker value={targetDate} onChange={setTargetDate} />
       </Card>
 
       <Card className="glass glow-soft p-6 rounded-2xl">
