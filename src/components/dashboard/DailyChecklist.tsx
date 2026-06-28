@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { Card } from "@/components/ui/card";
 import { Check, RefreshCw } from "lucide-react";
 import { cn } from "@/lib/utils";
