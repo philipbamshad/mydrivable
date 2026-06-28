@@ -120,7 +120,7 @@ function AppDashboard() {
 
           <TabsContent value="road-prep" className="h-full overflow-y-auto m-0 p-5 sm:p-7 data-[state=inactive]:hidden">
             <div className="max-w-6xl mx-auto">
-              <RoadPrepGuide />
+              {isPro ? <RoadPrepGuide /> : <RoadPrepPaywall />}
             </div>
           </TabsContent>
 
