@@ -58,23 +58,14 @@ export function HeaderWidgets() {
                 DMV Target Date
               </p>
               <h3 className="font-display text-lg font-bold mt-1">Not set</h3>
-              {editing ? (
-                <input
-                  type="date"
-                  autoFocus
-                  onChange={(e) => {
-                    if (e.target.value) {
-                      setTargetDate(e.target.value);
-                      setEditing(false);
-                    }
-                  }}
-                  className="mt-2 rounded-md bg-card/60 border border-border px-2 py-1 text-sm focus:outline-none focus:border-primary"
+              <div className="mt-2">
+                <TargetDatePicker
+                  value={null}
+                  onChange={(d) => setTargetDate(d)}
+                  size="sm"
+                  showClear={false}
                 />
-              ) : (
-                <Button size="sm" onClick={() => setEditing(true)} className="press mt-2 bg-primary text-primary-foreground hover:bg-primary">
-                  Set Target Date
-                </Button>
-              )}
+              </div>
             </div>
           </>
         ) : (
