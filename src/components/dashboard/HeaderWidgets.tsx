@@ -1,8 +1,8 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { CalendarDays, Target } from "lucide-react";
 import { useUserProfile } from "@/lib/user-profile";
+import { TargetDatePicker } from "@/components/dashboard/TargetDatePicker";
 import logo from "@/assets/drivable-logo.png";
 
 
@@ -18,7 +18,6 @@ function EmptyRing({ icon: Icon }: { icon: typeof Target }) {
 
 export function HeaderWidgets() {
   const { targetDate, setTargetDate } = useUserProfile();
-  const [editing, setEditing] = useState(false);
 
   const daysLeft = useMemo(() => {
     if (!targetDate) return null;
@@ -59,23 +58,14 @@ export function HeaderWidgets() {
                 DMV Target Date
               </p>
               <h3 className="font-display text-lg font-bold mt-1">Not set</h3>
-              {editing ? (
-                <input
-                  type="date"
-                  autoFocus
-                  onChange={(e) => {
-                    if (e.target.value) {
-                      setTargetDate(e.target.value);
-                      setEditing(false);
-                    }
-                  }}
-                  className="mt-2 rounded-md bg-card/60 border border-border px-2 py-1 text-sm focus:outline-none focus:border-primary"
+              <div className="mt-2">
+                <TargetDatePicker
+                  value={null}
+                  onChange={(d) => setTargetDate(d)}
+                  size="sm"
+                  showClear={false}
                 />
-              ) : (
-                <Button size="sm" onClick={() => setEditing(true)} className="press mt-2 bg-primary text-primary-foreground hover:bg-primary">
-                  Set Target Date
-                </Button>
-              )}
+              </div>
             </div>
           </>
         ) : (
@@ -90,16 +80,15 @@ export function HeaderWidgets() {
                 DMV Target Date
               </p>
               <h3 className="font-display text-3xl font-bold mt-1">{targetLabel}</h3>
-              <div className="flex items-center gap-2 mt-2">
+              <div className="flex flex-wrap items-center gap-2 mt-2">
                 <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-semibold bg-primary/15 text-primary border border-primary/30">
                   {daysLeft !== null && daysLeft >= 0 ? `${daysLeft} days left` : "Past due"}
                 </span>
-                <button
-                  onClick={() => setTargetDate(null)}
-                  className="text-[10px] text-muted-foreground hover:text-foreground underline underline-offset-2"
-                >
-                  change
-                </button>
+                <TargetDatePicker
+                  value={targetDate}
+                  onChange={(d) => setTargetDate(d)}
+                  size="sm"
+                />
               </div>
             </div>
           </>
