@@ -52,6 +52,11 @@ export function ExamProgressChart() {
       {/* Latest score gauge */}
       <div className="flex-1 min-h-[220px] flex flex-col items-center justify-center">
         <ScoreDial value={latest ?? 0} threshold={PASS_THRESHOLD} hasData={latest !== null} />
+        {latest === null && (
+          <p className="mt-2 text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
+            No attempts yet · take your first mock exam
+          </p>
+        )}
 
         {/* Line chart history */}
         <div className="w-full mt-6">
@@ -61,9 +66,9 @@ export function ExamProgressChart() {
 
 
       <div className="grid grid-cols-3 gap-2 mt-4 pt-4 border-t border-border">
-        <Stat label="Latest" value={isPro && latest !== null ? `${latest}%` : "—"} />
-        <Stat label="Best" value={isPro && best !== null ? `${best}%` : "—"} />
-        <Stat label="Avg" value={isPro && avg !== null ? `${avg}%` : "—"} />
+        <Stat label="Latest" value={latest !== null ? `${latest}%` : "—"} />
+        <Stat label="Best" value={best !== null ? `${best}%` : "—"} />
+        <Stat label="Avg" value={avg !== null ? `${avg}%` : "—"} />
       </div>
 
       {/* Pro lock overlay */}
@@ -98,7 +103,7 @@ export function ExamProgressChart() {
 function ScoreDial({ value, threshold, hasData }: { value: number; threshold: number; hasData: boolean }) {
   const r = 56;
   const c = 2 * Math.PI * r;
-  const pct = Math.min(100, Math.max(0, value));
+  const pct = hasData ? Math.min(100, Math.max(0, value)) : 0;
   const offset = c - (c * pct) / 100;
   const pass = pct >= threshold;
   const color = !hasData
@@ -109,25 +114,43 @@ function ScoreDial({ value, threshold, hasData }: { value: number; threshold: nu
         ? "rgb(251,191,36)"
         : "rgb(248,113,113)";
 
+  // Empty-state: keep the cool outline, but no fake fill.
+  const emptyDash = hasData ? undefined : `2 6`;
+
   return (
     <div className="relative w-[140px] h-[140px]">
       <svg viewBox="0 0 140 140" className="w-full h-full -rotate-90">
         <circle cx="70" cy="70" r={r} fill="none" stroke="var(--color-border)" strokeWidth="10" />
-        <circle
-          cx="70"
-          cy="70"
-          r={r}
-          fill="none"
-          stroke={color}
-          strokeWidth="10"
-          strokeLinecap="round"
-          strokeDasharray={c}
-          strokeDashoffset={offset}
-          style={{
-            transition: "stroke-dashoffset 0.6s ease-out, stroke 0.3s",
-            filter: hasData ? `drop-shadow(0 0 8px ${color})` : "none",
-          }}
-        />
+        {hasData ? (
+          <circle
+            cx="70"
+            cy="70"
+            r={r}
+            fill="none"
+            stroke={color}
+            strokeWidth="10"
+            strokeLinecap="round"
+            strokeDasharray={c}
+            strokeDashoffset={offset}
+            style={{
+              transition: "stroke-dashoffset 0.6s ease-out, stroke 0.3s",
+              filter: `drop-shadow(0 0 8px ${color})`,
+            }}
+          />
+        ) : (
+          <circle
+            cx="70"
+            cy="70"
+            r={r}
+            fill="none"
+            stroke="var(--color-primary)"
+            strokeOpacity="0.45"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeDasharray={emptyDash}
+            style={{ filter: "drop-shadow(0 0 6px var(--color-primary))" }}
+          />
+        )}
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
         <div className="font-display text-3xl font-bold" style={{ color }}>
@@ -224,8 +247,34 @@ function ScoreLineChart({
         />
       )}
 
+      {/* Empty-state hint */}
+      {points.length === 0 && (
+        <text
+          x={W / 2}
+          y={padTop + innerH / 2 + 3}
+          textAnchor="middle"
+          className="fill-muted-foreground"
+          style={{ fontSize: 10, letterSpacing: "0.18em", textTransform: "uppercase" }}
+        >
+          Awaiting first attempt
+        </text>
+      )}
+
+      {/* Single-point marker */}
+      {points.length === 1 && (
+        <circle
+          cx={points[0].x}
+          cy={points[0].y}
+          r={5}
+          fill={points[0].v >= threshold ? "rgb(74,222,128)" : points[0].v >= 60 ? "rgb(251,191,36)" : "rgb(248,113,113)"}
+          stroke="var(--color-background)"
+          strokeWidth="1.5"
+          style={{ filter: "drop-shadow(0 0 6px var(--color-primary))" }}
+        />
+      )}
+
       {/* Score dots */}
-      {points.map((p) => {
+      {points.length > 1 && points.map((p) => {
         const pass = p.v >= threshold;
         const color = pass ? "rgb(74,222,128)" : p.v >= 60 ? "rgb(251,191,36)" : "rgb(248,113,113)";
         return (
