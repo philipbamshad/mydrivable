@@ -55,7 +55,7 @@ function AppDashboard() {
   const navigate = Route.useNavigate();
   const tab: TabId = search.tab ?? "dashboard";
   const setTab = (v: TabId) => navigate({ search: { tab: v }, replace: true });
-  const { state: userState, openCheckout, isPro } = useUserProfile();
+  const { state: userState, openCheckout, isPro, hydrating } = useUserProfile();
 
   // Auto-open checkout when arriving with ?intent=upgrade; clear the query.
   useEffect(() => {
@@ -95,11 +95,17 @@ function AppDashboard() {
         <div className="flex-1 min-h-0 overflow-hidden">
           <TabsContent value="dashboard" className="h-full overflow-y-auto m-0 p-5 sm:p-7 data-[state=inactive]:hidden">
             <div className="max-w-7xl mx-auto space-y-6">
-              <HeaderWidgets />
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
-                <DailyChecklist />
-                <ExamProgressChart />
-              </div>
+              {hydrating ? (
+                <DashboardSkeleton />
+              ) : (
+                <>
+                  <HeaderWidgets />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+                    <DailyChecklist />
+                    <ExamProgressChart />
+                  </div>
+                </>
+              )}
             </div>
           </TabsContent>
 
@@ -122,6 +128,28 @@ function AppDashboard() {
           </TabsContent>
         </div>
       </Tabs>
+    </div>
+  );
+}
+
+function DashboardSkeleton() {
+  return (
+    <div className="space-y-6 animate-pulse">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="h-32 rounded-2xl glass glow-soft" />
+        <div className="h-32 rounded-2xl glass glow-soft" />
+        <div className="h-32 rounded-2xl glass glow-soft" />
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+        <div className="h-80 rounded-2xl glass glow-soft" />
+        <div className="h-80 rounded-2xl glass glow-soft" />
+      </div>
+      <div className="flex justify-center pt-2">
+        <div className="text-[11px] uppercase tracking-[0.25em] text-muted-foreground flex items-center gap-2">
+          <span className="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_12px_var(--color-primary)] animate-pulse" />
+          Syncing your profile…
+        </div>
+      </div>
     </div>
   );
 }
