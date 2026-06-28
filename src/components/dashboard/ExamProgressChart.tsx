@@ -52,6 +52,11 @@ export function ExamProgressChart() {
       {/* Latest score gauge */}
       <div className="flex-1 min-h-[220px] flex flex-col items-center justify-center">
         <ScoreDial value={latest ?? 0} threshold={PASS_THRESHOLD} hasData={latest !== null} />
+        {latest === null && (
+          <p className="mt-2 text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
+            No attempts yet · take your first mock exam
+          </p>
+        )}
 
         {/* Line chart history */}
         <div className="w-full mt-6">
