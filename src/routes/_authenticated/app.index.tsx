@@ -131,3 +131,25 @@ function AppDashboard() {
     </div>
   );
 }
+
+function DashboardSkeleton() {
+  return (
+    <div className="space-y-6 animate-pulse">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="h-32 rounded-2xl glass glow-soft" />
+        <div className="h-32 rounded-2xl glass glow-soft" />
+        <div className="h-32 rounded-2xl glass glow-soft" />
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+        <div className="h-80 rounded-2xl glass glow-soft" />
+        <div className="h-80 rounded-2xl glass glow-soft" />
+      </div>
+      <div className="flex justify-center pt-2">
+        <div className="text-[11px] uppercase tracking-[0.25em] text-muted-foreground flex items-center gap-2">
+          <span className="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_12px_var(--color-primary)] animate-pulse" />
+          Syncing your profile…
+        </div>
+      </div>
+    </div>
+  );
+}
