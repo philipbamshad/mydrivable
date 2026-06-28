@@ -203,50 +203,34 @@
   align-items: center;
   gap: 0.7rem;
   padding: 0.6rem 0.95rem;
-  border-radius: 9999px;
+  border-radius: 0.6rem;
   font-size: 0.875rem;
-  color: color-mix(in oklab, var(--color-sidebar-foreground) 80%, transparent);
-  transition: color 0.2s ease, transform 0.2s ease;
+  color: color-mix(in oklab, var(--color-sidebar-foreground) 78%, transparent);
+  transition: color 0.2s ease, background-color 0.2s ease;
   isolation: isolate;
-  &::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background: linear-gradient(135deg,
-      color-mix(in oklab, var(--color-primary) 26%, transparent),
-      color-mix(in oklab, var(--color-primary) 10%, transparent));
-    opacity: 0;
-    transform: scale(0.94);
-    transition: opacity 0.25s ease, transform 0.25s ease;
-    z-index: -1;
+  &:hover {
+    color: var(--color-foreground);
+    background-color: color-mix(in oklab, var(--color-primary) 8%, transparent);
   }
-  &:hover { color: var(--color-foreground); transform: scale(1.02); }
-  &:hover::before { opacity: 0.6; transform: scale(1); }
 }
 @utility nav-link-active {
-  color: var(--color-primary-foreground);
+  color: var(--color-foreground);
   font-weight: 600;
-  background: linear-gradient(135deg,
-    color-mix(in oklab, var(--color-primary) 85%, transparent),
-    color-mix(in oklab, oklch(0.82 0.15 200) 80%, transparent));
-  box-shadow:
-    0 0 0 1px color-mix(in oklab, var(--color-primary) 60%, transparent),
-    0 0 24px -4px var(--color-primary),
-    0 10px 30px -10px oklch(0.82 0.15 200 / 0.6);
-  &::before { opacity: 0; }
+  background-color: color-mix(in oklab, var(--color-primary) 10%, transparent);
+  & svg { color: var(--color-primary); filter: drop-shadow(0 0 6px var(--color-primary)); }
   &::after {
     content: "";
     position: absolute;
-    left: -8px;
-    top: 18%;
-    bottom: 18%;
+    left: 0;
+    top: 14%;
+    bottom: 14%;
     width: 3px;
     border-radius: 999px;
     background: var(--color-primary);
-    box-shadow: 0 0 12px var(--color-primary), 0 0 24px var(--color-primary);
+    box-shadow: 0 0 10px var(--color-primary), 0 0 20px var(--color-primary);
   }
 }
+
 
 /* Lane divider kept for visual continuity */
 .lane-divider {
