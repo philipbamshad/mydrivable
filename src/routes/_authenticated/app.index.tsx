@@ -13,6 +13,7 @@ import { HeaderWidgets } from "@/components/dashboard/HeaderWidgets";
 import { DailyChecklist } from "@/components/dashboard/DailyChecklist";
 import { ExamProgressChart } from "@/components/dashboard/ExamProgressChart";
 import { RoadPrepGuide } from "@/components/dashboard/RoadPrepGuide";
+import { RoadPrepPaywall } from "@/components/dashboard/RoadPrepPaywall";
 import { TestHubDashboard } from "@/components/dashboard/TestHubDashboard";
 import { PermitExamSimulator } from "@/components/dashboard/PermitExamSimulator";
 import { ChatTab } from "@/components/chat/ChatTab";
@@ -119,7 +120,7 @@ function AppDashboard() {
 
           <TabsContent value="road-prep" className="h-full overflow-y-auto m-0 p-5 sm:p-7 data-[state=inactive]:hidden">
             <div className="max-w-6xl mx-auto">
-              <RoadPrepGuide />
+              {isPro ? <RoadPrepGuide /> : <RoadPrepPaywall />}
             </div>
           </TabsContent>
 
