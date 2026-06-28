@@ -1,11 +1,13 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
 import logo from "@/assets/drivable-logo.png";
 
 export const Route = createFileRoute("/auth")({
@@ -22,6 +24,37 @@ export const Route = createFileRoute("/auth")({
   component: AuthPage,
 });
 
+const credentialsSchema = z.object({
+  email: z
+    .string()
+    .trim()
+    .min(1, "Enter your email")
+    .email("That doesn't look like a valid email")
+    .max(255, "Email is too long"),
+  password: z
+    .string()
+    .min(8, "Password must be at least 8 characters")
+    .max(128, "Password is too long"),
+});
+
+function friendlyAuthError(message: string, mode: "sign-in" | "sign-up"): string {
+  const m = message.toLowerCase();
+  if (mode === "sign-in") {
+    if (m.includes("invalid login") || m.includes("invalid credentials")) {
+      return "No account found with those credentials. Double-check, or create an account first.";
+    }
+    if (m.includes("email not confirmed")) {
+      return "Confirm your email first — check your inbox for the link.";
+    }
+  } else {
+    if (m.includes("already registered") || m.includes("already been registered") || m.includes("user already")) {
+      return "An account with this email already exists. Try signing in instead.";
+    }
+    if (m.includes("password")) return message;
+  }
+  return message || "Something went wrong. Try again.";
+}
+
 function AuthPage() {
   const navigate = useNavigate();
   const { next } = Route.useSearch();
@@ -37,6 +70,7 @@ function AuthPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState<{ email?: string; password?: string }>({});
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
@@ -45,27 +79,51 @@ function AuthPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-
   const handleEmail = async (e: React.FormEvent) => {
     e.preventDefault();
+    setFieldErrors({});
+
+    const parsed = credentialsSchema.safeParse({ email, password });
+    if (!parsed.success) {
+      const errs: { email?: string; password?: string } = {};
+      for (const issue of parsed.error.issues) {
+        const key = issue.path[0];
+        if (key === "email" && !errs.email) errs.email = issue.message;
+        if (key === "password" && !errs.password) errs.password = issue.message;
+      }
+      setFieldErrors(errs);
+      toast.error(errs.email || errs.password || "Check the form and try again.");
+      return;
+    }
+
     setLoading(true);
     try {
       if (mode === "sign-up") {
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
+        const { data, error } = await supabase.auth.signUp({
+          email: parsed.data.email,
+          password: parsed.data.password,
           options: { emailRedirectTo: window.location.origin + "/app" },
         });
         if (error) throw error;
+        if (!data.session) {
+          toast.success("Account created — check your email to confirm, then sign in.");
+          setMode("sign-in");
+          setLoading(false);
+          return;
+        }
         toast.success("Account created. You're in.");
       } else {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        const { error } = await supabase.auth.signInWithPassword({
+          email: parsed.data.email,
+          password: parsed.data.password,
+        });
         if (error) throw error;
+        toast.success("Welcome back.");
       }
       goNext();
-
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Something went wrong");
+      const raw = err instanceof Error ? err.message : "Something went wrong";
+      toast.error(friendlyAuthError(raw, mode));
     } finally {
       setLoading(false);
     }
@@ -83,34 +141,60 @@ function AuthPage() {
       }
       if (result.redirected) return;
       goNext();
-
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4 bg-background">
+    <div className="relative min-h-screen flex flex-col items-center justify-center px-4 bg-background overflow-hidden">
+      {/* Ambient neon glow backdrop */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10"
+        style={{
+          background:
+            "radial-gradient(60% 50% at 20% 15%, oklch(0.72 0.20 240 / 0.18), transparent 70%), radial-gradient(50% 40% at 85% 85%, oklch(0.72 0.20 240 / 0.14), transparent 70%)",
+        }}
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10 opacity-[0.06]"
+        style={{
+          backgroundImage:
+            "linear-gradient(var(--color-primary) 1px, transparent 1px), linear-gradient(90deg, var(--color-primary) 1px, transparent 1px)",
+          backgroundSize: "48px 48px",
+          maskImage: "radial-gradient(circle at center, black, transparent 75%)",
+        }}
+      />
+
       <div className="w-full max-w-sm">
-        <Link to="/" className="flex flex-col items-center gap-3 mb-8">
-          <img src={logo} alt="Drivable" width={56} height={56} />
+        <Link to="/" className="flex flex-col items-center gap-3 mb-8 group">
+          <div className="relative">
+            <div className="absolute inset-0 rounded-full bg-primary/30 blur-xl group-hover:bg-primary/50 transition-colors" />
+            <img src={logo} alt="Drivable" width={56} height={56} className="relative" />
+          </div>
           <div className="text-center">
-            <h1 className="text-2xl font-bold tracking-tight">Drivable</h1>
-            <p className="text-xs text-muted-foreground mt-1 uppercase tracking-[0.2em]">
+            <h1 className="font-display text-2xl font-bold tracking-tight">Drivable</h1>
+            <p className="text-[10px] text-muted-foreground mt-1 uppercase tracking-[0.28em]">
               Permit · Road Test
             </p>
           </div>
         </Link>
 
-        <div className="rounded-2xl border border-border bg-card p-6 shadow-xl">
-          <div className="flex gap-1 mb-5 p-1 bg-muted rounded-lg">
+        <div className="glass glow-soft rounded-2xl border border-primary/20 p-6 shadow-[0_0_60px_-12px_oklch(0.72_0.20_240_/_0.45)]">
+          <div className="flex gap-1 mb-5 p-1 bg-background/40 border border-border/60 rounded-lg backdrop-blur-sm">
             {(["sign-in", "sign-up"] as const).map((m) => (
               <button
                 key={m}
-                onClick={() => setMode(m)}
-                className={`flex-1 text-sm py-1.5 rounded-md font-medium transition-colors ${
+                type="button"
+                onClick={() => {
+                  setMode(m);
+                  setFieldErrors({});
+                }}
+                className={`flex-1 text-sm py-1.5 rounded-md font-medium transition-all ${
                   mode === m
-                    ? "bg-background text-foreground shadow-sm"
+                    ? "bg-primary/15 text-foreground border border-primary/40 shadow-[0_0_18px_-4px_var(--color-primary)]"
                     : "text-muted-foreground hover:text-foreground"
                 }`}
               >
@@ -119,9 +203,11 @@ function AuthPage() {
             ))}
           </div>
 
-          <form onSubmit={handleEmail} className="space-y-3">
+          <form onSubmit={handleEmail} className="space-y-3" noValidate>
             <div className="space-y-1.5">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email" className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                Email
+              </Label>
               <Input
                 id="email"
                 type="email"
@@ -129,35 +215,58 @@ function AuthPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                aria-invalid={!!fieldErrors.email}
+                className={`bg-background/40 border-border/60 focus-visible:ring-primary/40 ${
+                  fieldErrors.email ? "border-destructive/70" : ""
+                }`}
               />
+              {fieldErrors.email && (
+                <p className="text-[11px] text-destructive">{fieldErrors.email}</p>
+              )}
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password" className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                Password
+              </Label>
               <Input
                 id="password"
                 type="password"
                 autoComplete={mode === "sign-up" ? "new-password" : "current-password"}
                 required
-                minLength={6}
+                minLength={8}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                aria-invalid={!!fieldErrors.password}
+                className={`bg-background/40 border-border/60 focus-visible:ring-primary/40 ${
+                  fieldErrors.password ? "border-destructive/70" : ""
+                }`}
               />
+              {fieldErrors.password ? (
+                <p className="text-[11px] text-destructive">{fieldErrors.password}</p>
+              ) : mode === "sign-up" ? (
+                <p className="text-[11px] text-muted-foreground">Use at least 8 characters.</p>
+              ) : null}
             </div>
-            <Button type="submit" className="w-full" disabled={loading}>
+            <Button
+              type="submit"
+              className="w-full bg-primary hover:bg-primary text-primary-foreground shadow-[0_0_24px_-4px_var(--color-primary)] hover:shadow-[0_0_32px_-2px_var(--color-primary)] transition-shadow"
+              disabled={loading}
+            >
+              {loading && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
               {mode === "sign-in" ? "Sign in" : "Create account"}
             </Button>
           </form>
 
-          <div className="my-4 flex items-center gap-3 text-xs text-muted-foreground">
-            <div className="h-px flex-1 bg-border" />
+          <div className="my-4 flex items-center gap-3 text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
+            <div className="h-px flex-1 bg-border/70" />
             <span>OR</span>
-            <div className="h-px flex-1 bg-border" />
+            <div className="h-px flex-1 bg-border/70" />
           </div>
 
           <Button
             type="button"
             variant="outline"
-            className="w-full"
+            className="w-full border-border/70 bg-background/40 hover:bg-background/70 hover:border-primary/50"
             onClick={handleGoogle}
             disabled={loading}
           >
@@ -165,7 +274,7 @@ function AuthPage() {
           </Button>
         </div>
 
-        <p className="text-center text-xs text-muted-foreground mt-6">
+        <p className="text-center text-[11px] text-muted-foreground mt-6">
           By continuing, you agree to drive safely and legally.
         </p>
       </div>
