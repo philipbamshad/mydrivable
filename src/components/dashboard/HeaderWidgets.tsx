@@ -80,16 +80,15 @@ export function HeaderWidgets() {
                 DMV Target Date
               </p>
               <h3 className="font-display text-3xl font-bold mt-1">{targetLabel}</h3>
-              <div className="flex items-center gap-2 mt-2">
+              <div className="flex flex-wrap items-center gap-2 mt-2">
                 <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-semibold bg-primary/15 text-primary border border-primary/30">
                   {daysLeft !== null && daysLeft >= 0 ? `${daysLeft} days left` : "Past due"}
                 </span>
-                <button
-                  onClick={() => setTargetDate(null)}
-                  className="text-[10px] text-muted-foreground hover:text-foreground underline underline-offset-2"
-                >
-                  change
-                </button>
+                <TargetDatePicker
+                  value={targetDate}
+                  onChange={(d) => setTargetDate(d)}
+                  size="sm"
+                />
               </div>
             </div>
           </>
