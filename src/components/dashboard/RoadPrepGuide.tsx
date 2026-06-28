@@ -253,8 +253,6 @@ function AddHoursDialog() {
 
 export function RoadPrepGuide() {
   const { isPro, unlockPro, driveHours, driveSessions } = useUserProfile();
-  const goalHours = 50;
-  const pct = Math.min(100, (driveHours / goalHours) * 100);
 
   return (
     <div className="relative space-y-5">
@@ -266,20 +264,23 @@ export function RoadPrepGuide() {
       </div>
 
       <Card className="glass glow-soft p-5 rounded-2xl">
-        <div className="flex items-center justify-between gap-4 mb-3">
+        <div className="flex items-center justify-between gap-4">
           <div>
             <h3 className="font-display text-base font-bold">Supervised Driving Log</h3>
-            <p className="text-xs text-muted-foreground mt-0.5">
-              {driveHours.toFixed(1)} / {goalHours} hrs · {driveSessions.length} sessions
+            <p className="text-xs text-muted-foreground mt-0.5 uppercase tracking-[0.18em]">
+              Total Hours Logged
+            </p>
+            <p className="font-display text-3xl font-bold mt-1 text-primary" style={{ textShadow: "0 0 18px var(--color-primary)" }}>
+              {driveHours.toFixed(1)}
+              <span className="text-base text-muted-foreground font-normal ml-2">
+                hrs · {driveSessions.length} session{driveSessions.length === 1 ? "" : "s"}
+              </span>
             </p>
           </div>
           <AddHoursDialog />
         </div>
-        <div className="h-2 w-full rounded-full bg-muted overflow-hidden">
-          <div className="h-full rounded-full bg-primary transition-all duration-500"
-            style={{ width: `${pct}%`, boxShadow: "0 0 12px var(--color-primary)" }} />
-        </div>
       </Card>
+
 
       <div className={cn("space-y-5 transition-all", !isPro && "blur-sm pointer-events-none select-none")}>
         {GROUPS.map((g) => (
