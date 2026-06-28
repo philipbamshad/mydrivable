@@ -111,16 +111,67 @@ export function ThreadSidebar() {
 
       <div className="flex-1" />
 
-      <div className="px-4 py-3 mx-3 mb-2 rounded-xl border border-primary/20 bg-primary/5">
-        <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Active state</p>
-        <p className="text-sm font-semibold mt-0.5 flex items-center gap-2">
-          <span className="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_8px_var(--color-primary)]" />
-          {userState || "Not set"}
-        </p>
-        <p className="text-[10px] text-muted-foreground mt-1">
-          {isPro ? "Pro · all modules unlocked" : "Free tier"}
-        </p>
-      </div>
+      <Popover open={statePickerOpen} onOpenChange={setStatePickerOpen}>
+        <PopoverTrigger asChild>
+          <button
+            type="button"
+            aria-label="Change active state"
+            className="group w-[calc(100%-1.5rem)] mx-3 mb-2 text-left px-4 py-3 rounded-xl border border-primary/20 bg-primary/5 hover:bg-primary/10 hover:border-primary/40 transition-colors press"
+          >
+            <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground flex items-center justify-between">
+              <span>Active state</span>
+              <Settings2
+                className="w-3.5 h-3.5 text-muted-foreground transition-all duration-300 group-hover:text-primary group-hover:rotate-90 group-hover:[filter:drop-shadow(0_0_6px_var(--color-primary))]"
+              />
+            </p>
+            <p className="text-sm font-semibold mt-0.5 flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_8px_var(--color-primary)]" />
+              <span className="truncate">{userState || "Not set"}</span>
+            </p>
+            <p className="text-[10px] text-muted-foreground mt-1">
+              {isPro ? "Pro · all modules unlocked" : "Free tier"}
+            </p>
+          </button>
+        </PopoverTrigger>
+        <PopoverContent
+          side="top"
+          align="start"
+          className="w-64 p-0 glass glow-soft border-primary/30"
+        >
+          <div className="px-3 py-2 border-b border-border/60">
+            <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+              Select your state
+            </p>
+            <p className="text-[11px] text-muted-foreground/80">
+              Recalibrates rules, quizzes, and AI answers.
+            </p>
+          </div>
+          <div className="max-h-72 overflow-y-auto py-1">
+            {US_STATES.map((s) => {
+              const active = s === userState;
+              return (
+                <button
+                  key={s}
+                  type="button"
+                  onClick={() => {
+                    setUserState(s);
+                    setStatePickerOpen(false);
+                    toast.success(`AI knowledge base recalibrated to ${s}`);
+                  }}
+                  className={cn(
+                    "w-full flex items-center justify-between gap-2 px-3 py-2 text-sm text-left hover:bg-primary/10 transition-colors",
+                    active && "bg-primary/15 text-foreground font-medium",
+                  )}
+                >
+                  <span className="truncate">{s}</span>
+                  {active && <Check className="w-4 h-4 text-primary shrink-0" />}
+                </button>
+              );
+            })}
+          </div>
+        </PopoverContent>
+      </Popover>
+
 
       <div className="p-3 border-t border-sidebar-border space-y-1">
         <Sheet open={settingsOpen} onOpenChange={setSettingsOpen}>
