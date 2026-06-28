@@ -66,9 +66,9 @@ export function ExamProgressChart() {
 
 
       <div className="grid grid-cols-3 gap-2 mt-4 pt-4 border-t border-border">
-        <Stat label="Latest" value={isPro && latest !== null ? `${latest}%` : "—"} />
-        <Stat label="Best" value={isPro && best !== null ? `${best}%` : "—"} />
-        <Stat label="Avg" value={isPro && avg !== null ? `${avg}%` : "—"} />
+        <Stat label="Latest" value={latest !== null ? `${latest}%` : "—"} />
+        <Stat label="Best" value={best !== null ? `${best}%` : "—"} />
+        <Stat label="Avg" value={avg !== null ? `${avg}%` : "—"} />
       </div>
 
       {/* Pro lock overlay */}
