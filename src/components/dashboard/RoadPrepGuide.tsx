@@ -170,12 +170,10 @@ function ManeuverCard({ m }: { m: Maneuver }) {
 }
 
 function AddHoursDialog() {
-  const { addDriveSession, driveHours } = useUserProfile();
+  const { addDriveSession } = useUserProfile();
   const [open, setOpen] = useState(false);
   const [hours, setHours] = useState("0.5");
   const [note, setNote] = useState("");
-
-  const remaining = Math.max(0, 50 - driveHours);
 
   const submit = () => {
     const h = parseFloat(hours);
@@ -183,18 +181,13 @@ function AddHoursDialog() {
       toast.error("Enter a valid number of hours");
       return;
     }
-    const capped = Math.min(h, remaining);
-    if (capped <= 0) {
-      toast.success("You've already hit the 50-hour goal");
-      setOpen(false);
-      return;
-    }
-    addDriveSession({ hours: capped, maneuver: "General practice", note });
-    toast.success(`Logged ${capped} hr${capped === 1 ? "" : "s"}`);
+    addDriveSession({ hours: h, maneuver: "General practice", note });
+    toast.success(`Logged ${h} hr${h === 1 ? "" : "s"}`);
     setOpen(false);
     setHours("0.5");
     setNote("");
   };
+
 
 
   return (
@@ -211,8 +204,9 @@ function AddHoursDialog() {
         <DialogHeader>
           <DialogTitle className="font-display">Log Drive Hours</DialogTitle>
           <DialogDescription>
-            Add supervised practice time to your 50-hour log.
+            Add supervised practice time to your driving log.
           </DialogDescription>
+
         </DialogHeader>
         <div className="space-y-4">
           <div>
@@ -259,8 +253,6 @@ function AddHoursDialog() {
 
 export function RoadPrepGuide() {
   const { isPro, unlockPro, driveHours, driveSessions } = useUserProfile();
-  const goalHours = 50;
-  const pct = Math.min(100, (driveHours / goalHours) * 100);
 
   return (
     <div className="relative space-y-5">
@@ -272,20 +264,23 @@ export function RoadPrepGuide() {
       </div>
 
       <Card className="glass glow-soft p-5 rounded-2xl">
-        <div className="flex items-center justify-between gap-4 mb-3">
+        <div className="flex items-center justify-between gap-4">
           <div>
             <h3 className="font-display text-base font-bold">Supervised Driving Log</h3>
-            <p className="text-xs text-muted-foreground mt-0.5">
-              {driveHours.toFixed(1)} / {goalHours} hrs · {driveSessions.length} sessions
+            <p className="text-xs text-muted-foreground mt-0.5 uppercase tracking-[0.18em]">
+              Total Hours Logged
+            </p>
+            <p className="font-display text-3xl font-bold mt-1 text-primary" style={{ textShadow: "0 0 18px var(--color-primary)" }}>
+              {driveHours.toFixed(1)}
+              <span className="text-base text-muted-foreground font-normal ml-2">
+                hrs · {driveSessions.length} session{driveSessions.length === 1 ? "" : "s"}
+              </span>
             </p>
           </div>
           <AddHoursDialog />
         </div>
-        <div className="h-2 w-full rounded-full bg-muted overflow-hidden">
-          <div className="h-full rounded-full bg-primary transition-all duration-500"
-            style={{ width: `${pct}%`, boxShadow: "0 0 12px var(--color-primary)" }} />
-        </div>
       </Card>
+
 
       <div className={cn("space-y-5 transition-all", !isPro && "blur-sm pointer-events-none select-none")}>
         {GROUPS.map((g) => (
