@@ -13,6 +13,7 @@ import { HeaderWidgets } from "@/components/dashboard/HeaderWidgets";
 import { DailyChecklist } from "@/components/dashboard/DailyChecklist";
 import { ExamProgressChart } from "@/components/dashboard/ExamProgressChart";
 import { RoadPrepGuide } from "@/components/dashboard/RoadPrepGuide";
+import { RoadPrepPaywall } from "@/components/dashboard/RoadPrepPaywall";
 import { TestHubDashboard } from "@/components/dashboard/TestHubDashboard";
 import { PermitExamSimulator } from "@/components/dashboard/PermitExamSimulator";
 import { ChatTab } from "@/components/chat/ChatTab";
