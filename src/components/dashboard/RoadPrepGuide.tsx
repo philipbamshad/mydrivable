@@ -170,12 +170,10 @@ function ManeuverCard({ m }: { m: Maneuver }) {
 }
 
 function AddHoursDialog() {
-  const { addDriveSession, driveHours } = useUserProfile();
+  const { addDriveSession } = useUserProfile();
   const [open, setOpen] = useState(false);
   const [hours, setHours] = useState("0.5");
   const [note, setNote] = useState("");
-
-  const remaining = Math.max(0, 50 - driveHours);
 
   const submit = () => {
     const h = parseFloat(hours);
@@ -183,18 +181,13 @@ function AddHoursDialog() {
       toast.error("Enter a valid number of hours");
       return;
     }
-    const capped = Math.min(h, remaining);
-    if (capped <= 0) {
-      toast.success("You've already hit the 50-hour goal");
-      setOpen(false);
-      return;
-    }
-    addDriveSession({ hours: capped, maneuver: "General practice", note });
-    toast.success(`Logged ${capped} hr${capped === 1 ? "" : "s"}`);
+    addDriveSession({ hours: h, maneuver: "General practice", note });
+    toast.success(`Logged ${h} hr${h === 1 ? "" : "s"}`);
     setOpen(false);
     setHours("0.5");
     setNote("");
   };
+
 
 
   return (
