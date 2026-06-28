@@ -1,6 +1,9 @@
 import baseline from "./questions-baseline.json";
 import rulesJson from "./state-rules.json";
+import { buildQuestionBank } from "./question-generator";
 import type { Question, StateRules, StatePack } from "./types";
+
+
 
 export type { Question, StateRules, StatePack } from "./types";
 
