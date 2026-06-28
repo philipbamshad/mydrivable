@@ -1,6 +1,9 @@
 import baseline from "./questions-baseline.json";
 import rulesJson from "./state-rules.json";
+import { buildQuestionBank } from "./question-generator";
 import type { Question, StateRules, StatePack } from "./types";
+
+
 
 export type { Question, StateRules, StatePack } from "./types";
 
@@ -125,11 +128,13 @@ function buildStateFactQuestions(r: StateRules): Question[] {
 export function getStatePack(stateName: string | null | undefined): StatePack {
   const rules = (stateName && RULES[stateName]) || DEFAULT_RULES;
   const stateFacts = buildStateFactQuestions(rules);
+  const generated = buildQuestionBank(rules);
   return {
     rules,
-    questions: [...stateFacts, ...BASELINE],
+    questions: [...stateFacts, ...generated, ...BASELINE],
   };
 }
+
 
 /** Sorted list of every state name in the dataset. */
 export const ALL_STATES: string[] = Object.keys(RULES).sort();
