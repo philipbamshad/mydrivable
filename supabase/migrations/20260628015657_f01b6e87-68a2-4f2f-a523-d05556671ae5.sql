@@ -1,0 +1,10 @@
+
+ALTER TABLE public.driving_logs
+  ADD COLUMN IF NOT EXISTS minutes INTEGER,
+  ADD COLUMN IF NOT EXISTS environment TEXT,
+  ADD COLUMN IF NOT EXISTS conditions TEXT,
+  ADD COLUMN IF NOT EXISTS maneuvers TEXT[] NOT NULL DEFAULT '{}',
+  ADD COLUMN IF NOT EXISTS supervisor_approved BOOLEAN NOT NULL DEFAULT false;
+
+ALTER TABLE public.user_profiles
+  ADD COLUMN IF NOT EXISTS skill_mastery JSONB NOT NULL DEFAULT '{}'::jsonb;

@@ -16,30 +16,45 @@ export type Database = {
     Tables: {
       driving_logs: {
         Row: {
+          conditions: string | null
           created_at: string
+          environment: string | null
           hours: number
           id: string
           logged_at: string
           maneuver: string
+          maneuvers: string[]
+          minutes: number | null
           note: string
+          supervisor_approved: boolean
           user_id: string
         }
         Insert: {
+          conditions?: string | null
           created_at?: string
+          environment?: string | null
           hours: number
           id?: string
           logged_at?: string
           maneuver?: string
+          maneuvers?: string[]
+          minutes?: number | null
           note?: string
+          supervisor_approved?: boolean
           user_id: string
         }
         Update: {
+          conditions?: string | null
           created_at?: string
+          environment?: string | null
           hours?: number
           id?: string
           logged_at?: string
           maneuver?: string
+          maneuvers?: string[]
+          minutes?: number | null
           note?: string
+          supervisor_approved?: boolean
           user_id?: string
         }
         Relationships: []
@@ -181,6 +196,7 @@ export type Database = {
           created_at: string
           daily_done: Json
           daily_done_date: string | null
+          skill_mastery: Json
           target_date: string | null
           updated_at: string
           user_id: string
@@ -190,6 +206,7 @@ export type Database = {
           created_at?: string
           daily_done?: Json
           daily_done_date?: string | null
+          skill_mastery?: Json
           target_date?: string | null
           updated_at?: string
           user_id: string
@@ -199,6 +216,7 @@ export type Database = {
           created_at?: string
           daily_done?: Json
           daily_done_date?: string | null
+          skill_mastery?: Json
           target_date?: string | null
           updated_at?: string
           user_id?: string
