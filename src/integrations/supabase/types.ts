@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      driving_logs: {
+        Row: {
+          created_at: string
+          hours: number
+          id: string
+          logged_at: string
+          maneuver: string
+          note: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          hours: number
+          id?: string
+          logged_at?: string
+          maneuver?: string
+          note?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          hours?: number
+          id?: string
+          logged_at?: string
+          maneuver?: string
+          note?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       messages: {
         Row: {
           created_at: string
@@ -45,6 +75,30 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      mock_test_history: {
+        Row: {
+          created_at: string
+          id: string
+          score_pct: number
+          state: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          score_pct: number
+          state?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          score_pct?: number
+          state?: string | null
+          user_id?: string
+        }
+        Relationships: []
       }
       subscriptions: {
         Row: {
@@ -116,6 +170,36 @@ export type Database = {
           id?: string
           phase?: string | null
           title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_profiles: {
+        Row: {
+          active_state: string
+          created_at: string
+          daily_done: Json
+          daily_done_date: string | null
+          target_date: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          active_state?: string
+          created_at?: string
+          daily_done?: Json
+          daily_done_date?: string | null
+          target_date?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          active_state?: string
+          created_at?: string
+          daily_done?: Json
+          daily_done_date?: string | null
+          target_date?: string | null
           updated_at?: string
           user_id?: string
         }
