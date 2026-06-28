@@ -15,6 +15,7 @@ import { useState } from "react";
 import { createPortalSession } from "@/lib/payments.functions";
 import { getStripeEnvironment } from "@/lib/stripe";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { TargetDatePicker } from "@/components/dashboard/TargetDatePicker";
 import { useTheme } from "@/lib/theme";
 
 export function AccountPanel() {
