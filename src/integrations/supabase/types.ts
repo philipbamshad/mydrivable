@@ -198,6 +198,7 @@ export type Database = {
           daily_done_date: string | null
           skill_mastery: Json
           target_date: string | null
+          theme: string
           updated_at: string
           user_id: string
         }
@@ -208,6 +209,7 @@ export type Database = {
           daily_done_date?: string | null
           skill_mastery?: Json
           target_date?: string | null
+          theme?: string
           updated_at?: string
           user_id: string
         }
@@ -218,6 +220,7 @@ export type Database = {
           daily_done_date?: string | null
           skill_mastery?: Json
           target_date?: string | null
+          theme?: string
           updated_at?: string
           user_id?: string
         }

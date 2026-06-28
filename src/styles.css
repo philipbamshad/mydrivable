@@ -142,7 +142,78 @@
 }
 
 .dark {
-  /* Same — single dark theme */
+  /* Default tokens above apply */
+}
+
+/* ===== Light mode — premium "frosty" aesthetic ===== */
+.light {
+  /* Soft off-white canvas with cool tint */
+  --background: oklch(0.985 0.004 240);
+  --foreground: oklch(0.18 0.018 245);
+
+  --card: oklch(1 0 0 / 0.78);
+  --card-foreground: oklch(0.18 0.018 245);
+  --popover: oklch(0.995 0.003 240);
+  --popover-foreground: oklch(0.18 0.018 245);
+
+  /* Vivid blue that still pops on light bg */
+  --primary: oklch(0.58 0.22 250);
+  --primary-foreground: oklch(0.99 0.005 240);
+
+  --secondary: oklch(0.95 0.012 240);
+  --secondary-foreground: oklch(0.22 0.02 245);
+
+  --muted: oklch(0.94 0.008 240);
+  --muted-foreground: oklch(0.46 0.022 245);
+
+  --accent: oklch(0.92 0.04 240);
+  --accent-foreground: oklch(0.22 0.04 250);
+
+  --destructive: oklch(0.58 0.22 27);
+  --destructive-foreground: oklch(0.99 0.005 320);
+
+  --border: oklch(0.58 0.22 250 / 0.16);
+  --input: oklch(0.96 0.006 240);
+  --ring: oklch(0.62 0.20 245);
+
+  --chart-1: oklch(0.58 0.22 250);
+  --chart-2: oklch(0.68 0.16 210);
+  --chart-3: oklch(0.58 0.22 27);
+  --chart-4: oklch(0.66 0.17 195);
+  --chart-5: oklch(0.55 0.20 280);
+
+  --sidebar: oklch(0.97 0.006 240 / 0.85);
+  --sidebar-foreground: oklch(0.22 0.02 245);
+  --sidebar-primary: oklch(0.58 0.22 250);
+  --sidebar-primary-foreground: oklch(0.99 0.005 240);
+  --sidebar-accent: oklch(0.58 0.22 250 / 0.10);
+  --sidebar-accent-foreground: oklch(0.18 0.02 245);
+  --sidebar-border: oklch(0.58 0.22 250 / 0.14);
+  --sidebar-ring: oklch(0.62 0.20 245);
+
+  --rose-glow: oklch(0.58 0.22 250);
+  --rose-soft: oklch(0.70 0.14 215);
+
+  --shadow-glow-soft:
+    0 0 0 1px oklch(0.58 0.22 250 / 0.12),
+    0 10px 28px -14px oklch(0.30 0.08 245 / 0.25);
+  --shadow-glow-strong:
+    0 0 0 1px oklch(0.58 0.22 250 / 0.25),
+    0 14px 40px -12px oklch(0.30 0.08 245 / 0.30),
+    0 0 22px -6px oklch(0.58 0.22 250 / 0.30);
+
+  --gradient-rose: linear-gradient(135deg,
+    oklch(0.58 0.22 250) 0%,
+    oklch(0.68 0.16 215) 100%);
+
+  /* Soft frosty shell — pale blue corner washes on near-white */
+  --gradient-shell:
+    radial-gradient(900px 600px at 100% 0%,
+      oklch(0.78 0.10 245 / 0.32) 0%, transparent 60%),
+    radial-gradient(700px 500px at 0% 100%,
+      oklch(0.82 0.08 220 / 0.28) 0%, transparent 65%),
+    radial-gradient(1200px 800px at 50% 50%,
+      oklch(0.96 0.008 240 / 0.6) 0%, transparent 70%);
 }
 
 @layer base {
