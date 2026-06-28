@@ -19,6 +19,7 @@ import { useTheme } from "@/lib/theme";
 
 export function AccountPanel() {
   const { state, setState, isPro, openCheckout, targetDate, setTargetDate } = useUserProfile();
+  const { theme } = useTheme();
   const [loadingPortal, setLoadingPortal] = useState(false);
 
   const onChangeState = (next: string) => {
