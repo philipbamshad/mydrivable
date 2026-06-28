@@ -204,8 +204,9 @@ function AddHoursDialog() {
         <DialogHeader>
           <DialogTitle className="font-display">Log Drive Hours</DialogTitle>
           <DialogDescription>
-            Add supervised practice time to your 50-hour log.
+            Add supervised practice time to your driving log.
           </DialogDescription>
+
         </DialogHeader>
         <div className="space-y-4">
           <div>
