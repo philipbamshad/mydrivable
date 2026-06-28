@@ -113,11 +113,11 @@ export function PermitExamSimulator() {
           </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-3 mt-6">
+        <div className="grid grid-cols-2 gap-3 mt-6">
           <Stat label="Questions" value={`${cfg.count}`} />
           <Stat label="Pass score" value={`${cfg.pass}%`} />
-          <Stat label="Pool size" value={`${pool.length}`} />
         </div>
+
 
         <Button
           onClick={() => setRunning(true)}
