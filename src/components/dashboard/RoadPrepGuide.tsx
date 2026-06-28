@@ -146,151 +146,211 @@ const SCENARIOS: Scenario[] = [
       "You're on a short on-ramp. Traffic in the right lane is moving at 65 mph and there's a tight gap two cars ahead.",
     prompt: "What's your safest move?",
     choices: [
-      {
-        id: "a",
-        text: "Match freeway speed on the ramp, signal early, and merge into the gap.",
-        correct: true,
-        tip: "Matching the flow of traffic lets you slip in smoothly without forcing other drivers to brake — the defensive choice every time.",
-      },
-      {
-        id: "b",
-        text: "Slow down at the end of the ramp and wait for a bigger opening.",
-        correct: false,
-        tip: "Stopping on a ramp is dangerous — you lose the runway you need to match speed and risk a rear-end collision.",
-      },
-      {
-        id: "c",
-        text: "Speed past traffic and merge into the left lane.",
-        correct: false,
-        tip: "Cutting across multiple lanes from a merge is illegal in most states and unpredictable to other drivers.",
-      },
+      { id: "a", text: "Match freeway speed on the ramp, signal early, and merge into the gap.", correct: true, tip: "Matching the flow of traffic lets you slip in smoothly without forcing other drivers to brake — the defensive choice every time." },
+      { id: "b", text: "Slow down at the end of the ramp and wait for a bigger opening.", correct: false, tip: "Stopping on a ramp is dangerous — you lose the runway you need to match speed and risk a rear-end collision." },
+      { id: "c", text: "Speed past traffic and merge into the left lane.", correct: false, tip: "Cutting across multiple lanes from a merge is illegal in most states and unpredictable to other drivers." },
     ],
   },
   {
     id: "tailgater",
     title: "Handling a Tailgater",
-    setup:
-      "You're going the speed limit on a two-lane road. A driver is right on your bumper, flashing their lights.",
+    setup: "You're going the speed limit on a two-lane road. A driver is right on your bumper, flashing their lights.",
     prompt: "What's the right response?",
     choices: [
-      {
-        id: "a",
-        text: "Tap your brakes to send them a message.",
-        correct: false,
-        tip: "Brake-checking provokes road rage and can cause a crash you'd be liable for. Never escalate.",
-      },
-      {
-        id: "b",
-        text: "Stay calm, increase your following distance to the car ahead, and move over when it's safe.",
-        correct: true,
-        tip: "More space ahead gives you a buffer if you need to brake gradually instead of suddenly. Letting them pass removes the threat entirely.",
-      },
-      {
-        id: "c",
-        text: "Speed up to put distance between you.",
-        correct: false,
-        tip: "You'd be breaking the speed limit and they'll likely keep pace. Defensive driving means controlling space, not racing.",
-      },
+      { id: "a", text: "Tap your brakes to send them a message.", correct: false, tip: "Brake-checking provokes road rage and can cause a crash you'd be liable for. Never escalate." },
+      { id: "b", text: "Stay calm, increase your following distance to the car ahead, and move over when it's safe.", correct: true, tip: "More space ahead gives you a buffer if you need to brake gradually instead of suddenly. Letting them pass removes the threat entirely." },
+      { id: "c", text: "Speed up to put distance between you.", correct: false, tip: "You'd be breaking the speed limit and they'll likely keep pace. Defensive driving means controlling space, not racing." },
     ],
   },
   {
     id: "blind-intersection",
     title: "Approaching a Blind Intersection",
-    setup:
-      "You're approaching a four-way intersection with parked cars and shrubs blocking the cross street. You have the right of way.",
+    setup: "You're approaching a four-way intersection with parked cars and shrubs blocking the cross street. You have the right of way.",
     prompt: "How do you proceed?",
     choices: [
-      {
-        id: "a",
-        text: "Maintain speed since you have the right of way.",
-        correct: false,
-        tip: "Right of way doesn't protect you from a driver who doesn't see you. Visibility wins over right of way every time.",
-      },
-      {
-        id: "b",
-        text: "Cover the brake, slow down, and scan left-right-left before entering.",
-        correct: true,
-        tip: "Covering the brake cuts your reaction time, and the slow approach buys you space to react to anyone running the cross street.",
-      },
-      {
-        id: "c",
-        text: "Honk to alert other drivers.",
-        correct: false,
-        tip: "A horn doesn't make you visible — it just notifies. You still need to slow down and scan.",
-      },
+      { id: "a", text: "Maintain speed since you have the right of way.", correct: false, tip: "Right of way doesn't protect you from a driver who doesn't see you. Visibility wins over right of way every time." },
+      { id: "b", text: "Cover the brake, slow down, and scan left-right-left before entering.", correct: true, tip: "Covering the brake cuts your reaction time, and the slow approach buys you space to react to anyone running the cross street." },
+      { id: "c", text: "Honk to alert other drivers.", correct: false, tip: "A horn doesn't make you visible — it just notifies. You still need to slow down and scan." },
     ],
   },
   {
     id: "wet-road",
     title: "Sudden Rain on the Highway",
-    setup:
-      "It starts pouring while you're cruising at 70 mph. The road surface looks glossy and your wipers can barely keep up.",
+    setup: "It starts pouring while you're cruising at 70 mph. The road surface looks glossy and your wipers can barely keep up.",
     prompt: "Best response?",
     choices: [
-      {
-        id: "a",
-        text: "Ease off the gas gradually, increase following distance, and turn on low-beam headlights.",
-        correct: true,
-        tip: "Gradual deceleration prevents hydroplaning and low-beams improve your visibility to others without glaring off the rain.",
-      },
-      {
-        id: "b",
-        text: "Brake firmly to drop to a safe speed quickly.",
-        correct: false,
-        tip: "Hard braking on wet pavement is the fastest way to lose traction and skid. Always shed speed slowly in the rain.",
-      },
-      {
-        id: "c",
-        text: "Switch on your high-beams to see better.",
-        correct: false,
-        tip: "High-beams reflect off the rain and reduce your visibility. Low-beams (or fog lights) are the right call.",
-      },
+      { id: "a", text: "Ease off the gas gradually, increase following distance, and turn on low-beam headlights.", correct: true, tip: "Gradual deceleration prevents hydroplaning and low-beams improve your visibility to others without glaring off the rain." },
+      { id: "b", text: "Brake firmly to drop to a safe speed quickly.", correct: false, tip: "Hard braking on wet pavement is the fastest way to lose traction and skid. Always shed speed slowly in the rain." },
+      { id: "c", text: "Switch on your high-beams to see better.", correct: false, tip: "High-beams reflect off the rain and reduce your visibility. Low-beams (or fog lights) are the right call." },
     ],
   },
   {
     id: "yellow-light",
     title: "Yellow Light Decision",
-    setup:
-      "You're 80 feet from a signal when it turns yellow. You're going 35 mph and there's a car close behind you.",
+    setup: "You're 80 feet from a signal when it turns yellow. You're going 35 mph and there's a car close behind you.",
     prompt: "What do you do?",
     choices: [
-      {
-        id: "a",
-        text: "Slam the brakes to stop before the line.",
-        correct: false,
-        tip: "Slamming the brakes with a car close behind invites a rear-end collision. The right call depends on whether you can stop safely.",
-      },
-      {
-        id: "b",
-        text: "Assess: if you can stop smoothly, do it. If not, maintain speed and clear the intersection before red.",
-        correct: true,
-        tip: "Yellow means 'clear if you can't safely stop.' Check your stopping distance and the car behind before deciding.",
-      },
-      {
-        id: "c",
-        text: "Accelerate hard to beat the light.",
-        correct: false,
-        tip: "Speeding through a yellow is reckless and gets you a ticket if it turns red mid-intersection.",
-      },
+      { id: "a", text: "Slam the brakes to stop before the line.", correct: false, tip: "Slamming the brakes with a car close behind invites a rear-end collision. The right call depends on whether you can stop safely." },
+      { id: "b", text: "Assess: if you can stop smoothly, do it. If not, maintain speed and clear the intersection before red.", correct: true, tip: "Yellow means 'clear if you can't safely stop.' Check your stopping distance and the car behind before deciding." },
+      { id: "c", text: "Accelerate hard to beat the light.", correct: false, tip: "Speeding through a yellow is reckless and gets you a ticket if it turns red mid-intersection." },
+    ],
+  },
+  {
+    id: "turn-signal-timing",
+    title: "Turn Signal Timing",
+    setup: "You're approaching a right turn at a residential intersection about 200 feet ahead.",
+    prompt: "When should you start your turn signal?",
+    choices: [
+      { id: "a", text: "Right as you begin the turn.", correct: false, tip: "Signaling at the turn gives drivers behind you no warning to slow down — it's also illegal in most states." },
+      { id: "b", text: "At least 100 feet before the turn.", correct: true, tip: "Most state laws require signaling at least 100 feet ahead (about 5 seconds at city speed) so drivers behind and ahead can react." },
+      { id: "c", text: "Only if there's a car behind you.", correct: false, tip: "Signal every time — pedestrians, cyclists, and cross-traffic depend on it too." },
+    ],
+  },
+  {
+    id: "roundabout",
+    title: "Entering a Roundabout",
+    setup: "You approach a single-lane roundabout. A car is already circulating from your left.",
+    prompt: "What do you do?",
+    choices: [
+      { id: "a", text: "Yield to the circulating car, then enter when there's a safe gap.", correct: true, tip: "Traffic already in the roundabout always has the right of way. Yield, find a gap, and merge smoothly without stopping if possible." },
+      { id: "b", text: "Stop completely and wait for the roundabout to clear.", correct: false, tip: "Roundabouts aren't stop signs — stopping unnecessarily creates rear-end risk. Yield and flow when safe." },
+      { id: "c", text: "Enter quickly to claim your spot.", correct: false, tip: "You don't have right of way on entry. Forcing in causes crashes and is the #1 roundabout violation." },
+    ],
+  },
+  {
+    id: "lane-choice-highway",
+    title: "Choosing a Highway Lane",
+    setup: "You're cruising on a three-lane highway at the speed limit, not passing anyone.",
+    prompt: "Which lane should you be in?",
+    choices: [
+      { id: "a", text: "The far-left lane — it's the fastest.", correct: false, tip: "The left lane is for passing only in most states. Cruising there blocks faster traffic and can earn you a ticket." },
+      { id: "b", text: "The middle or right lane, leaving the left for passing.", correct: true, tip: "Keep right except to pass. The middle lane is fine for steady travel, and the right lane is the default cruising lane." },
+      { id: "c", text: "Whichever lane has the fewest cars.", correct: false, tip: "Lane choice is about traffic law and predictability, not convenience. Stay right, use left to pass." },
+    ],
+  },
+  {
+    id: "four-way-stop",
+    title: "Four-Way Stop Arrival",
+    setup: "You and another car arrive at a four-way stop at exactly the same time. The other car is to your right.",
+    prompt: "Who goes first?",
+    choices: [
+      { id: "a", text: "You do — your direction has priority.", correct: false, tip: "There's no directional priority at a four-way stop. When tied, the car on the right goes first." },
+      { id: "b", text: "The car on the right goes first.", correct: true, tip: "Standard rule: when two cars arrive at the same time, yield to the car on your right." },
+      { id: "c", text: "Whoever waves the other through first.", correct: false, tip: "Waving creates confusion and liability. Follow the rule, not gestures — the car on the right has the right of way." },
+    ],
+  },
+  {
+    id: "school-zone",
+    title: "School Zone Speed",
+    setup: "You're driving through a school zone at 2:45 PM and the yellow lights are flashing.",
+    prompt: "What's the right action?",
+    choices: [
+      { id: "a", text: "Slow to the posted school-zone speed limit (usually 15-25 mph).", correct: true, tip: "Flashing lights mean the reduced speed limit is active. Kids can dart out unpredictably — slower speed = shorter stopping distance." },
+      { id: "b", text: "Maintain the regular street speed limit.", correct: false, tip: "Flashing lights override the regular limit. Ignoring them is a serious moving violation with doubled fines." },
+      { id: "c", text: "Stop completely and wait for the lights to turn off.", correct: false, tip: "You don't need to stop — just slow down to the posted reduced limit and stay alert for pedestrians." },
+    ],
+  },
+  {
+    id: "pedestrian-crosswalk",
+    title: "Pedestrian at a Crosswalk",
+    setup: "A pedestrian steps off the curb into an unmarked crosswalk on a residential street.",
+    prompt: "What's required?",
+    choices: [
+      { id: "a", text: "Honk to warn them and keep driving.", correct: false, tip: "Pedestrians have right of way in any crosswalk, marked or not. Honking instead of yielding is both illegal and rude." },
+      { id: "b", text: "Stop and yield until they're safely across.", correct: true, tip: "Every intersection has an unmarked crosswalk by law. Yield until the pedestrian is fully clear of your lane." },
+      { id: "c", text: "Only stop if they're already in your lane.", correct: false, tip: "You must yield as soon as they enter the crosswalk — not wait until they're in your path." },
+    ],
+  },
+  {
+    id: "fog",
+    title: "Driving in Heavy Fog",
+    setup: "You're on a rural road and fog has rolled in. Visibility drops to about 100 feet.",
+    prompt: "Best practice?",
+    choices: [
+      { id: "a", text: "Turn on high-beams to see further.", correct: false, tip: "High-beams reflect off fog droplets and reduce your visibility. Use low-beams or fog lights." },
+      { id: "b", text: "Slow down, use low-beams, and increase following distance.", correct: true, tip: "Speed should match visibility. Low-beams cut under the fog, and extra following distance gives you time to react." },
+      { id: "c", text: "Use hazard lights while moving.", correct: false, tip: "Hazards while driving is illegal in many states and confuses drivers behind you. Save them for stopped vehicles." },
+    ],
+  },
+  {
+    id: "emergency-vehicle",
+    title: "Emergency Vehicle Approaching",
+    setup: "You hear sirens and see an ambulance approaching from behind with lights flashing.",
+    prompt: "What should you do?",
+    choices: [
+      { id: "a", text: "Speed up to get out of the way.", correct: false, tip: "Speeding up is dangerous and often illegal. Pull over and stop — that's what the siren is asking for." },
+      { id: "b", text: "Pull to the right shoulder and stop until it passes.", correct: true, tip: "Move-over laws require yielding to emergency vehicles by pulling right and stopping. This clears the lane safely." },
+      { id: "c", text: "Stop immediately in your lane.", correct: false, tip: "Stopping mid-lane blocks the emergency vehicle. Always pull over to the right shoulder first." },
+    ],
+  },
+  {
+    id: "left-turn-arrow",
+    title: "Unprotected Left Turn",
+    setup: "You're in the left-turn lane at a green light (solid green, no arrow). Oncoming traffic is steady.",
+    prompt: "How do you handle it?",
+    choices: [
+      { id: "a", text: "Pull into the intersection and wait for a safe gap.", correct: true, tip: "Enter the intersection so you can clear it on yellow if needed. Yield to oncoming traffic until a safe gap opens." },
+      { id: "b", text: "Wait behind the line until oncoming traffic clears completely.", correct: false, tip: "Waiting behind the line means you may never get through. Enter the intersection so you can complete the turn." },
+      { id: "c", text: "Turn immediately — you have the green.", correct: false, tip: "Solid green for a left turn means yield to oncoming traffic. Turning without yielding causes head-on crashes." },
+    ],
+  },
+  {
+    id: "school-bus",
+    title: "School Bus with Flashing Lights",
+    setup: "You're behind a school bus on a two-lane road. It stops and extends its stop sign with red flashing lights.",
+    prompt: "What's required?",
+    choices: [
+      { id: "a", text: "Stop and stay stopped until the lights stop flashing.", correct: true, tip: "On undivided roads, all traffic in both directions must stop until the red lights stop flashing and the stop sign retracts." },
+      { id: "b", text: "Slow down and pass carefully on the left.", correct: false, tip: "Passing a stopped school bus with flashing red lights is illegal and extremely dangerous — kids cross unpredictably." },
+      { id: "c", text: "Stop only if you see children.", correct: false, tip: "You must stop whether or not you see children. The flashing red lights are the legal trigger." },
+    ],
+  },
+  {
+    id: "merging-traffic",
+    title: "Car Merging Into Your Lane",
+    setup: "You're in the right lane of a freeway. A car on the on-ramp is signaling to merge into your lane.",
+    prompt: "Best response?",
+    choices: [
+      { id: "a", text: "Hold your speed — they need to yield to you.", correct: false, tip: "Technically merging traffic yields, but defensive drivers help create space. Forcing them off the ramp causes crashes." },
+      { id: "b", text: "Adjust your speed or change lanes if safe to make room.", correct: true, tip: "Cooperative merging keeps traffic flowing smoothly. Move left if possible, or adjust speed to open a gap." },
+      { id: "c", text: "Speed up to close the gap so they go behind you.", correct: false, tip: "Speeding up to block a merger is aggressive and a leading cause of merge-area crashes." },
+    ],
+  },
+  {
+    id: "parallel-parking",
+    title: "Parallel Parking Setup",
+    setup: "You found a parallel spot between two cars on a busy street.",
+    prompt: "What's the first step?",
+    choices: [
+      { id: "a", text: "Signal, pull up parallel to the car in front of the spot, leaving about 2 feet of space.", correct: true, tip: "Aligning with the front car gives you the proper pivot point. Signal so traffic behind knows you're parking." },
+      { id: "b", text: "Pull directly into the spot nose-first.", correct: false, tip: "Nose-first into a parallel spot rarely fits and blocks the lane. Always back in from alongside." },
+      { id: "c", text: "Reverse straight into the spot from behind.", correct: false, tip: "You need the angle from alongside to swing in cleanly. Reversing straight in won't clear the rear car." },
     ],
   },
 ];
 
 function ScenarioSimulator() {
-  const [scenarioId, setScenarioId] = useState<string>(SCENARIOS[0].id);
+  const [scenarioId, setScenarioId] = useState<string>(
+    () => SCENARIOS[Math.floor(Math.random() * SCENARIOS.length)].id,
+  );
   const [picked, setPicked] = useState<string | null>(null);
 
   const scenario = useMemo(
     () => SCENARIOS.find((s) => s.id === scenarioId)!,
     [scenarioId],
   );
+  const selected = picked
+    ? scenario.choices.find((c) => c.id === picked) ?? null
+    : null;
 
-  const selected = picked ? scenario.choices.find((c) => c.id === picked) : null;
-
-  const pickScenario = (id: string) => {
-    setScenarioId(id);
+  const nextScenario = () => {
+    const pool = SCENARIOS.filter((s) => s.id !== scenarioId);
+    const next = pool[Math.floor(Math.random() * pool.length)];
+    setScenarioId(next.id);
     setPicked(null);
   };
+
+  const correctChoice = scenario.choices.find((c) => c.correct)!;
 
   return (
     <Card className="glass glow-soft rounded-2xl p-6">
@@ -300,30 +360,10 @@ function ScenarioSimulator() {
             Scenario Simulator
           </p>
           <p className="text-xs text-muted-foreground mt-1">
-            Practice defensive decisions before you meet them on the road.
+            One scenario at a time — answer, learn, move on.
           </p>
         </div>
         <Sparkles className="w-5 h-5 text-primary" />
-      </div>
-
-      <div className="flex flex-wrap gap-1.5 mb-5">
-        {SCENARIOS.map((s) => {
-          const active = s.id === scenarioId;
-          return (
-            <button
-              key={s.id}
-              onClick={() => pickScenario(s.id)}
-              className={cn(
-                "px-3 py-1.5 rounded-full border text-[11px] font-medium press transition-all",
-                active
-                  ? "border-primary bg-primary/15 text-primary shadow-[0_0_12px_-3px_var(--color-primary)]"
-                  : "border-border bg-card/40 text-muted-foreground hover:border-primary/40",
-              )}
-            >
-              {s.title}
-            </button>
-          );
-        })}
       </div>
 
       <div className="rounded-xl border border-border bg-card/40 p-4 mb-4">
@@ -339,28 +379,28 @@ function ScenarioSimulator() {
       <div className="space-y-2">
         {scenario.choices.map((c) => {
           const isPicked = picked === c.id;
-          const reveal = isPicked && selected;
-          const state = !reveal
-            ? "idle"
-            : c.correct
-              ? "correct"
-              : "wrong";
+          let state: "idle" | "correct" | "wrong" | "reveal-correct" = "idle";
+          if (selected) {
+            if (isPicked && c.correct) state = "correct";
+            else if (isPicked && !c.correct) state = "wrong";
+            else if (!selected.correct && c.correct) state = "reveal-correct";
+          }
           return (
             <button
               key={c.id}
-              onClick={() => setPicked(c.id)}
-              disabled={picked !== null && c.correct && selected?.correct}
+              onClick={() => !selected && setPicked(c.id)}
+              disabled={!!selected}
               className={cn(
-                "w-full text-left rounded-xl border p-3 press transition-all",
-                state === "idle" &&
-                  "border-border bg-background/40 hover:border-primary/40",
-                state === "correct" &&
+                "w-full text-left rounded-xl border p-3 transition-all",
+                !selected && "press hover:border-primary/40",
+                state === "idle" && "border-border bg-background/40",
+                (state === "correct" || state === "reveal-correct") &&
                   "border-emerald-500/60 bg-emerald-500/10",
                 state === "wrong" && "border-red-500/60 bg-red-500/10",
               )}
             >
               <div className="flex items-start gap-2.5">
-                {state === "correct" ? (
+                {state === "correct" || state === "reveal-correct" ? (
                   <CheckCircle2 className="w-4 h-4 mt-0.5 text-emerald-400 shrink-0" />
                 ) : state === "wrong" ? (
                   <XCircle className="w-4 h-4 mt-0.5 text-red-400 shrink-0" />
@@ -380,28 +420,35 @@ function ScenarioSimulator() {
             "mt-4 rounded-xl border p-3.5 text-sm leading-relaxed",
             selected.correct
               ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-100"
-              : "border-amber-500/40 bg-amber-500/10 text-amber-100",
+              : "border-red-500/40 bg-red-500/10 text-red-100",
           )}
         >
           <p
             className={cn(
               "text-[10px] uppercase tracking-[0.25em] font-bold mb-1",
-              selected.correct ? "text-emerald-300" : "text-amber-300",
+              selected.correct ? "text-emerald-300" : "text-red-300",
             )}
           >
-            {selected.correct ? "Safe choice" : "Try again"}
+            {selected.correct ? "Correct" : "Not quite"}
           </p>
-          <p>{selected.tip}</p>
+          <p>
+            {selected.correct ? selected.tip : correctChoice.tip}
+          </p>
           {!selected.correct && (
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => setPicked(null)}
-              className="press mt-3 border-amber-500/40 hover:border-amber-400"
-            >
-              <RefreshCw className="w-3 h-3 mr-1.5" /> Try again
-            </Button>
+            <p className="mt-2 text-xs text-red-200/80">
+              <span className="font-semibold text-emerald-300">
+                Correct answer:
+              </span>{" "}
+              {correctChoice.text}
+            </p>
           )}
+          <Button
+            onClick={nextScenario}
+            className="press mt-4 w-full bg-primary text-primary-foreground hover:bg-primary"
+            style={{ boxShadow: "0 0 18px -4px var(--color-primary)" }}
+          >
+            Next Scenario <RefreshCw className="w-4 h-4 ml-1.5" />
+          </Button>
         </div>
       )}
     </Card>
