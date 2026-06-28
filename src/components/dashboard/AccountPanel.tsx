@@ -8,12 +8,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Globe, Crown, CheckCircle2, Lock, Sparkles, Loader2 } from "lucide-react";
+import { Globe, Crown, CheckCircle2, Lock, Sparkles, Loader2, Sun, Moon } from "lucide-react";
 import { toast } from "sonner";
 import { useUserProfile, US_STATES } from "@/lib/user-profile";
 import { useState } from "react";
 import { createPortalSession } from "@/lib/payments.functions";
 import { getStripeEnvironment } from "@/lib/stripe";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import { useTheme } from "@/lib/theme";
 
 export function AccountPanel() {
   const { state, setState, isPro, openCheckout, targetDate, setTargetDate } = useUserProfile();
