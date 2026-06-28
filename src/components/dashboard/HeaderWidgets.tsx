@@ -1,8 +1,8 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { CalendarDays, Target } from "lucide-react";
 import { useUserProfile } from "@/lib/user-profile";
+import { TargetDatePicker } from "@/components/dashboard/TargetDatePicker";
 import logo from "@/assets/drivable-logo.png";
 
 
@@ -18,7 +18,6 @@ function EmptyRing({ icon: Icon }: { icon: typeof Target }) {
 
 export function HeaderWidgets() {
   const { targetDate, setTargetDate } = useUserProfile();
-  const [editing, setEditing] = useState(false);
 
   const daysLeft = useMemo(() => {
     if (!targetDate) return null;
