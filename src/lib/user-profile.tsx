@@ -18,12 +18,25 @@ import {
 } from "@/components/ui/dialog";
 import { StripeEmbeddedCheckout } from "@/components/payments/StripeEmbeddedCheckout";
 
+export type DriveEnvironment = "city" | "highway" | "rural";
+export type DriveConditions = "day" | "night";
+
 export type DriveSession = {
   id: string;
   date: string;
   hours: number;
+  minutes: number;
   maneuver: string;
   note: string;
+  environment: DriveEnvironment | null;
+  conditions: DriveConditions | null;
+  maneuvers: string[];
+  supervisorApproved: boolean;
+};
+
+export type SkillMasteryEntry = {
+  mastered: boolean;
+  verified: boolean;
 };
 
 export type ProfileState = {
@@ -33,6 +46,16 @@ export type ProfileState = {
   driveSessions: DriveSession[];
   dailyDone: Record<string, boolean>;
   dailyDoneDate: string | null;
+  skillMastery: Record<string, SkillMasteryEntry>;
+};
+
+export type NewDriveSession = {
+  minutes: number;
+  environment: DriveEnvironment;
+  conditions: DriveConditions;
+  maneuvers: string[];
+  note?: string;
+  supervisorApproved?: boolean;
 };
 
 type ProfileContextValue = ProfileState & {
@@ -46,8 +69,11 @@ type ProfileContextValue = ProfileState & {
   unlockPro: () => void;
   openCheckout: (priceId?: string) => void;
   recordQuizScore: (pct: number) => void;
-  addDriveSession: (s: Omit<DriveSession, "id" | "date">) => void;
+  addDriveSession: (s: NewDriveSession) => void;
+  updateDriveSession: (id: string, patch: Partial<NewDriveSession>) => void;
+  deleteDriveSession: (id: string) => void;
   toggleDailyTask: (taskId: string, dateKey: string) => void;
+  setSkillMastery: (skillId: string, patch: Partial<SkillMasteryEntry>) => void;
   reset: () => void;
 };
 
@@ -58,10 +84,41 @@ const DEFAULT: ProfileState = {
   driveSessions: [],
   dailyDone: {},
   dailyDoneDate: null,
+  skillMastery: {},
 };
 
 const Ctx = createContext<ProfileContextValue | null>(null);
 const PRO_PASS_PRICE_ID = "pro_pass_monthly";
+
+type DrivingLogRow = {
+  id: string;
+  hours: number | string;
+  minutes: number | null;
+  maneuver: string | null;
+  note: string | null;
+  environment: string | null;
+  conditions: string | null;
+  maneuvers: string[] | null;
+  supervisor_approved: boolean | null;
+  logged_at: string;
+};
+
+function rowToSession(r: DrivingLogRow): DriveSession {
+  const hours = Number(r.hours) || 0;
+  const minutes = r.minutes ?? Math.round(hours * 60);
+  return {
+    id: r.id,
+    date: r.logged_at,
+    hours,
+    minutes,
+    maneuver: r.maneuver ?? "",
+    note: r.note ?? "",
+    environment: (r.environment as DriveEnvironment | null) ?? null,
+    conditions: (r.conditions as DriveConditions | null) ?? null,
+    maneuvers: r.maneuvers ?? [],
+    supervisorApproved: !!r.supervisor_approved,
+  };
+}
 
 export function UserProfileProvider({ children }: { children: ReactNode }) {
   const [profile, setProfile] = useState<ProfileState>(DEFAULT);
@@ -99,10 +156,11 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
     let cancelled = false;
 
     (async () => {
-      // Ensure a profile row exists.
       const { data: existing } = await supabase
         .from("user_profiles" as never)
-        .select("active_state, target_date, daily_done, daily_done_date")
+        .select(
+          "active_state, target_date, daily_done, daily_done_date, skill_mastery",
+        )
         .eq("user_id", userId)
         .maybeSingle();
 
@@ -112,6 +170,7 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
             target_date: string | null;
             daily_done: Record<string, boolean> | null;
             daily_done_date: string | null;
+            skill_mastery: Record<string, SkillMasteryEntry> | null;
           }
         | null;
 
@@ -124,6 +183,7 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
           target_date: null,
           daily_done: {},
           daily_done_date: null,
+          skill_mastery: {},
         };
       }
 
@@ -136,7 +196,9 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
           .limit(30),
         supabase
           .from("driving_logs" as never)
-          .select("id, hours, maneuver, note, logged_at")
+          .select(
+            "id, hours, minutes, maneuver, note, environment, conditions, maneuvers, supervisor_approved, logged_at",
+          )
           .eq("user_id", userId)
           .order("logged_at", { ascending: true }),
       ]);
@@ -153,25 +215,10 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
         quizScores: ((scores as { score_pct: number }[] | null) ?? []).map(
           (r) => r.score_pct,
         ),
-        driveSessions: (
-          (logs as
-            | {
-                id: string;
-                hours: number;
-                maneuver: string | null;
-                note: string | null;
-                logged_at: string;
-              }[]
-            | null) ?? []
-        ).map((r) => ({
-          id: r.id,
-          date: r.logged_at,
-          hours: Number(r.hours),
-          maneuver: r.maneuver ?? "",
-          note: r.note ?? "",
-        })),
+        driveSessions: ((logs as DrivingLogRow[] | null) ?? []).map(rowToSession),
         dailyDone,
         dailyDoneDate: dailyDate,
+        skillMastery: prof.skill_mastery ?? {},
       });
       setHydrating(false);
     })();
@@ -181,7 +228,7 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
     };
   }, [userId]);
 
-  // ---- Subscription / Pro status (unchanged) ----
+  // ---- Subscription / Pro status ----
   const refreshPro = useCallback(async (uid: string) => {
     const { data } = await supabase
       .from("subscriptions" as never)
@@ -285,42 +332,116 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  const addDriveSession = useCallback(
-    (s: Omit<DriveSession, "id" | "date">) => {
+  const addDriveSession = useCallback((s: NewDriveSession) => {
+    const uid = activeUserRef.current;
+    const tempId = crypto.randomUUID();
+    const date = new Date().toISOString();
+    const hours = Math.round((s.minutes / 60) * 100) / 100;
+    const summary =
+      s.maneuvers.length > 0
+        ? `${s.environment.toUpperCase()} · ${s.maneuvers.length} maneuver${s.maneuvers.length === 1 ? "" : "s"}`
+        : `${s.environment.toUpperCase()} · ${s.conditions}`;
+    const optimistic: DriveSession = {
+      id: tempId,
+      date,
+      hours,
+      minutes: s.minutes,
+      maneuver: summary,
+      note: s.note ?? "",
+      environment: s.environment,
+      conditions: s.conditions,
+      maneuvers: s.maneuvers,
+      supervisorApproved: s.supervisorApproved ?? false,
+    };
+    setProfile((p) => ({
+      ...p,
+      driveSessions: [...p.driveSessions, optimistic],
+    }));
+    if (uid) {
+      void supabase
+        .from("driving_logs" as never)
+        .insert({
+          user_id: uid,
+          hours,
+          minutes: s.minutes,
+          maneuver: summary,
+          note: s.note ?? "",
+          environment: s.environment,
+          conditions: s.conditions,
+          maneuvers: s.maneuvers,
+          supervisor_approved: s.supervisorApproved ?? false,
+          logged_at: date,
+        } as never)
+        .select("id")
+        .single()
+        .then(({ data }) => {
+          const row = data as { id: string } | null;
+          if (!row) return;
+          setProfile((p) => ({
+            ...p,
+            driveSessions: p.driveSessions.map((ds) =>
+              ds.id === tempId ? { ...ds, id: row.id } : ds,
+            ),
+          }));
+        });
+    }
+  }, []);
+
+  const updateDriveSession = useCallback(
+    (id: string, patch: Partial<NewDriveSession>) => {
       const uid = activeUserRef.current;
-      const tempId = crypto.randomUUID();
-      const date = new Date().toISOString();
-      const optimistic: DriveSession = { ...s, id: tempId, date };
       setProfile((p) => ({
         ...p,
-        driveSessions: [...p.driveSessions, optimistic],
+        driveSessions: p.driveSessions.map((ds) => {
+          if (ds.id !== id) return ds;
+          const minutes = patch.minutes ?? ds.minutes;
+          const hours = Math.round((minutes / 60) * 100) / 100;
+          return {
+            ...ds,
+            minutes,
+            hours,
+            environment: patch.environment ?? ds.environment,
+            conditions: patch.conditions ?? ds.conditions,
+            maneuvers: patch.maneuvers ?? ds.maneuvers,
+            note: patch.note ?? ds.note,
+            supervisorApproved:
+              patch.supervisorApproved ?? ds.supervisorApproved,
+          };
+        }),
       }));
       if (uid) {
+        const dbPatch: Record<string, unknown> = {};
+        if (patch.minutes !== undefined) {
+          dbPatch.minutes = patch.minutes;
+          dbPatch.hours = Math.round((patch.minutes / 60) * 100) / 100;
+        }
+        if (patch.environment !== undefined)
+          dbPatch.environment = patch.environment;
+        if (patch.conditions !== undefined)
+          dbPatch.conditions = patch.conditions;
+        if (patch.maneuvers !== undefined) dbPatch.maneuvers = patch.maneuvers;
+        if (patch.note !== undefined) dbPatch.note = patch.note;
+        if (patch.supervisorApproved !== undefined)
+          dbPatch.supervisor_approved = patch.supervisorApproved;
         void supabase
           .from("driving_logs" as never)
-          .insert({
-            user_id: uid,
-            hours: s.hours,
-            maneuver: s.maneuver,
-            note: s.note,
-            logged_at: date,
-          } as never)
-          .select("id")
-          .single()
-          .then(({ data }) => {
-            const row = data as { id: string } | null;
-            if (!row) return;
-            setProfile((p) => ({
-              ...p,
-              driveSessions: p.driveSessions.map((ds) =>
-                ds.id === tempId ? { ...ds, id: row.id } : ds,
-              ),
-            }));
-          });
+          .update(dbPatch as never)
+          .eq("id", id);
       }
     },
     [],
   );
+
+  const deleteDriveSession = useCallback((id: string) => {
+    const uid = activeUserRef.current;
+    setProfile((p) => ({
+      ...p,
+      driveSessions: p.driveSessions.filter((ds) => ds.id !== id),
+    }));
+    if (uid) {
+      void supabase.from("driving_logs" as never).delete().eq("id", id);
+    }
+  }, []);
 
   const toggleDailyTask = useCallback(
     (taskId: string, dateKey: string) => {
@@ -334,6 +455,25 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
         daily_done: nextDone,
         daily_done_date: dateKey,
       });
+    },
+    [persistProfileFields],
+  );
+
+  const setSkillMastery = useCallback(
+    (skillId: string, patch: Partial<SkillMasteryEntry>) => {
+      let nextMap: Record<string, SkillMasteryEntry> = {};
+      setProfile((p) => {
+        const prev = p.skillMastery[skillId] ?? {
+          mastered: false,
+          verified: false,
+        };
+        nextMap = {
+          ...p.skillMastery,
+          [skillId]: { ...prev, ...patch },
+        };
+        return { ...p, skillMastery: nextMap };
+      });
+      void persistProfileFields({ skill_mastery: nextMap });
     },
     [persistProfileFields],
   );
@@ -367,7 +507,10 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
     openCheckout,
     recordQuizScore,
     addDriveSession,
+    updateDriveSession,
+    deleteDriveSession,
     toggleDailyTask,
+    setSkillMastery,
     reset,
   };
 
