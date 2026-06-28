@@ -92,7 +92,7 @@ export function DailyChecklist() {
           return (
             <li key={it.id}>
               <button
-                onClick={() => setDone((prev) => ({ ...prev, [it.id]: !prev[it.id] }))}
+                onClick={() => setDoneToggle(it.id)}
                 className={cn(
                   "w-full flex items-center gap-3 p-3 rounded-xl border text-left transition-all duration-200 press min-h-11",
                   isDone ? "border-primary/40 bg-primary/10" : "border-border bg-card/40 hover:border-primary/30",
