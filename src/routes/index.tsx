@@ -149,11 +149,12 @@ function Hero() {
       </div>
 
 
-      <div className="mx-auto mb-10 inline-flex max-w-[640px] items-center gap-3 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-sm backdrop-blur-xl">
+      <div className="mx-auto mb-10 inline-flex max-w-[640px] items-center gap-3 rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-sm backdrop-blur-xl">
         <span className="inline-flex items-center gap-1.5 text-blue-300">
-          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-blue-400 shadow-[0_0_8px_rgba(96,165,250,0.9)]" />
+          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-blue-400" />
           New
         </span>
+
         <span className="hidden text-white/80 sm:inline">
           Full-length state-specific Mock Permit Exam simulator — now live
         </span>
