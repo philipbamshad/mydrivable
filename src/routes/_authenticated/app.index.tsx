@@ -160,3 +160,21 @@ function DashboardSkeleton() {
     </div>
   );
 }
+
+/**
+ * Soft, expansive eclipse-style backlight that lifts a dashboard section off
+ * the canvas. Sits behind content via -z-10; never affects layout or input.
+ */
+function AmbientGlow() {
+  return (
+    <div
+      aria-hidden
+      className="pointer-events-none absolute left-1/2 top-0 -z-10 h-[640px] w-[900px] max-w-[120%] -translate-x-1/2 -translate-y-24 rounded-full blur-3xl opacity-70"
+      style={{
+        background:
+          "radial-gradient(closest-side, color-mix(in oklab, var(--color-primary) 28%, transparent), color-mix(in oklab, var(--color-primary) 10%, transparent) 55%, transparent 78%)",
+      }}
+    />
+  );
+}
+
