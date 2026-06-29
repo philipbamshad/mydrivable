@@ -161,23 +161,16 @@ function Hero() {
       </div>
 
       <div className="relative mx-auto max-w-5xl">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-1/2 mx-auto h-[520px] w-[900px] -translate-y-1/2 rounded-full blur-3xl"
-          style={{
-            background:
-              "radial-gradient(closest-side, rgba(59,130,246,0.55), transparent 60%), radial-gradient(closest-side at 20% 40%, rgba(37,99,235,0.5), transparent 65%), radial-gradient(closest-side at 80% 60%, rgba(14,165,233,0.45), transparent 65%)",
-          }}
-        />
         <h1 className="relative text-5xl font-semibold leading-[1.02] tracking-[-0.03em] sm:text-7xl">
           Master Your Permit and
           <br />
           Ace Your Road Test on the{" "}
-          <span className="italic font-medium [font-family:'Cormorant_Garamond',Georgia,serif] bg-gradient-to-r from-blue-300 via-blue-400 to-cyan-300 bg-clip-text text-transparent">
+          <span className="italic font-medium [font-family:'Cormorant_Garamond',Georgia,serif] text-blue-300">
             First Try
           </span>
         </h1>
       </div>
+
 
       <p className="relative mx-auto mt-8 max-w-2xl text-lg text-white/70">
         An AI driving coach trained on every official DMV handbook —
