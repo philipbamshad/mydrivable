@@ -145,6 +145,16 @@ function Nav() {
 function Hero() {
   return (
     <section className="relative overflow-hidden px-6 pt-24 pb-28 text-center">
+      {/* Ambient hero glow — concentrated top-center, fading down through the headline */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute left-1/2 top-[120px] -z-10 h-[900px] w-[1300px] max-w-[140vw] -translate-x-1/2 rounded-full bg-blue-500/25 blur-[140px]"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute left-1/2 top-[160px] -z-10 h-[560px] w-[820px] max-w-[110vw] -translate-x-1/2 rounded-full bg-blue-600/35 blur-[110px]"
+      />
+
       <div className="mx-auto mb-10 grid h-24 w-24 place-items-center rounded-3xl">
         <img src={logo} alt="Drivable" className="h-24 w-24 rounded-3xl" />
       </div>
@@ -162,14 +172,6 @@ function Hero() {
       </div>
 
       <div className="relative mx-auto max-w-5xl">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[900px] w-[1400px] max-w-[140vw] -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-500/25 blur-[120px]"
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[560px] w-[900px] max-w-[110vw] -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-600/30 blur-[100px]"
-        />
         <h1 className="relative text-5xl font-semibold leading-[1.02] tracking-[-0.03em] sm:text-7xl">
           Master Your Permit and
           <br />
