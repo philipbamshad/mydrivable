@@ -338,25 +338,12 @@ function Pricing() {
       </div>
 
       <div className="mx-auto max-w-md">
-        <div
-          className="relative rounded-[28px] p-[1.5px]"
-          style={{
-            background: "linear-gradient(135deg, #60a5fa 0%, #2563eb 50%, #0ea5e9 100%)",
-          }}
-        >
-          <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-blue-500 to-cyan-400 px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-white shadow-[0_8px_24px_-8px_rgba(59,130,246,0.8)]">
+        <div className="relative rounded-[28px] border border-white/10 bg-white/[0.02]">
+          <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-[#1e40af] border border-white/10 px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-white">
             Pro Pass
           </span>
-          <div className="rounded-[26px] bg-[#070b18]/85 p-8 backdrop-blur-xl">
-            <div
-              className="rounded-2xl p-7"
-              style={{
-                background:
-                  "linear-gradient(135deg, #1e40af 0%, #2563eb 55%, #0ea5e9 100%)",
-                boxShadow:
-                  "0 20px 50px -20px rgba(59,130,246,0.7), inset 0 1px 0 rgba(255,255,255,0.15)",
-              }}
-            >
+          <div className="rounded-[28px] bg-[#070b18]/60 p-8 backdrop-blur-xl">
+            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-7">
               <div className="text-lg font-medium text-white/90">Pro Pass</div>
               <div className="mt-8 flex items-end gap-2 text-white">
                 <span className="text-6xl font-semibold tracking-[-0.03em]">$9</span>
@@ -368,10 +355,11 @@ function Pricing() {
             <Link
               to="/auth"
               search={{ next: "/app?intent=upgrade" }}
-              className="mt-7 block rounded-full bg-gradient-to-r from-blue-500 to-blue-700 py-4 text-center text-sm font-semibold text-white shadow-[0_15px_35px_-12px_rgba(59,130,246,0.8)] transition hover:scale-[1.03] active:scale-[0.97]"
+              className={`${BTN_PRIMARY} mt-7 w-full py-4 text-sm`}
             >
               Start Pro Pass — $9 / mo
             </Link>
+
 
 
             <ul className="mt-7 space-y-3 text-[15px]">
