@@ -158,8 +158,7 @@ export function AccountPanel() {
           ) : (
             <Button
               onClick={() => openCheckout()}
-              className="press bg-primary text-primary-foreground hover:bg-primary"
-              style={{ boxShadow: "0 0 18px -2px var(--color-primary)" }}
+              className="press "
             >
               <Sparkles className="w-4 h-4" /> Unlock Pro
             </Button>

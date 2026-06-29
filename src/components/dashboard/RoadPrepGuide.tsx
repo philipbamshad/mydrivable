@@ -109,8 +109,7 @@ function HoursLogger() {
         <div className="grid grid-cols-2 gap-2">
           <Button
             onClick={() => adjust(1)}
-            className="press bg-primary text-primary-foreground hover:bg-primary"
-            style={{ boxShadow: "0 0 18px -4px var(--color-primary)" }}
+            className="press"
           >
             <Plus className="w-4 h-4 mr-1.5" /> Add
           </Button>
@@ -444,8 +443,7 @@ function ScenarioSimulator() {
           )}
           <Button
             onClick={nextScenario}
-            className="press mt-4 w-full bg-primary text-primary-foreground hover:bg-primary"
-            style={{ boxShadow: "0 0 18px -4px var(--color-primary)" }}
+            className="press mt-4 w-full "
           >
             Next Scenario <RefreshCw className="w-4 h-4 ml-1.5" />
           </Button>

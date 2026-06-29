@@ -89,7 +89,7 @@ export function ExamProgressChart() {
           <Button
             size="sm"
             onClick={() => unlockPro()}
-            className="w-full bg-primary hover:bg-primary text-primary-foreground   transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+            className="w-full    transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
           >
             <Sparkles className="w-3.5 h-3.5 mr-1.5" />
             Upgrade to Pro
