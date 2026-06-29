@@ -159,7 +159,6 @@ export function AccountPanel() {
             <Button
               onClick={() => openCheckout()}
               className="press "
-              style={{ boxShadow: "0 0 18px -2px var(--color-primary)" }}
             >
               <Sparkles className="w-4 h-4" /> Unlock Pro
             </Button>

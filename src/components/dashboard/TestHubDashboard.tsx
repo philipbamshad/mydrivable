@@ -515,7 +515,6 @@ export function TestHubDashboard() {
               <Button
                 onClick={() => setActive(p)}
                 className="press w-full "
-                style={{ boxShadow: "0 0 18px -2px var(--color-primary)" }}
               >
                 <Sparkles className="w-4 h-4" /> Start Test
               </Button>
@@ -539,7 +538,6 @@ export function TestHubDashboard() {
               onClick={() => unlockPro()}
 
               className="press mt-5 "
-              style={{ boxShadow: "0 0 18px -2px var(--color-primary)" }}
             >
               Unlock Pro
             </Button>
@@ -620,7 +618,7 @@ function QuizRunner({ pillar, onExit }: { pillar: Pillar; onExit: () => void }) 
           <div className="flex gap-2 justify-center mt-6">
             <Button onClick={restartFresh}
               className="press "
-              style={{ boxShadow: "0 0 18px -2px var(--color-primary)" }}>
+          >
               <RefreshCw className="w-4 h-4" /> New Set
             </Button>
             <Button variant="outline" className="press" onClick={onExit}>Exit</Button>
@@ -694,7 +692,7 @@ function QuizRunner({ pillar, onExit }: { pillar: Pillar; onExit: () => void }) 
             <p className="text-sm text-foreground/90 leading-relaxed">{q.explanation}</p>
             <Button onClick={advance}
               className="press mt-4 "
-              style={{ boxShadow: "0 0 18px -2px var(--color-primary)" }}>
+          >
               {idx + 1 >= questions.length ? "See score" : "Next question"}
             </Button>
           </div>

@@ -65,7 +65,6 @@ export function RoadPrepPaywall() {
             <Button
               onClick={() => openCheckout()}
               className="press  h-11 px-6 text-sm font-semibold"
-              style={{ boxShadow: "0 0 22px -2px var(--color-primary)" }}
             >
               <Sparkles className="w-4 h-4" /> Upgrade to Pro
             </Button>

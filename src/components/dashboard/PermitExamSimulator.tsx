@@ -59,7 +59,6 @@ export function PermitExamSimulator() {
           <Button
             onClick={() => unlockPro()}
             className="press mt-6 "
-            style={{ boxShadow: "0 0 24px -2px var(--color-primary)" }}
           >
             <Sparkles className="w-4 h-4 mr-1.5" />
             Upgrade to Pro · $9 / mo
@@ -122,7 +121,6 @@ export function PermitExamSimulator() {
         <Button
           onClick={() => setRunning(true)}
           className="press w-full mt-6 "
-          style={{ boxShadow: "0 0 24px -2px var(--color-primary)" }}
         >
           <Sparkles className="w-4 h-4 mr-1.5" />
           Start full-length exam
@@ -260,7 +258,6 @@ function ExamRunner({
             <Button
               onClick={() => setReviewing(true)}
               className="press "
-              style={{ boxShadow: "0 0 18px -2px var(--color-primary)" }}
             >
               <BookOpen className="w-4 h-4" /> Review Answers
             </Button>
@@ -339,7 +336,6 @@ function ExamRunner({
             <Button
               onClick={advance}
               className="press mt-4 "
-              style={{ boxShadow: "0 0 18px -2px var(--color-primary)" }}
             >
               {idx + 1 >= questions.length ? "Finish exam" : "Next question"}
             </Button>
@@ -498,7 +494,6 @@ function ReviewScreen({
         <Button
           onClick={onExit}
           className="press "
-          style={{ boxShadow: "0 0 18px -2px var(--color-primary)" }}
         >
           Done
         </Button>

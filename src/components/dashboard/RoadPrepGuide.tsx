@@ -444,7 +444,6 @@ function ScenarioSimulator() {
           <Button
             onClick={nextScenario}
             className="press mt-4 w-full "
-            style={{ boxShadow: "0 0 18px -4px var(--color-primary)" }}
           >
             Next Scenario <RefreshCw className="w-4 h-4 ml-1.5" />
           </Button>
