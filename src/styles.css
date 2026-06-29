@@ -12,8 +12,10 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Drivable — muted charcoal glass + sophisticated pastel rose.
- * Single dark theme. Soft glow accents everywhere.
+ * Drivable — premium minimal AI aesthetic.
+ * Off-white surfaces, crisp hairline borders, signature cyan accent
+ * extracted from the logo (#00C7DD / logo cyan family).
+ * Light is the canonical mode; .dark is a clean Claude-style dark.
  */
 
 @theme inline {
@@ -66,154 +68,119 @@
   --color-rose-soft: var(--rose-soft);
 }
 
+/* ===== Light mode (canonical) — minimalist AI aesthetic ===== */
 :root {
-  --radius: 0.875rem;
+  --radius: 0.75rem;
 
-  /* Near-black canvas with the faintest cool tint */
-  --background: oklch(0.10 0.008 240);
-  --foreground: oklch(0.97 0.008 230);
+  /* Off-white canvas, pure white cards */
+  --background: #f9f9fb;
+  --foreground: #0f172a;          /* slate-900 */
 
-  /* Translucent glass cards */
-  --card: oklch(0.18 0.014 240 / 0.68);
-  --card-foreground: oklch(0.97 0.008 230);
-  --popover: oklch(0.16 0.014 240);
-  --popover-foreground: oklch(0.97 0.008 230);
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
 
-  /* Electric blue primary (kept) */
-  --primary: oklch(0.72 0.20 240);
-  --primary-foreground: oklch(0.12 0.02 250);
+  /* Signature accent — derived from logo cyan, dialed to a restrained, legible tone */
+  --primary: #00b8d4;
+  --primary-foreground: #ffffff;
 
-  --secondary: oklch(0.22 0.018 240);
-  --secondary-foreground: oklch(0.97 0.008 230);
+  --secondary: #f1f3f5;
+  --secondary-foreground: #1f2937;
 
-  --muted: oklch(0.20 0.014 240);
-  --muted-foreground: oklch(0.74 0.025 230);
+  --muted: #f3f4f6;
+  --muted-foreground: #64748b;     /* slate-500 */
 
-  --accent: oklch(0.30 0.08 220);
-  --accent-foreground: oklch(0.97 0.008 230);
+  --accent: #f1f5f9;
+  --accent-foreground: #0f172a;
 
-  --destructive: oklch(0.62 0.22 25);
-  --destructive-foreground: oklch(0.98 0.005 320);
+  --destructive: #e11d48;
+  --destructive-foreground: #ffffff;
 
-  --border: oklch(0.72 0.20 240 / 0.18);
-  --input: oklch(0.20 0.014 240);
-  --ring: oklch(0.78 0.18 220);
+  --border: #e4e7ec;               /* hairline */
+  --input: #e4e7ec;
+  --ring: #00b8d4;
 
-  --chart-1: oklch(0.72 0.20 240);
-  --chart-2: oklch(0.82 0.15 210);
-  --chart-3: oklch(0.62 0.22 25);
-  --chart-4: oklch(0.78 0.18 195);
-  --chart-5: oklch(0.65 0.18 260);
+  --chart-1: #00b8d4;
+  --chart-2: #0ea5e9;
+  --chart-3: #6366f1;
+  --chart-4: #14b8a6;
+  --chart-5: #f59e0b;
 
-  --sidebar: oklch(0.09 0.010 240 / 0.85);
-  --sidebar-foreground: oklch(0.93 0.01 230);
-  --sidebar-primary: oklch(0.72 0.20 240);
-  --sidebar-primary-foreground: oklch(0.12 0.02 250);
-  --sidebar-accent: oklch(0.72 0.20 240 / 0.14);
-  --sidebar-accent-foreground: oklch(0.97 0.008 230);
-  --sidebar-border: oklch(0.72 0.20 240 / 0.16);
-  --sidebar-ring: oklch(0.78 0.18 220);
+  --sidebar: #ffffff;
+  --sidebar-foreground: #334155;
+  --sidebar-primary: #00b8d4;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f3f4f6;
+  --sidebar-accent-foreground: #0f172a;
+  --sidebar-border: #e4e7ec;
+  --sidebar-ring: #00b8d4;
 
-  /* Bespoke electric blue / cyan */
-  --rose-glow: oklch(0.72 0.20 240);
-  --rose-soft: oklch(0.85 0.14 210);
+  --rose-glow: #00b8d4;
+  --rose-soft: #67e8f9;
 
-  /* Layered ambient neon glows */
-  --shadow-glow-soft:
-    0 0 0 1px oklch(0.72 0.20 240 / 0.20),
-    0 8px 30px -10px oklch(0.72 0.20 240 / 0.45);
-  --shadow-glow-strong:
-    0 0 0 1px oklch(0.78 0.18 220 / 0.40),
-    0 12px 40px -8px oklch(0.72 0.20 240 / 0.70),
-    0 0 24px -4px oklch(0.82 0.15 210 / 0.35);
+  /* Flat — no glow */
+  --shadow-glow-soft: 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-glow-strong: 0 1px 3px rgba(15, 23, 42, 0.06);
 
-  --gradient-rose: linear-gradient(135deg,
-    oklch(0.72 0.20 240) 0%,
-    oklch(0.82 0.15 200) 100%);
+  --gradient-rose: linear-gradient(135deg, #00b8d4 0%, #0ea5e9 100%);
 
-  /* Deep black canvas with soft blue corner glows — top-right + bottom-left */
-  --gradient-shell:
-    radial-gradient(900px 600px at 100% 0%,
-      oklch(0.55 0.13 235 / 0.32) 0%, transparent 60%),
-    radial-gradient(700px 500px at 0% 100%,
-      oklch(0.50 0.12 220 / 0.22) 0%, transparent 65%),
-    radial-gradient(1200px 800px at 50% 50%,
-      oklch(0.18 0.02 240 / 0.5) 0%, transparent 70%);
+  /* Flat background — no auras */
+  --gradient-shell: none;
 }
 
+/* ===== Dark mode — clean Claude-style neutral ===== */
 .dark {
-  /* Default tokens above apply */
-}
+  --background: #0b0c0e;
+  --foreground: #f3f4f6;
 
-/* ===== Light mode — premium "frosty" aesthetic ===== */
-.light {
-  /* Soft off-white canvas with cool tint */
-  --background: oklch(0.985 0.004 240);
-  --foreground: oklch(0.18 0.018 245);
+  --card: #141618;
+  --card-foreground: #f3f4f6;
+  --popover: #141618;
+  --popover-foreground: #f3f4f6;
 
-  --card: oklch(1 0 0 / 0.78);
-  --card-foreground: oklch(0.18 0.018 245);
-  --popover: oklch(0.995 0.003 240);
-  --popover-foreground: oklch(0.18 0.018 245);
+  --primary: #22d3ee;          /* signature accent, slightly brighter for dark bg */
+  --primary-foreground: #0b0c0e;
 
-  /* Vivid blue that still pops on light bg */
-  --primary: oklch(0.58 0.22 250);
-  --primary-foreground: oklch(0.99 0.005 240);
+  --secondary: #1c1f22;
+  --secondary-foreground: #e5e7eb;
 
-  --secondary: oklch(0.95 0.012 240);
-  --secondary-foreground: oklch(0.22 0.02 245);
+  --muted: #1a1d20;
+  --muted-foreground: #9ca3af;
 
-  --muted: oklch(0.94 0.008 240);
-  --muted-foreground: oklch(0.46 0.022 245);
+  --accent: #1c1f22;
+  --accent-foreground: #f3f4f6;
 
-  --accent: oklch(0.92 0.04 240);
-  --accent-foreground: oklch(0.22 0.04 250);
+  --destructive: #f43f5e;
+  --destructive-foreground: #ffffff;
 
-  --destructive: oklch(0.58 0.22 27);
-  --destructive-foreground: oklch(0.99 0.005 320);
+  --border: #232628;
+  --input: #232628;
+  --ring: #22d3ee;
 
-  --border: oklch(0.58 0.22 250 / 0.16);
-  --input: oklch(0.96 0.006 240);
-  --ring: oklch(0.62 0.20 245);
+  --chart-1: #22d3ee;
+  --chart-2: #38bdf8;
+  --chart-3: #818cf8;
+  --chart-4: #2dd4bf;
+  --chart-5: #fbbf24;
 
-  --chart-1: oklch(0.58 0.22 250);
-  --chart-2: oklch(0.68 0.16 210);
-  --chart-3: oklch(0.58 0.22 27);
-  --chart-4: oklch(0.66 0.17 195);
-  --chart-5: oklch(0.55 0.20 280);
+  --sidebar: #0f1113;
+  --sidebar-foreground: #d1d5db;
+  --sidebar-primary: #22d3ee;
+  --sidebar-primary-foreground: #0b0c0e;
+  --sidebar-accent: #1a1d20;
+  --sidebar-accent-foreground: #f3f4f6;
+  --sidebar-border: #232628;
+  --sidebar-ring: #22d3ee;
 
-  --sidebar: oklch(0.97 0.006 240 / 0.85);
-  --sidebar-foreground: oklch(0.22 0.02 245);
-  --sidebar-primary: oklch(0.58 0.22 250);
-  --sidebar-primary-foreground: oklch(0.99 0.005 240);
-  --sidebar-accent: oklch(0.58 0.22 250 / 0.10);
-  --sidebar-accent-foreground: oklch(0.18 0.02 245);
-  --sidebar-border: oklch(0.58 0.22 250 / 0.14);
-  --sidebar-ring: oklch(0.62 0.20 245);
+  --rose-glow: #22d3ee;
+  --rose-soft: #67e8f9;
 
-  --rose-glow: oklch(0.58 0.22 250);
-  --rose-soft: oklch(0.70 0.14 215);
+  --shadow-glow-soft: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-glow-strong: 0 1px 3px rgba(0, 0, 0, 0.5);
 
-  --shadow-glow-soft:
-    0 0 0 1px oklch(0.58 0.22 250 / 0.12),
-    0 10px 28px -14px oklch(0.30 0.08 245 / 0.25);
-  --shadow-glow-strong:
-    0 0 0 1px oklch(0.58 0.22 250 / 0.25),
-    0 14px 40px -12px oklch(0.30 0.08 245 / 0.30),
-    0 0 22px -6px oklch(0.58 0.22 250 / 0.30);
-
-  --gradient-rose: linear-gradient(135deg,
-    oklch(0.58 0.22 250) 0%,
-    oklch(0.68 0.16 215) 100%);
-
-  /* Soft frosty shell — pale blue corner washes on near-white */
-  --gradient-shell:
-    radial-gradient(900px 600px at 100% 0%,
-      oklch(0.78 0.10 245 / 0.32) 0%, transparent 60%),
-    radial-gradient(700px 500px at 0% 100%,
-      oklch(0.82 0.08 220 / 0.28) 0%, transparent 65%),
-    radial-gradient(1200px 800px at 50% 50%,
-      oklch(0.96 0.008 240 / 0.6) 0%, transparent 70%);
+  --gradient-rose: linear-gradient(135deg, #22d3ee 0%, #38bdf8 100%);
+  --gradient-shell: none;
 }
 
 @layer base {
@@ -223,8 +190,7 @@
 
   html, body {
     background-color: var(--color-background);
-    background-image: var(--gradient-shell);
-    background-attachment: fixed;
+    background-image: none;
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
@@ -236,90 +202,84 @@
   }
 }
 
-/* ===== Custom utilities ===== */
+/* ===== Custom utilities — flattened ===== */
 
-/* Frosted glass surface */
+/* "glass" surfaces are now clean flat cards with hairline borders */
 @utility glass {
-  background: color-mix(in oklab, var(--card) 80%, transparent);
-  backdrop-filter: blur(18px) saturate(140%);
+  background: var(--color-card);
   border: 1px solid var(--color-border);
 }
 
 @utility glass-strong {
-  background: color-mix(in oklab, var(--card) 92%, transparent);
-  backdrop-filter: blur(22px) saturate(150%);
-  border: 1px solid color-mix(in oklab, var(--color-primary) 22%, transparent);
-  box-shadow: var(--shadow-glow-soft);
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
 }
 
-/* Pink ambient glow */
+/* Glow utilities preserved as no-ops to keep structural classes valid */
 @utility glow-soft {
-  box-shadow: var(--shadow-glow-soft);
+  box-shadow: none;
 }
 @utility glow-strong {
-  box-shadow: var(--shadow-glow-strong);
+  box-shadow: none;
 }
 
-/* Press-and-lift micro-interaction for buttons / cards */
+/* Subtle press interaction — no glow */
 @utility press {
-  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
-  &:hover { transform: scale(1.03); box-shadow: var(--shadow-glow-strong); }
-  &:active { transform: scale(0.97); }
+  transition: transform 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+  &:hover { background-color: color-mix(in oklab, var(--color-foreground) 4%, var(--color-card)); }
+  &:active { transform: scale(0.98); }
 }
 
-/* Sidebar nav link with sliding capsule pill + active accent */
+/* Sidebar nav link */
 @utility nav-link {
   position: relative;
   display: flex;
   align-items: center;
   gap: 0.7rem;
-  padding: 0.6rem 0.95rem;
-  border-radius: 0.6rem;
+  padding: 0.55rem 0.9rem;
+  border-radius: 0.5rem;
   font-size: 0.875rem;
-  color: color-mix(in oklab, var(--color-sidebar-foreground) 78%, transparent);
-  transition: color 0.2s ease, background-color 0.2s ease;
-  isolation: isolate;
+  color: var(--color-sidebar-foreground);
+  transition: color 0.15s ease, background-color 0.15s ease;
   &:hover {
     color: var(--color-foreground);
-    background-color: color-mix(in oklab, var(--color-primary) 8%, transparent);
+    background-color: var(--color-sidebar-accent);
   }
 }
 @utility nav-link-active {
   color: var(--color-foreground);
   font-weight: 600;
-  background-color: color-mix(in oklab, var(--color-primary) 10%, transparent);
-  & svg { color: var(--color-primary); filter: drop-shadow(0 0 6px var(--color-primary)); }
+  background-color: var(--color-sidebar-accent);
+  & svg { color: var(--color-primary); }
   &::after {
     content: "";
     position: absolute;
     left: 0;
-    top: 14%;
-    bottom: 14%;
-    width: 3px;
+    top: 18%;
+    bottom: 18%;
+    width: 2px;
     border-radius: 999px;
     background: var(--color-primary);
-    box-shadow: 0 0 10px var(--color-primary), 0 0 20px var(--color-primary);
   }
 }
 
-
-/* Lane divider kept for visual continuity */
+/* Lane divider — neutralized */
 .lane-divider {
   background-image: repeating-linear-gradient(
     90deg,
-    var(--color-primary) 0 14px,
+    var(--color-border) 0 14px,
     transparent 14px 26px
   );
-  height: 2px;
-  opacity: 0.5;
+  height: 1px;
+  opacity: 1;
 }
 
-/* Scrollbar tweaks */
+/* Scrollbar */
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-thumb {
-  background: color-mix(in oklab, var(--color-primary) 30%, transparent);
+  background: color-mix(in oklab, var(--color-foreground) 12%, transparent);
   border-radius: 999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: color-mix(in oklab, var(--color-primary) 55%, transparent);
+  background: color-mix(in oklab, var(--color-foreground) 22%, transparent);
 }
