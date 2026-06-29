@@ -34,7 +34,7 @@ export function ExamProgressChart() {
               No attempts yet
             </Badge>
           ) : ready ? (
-            <Badge variant="outline" className="text-xs bg-emerald-500/15 text-emerald-300 border-emerald-500/40 shadow-[0_0_18px_-4px_rgb(74,222,128)]">
+            <Badge variant="outline" className="text-xs bg-emerald-500/15 text-emerald-300 border-emerald-500/40 ">
               <Trophy className="w-3 h-3 mr-1" /> Exam Ready
             </Badge>
           ) : (
@@ -78,8 +78,8 @@ export function ExamProgressChart() {
         }`}
         aria-hidden={isPro}
       >
-        <div className="glass glow-soft rounded-2xl px-6 py-5 max-w-xs text-center border border-primary/30 shadow-[0_0_40px_-8px_oklch(0.72_0.20_240_/_0.55)]">
-          <div className="mx-auto mb-3 w-10 h-10 rounded-full bg-primary/15 border border-primary/40 flex items-center justify-center shadow-[0_0_24px_-2px_var(--color-primary)]">
+        <div className="glass glow-soft rounded-2xl px-6 py-5 max-w-xs text-center border border-primary/30 ">
+          <div className="mx-auto mb-3 w-10 h-10 rounded-full bg-primary/15 border border-primary/40 flex items-center justify-center ">
             <Lock className="w-4 h-4 text-primary" />
           </div>
           <h4 className="font-display text-sm font-bold leading-snug mb-1">
@@ -89,7 +89,7 @@ export function ExamProgressChart() {
           <Button
             size="sm"
             onClick={() => unlockPro()}
-            className="w-full bg-primary hover:bg-primary text-primary-foreground shadow-[0_0_24px_-2px_oklch(0.72_0.20_240_/_0.75)] hover:shadow-[0_0_36px_-2px_oklch(0.72_0.20_240_/_0.95)] transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+            className="w-full bg-primary hover:bg-primary text-primary-foreground   transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
           >
             <Sparkles className="w-3.5 h-3.5 mr-1.5" />
             Upgrade to Pro
@@ -134,7 +134,7 @@ function ScoreDial({ value, threshold, hasData }: { value: number; threshold: nu
             strokeDashoffset={offset}
             style={{
               transition: "stroke-dashoffset 0.6s ease-out, stroke 0.3s",
-              filter: `drop-shadow(0 0 8px ${color})`,
+
             }}
           />
         ) : (
@@ -148,7 +148,7 @@ function ScoreDial({ value, threshold, hasData }: { value: number; threshold: nu
             strokeWidth="2"
             strokeLinecap="round"
             strokeDasharray={emptyDash}
-            style={{ filter: "drop-shadow(0 0 6px var(--color-primary))" }}
+            style={{}}
           />
         )}
       </svg>
@@ -243,7 +243,7 @@ function ScoreLineChart({
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
-          style={{ filter: "drop-shadow(0 0 6px var(--color-primary))" }}
+          style={{}}
         />
       )}
 
@@ -269,7 +269,7 @@ function ScoreLineChart({
           fill={points[0].v >= threshold ? "rgb(74,222,128)" : points[0].v >= 60 ? "rgb(251,191,36)" : "rgb(248,113,113)"}
           stroke="var(--color-background)"
           strokeWidth="1.5"
-          style={{ filter: "drop-shadow(0 0 6px var(--color-primary))" }}
+          style={{}}
         />
       )}
 
@@ -280,7 +280,7 @@ function ScoreLineChart({
         return (
           <g key={p.i}>
             <circle cx={p.x} cy={p.y} r={4} fill={color} stroke="var(--color-background)" strokeWidth="1.5"
-              style={{ filter: `drop-shadow(0 0 5px ${color})` }} />
+              style={{}} />
           </g>
         );
       })}

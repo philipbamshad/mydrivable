@@ -670,11 +670,11 @@ function QuizRunner({ pillar, onExit }: { pillar: Pillar; onExit: () => void }) 
                 className={cn(
                   "p-3.5 rounded-xl border text-sm font-medium text-left transition-all duration-200 flex items-center justify-between gap-2",
                   !reveal &&
-                    "border-border bg-card/40 hover:scale-[1.02] hover:border-primary/50 hover:shadow-[0_0_20px_-2px_var(--color-primary)] active:scale-[0.98]",
+                    "border-border bg-card/40 hover:scale-[1.02] hover:border-primary/50  active:scale-[0.98]",
                   reveal && isCorrect &&
-                    "border-emerald-400 bg-emerald-500/25 text-emerald-100 shadow-[0_0_24px_-2px_rgb(74,222,128)]",
+                    "border-emerald-400 bg-emerald-500/25 text-emerald-100 ",
                   reveal && isPicked && !isCorrect &&
-                    "border-red-400 bg-red-500/25 text-red-100 shadow-[0_0_24px_-2px_rgb(248,113,113)] animate-pulse",
+                    "border-red-400 bg-red-500/25 text-red-100  animate-pulse",
                   reveal && !isPicked && !isCorrect && "opacity-40 border-border",
                 )}
               >

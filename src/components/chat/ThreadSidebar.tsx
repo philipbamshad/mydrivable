@@ -121,11 +121,11 @@ export function ThreadSidebar() {
             <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground flex items-center justify-between">
               <span>Active state</span>
               <Settings2
-                className="w-3.5 h-3.5 text-muted-foreground transition-all duration-300 group-hover:text-primary group-hover:rotate-90 group-hover:[filter:drop-shadow(0_0_6px_var(--color-primary))]"
+                className="w-3.5 h-3.5 text-muted-foreground transition-all duration-300 group-hover:text-primary group-hover:rotate-90 group-hover:"
               />
             </p>
             <p className="text-sm font-semibold mt-0.5 flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_8px_var(--color-primary)]" />
+              <span className="w-1.5 h-1.5 rounded-full bg-primary " />
               <span className="truncate">{userState || "Not set"}</span>
             </p>
             <p className="text-[10px] text-muted-foreground mt-1">

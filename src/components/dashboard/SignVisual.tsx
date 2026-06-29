@@ -8,9 +8,8 @@ export type SignSpec = {
 };
 
 export function SignVisual({ s, size = 140 }: { s: SignSpec; size?: number }) {
-  const filter = "drop-shadow(0 0 24px rgba(59,130,246,0.45))";
   return (
-    <div className="grid place-items-center" style={{ width: size, height: size, filter }}>
+    <div className="grid place-items-center" style={{ width: size, height: size }}>
       <svg viewBox="0 0 100 100" width={size} height={size}>
         {s.shape === "octagon" && (
           <polygon points="30,5 70,5 95,30 95,70 70,95 30,95 5,70 5,30"
