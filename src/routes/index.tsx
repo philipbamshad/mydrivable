@@ -336,38 +336,50 @@ function Pricing() {
         <p className="mt-4 text-white/60">No tiers. No upsell. Just the test you're about to take.</p>
       </div>
 
-      <div className="mx-auto max-w-md">
-        <div className="relative rounded-[28px] border border-white/10 bg-white/[0.02]">
-          <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-[#1e40af] border border-white/10 px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-white">
+      <div className="relative mx-auto max-w-md">
+        {/* Centered ambient backlight behind the card */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl"
+          style={{
+            background:
+              "radial-gradient(closest-side, rgba(30,64,175,0.35), rgba(30,64,175,0.10) 55%, transparent 75%)",
+          }}
+        />
+
+        <div className="relative rounded-[28px] border border-white/10 bg-[#070b18]/70 p-8 backdrop-blur-xl">
+          <span className="absolute -top-3 left-1/2 z-10 -translate-x-1/2 rounded-full bg-[#1e40af] border border-[#3b82f6]/60 px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-white">
             Pro Pass
           </span>
-          <div className="rounded-[28px] bg-[#070b18]/60 p-8 backdrop-blur-xl">
-            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-7">
-              <div className="text-lg font-medium text-white/90">Pro Pass</div>
-              <div className="mt-8 flex items-end gap-2 text-white">
-                <span className="text-6xl font-semibold tracking-[-0.03em]">$9</span>
-                <span className="mb-2 text-sm text-white/85">/ month</span>
-              </div>
-              <p className="mt-2 text-sm text-white/75">Everything Drivable builds, included.</p>
+
+          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-7">
+            <div className="text-lg font-medium text-white/90">Pro Pass</div>
+            <div className="mt-8 flex items-end gap-2 text-white">
+              <span className="text-6xl font-semibold tracking-[-0.03em]">$9</span>
+              <span className="mb-2 text-sm text-white/85">/ month</span>
             </div>
+            <p className="mt-2 text-sm text-white/75">Everything Drivable builds, included.</p>
+          </div>
 
-            <Link
-              to="/auth"
-              search={{ next: "/app?intent=upgrade" }}
-              className={`${BTN_PRIMARY} mt-7 w-full py-4 text-sm`}
-            >
-              Start Pro Pass — $9 / mo
-            </Link>
+          <Link
+            to="/auth"
+            search={{ next: "/app?intent=upgrade" }}
+            className={`${BTN_PRIMARY} mt-7 w-full py-4 text-sm`}
+          >
+            Start Pro Pass — $9 / mo
+          </Link>
 
+          <ul className="mt-7 space-y-3 text-[15px]">
+            {features.map((f) => (
+              <li key={f} className="flex items-center gap-3 text-white/85">
+                <Check className="h-4 w-4 shrink-0 text-blue-300" />
+                {f}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
 
-
-            <ul className="mt-7 space-y-3 text-[15px]">
-              {features.map((f) => (
-                <li key={f} className="flex items-center gap-3 text-white/85">
-                  <Check className="h-4 w-4 shrink-0 text-blue-300" />
-                  {f}
-                </li>
-              ))}
             </ul>
           </div>
         </div>
