@@ -249,7 +249,7 @@ function AuthPage() {
             </div>
             <Button
               type="submit"
-              className="w-full bg-primary hover:bg-primary text-primary-foreground   transition-shadow"
+              className="w-full"
               disabled={loading}
             >
               {loading && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
