@@ -95,7 +95,8 @@ function AppDashboard() {
 
         <div className="flex-1 min-h-0 overflow-hidden">
           <TabsContent value="dashboard" className="h-full overflow-y-auto m-0 p-5 sm:p-7 data-[state=inactive]:hidden">
-            <div className="max-w-7xl mx-auto space-y-6">
+            <div className="max-w-7xl mx-auto space-y-6 relative">
+              <AmbientGlow />
               {hydrating ? (
                 <DashboardSkeleton />
               ) : (
@@ -111,7 +112,10 @@ function AppDashboard() {
           </TabsContent>
 
           <TabsContent value="test-hub" className="h-full overflow-y-auto m-0 p-5 sm:p-7 data-[state=inactive]:hidden">
-            <TestHubDashboard />
+            <div className="relative">
+              <AmbientGlow />
+              <TestHubDashboard />
+            </div>
           </TabsContent>
 
           <TabsContent value="state-exam" className="h-full overflow-y-auto m-0 p-5 sm:p-7 data-[state=inactive]:hidden">
@@ -120,18 +124,11 @@ function AppDashboard() {
 
           <TabsContent value="road-prep" className="h-full overflow-y-auto m-0 p-5 sm:p-7 data-[state=inactive]:hidden">
             <div className="max-w-6xl mx-auto relative">
-              {/* Tasteful ambient glow — only behind the Behind-the-Wheel section */}
-              <div
-                aria-hidden
-                className="pointer-events-none absolute inset-0 -z-10"
-                style={{
-                  background:
-                    "radial-gradient(60% 50% at 50% 0%, color-mix(in oklab, var(--color-primary) 14%, transparent), transparent 70%)",
-                }}
-              />
+              <AmbientGlow />
               {isPro ? <RoadPrepGuide /> : <RoadPrepPaywall />}
             </div>
           </TabsContent>
+
 
           <TabsContent value="chat" className="h-full m-0 data-[state=inactive]:hidden">
             <ChatTab />
