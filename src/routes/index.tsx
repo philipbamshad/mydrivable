@@ -198,21 +198,9 @@ function Hero() {
 }
 
 function StatesMarquee() {
-  const ref = useRef<HTMLDivElement | null>(null);
-  const [visible, setVisible] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => entry.isIntersecting && setVisible(true),
-      { threshold: 0.15 },
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
-
+  const loop = [...US_STATES, ...US_STATES];
   return (
-    <section id="states" ref={ref} className="border-y border-white/5 bg-white/[0.02] py-16 backdrop-blur-sm">
+    <section id="states" className="border-y border-white/5 bg-white/[0.02] py-16 backdrop-blur-sm">
       <div className="mx-auto max-w-6xl px-6 text-center">
         <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-blue-300/80">
           All 50 states · grounded in official DMV handbooks
@@ -220,26 +208,36 @@ function StatesMarquee() {
         <h2 className="mb-10 text-3xl font-semibold tracking-[-0.02em] sm:text-4xl">
           Wherever you take the test, we've got you
         </h2>
-        <div className="flex flex-wrap justify-center gap-2.5 sm:gap-3">
-          {US_STATES.map((s, i) => (
+      </div>
+      <div
+        className="group relative overflow-hidden"
+        style={{
+          maskImage:
+            "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
+          WebkitMaskImage:
+            "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
+        }}
+      >
+        <div
+          className="flex w-max gap-3 [animation:states-marquee_60s_linear_infinite] group-hover:[animation-play-state:paused]"
+        >
+          {loop.map((s, i) => (
             <span
-              key={s}
-              className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1.5 text-[13px] font-medium text-white/85 backdrop-blur-md transition-all hover:border-white/20 hover:bg-white/[0.06] hover:text-white"
-              style={{
-                opacity: visible ? 1 : 0,
-                transform: visible ? "translateY(0)" : "translateY(8px)",
-                transition: `opacity 0.4s ease-out ${i * 0.012}s, transform 0.4s ease-out ${i * 0.012}s, background 0.2s, border-color 0.2s`,
-              }}
+              key={`${s}-${i}`}
+              className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1.5 text-[13px] font-medium text-white/85 backdrop-blur-md transition-colors hover:border-white/25 hover:bg-white/[0.07] hover:text-white"
             >
               <MapPin className="h-3 w-3 text-blue-300" />
               {s}
             </span>
           ))}
         </div>
+        <style>{`@keyframes states-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }`}</style>
       </div>
     </section>
   );
 }
+
+
 
 function Features() {
   const features = [
