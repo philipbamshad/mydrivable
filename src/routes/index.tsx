@@ -224,7 +224,7 @@ function StatesMarquee() {
           {US_STATES.map((s, i) => (
             <span
               key={s}
-              className="inline-flex items-center gap-1.5 rounded-full border border-blue-400/30 bg-blue-500/[0.06] px-3.5 py-1.5 text-[13px] font-medium text-white/85 shadow-[0_0_18px_-6px_rgba(96,165,250,0.55)] backdrop-blur-md transition-all hover:scale-[1.05] hover:border-blue-300/60 hover:bg-blue-500/15 hover:text-white"
+              className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1.5 text-[13px] font-medium text-white/85 backdrop-blur-md transition-all hover:border-white/20 hover:bg-white/[0.06] hover:text-white"
               style={{
                 opacity: visible ? 1 : 0,
                 transform: visible ? "translateY(0)" : "translateY(8px)",
