@@ -408,14 +408,15 @@ function FAQ() {
         {items.map((it) => (
           <details
             key={it.q}
-            className="group rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-xl transition open:bg-white/[0.05] open:shadow-[0_20px_50px_-25px_rgba(59,130,246,0.5)]"
+            className="group rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-xl transition open:bg-white/[0.05]"
           >
             <summary className="flex cursor-pointer list-none items-center justify-between text-base font-medium text-white">
               {it.q}
-              <span className="ml-4 grid h-7 w-7 place-items-center rounded-full bg-blue-500/15 text-sm text-blue-300 ring-1 ring-blue-400/30 transition group-open:rotate-45">
+              <span className="ml-4 grid h-7 w-7 place-items-center rounded-full bg-white/[0.06] text-sm text-blue-300 ring-1 ring-white/10 transition group-open:rotate-45">
                 +
               </span>
             </summary>
+
             <p className="mt-4 text-[15px] text-white/70">{it.a}</p>
           </details>
         ))}
