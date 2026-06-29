@@ -94,7 +94,7 @@ export function ChatWindow({
     <div className="flex flex-col h-full bg-background">
       <div className="border-b border-border bg-background/60 backdrop-blur px-4 py-2.5">
         <div className="max-w-3xl mx-auto flex items-center gap-2.5 text-xs">
-          <span className="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_10px_var(--color-primary)] animate-pulse" />
+          <span className="w-1.5 h-1.5 rounded-full bg-primary  animate-pulse" />
           <span className="text-foreground/90">
             AI Assistant Active — {userState
               ? <>Synced with the official <span className="font-semibold text-primary">{userState}</span> DMV Handbook</>

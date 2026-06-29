@@ -81,7 +81,7 @@ function AppDashboard() {
               </p>
             </div>
             <div className="hidden md:flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] text-muted-foreground glass px-3 py-1.5 rounded-full shrink-0">
-              <span className="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_12px_var(--color-primary)] animate-pulse" />
+              <span className="w-1.5 h-1.5 rounded-full bg-primary  animate-pulse" />
               State index · {userState || "Not set"}
             </div>
           </div>
@@ -147,7 +147,7 @@ function DashboardSkeleton() {
       </div>
       <div className="flex justify-center pt-2">
         <div className="text-[11px] uppercase tracking-[0.25em] text-muted-foreground flex items-center gap-2">
-          <span className="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_12px_var(--color-primary)] animate-pulse" />
+          <span className="w-1.5 h-1.5 rounded-full bg-primary  animate-pulse" />
           Syncing your profile…
         </div>
       </div>

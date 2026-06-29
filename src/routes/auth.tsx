@@ -182,7 +182,7 @@ function AuthPage() {
           </div>
         </Link>
 
-        <div className="glass glow-soft rounded-2xl border border-primary/20 p-6 shadow-[0_0_60px_-12px_oklch(0.72_0.20_240_/_0.45)]">
+        <div className="glass glow-soft rounded-2xl border border-primary/20 p-6 ">
           <div className="flex gap-1 mb-5 p-1 bg-background/40 border border-border/60 rounded-lg backdrop-blur-sm">
             {(["sign-in", "sign-up"] as const).map((m) => (
               <button
@@ -194,7 +194,7 @@ function AuthPage() {
                 }}
                 className={`flex-1 text-sm py-1.5 rounded-md font-medium transition-all ${
                   mode === m
-                    ? "bg-primary/15 text-foreground border border-primary/40 shadow-[0_0_18px_-4px_var(--color-primary)]"
+                    ? "bg-primary/15 text-foreground border border-primary/40 "
                     : "text-muted-foreground hover:text-foreground"
                 }`}
               >
@@ -249,7 +249,7 @@ function AuthPage() {
             </div>
             <Button
               type="submit"
-              className="w-full bg-primary hover:bg-primary text-primary-foreground shadow-[0_0_24px_-4px_var(--color-primary)] hover:shadow-[0_0_32px_-2px_var(--color-primary)] transition-shadow"
+              className="w-full bg-primary hover:bg-primary text-primary-foreground   transition-shadow"
               disabled={loading}
             >
               {loading && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
