@@ -39,12 +39,11 @@ export const Route = createFileRoute("/")({
 const SHELL =
   "relative min-h-screen overflow-hidden text-white [color-scheme:dark] [font-family:'Inter',ui-sans-serif,system-ui]";
 const SHELL_BG: React.CSSProperties = {
-  background:
-    "radial-gradient(1200px 700px at 85% -10%, rgba(96,165,250,0.35), transparent 60%)," +
-    "radial-gradient(900px 600px at -10% 20%, rgba(37,99,235,0.28), transparent 65%)," +
-    "radial-gradient(1000px 800px at 50% 110%, rgba(59,130,246,0.22), transparent 65%)," +
-    "linear-gradient(180deg, #05070d 0%, #070b18 40%, #04060d 100%)",
+  background: "linear-gradient(180deg, #05070d 0%, #070b18 50%, #05070d 100%)",
 };
+const BTN_PRIMARY =
+  "inline-flex items-center justify-center gap-2 rounded-full bg-[#1e40af] hover:bg-[#1d4ed8] border border-white/10 text-white font-semibold transition active:scale-[0.98]";
+
 
 function Landing() {
   const navigate = useNavigate();
