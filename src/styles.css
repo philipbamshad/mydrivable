@@ -223,6 +223,28 @@
   box-shadow: none;
 }
 
+/* Premium backlight — a soft, intentional radial halo behind featured cards.
+   Use sparingly on hero/active modules. Sits behind content via a ::before pseudo. */
+@utility premium-glow {
+  position: relative;
+  isolation: isolate;
+  &::before {
+    content: "";
+    position: absolute;
+    inset: -40px -20px auto -20px;
+    height: 220px;
+    z-index: -1;
+    pointer-events: none;
+    background: radial-gradient(
+      60% 70% at 50% 0%,
+      color-mix(in oklab, var(--color-primary) 22%, transparent),
+      transparent 70%
+    );
+    filter: blur(8px);
+  }
+}
+
+
 /* Subtle press interaction — no glow */
 @utility press {
   transition: transform 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
