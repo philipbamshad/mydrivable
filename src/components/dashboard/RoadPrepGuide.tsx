@@ -109,8 +109,7 @@ function HoursLogger() {
         <div className="grid grid-cols-2 gap-2">
           <Button
             onClick={() => adjust(1)}
-            className="press "
-            style={{ boxShadow: "0 0 18px -4px var(--color-primary)" }}
+            className="press"
           >
             <Plus className="w-4 h-4 mr-1.5" /> Add
           </Button>
