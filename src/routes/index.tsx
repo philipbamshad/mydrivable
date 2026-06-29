@@ -428,19 +428,11 @@ function FAQ() {
 function CTA() {
   return (
     <section className="px-6 pb-24">
-      <div className="relative mx-auto max-w-5xl overflow-hidden rounded-[36px] border border-white/10 p-16 text-center text-white backdrop-blur-xl">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 -z-10"
-          style={{
-            background:
-              "linear-gradient(135deg, #050813 0%, #0a1230 60%, #050813 100%), radial-gradient(700px 350px at 50% 0%, rgba(59,130,246,0.45), transparent 60%), radial-gradient(700px 350px at 50% 100%, rgba(14,165,233,0.35), transparent 60%)",
-          }}
-        />
+      <div className="relative mx-auto max-w-5xl overflow-hidden rounded-[36px] border border-white/10 bg-white/[0.02] p-16 text-center text-white backdrop-blur-xl">
         <h2 className="text-5xl font-semibold tracking-[-0.03em] sm:text-6xl">
           Get your license.
           <br />
-          <span className="italic font-medium [font-family:'Cormorant_Garamond',Georgia,serif] bg-gradient-to-r from-blue-200 via-cyan-200 to-blue-300 bg-clip-text text-transparent">
+          <span className="italic font-medium [font-family:'Cormorant_Garamond',Georgia,serif] text-blue-300">
             First try.
           </span>
         </h2>
@@ -449,13 +441,14 @@ function CTA() {
         </p>
         <Link
           to="/auth"
-          className="mt-10 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-400 to-cyan-300 px-10 py-5 text-base font-semibold text-[#04060d] shadow-[0_20px_50px_-15px_rgba(96,165,250,0.8)] transition hover:scale-[1.03] active:scale-[0.97]"
+          className={`${BTN_PRIMARY} mt-10 px-10 py-5 text-base`}
         >
           Start Practicing
           <ArrowRight className="h-4 w-4" />
         </Link>
       </div>
     </section>
+
   );
 }
 
