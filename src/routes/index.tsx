@@ -39,12 +39,11 @@ export const Route = createFileRoute("/")({
 const SHELL =
   "relative min-h-screen overflow-hidden text-white [color-scheme:dark] [font-family:'Inter',ui-sans-serif,system-ui]";
 const SHELL_BG: React.CSSProperties = {
-  background:
-    "radial-gradient(1200px 700px at 85% -10%, rgba(96,165,250,0.35), transparent 60%)," +
-    "radial-gradient(900px 600px at -10% 20%, rgba(37,99,235,0.28), transparent 65%)," +
-    "radial-gradient(1000px 800px at 50% 110%, rgba(59,130,246,0.22), transparent 65%)," +
-    "linear-gradient(180deg, #05070d 0%, #070b18 40%, #04060d 100%)",
+  background: "linear-gradient(180deg, #05070d 0%, #070b18 50%, #05070d 100%)",
 };
+const BTN_PRIMARY =
+  "inline-flex items-center justify-center gap-2 rounded-full bg-[#1e40af] hover:bg-[#1d4ed8] border border-white/10 text-white font-semibold transition active:scale-[0.98]";
+
 
 function Landing() {
   const navigate = useNavigate();
@@ -72,7 +71,7 @@ function Nav() {
   const [open, setOpen] = useState(false);
   return (
     <header className="sticky top-4 z-50 px-4">
-      <div className="mx-auto flex max-w-5xl items-center justify-between rounded-full border border-white/10 bg-white/5 px-3 py-2 shadow-[0_8px_30px_-12px_rgba(0,0,0,0.6)] backdrop-blur-xl">
+      <div className="mx-auto flex max-w-5xl items-center justify-between rounded-full border border-white/10 bg-white/[0.03] px-3 py-2 backdrop-blur-xl">
         <Link to="/" className="flex items-center gap-2 pl-2">
           <img src={logo} alt="" className="h-9 w-9 rounded-lg" />
           <span className="hidden text-[15px] font-semibold tracking-tight text-white sm:inline">
@@ -90,10 +89,10 @@ function Nav() {
         <div className="flex items-center gap-2">
           <Link
             to="/auth"
-            className="group hidden sm:inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-500 to-blue-700 px-5 py-2.5 text-sm font-semibold text-white shadow-[0_8px_24px_-8px_rgba(59,130,246,0.7)] transition hover:scale-[1.03] active:scale-[0.97]"
+            className={`${BTN_PRIMARY} group hidden sm:inline-flex px-5 py-2.5 text-sm`}
           >
             Sign Up
-            <span className="grid h-6 w-6 place-items-center rounded-full bg-white/20 transition group-hover:translate-x-0.5">
+            <span className="grid h-6 w-6 place-items-center rounded-full bg-white/15 transition group-hover:translate-x-0.5">
               <ArrowRight className="h-3.5 w-3.5" />
             </span>
           </Link>
@@ -107,6 +106,7 @@ function Nav() {
           </button>
         </div>
       </div>
+
 
       {open && (
         <div className="sm:hidden mx-auto mt-2 max-w-5xl rounded-2xl border border-white/10 bg-[#070b18]/95 p-4 backdrop-blur-xl shadow-[0_20px_50px_-20px_rgba(0,0,0,0.8)]">
@@ -129,10 +129,11 @@ function Nav() {
             <Link
               to="/auth"
               onClick={() => setOpen(false)}
-              className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-blue-500 to-blue-700 px-5 py-3 text-sm font-semibold text-white"
+              className={`${BTN_PRIMARY} mt-2 px-5 py-3 text-sm`}
             >
               Sign Up <ArrowRight className="h-3.5 w-3.5" />
             </Link>
+
           </nav>
         </div>
       )}
@@ -148,34 +149,28 @@ function Hero() {
       </div>
 
 
-      <div className="mx-auto mb-10 inline-flex max-w-[640px] items-center gap-3 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-sm backdrop-blur-xl">
+      <div className="mx-auto mb-10 inline-flex max-w-[640px] items-center gap-3 rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-sm backdrop-blur-xl">
         <span className="inline-flex items-center gap-1.5 text-blue-300">
-          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-blue-400 shadow-[0_0_8px_rgba(96,165,250,0.9)]" />
+          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-blue-400" />
           New
         </span>
+
         <span className="hidden text-white/80 sm:inline">
           Full-length state-specific Mock Permit Exam simulator — now live
         </span>
       </div>
 
       <div className="relative mx-auto max-w-5xl">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-1/2 mx-auto h-[520px] w-[900px] -translate-y-1/2 rounded-full blur-3xl"
-          style={{
-            background:
-              "radial-gradient(closest-side, rgba(59,130,246,0.55), transparent 60%), radial-gradient(closest-side at 20% 40%, rgba(37,99,235,0.5), transparent 65%), radial-gradient(closest-side at 80% 60%, rgba(14,165,233,0.45), transparent 65%)",
-          }}
-        />
         <h1 className="relative text-5xl font-semibold leading-[1.02] tracking-[-0.03em] sm:text-7xl">
           Master Your Permit and
           <br />
           Ace Your Road Test on the{" "}
-          <span className="italic font-medium [font-family:'Cormorant_Garamond',Georgia,serif] bg-gradient-to-r from-blue-300 via-blue-400 to-cyan-300 bg-clip-text text-transparent">
+          <span className="italic font-medium [font-family:'Cormorant_Garamond',Georgia,serif] text-blue-300">
             First Try
           </span>
         </h1>
       </div>
+
 
       <p className="relative mx-auto mt-8 max-w-2xl text-lg text-white/70">
         An AI driving coach trained on every official DMV handbook —
@@ -186,10 +181,11 @@ function Hero() {
       <div className="relative mt-10 flex flex-wrap items-center justify-center gap-3">
         <Link
           to="/auth"
-          className="rounded-full bg-gradient-to-r from-blue-500 to-blue-700 px-10 py-5 text-base font-semibold text-white shadow-[0_20px_50px_-15px_rgba(59,130,246,0.8)] transition hover:scale-[1.03] active:scale-[0.97]"
+          className={`${BTN_PRIMARY} px-10 py-5 text-base`}
         >
           Get Started
         </Link>
+
         <a
           href="#features"
           className="rounded-full border border-white/15 bg-white/[0.04] px-8 py-5 text-base font-medium text-white/90 backdrop-blur-xl transition hover:bg-white/10 hover:scale-[1.03] active:scale-[0.97]"
@@ -228,7 +224,7 @@ function StatesMarquee() {
           {US_STATES.map((s, i) => (
             <span
               key={s}
-              className="inline-flex items-center gap-1.5 rounded-full border border-blue-400/30 bg-blue-500/[0.06] px-3.5 py-1.5 text-[13px] font-medium text-white/85 shadow-[0_0_18px_-6px_rgba(96,165,250,0.55)] backdrop-blur-md transition-all hover:scale-[1.05] hover:border-blue-300/60 hover:bg-blue-500/15 hover:text-white"
+              className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1.5 text-[13px] font-medium text-white/85 backdrop-blur-md transition-all hover:border-white/20 hover:bg-white/[0.06] hover:text-white"
               style={{
                 opacity: visible ? 1 : 0,
                 transform: visible ? "translateY(0)" : "translateY(8px)",
@@ -294,16 +290,17 @@ function Features() {
           return (
             <div
               key={f.title}
-              className="group relative rounded-[28px] border border-white/10 bg-white/[0.04] p-8 shadow-[0_30px_80px_-30px_rgba(59,130,246,0.5)] backdrop-blur-xl transition hover:scale-[1.02] hover:border-blue-400/30"
+              className="group relative rounded-[28px] border border-white/10 bg-white/[0.03] p-8 backdrop-blur-xl transition hover:border-white/20"
             >
               {f.tag && (
-                <span className="absolute right-6 top-6 rounded-full bg-gradient-to-r from-blue-400 to-cyan-300 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#04060d] shadow-[0_0_18px_-2px_rgba(96,165,250,0.8)]">
+                <span className="absolute right-6 top-6 rounded-full bg-[#1e40af] border border-white/10 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
                   {f.tag}
                 </span>
               )}
-              <span className="grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700 text-white shadow-[0_0_24px_-4px_rgba(59,130,246,0.8)]">
+              <span className="grid h-12 w-12 place-items-center rounded-2xl bg-[#1e40af] border border-white/10 text-white">
                 <Icon className="h-5 w-5" />
               </span>
+
               <h3 className="mt-6 text-xl font-semibold tracking-tight">{f.title}</h3>
               <p className="mt-3 text-[15px] leading-relaxed text-white/65">{f.body}</p>
             </div>
@@ -341,25 +338,12 @@ function Pricing() {
       </div>
 
       <div className="mx-auto max-w-md">
-        <div
-          className="relative rounded-[28px] p-[1.5px]"
-          style={{
-            background: "linear-gradient(135deg, #60a5fa 0%, #2563eb 50%, #0ea5e9 100%)",
-          }}
-        >
-          <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-blue-500 to-cyan-400 px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-white shadow-[0_8px_24px_-8px_rgba(59,130,246,0.8)]">
+        <div className="relative rounded-[28px] border border-white/10 bg-white/[0.02]">
+          <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-[#1e40af] border border-white/10 px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-white">
             Pro Pass
           </span>
-          <div className="rounded-[26px] bg-[#070b18]/85 p-8 backdrop-blur-xl">
-            <div
-              className="rounded-2xl p-7"
-              style={{
-                background:
-                  "linear-gradient(135deg, #1e40af 0%, #2563eb 55%, #0ea5e9 100%)",
-                boxShadow:
-                  "0 20px 50px -20px rgba(59,130,246,0.7), inset 0 1px 0 rgba(255,255,255,0.15)",
-              }}
-            >
+          <div className="rounded-[28px] bg-[#070b18]/60 p-8 backdrop-blur-xl">
+            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-7">
               <div className="text-lg font-medium text-white/90">Pro Pass</div>
               <div className="mt-8 flex items-end gap-2 text-white">
                 <span className="text-6xl font-semibold tracking-[-0.03em]">$9</span>
@@ -371,10 +355,11 @@ function Pricing() {
             <Link
               to="/auth"
               search={{ next: "/app?intent=upgrade" }}
-              className="mt-7 block rounded-full bg-gradient-to-r from-blue-500 to-blue-700 py-4 text-center text-sm font-semibold text-white shadow-[0_15px_35px_-12px_rgba(59,130,246,0.8)] transition hover:scale-[1.03] active:scale-[0.97]"
+              className={`${BTN_PRIMARY} mt-7 w-full py-4 text-sm`}
             >
               Start Pro Pass — $9 / mo
             </Link>
+
 
 
             <ul className="mt-7 space-y-3 text-[15px]">
@@ -423,14 +408,15 @@ function FAQ() {
         {items.map((it) => (
           <details
             key={it.q}
-            className="group rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-xl transition open:bg-white/[0.05] open:shadow-[0_20px_50px_-25px_rgba(59,130,246,0.5)]"
+            className="group rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-xl transition open:bg-white/[0.05]"
           >
             <summary className="flex cursor-pointer list-none items-center justify-between text-base font-medium text-white">
               {it.q}
-              <span className="ml-4 grid h-7 w-7 place-items-center rounded-full bg-blue-500/15 text-sm text-blue-300 ring-1 ring-blue-400/30 transition group-open:rotate-45">
+              <span className="ml-4 grid h-7 w-7 place-items-center rounded-full bg-white/[0.06] text-sm text-blue-300 ring-1 ring-white/10 transition group-open:rotate-45">
                 +
               </span>
             </summary>
+
             <p className="mt-4 text-[15px] text-white/70">{it.a}</p>
           </details>
         ))}
@@ -442,19 +428,11 @@ function FAQ() {
 function CTA() {
   return (
     <section className="px-6 pb-24">
-      <div className="relative mx-auto max-w-5xl overflow-hidden rounded-[36px] border border-white/10 p-16 text-center text-white backdrop-blur-xl">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 -z-10"
-          style={{
-            background:
-              "linear-gradient(135deg, #050813 0%, #0a1230 60%, #050813 100%), radial-gradient(700px 350px at 50% 0%, rgba(59,130,246,0.45), transparent 60%), radial-gradient(700px 350px at 50% 100%, rgba(14,165,233,0.35), transparent 60%)",
-          }}
-        />
+      <div className="relative mx-auto max-w-5xl overflow-hidden rounded-[36px] border border-white/10 bg-white/[0.02] p-16 text-center text-white backdrop-blur-xl">
         <h2 className="text-5xl font-semibold tracking-[-0.03em] sm:text-6xl">
           Get your license.
           <br />
-          <span className="italic font-medium [font-family:'Cormorant_Garamond',Georgia,serif] bg-gradient-to-r from-blue-200 via-cyan-200 to-blue-300 bg-clip-text text-transparent">
+          <span className="italic font-medium [font-family:'Cormorant_Garamond',Georgia,serif] text-blue-300">
             First try.
           </span>
         </h2>
@@ -463,13 +441,14 @@ function CTA() {
         </p>
         <Link
           to="/auth"
-          className="mt-10 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-400 to-cyan-300 px-10 py-5 text-base font-semibold text-[#04060d] shadow-[0_20px_50px_-15px_rgba(96,165,250,0.8)] transition hover:scale-[1.03] active:scale-[0.97]"
+          className={`${BTN_PRIMARY} mt-10 px-10 py-5 text-base`}
         >
           Start Practicing
           <ArrowRight className="h-4 w-4" />
         </Link>
       </div>
     </section>
+
   );
 }
 
@@ -478,7 +457,7 @@ function Footer() {
     <footer className="border-t border-white/5 px-6 py-10 text-sm text-white/50">
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 sm:flex-row">
         <div className="flex items-center gap-2">
-          <span className="grid h-7 w-7 place-items-center rounded-full bg-gradient-to-br from-blue-500 to-blue-700">
+          <span className="grid h-7 w-7 place-items-center rounded-full bg-[#1e40af] border border-white/10">
             <img src={logo} alt="" className="h-4 w-4" />
           </span>
           <span className="font-semibold text-white">Drivable</span>
