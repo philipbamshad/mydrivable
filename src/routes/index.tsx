@@ -71,7 +71,7 @@ function Nav() {
   const [open, setOpen] = useState(false);
   return (
     <header className="sticky top-4 z-50 px-4">
-      <div className="mx-auto flex max-w-5xl items-center justify-between rounded-full border border-white/10 bg-white/5 px-3 py-2 shadow-[0_8px_30px_-12px_rgba(0,0,0,0.6)] backdrop-blur-xl">
+      <div className="mx-auto flex max-w-5xl items-center justify-between rounded-full border border-white/10 bg-white/[0.03] px-3 py-2 backdrop-blur-xl">
         <Link to="/" className="flex items-center gap-2 pl-2">
           <img src={logo} alt="" className="h-9 w-9 rounded-lg" />
           <span className="hidden text-[15px] font-semibold tracking-tight text-white sm:inline">
@@ -89,10 +89,10 @@ function Nav() {
         <div className="flex items-center gap-2">
           <Link
             to="/auth"
-            className="group hidden sm:inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-500 to-blue-700 px-5 py-2.5 text-sm font-semibold text-white shadow-[0_8px_24px_-8px_rgba(59,130,246,0.7)] transition hover:scale-[1.03] active:scale-[0.97]"
+            className={`${BTN_PRIMARY} group hidden sm:inline-flex px-5 py-2.5 text-sm`}
           >
             Sign Up
-            <span className="grid h-6 w-6 place-items-center rounded-full bg-white/20 transition group-hover:translate-x-0.5">
+            <span className="grid h-6 w-6 place-items-center rounded-full bg-white/15 transition group-hover:translate-x-0.5">
               <ArrowRight className="h-3.5 w-3.5" />
             </span>
           </Link>
@@ -106,6 +106,7 @@ function Nav() {
           </button>
         </div>
       </div>
+
 
       {open && (
         <div className="sm:hidden mx-auto mt-2 max-w-5xl rounded-2xl border border-white/10 bg-[#070b18]/95 p-4 backdrop-blur-xl shadow-[0_20px_50px_-20px_rgba(0,0,0,0.8)]">
