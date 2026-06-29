@@ -181,10 +181,11 @@ function Hero() {
       <div className="relative mt-10 flex flex-wrap items-center justify-center gap-3">
         <Link
           to="/auth"
-          className="rounded-full bg-gradient-to-r from-blue-500 to-blue-700 px-10 py-5 text-base font-semibold text-white shadow-[0_20px_50px_-15px_rgba(59,130,246,0.8)] transition hover:scale-[1.03] active:scale-[0.97]"
+          className={`${BTN_PRIMARY} px-10 py-5 text-base`}
         >
           Get Started
         </Link>
+
         <a
           href="#features"
           className="rounded-full border border-white/15 bg-white/[0.04] px-8 py-5 text-base font-medium text-white/90 backdrop-blur-xl transition hover:bg-white/10 hover:scale-[1.03] active:scale-[0.97]"
