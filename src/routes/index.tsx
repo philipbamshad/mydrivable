@@ -380,10 +380,9 @@ function Pricing() {
         </div>
       </div>
     </section>
-
-    </section>
   );
 }
+
 
 function FAQ() {
   const items = [
