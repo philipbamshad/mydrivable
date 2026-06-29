@@ -458,17 +458,20 @@ function ScenarioSimulator() {
 // ---------------- Section 3: Minimalist Checklist ----------------
 
 const CHECKLIST_SKILLS: { id: string; name: string }[] = [
-  { id: "changing-lanes", name: "Changing Lanes" },
-  { id: "freeway-driving", name: "Freeway Driving" },
-  { id: "parallel", name: "Parallel Parking" },
-  { id: "three-point", name: "Three-Point Turns" },
-  { id: "reverse", name: "Reversing in a Straight Line" },
-  { id: "hill", name: "Hill Park & Restart" },
-  { id: "night", name: "Night Driving" },
-  { id: "weather", name: "Adverse Weather" },
-  { id: "merge", name: "Highway Merging" },
-  { id: "roundabout", name: "Roundabouts" },
+  { id: "residential-turns", name: "Residential Turns (Right & Left)" },
+  { id: "full-stop-start", name: "Full Stop & Start" },
+  { id: "traffic-management", name: "Traffic Management" },
+  { id: "lane-changes", name: "Lane Changes (Left & Right)" },
+  { id: "reverse-straight", name: "Reverse Straight" },
+  { id: "canyon-driving", name: "Canyon Driving" },
+  { id: "turn-traffic", name: "Turn Traffic (Left & Right Traffic)" },
+  { id: "specialized-conditions", name: "Specialized Conditions (Night & Rain Driving)" },
+  { id: "parking-maneuvers", name: "Parking Maneuvers (Diagonal & Parallel Parking)" },
+  { id: "uturn-3point", name: "U-Turn & 3-Point Turn" },
+  { id: "freeway-highway", name: "Freeway & Highway Driving" },
+  { id: "dmv-drive-test", name: "DMV Drive Test Practice" },
 ];
+
 
 function ManeuverChecklist() {
   const { skillMastery, setSkillMastery } = useUserProfile();
