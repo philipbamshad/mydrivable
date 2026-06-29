@@ -134,7 +134,7 @@ function ScoreDial({ value, threshold, hasData }: { value: number; threshold: nu
             strokeDashoffset={offset}
             style={{
               transition: "stroke-dashoffset 0.6s ease-out, stroke 0.3s",
-              filter: ``,
+
             }}
           />
         ) : (
@@ -148,7 +148,7 @@ function ScoreDial({ value, threshold, hasData }: { value: number; threshold: nu
             strokeWidth="2"
             strokeLinecap="round"
             strokeDasharray={emptyDash}
-            style={{ filter: ")" }}
+            style={{}}
           />
         )}
       </svg>
@@ -243,7 +243,7 @@ function ScoreLineChart({
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
-          style={{ filter: ")" }}
+          style={{}}
         />
       )}
 
@@ -269,7 +269,7 @@ function ScoreLineChart({
           fill={points[0].v >= threshold ? "rgb(74,222,128)" : points[0].v >= 60 ? "rgb(251,191,36)" : "rgb(248,113,113)"}
           stroke="var(--color-background)"
           strokeWidth="1.5"
-          style={{ filter: ")" }}
+          style={{}}
         />
       )}
 
@@ -280,7 +280,7 @@ function ScoreLineChart({
         return (
           <g key={p.i}>
             <circle cx={p.x} cy={p.y} r={4} fill={color} stroke="var(--color-background)" strokeWidth="1.5"
-              style={{ filter: `` }} />
+              style={{}} />
           </g>
         );
       })}
