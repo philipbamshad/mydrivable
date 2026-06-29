@@ -129,10 +129,11 @@ function Nav() {
             <Link
               to="/auth"
               onClick={() => setOpen(false)}
-              className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-blue-500 to-blue-700 px-5 py-3 text-sm font-semibold text-white"
+              className={`${BTN_PRIMARY} mt-2 px-5 py-3 text-sm`}
             >
               Sign Up <ArrowRight className="h-3.5 w-3.5" />
             </Link>
+
           </nav>
         </div>
       )}
