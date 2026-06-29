@@ -124,10 +124,20 @@ function AppDashboard() {
 
           <TabsContent value="road-prep" className="h-full overflow-y-auto m-0 p-5 sm:p-7 data-[state=inactive]:hidden">
             <div className="max-w-6xl mx-auto relative">
-              <AmbientGlow />
+              {/* Premium ambient blue aura behind the Behind-the-Wheel card */}
+              <div
+                aria-hidden
+                className="pointer-events-none absolute left-1/2 top-0 -z-10 h-[680px] w-[960px] max-w-[120%] -translate-x-1/2 -translate-y-16 rounded-full"
+                style={{
+                  background:
+                    "radial-gradient(circle, rgba(29, 78, 216, 0.15) 0%, transparent 70%)",
+                  filter: "blur(40px)",
+                }}
+              />
               {isPro ? <RoadPrepGuide /> : <RoadPrepPaywall />}
             </div>
           </TabsContent>
+
 
 
           <TabsContent value="chat" className="h-full m-0 data-[state=inactive]:hidden">
