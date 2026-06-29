@@ -95,8 +95,7 @@ function AppDashboard() {
 
         <div className="flex-1 min-h-0 overflow-hidden">
           <TabsContent value="dashboard" className="h-full overflow-y-auto m-0 p-5 sm:p-7 data-[state=inactive]:hidden">
-            <div className="max-w-7xl mx-auto space-y-6 relative">
-              <AmbientGlow />
+            <div className="max-w-7xl mx-auto space-y-6">
               {hydrating ? (
                 <DashboardSkeleton />
               ) : (
@@ -112,10 +111,7 @@ function AppDashboard() {
           </TabsContent>
 
           <TabsContent value="test-hub" className="h-full overflow-y-auto m-0 p-5 sm:p-7 data-[state=inactive]:hidden">
-            <div className="relative">
-              <AmbientGlow />
-              <TestHubDashboard />
-            </div>
+            <TestHubDashboard />
           </TabsContent>
 
           <TabsContent value="state-exam" className="h-full overflow-y-auto m-0 p-5 sm:p-7 data-[state=inactive]:hidden">
@@ -124,21 +120,18 @@ function AppDashboard() {
 
           <TabsContent value="road-prep" className="h-full overflow-y-auto m-0 p-5 sm:p-7 data-[state=inactive]:hidden">
             <div className="max-w-6xl mx-auto relative">
-              {/* Premium ambient blue aura behind the Behind-the-Wheel card */}
+              {/* Tasteful ambient glow — only behind the Behind-the-Wheel section */}
               <div
                 aria-hidden
-                className="pointer-events-none absolute left-1/2 top-0 -z-10 h-[680px] w-[960px] max-w-[120%] -translate-x-1/2 -translate-y-16 rounded-full"
+                className="pointer-events-none absolute inset-0 -z-10"
                 style={{
                   background:
-                    "radial-gradient(circle, rgba(29, 78, 216, 0.15) 0%, transparent 70%)",
-                  filter: "blur(40px)",
+                    "radial-gradient(60% 50% at 50% 0%, color-mix(in oklab, var(--color-primary) 14%, transparent), transparent 70%)",
                 }}
               />
               {isPro ? <RoadPrepGuide /> : <RoadPrepPaywall />}
             </div>
           </TabsContent>
-
-
 
           <TabsContent value="chat" className="h-full m-0 data-[state=inactive]:hidden">
             <ChatTab />
@@ -170,21 +163,3 @@ function DashboardSkeleton() {
     </div>
   );
 }
-
-/**
- * Soft, expansive eclipse-style backlight that lifts a dashboard section off
- * the canvas. Sits behind content via -z-10; never affects layout or input.
- */
-function AmbientGlow() {
-  return (
-    <div
-      aria-hidden
-      className="pointer-events-none absolute left-1/2 top-0 -z-10 h-[640px] w-[900px] max-w-[120%] -translate-x-1/2 -translate-y-24 rounded-full blur-3xl opacity-70"
-      style={{
-        background:
-          "radial-gradient(closest-side, color-mix(in oklab, var(--color-primary) 28%, transparent), color-mix(in oklab, var(--color-primary) 10%, transparent) 55%, transparent 78%)",
-      }}
-    />
-  );
-}
-
