@@ -164,11 +164,11 @@ function Hero() {
       <div className="relative mx-auto max-w-5xl">
         <div
           aria-hidden
-          className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[700px] w-[1100px] max-w-[120vw] -translate-x-1/2 -translate-y-1/2 blur-3xl"
-          style={{
-            background:
-              "radial-gradient(closest-side, rgba(59,130,246,0.32), rgba(30,64,175,0.18) 45%, rgba(30,64,175,0.06) 70%, transparent 85%)",
-          }}
+          className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[900px] w-[1400px] max-w-[140vw] -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-500/25 blur-[120px]"
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[560px] w-[900px] max-w-[110vw] -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-600/30 blur-[100px]"
         />
         <h1 className="relative text-5xl font-semibold leading-[1.02] tracking-[-0.03em] sm:text-7xl">
           Master Your Permit and
