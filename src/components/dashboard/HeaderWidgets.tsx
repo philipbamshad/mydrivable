@@ -37,7 +37,7 @@ export function HeaderWidgets() {
           src={logo}
           alt="Drivable"
           className="h-20 w-20 rounded-2xl"
-          style={{ filter: "drop-shadow(0 0 22px var(--color-primary))" }}
+          style={{ filter: ")" }}
         />
         <span
           className="font-display text-4xl sm:text-5xl font-bold tracking-tight text-white"
