@@ -64,7 +64,7 @@ export function RoadPrepPaywall() {
           <div className="flex flex-wrap items-center gap-3 pt-3">
             <Button
               onClick={() => openCheckout()}
-              className="press bg-primary text-primary-foreground hover:bg-primary h-11 px-6 text-sm font-semibold"
+              className="press  h-11 px-6 text-sm font-semibold"
               style={{ boxShadow: "0 0 22px -2px var(--color-primary)" }}
             >
               <Sparkles className="w-4 h-4" /> Upgrade to Pro

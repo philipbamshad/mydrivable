@@ -58,7 +58,7 @@ export function PermitExamSimulator() {
           </p>
           <Button
             onClick={() => unlockPro()}
-            className="press mt-6 bg-primary text-primary-foreground hover:bg-primary"
+            className="press mt-6 "
             style={{ boxShadow: "0 0 24px -2px var(--color-primary)" }}
           >
             <Sparkles className="w-4 h-4 mr-1.5" />
@@ -121,7 +121,7 @@ export function PermitExamSimulator() {
 
         <Button
           onClick={() => setRunning(true)}
-          className="press w-full mt-6 bg-primary text-primary-foreground hover:bg-primary"
+          className="press w-full mt-6 "
           style={{ boxShadow: "0 0 24px -2px var(--color-primary)" }}
         >
           <Sparkles className="w-4 h-4 mr-1.5" />
@@ -259,7 +259,7 @@ function ExamRunner({
           <div className="flex flex-wrap gap-2 justify-center mt-6">
             <Button
               onClick={() => setReviewing(true)}
-              className="press bg-primary text-primary-foreground hover:bg-primary"
+              className="press "
               style={{ boxShadow: "0 0 18px -2px var(--color-primary)" }}
             >
               <BookOpen className="w-4 h-4" /> Review Answers
@@ -338,7 +338,7 @@ function ExamRunner({
             <p className="text-sm text-foreground/90 leading-relaxed">{q.explanation}</p>
             <Button
               onClick={advance}
-              className="press mt-4 bg-primary text-primary-foreground hover:bg-primary"
+              className="press mt-4 "
               style={{ boxShadow: "0 0 18px -2px var(--color-primary)" }}
             >
               {idx + 1 >= questions.length ? "Finish exam" : "Next question"}
@@ -497,7 +497,7 @@ function ReviewScreen({
         </Button>
         <Button
           onClick={onExit}
-          className="press bg-primary text-primary-foreground hover:bg-primary"
+          className="press "
           style={{ boxShadow: "0 0 18px -2px var(--color-primary)" }}
         >
           Done
