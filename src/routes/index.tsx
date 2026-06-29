@@ -42,7 +42,8 @@ const SHELL_BG: React.CSSProperties = {
   background: "linear-gradient(180deg, #05070d 0%, #070b18 50%, #05070d 100%)",
 };
 const BTN_PRIMARY =
-  "inline-flex items-center justify-center gap-2 rounded-full bg-[#1e40af] hover:bg-[#1d4ed8] border border-white/10 text-white font-semibold transition active:scale-[0.98]";
+  "inline-flex items-center justify-center gap-2 rounded-full bg-[#0b1220] hover:bg-[#0f1830] border border-[#1e40af] hover:border-[#3b82f6] text-white font-semibold transition active:scale-[0.98]";
+
 
 
 function Landing() {
