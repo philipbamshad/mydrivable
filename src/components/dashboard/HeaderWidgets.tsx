@@ -40,8 +40,7 @@ export function HeaderWidgets() {
           style={{}}
         />
         <span
-          className="font-display text-4xl sm:text-5xl font-bold tracking-tight text-white"
-          style={{ textShadow: "0 0 24px var(--color-primary)" }}
+          className="font-display text-4xl sm:text-5xl font-bold tracking-tight text-foreground"
         >
           Drivable
         </span>
