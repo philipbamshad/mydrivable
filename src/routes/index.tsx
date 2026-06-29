@@ -290,16 +290,17 @@ function Features() {
           return (
             <div
               key={f.title}
-              className="group relative rounded-[28px] border border-white/10 bg-white/[0.04] p-8 shadow-[0_30px_80px_-30px_rgba(59,130,246,0.5)] backdrop-blur-xl transition hover:scale-[1.02] hover:border-blue-400/30"
+              className="group relative rounded-[28px] border border-white/10 bg-white/[0.03] p-8 backdrop-blur-xl transition hover:border-white/20"
             >
               {f.tag && (
-                <span className="absolute right-6 top-6 rounded-full bg-gradient-to-r from-blue-400 to-cyan-300 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#04060d] shadow-[0_0_18px_-2px_rgba(96,165,250,0.8)]">
+                <span className="absolute right-6 top-6 rounded-full bg-[#1e40af] border border-white/10 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
                   {f.tag}
                 </span>
               )}
-              <span className="grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700 text-white shadow-[0_0_24px_-4px_rgba(59,130,246,0.8)]">
+              <span className="grid h-12 w-12 place-items-center rounded-2xl bg-[#1e40af] border border-white/10 text-white">
                 <Icon className="h-5 w-5" />
               </span>
+
               <h3 className="mt-6 text-xl font-semibold tracking-tight">{f.title}</h3>
               <p className="mt-3 text-[15px] leading-relaxed text-white/65">{f.body}</p>
             </div>
