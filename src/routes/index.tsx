@@ -145,14 +145,14 @@ function Nav() {
 function Hero() {
   return (
     <section className="relative isolate overflow-hidden px-6 pt-24 pb-28 text-center">
-      {/* Ambient hero glow — concentrated top-center, fading down through the headline */}
+      {/* Subtle ambient hero glow — soft column behind the headline */}
       <div
         aria-hidden
-        className="pointer-events-none absolute left-1/2 top-[120px] -z-10 h-[900px] w-[1300px] max-w-[140vw] -translate-x-1/2 rounded-full bg-blue-500/25 blur-[140px]"
+        className="pointer-events-none absolute left-1/2 top-[200px] -z-10 h-[700px] w-[900px] max-w-[110vw] -translate-x-1/2 rounded-full bg-blue-600/12 blur-[130px]"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute left-1/2 top-[160px] -z-10 h-[560px] w-[820px] max-w-[110vw] -translate-x-1/2 rounded-full bg-blue-600/35 blur-[110px]"
+        className="pointer-events-none absolute left-1/2 top-[280px] -z-10 h-[420px] w-[560px] max-w-[80vw] -translate-x-1/2 rounded-full bg-blue-500/14 blur-[100px]"
       />
 
       <div className="mx-auto mb-10 grid h-24 w-24 place-items-center rounded-3xl">
