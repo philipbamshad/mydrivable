@@ -144,7 +144,7 @@ function Nav() {
 
 function Hero() {
   return (
-    <section className="relative overflow-hidden px-6 pt-24 pb-28 text-center">
+    <section className="relative isolate overflow-hidden px-6 pt-24 pb-28 text-center">
       {/* Ambient hero glow — concentrated top-center, fading down through the headline */}
       <div
         aria-hidden
