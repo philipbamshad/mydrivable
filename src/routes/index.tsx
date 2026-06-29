@@ -457,7 +457,7 @@ function Footer() {
     <footer className="border-t border-white/5 px-6 py-10 text-sm text-white/50">
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 sm:flex-row">
         <div className="flex items-center gap-2">
-          <span className="grid h-7 w-7 place-items-center rounded-full bg-gradient-to-br from-blue-500 to-blue-700">
+          <span className="grid h-7 w-7 place-items-center rounded-full bg-[#1e40af] border border-white/10">
             <img src={logo} alt="" className="h-4 w-4" />
           </span>
           <span className="font-semibold text-white">Drivable</span>
