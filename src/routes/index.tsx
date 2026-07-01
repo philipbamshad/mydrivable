@@ -8,6 +8,7 @@ import {
   Sparkles,
   MessageSquare,
   ClipboardCheck,
+  LayoutDashboard,
   
   Timer,
   MapPin,
