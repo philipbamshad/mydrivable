@@ -93,6 +93,36 @@ async function handleSubscriptionDeleted(subscription: any, env: StripeEnv) {
     .eq("environment", env);
 }
 
+async function handleCheckoutSessionCompleted(session: any, env: StripeEnv) {
+  // Only handle one-time payment sessions here. Subscription sessions
+  // are covered by customer.subscription.* events.
+  if (session.mode !== "payment") return;
+  if (session.payment_status !== "paid") return;
+  const userId = session.metadata?.userId;
+  if (!userId) {
+    console.error("No userId in checkout session metadata");
+    return;
+  }
+  const priceId = session.metadata?.priceId || "pro_pass_lifetime";
+  const productId = session.metadata?.productId || "pro_pass";
+  await getSupabase().from("subscriptions").upsert(
+    {
+      user_id: userId,
+      stripe_subscription_id: session.id,
+      stripe_customer_id: session.customer,
+      product_id: productId,
+      price_id: priceId,
+      status: "active",
+      current_period_start: new Date().toISOString(),
+      current_period_end: null,
+      cancel_at_period_end: false,
+      environment: env,
+      updated_at: new Date().toISOString(),
+    },
+    { onConflict: "stripe_subscription_id" },
+  );
+}
+
 async function handleWebhook(req: Request, env: StripeEnv) {
   const event = await verifyWebhook(req, env);
 
@@ -105,6 +135,9 @@ async function handleWebhook(req: Request, env: StripeEnv) {
       break;
     case "customer.subscription.deleted":
       await handleSubscriptionDeleted(event.data.object, env);
+      break;
+    case "checkout.session.completed":
+      await handleCheckoutSessionCompleted(event.data.object, env);
       break;
     default:
       console.log("Unhandled event:", event.type);
