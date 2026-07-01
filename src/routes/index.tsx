@@ -214,10 +214,10 @@ function StatesMarquee() {
     <section id="states" className="border-y border-white/5 bg-white/[0.02] py-16 backdrop-blur-sm">
       <div className="mx-auto max-w-6xl px-6 text-center">
         <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-blue-300/80">
-          All 50 states · grounded in official DMV handbooks
+          All 50 States · Grounded in Official DMV Handbooks
         </p>
         <h2 className="mb-10 text-3xl font-semibold tracking-[-0.02em] sm:text-4xl">
-          Wherever you take the test, we've got you
+          Wherever You Take the Test, We've Got You
         </h2>
       </div>
       <div
@@ -280,7 +280,7 @@ function Features() {
       <div className="mx-auto max-w-3xl text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 text-sm text-white/80 backdrop-blur-xl">
           <Sparkles className="h-4 w-4 text-blue-300" />
-          Four pillars
+          Four Pillars
         </div>
         <h2 className="mt-8 text-5xl font-semibold tracking-[-0.03em] sm:text-6xl">
           Everything Between You and a{" "}
@@ -335,7 +335,7 @@ function Pricing() {
     <section id="pricing" className="px-6 py-28">
       <div className="mx-auto mb-14 max-w-3xl text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 text-sm text-white/80 backdrop-blur-xl">
-          One plan
+          One Plan
         </div>
         <h2 className="mt-6 text-5xl font-semibold tracking-[-0.03em] sm:text-6xl">
           Pick Your{" "}
@@ -418,7 +418,7 @@ function FAQ() {
       <h2 className="mb-12 text-center text-5xl font-semibold tracking-[-0.03em]">
         Questions,{" "}
         <span className="italic font-medium [font-family:'Cormorant_Garamond',Georgia,serif] bg-gradient-to-r from-blue-300 to-cyan-300 bg-clip-text text-transparent">
-          answered
+          Answered
         </span>
       </h2>
       <div className="space-y-3">
@@ -447,10 +447,10 @@ function CTA() {
     <section className="px-6 pb-24">
       <div className="relative mx-auto max-w-5xl overflow-hidden rounded-[36px] border border-white/10 bg-white/[0.02] p-16 text-center text-white backdrop-blur-xl">
         <h2 className="text-5xl font-semibold tracking-[-0.03em] sm:text-6xl">
-          Get your license.
+          Get Your License.
           <br />
           <span className="italic font-medium [font-family:'Cormorant_Garamond',Georgia,serif] text-blue-300">
-            First try.
+            First Try.
           </span>
         </h2>
         <p className="mx-auto mt-6 max-w-xl text-white/70">
