@@ -18,6 +18,7 @@ import { cn } from "@/lib/utils";
 import { useUserProfile } from "@/lib/user-profile";
 import { SignVisual, type SignSpec } from "./SignVisual";
 import { toast } from "sonner";
+import { shuffleAnswers } from "@/data/dmv/question-generator";
 
 type Question = {
   q: string;
