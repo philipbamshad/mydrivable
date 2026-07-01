@@ -28,7 +28,6 @@ export const Route = createFileRoute("/_authenticated/app/")({
       t === "dashboard" ||
       t === "test-hub" ||
       t === "state-exam" ||
-      t === "road-prep" ||
       t === "chat"
     ) {
       out.tab = t;
