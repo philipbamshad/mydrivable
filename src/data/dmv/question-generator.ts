@@ -159,6 +159,25 @@ function lower(s: string): string {
   return s.charAt(0).toLowerCase() + s.slice(1);
 }
 
+/**
+ * Shuffle a question's answer options and remap the `correct` index so the
+ * right answer lands in an unpredictable position on every load.
+ */
+export function shuffleAnswers(q: Question): Question {
+  const indices = q.options.map((_, i) => i);
+  for (let i = indices.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [indices[i], indices[j]] = [indices[j], indices[i]];
+  }
+  return {
+    ...q,
+    options: indices.map((i) => q.options[i]),
+    correct: indices.indexOf(q.correct),
+  };
+}
+
+
+
 /** Apply scenario prefixes to multiply the pool. */
 function expandWithVariations(
   templates: Template[],
