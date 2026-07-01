@@ -268,11 +268,6 @@ function Features() {
       title: "Targeted Section Quizzes",
       body: "Drill the topics examiners punish: signs, intersections, substance laws, and speed limits, short rounds with instant scoring and explanations.",
     },
-    {
-      icon: Car,
-      title: "Behind-the-Wheel Checklists",
-      body: "Every maneuver mapped step-by-step with the exact thresholds that auto-fail a road test, so you walk in knowing what counts.",
-    },
   ];
 
   return (
