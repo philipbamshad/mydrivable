@@ -124,9 +124,9 @@ export function AccountPanel() {
               {isPro ? <Crown className="w-5 h-5 text-primary" /> : <Lock className="w-5 h-5 text-primary" />}
             </span>
             <div className="min-w-0">
-              <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground">Subscription</p>
+              <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground">Membership</p>
               <h3 className="font-display text-lg font-bold truncate">
-                {isPro ? "Premium Pro Membership" : "Free Tier · Onboarding"}
+                {isPro ? "Pro Pass · Lifetime" : "Free Tier · Onboarding"}
               </h3>
               <div className="flex items-center gap-2 mt-1">
                 {isPro ? (
@@ -134,7 +134,7 @@ export function AccountPanel() {
                     <Badge className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
                       <CheckCircle2 className="w-3 h-3" /> Active
                     </Badge>
-                    <span className="text-xs text-muted-foreground">$9.00 / month</span>
+                    <span className="text-xs text-muted-foreground">$19 one-time · lifetime access</span>
                   </>
                 ) : (
                   <Badge className="bg-muted/40 text-muted-foreground border border-border">
@@ -146,15 +146,9 @@ export function AccountPanel() {
           </div>
 
           {isPro ? (
-            <Button
-              variant="outline"
-              className="press"
-              onClick={onManageSubscription}
-              disabled={loadingPortal}
-            >
-              {loadingPortal ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
-              Manage Subscription
-            </Button>
+            <Badge className="bg-primary/15 text-primary border border-primary/30 px-3 py-1">
+              Lifetime access
+            </Badge>
           ) : (
             <Button
               onClick={() => openCheckout()}
