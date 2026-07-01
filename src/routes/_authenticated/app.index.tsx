@@ -5,21 +5,18 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import {
   LayoutDashboard,
   MessageSquare,
-  Car,
   ClipboardCheck,
   Timer,
 } from "lucide-react";
 import { HeaderWidgets } from "@/components/dashboard/HeaderWidgets";
 import { DailyChecklist } from "@/components/dashboard/DailyChecklist";
 import { ExamProgressChart } from "@/components/dashboard/ExamProgressChart";
-import { RoadPrepGuide } from "@/components/dashboard/RoadPrepGuide";
-import { RoadPrepPaywall } from "@/components/dashboard/RoadPrepPaywall";
 import { TestHubDashboard } from "@/components/dashboard/TestHubDashboard";
 import { PermitExamSimulator } from "@/components/dashboard/PermitExamSimulator";
 import { ChatTab } from "@/components/chat/ChatTab";
 import { useUserProfile } from "@/lib/user-profile";
 
-type TabId = "dashboard" | "test-hub" | "state-exam" | "road-prep" | "chat";
+type TabId = "dashboard" | "test-hub" | "state-exam" | "chat";
 
 export const Route = createFileRoute("/_authenticated/app/")({
   validateSearch: (
