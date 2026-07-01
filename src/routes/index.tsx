@@ -23,7 +23,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Master your permit and ace your road test on the first try. AI coach, full-length mock permit exam simulator, targeted section quizzes, and behind-the-wheel checklists tuned to your state.",
+          "Master your permit and ace your road test on the first try. AI coach, full-length mock permit exam simulator, and targeted section quizzes tuned to your state.",
       },
       { property: "og:title", content: "Drivable" },
       {
