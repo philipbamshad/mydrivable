@@ -558,7 +558,7 @@ function QuizRunner({ pillar, onExit }: { pillar: Pillar; onExit: () => void }) 
     let key = "";
     let tries = 0;
     do {
-      candidate = shuffle(pillar.bank).slice(0, TAKE);
+      candidate = shuffle(pillar.bank).slice(0, TAKE).map(shuffleAnswers);
       key = candidate.map((q) => q.q).join("|");
       tries++;
     } while (key === lastSetRef.current && tries < 5);
