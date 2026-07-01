@@ -18,6 +18,7 @@ import { cn } from "@/lib/utils";
 import { useUserProfile } from "@/lib/user-profile";
 import { SignVisual, type SignSpec } from "./SignVisual";
 import { toast } from "sonner";
+import { shuffleAnswers } from "@/data/dmv/question-generator";
 
 type Question = {
   q: string;
@@ -558,7 +559,7 @@ function QuizRunner({ pillar, onExit }: { pillar: Pillar; onExit: () => void }) 
     let key = "";
     let tries = 0;
     do {
-      candidate = shuffle(pillar.bank).slice(0, TAKE);
+      candidate = shuffle(pillar.bank).slice(0, TAKE).map(shuffleAnswers);
       key = candidate.map((q) => q.q).join("|");
       tries++;
     } while (key === lastSetRef.current && tries < 5);
