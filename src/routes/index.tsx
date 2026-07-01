@@ -404,7 +404,7 @@ function FAQ() {
     },
     {
       q: "What's in Pro Pass?",
-      a: "Full-length state-specific mock exams, unlimited AI chat, all section quizzes, the sign-recognition drill, the behind-the-wheel checklists, and every state rule pack. One-time payment of $19, no subscriptions.",
+      a: "Full-length state-specific mock exams, unlimited AI chat, all section quizzes, the sign-recognition drill, and every state rule pack. One-time payment of $19, no subscriptions.",
     },
   ];
   return (
