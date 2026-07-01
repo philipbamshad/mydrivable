@@ -88,7 +88,7 @@ const DEFAULT: ProfileState = {
 };
 
 const Ctx = createContext<ProfileContextValue | null>(null);
-const PRO_PASS_PRICE_ID = "pro_pass_monthly";
+const PRO_PASS_PRICE_ID = "pro_pass_lifetime";
 
 type DrivingLogRow = {
   id: string;
@@ -529,7 +529,7 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
               Unlock Pro Pass
             </DialogTitle>
             <DialogDescription>
-              $9 / month · cancel anytime. Test mode is active in preview — use
+              $19 one-time payment · lifetime access. Test mode is active in preview, use
               card <span className="font-mono">4242 4242 4242 4242</span>.
             </DialogDescription>
           </DialogHeader>
