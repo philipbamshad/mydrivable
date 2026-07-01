@@ -319,7 +319,7 @@ function Pricing() {
     "Full-length state-specific Mock Permit Exam simulator",
     "Unlimited AI coach chat synced to your DMV handbook",
     "All 4 targeted pillar quizzes with infinite question pool",
-    "Behind-the-wheel checklists & 50-hour log",
+    
     "Sign recognition drills baked into the quiz hub",
     "All 50 state rule packs",
     "Pay once, use forever, no recurring fees",
