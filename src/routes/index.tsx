@@ -8,7 +8,7 @@ import {
   Sparkles,
   MessageSquare,
   ClipboardCheck,
-  Car,
+  
   Timer,
   MapPin,
   Menu,
@@ -23,7 +23,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Master your permit and ace your road test on the first try. AI coach, full-length mock permit exam simulator, targeted section quizzes, and behind-the-wheel checklists tuned to your state.",
+          "Master your permit and ace your road test on the first try. AI coach, full-length mock permit exam simulator, and targeted section quizzes tuned to your state.",
       },
       { property: "og:title", content: "Drivable" },
       {
@@ -185,8 +185,7 @@ function Hero() {
 
       <p className="relative mx-auto mt-8 max-w-2xl text-lg text-white/70">
         An AI driving coach trained on every official DMV handbook, with
-        full-length mock permit exams, targeted section drills, and behind-the-wheel
-        action checklists. No fluff.
+        full-length mock permit exams and targeted section drills. No fluff.
       </p>
 
       <div className="relative mt-10 flex flex-wrap items-center justify-center gap-3">
@@ -268,11 +267,6 @@ function Features() {
       title: "Targeted Section Quizzes",
       body: "Drill the topics examiners punish: signs, intersections, substance laws, and speed limits, short rounds with instant scoring and explanations.",
     },
-    {
-      icon: Car,
-      title: "Behind-the-Wheel Checklists",
-      body: "Every maneuver mapped step-by-step with the exact thresholds that auto-fail a road test, so you walk in knowing what counts.",
-    },
   ];
 
   return (
@@ -280,7 +274,7 @@ function Features() {
       <div className="mx-auto max-w-3xl text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 text-sm text-white/80 backdrop-blur-xl">
           <Sparkles className="h-4 w-4 text-blue-300" />
-          Four Pillars
+          Three Pillars
         </div>
         <h2 className="mt-8 text-5xl font-semibold tracking-[-0.03em] sm:text-6xl">
           Everything Between You and a{" "}
@@ -289,7 +283,7 @@ function Features() {
           </span>
         </h2>
         <p className="mx-auto mt-6 max-w-xl text-lg text-white/60">
-          Four focused tools, one outcome, pass on the first try.
+          Three focused tools, one outcome, pass on the first try.
         </p>
       </div>
 
@@ -325,7 +319,7 @@ function Pricing() {
     "Full-length state-specific Mock Permit Exam simulator",
     "Unlimited AI coach chat synced to your DMV handbook",
     "All 4 targeted pillar quizzes with infinite question pool",
-    "Behind-the-wheel checklists & 50-hour log",
+    
     "Sign recognition drills baked into the quiz hub",
     "All 50 state rule packs",
     "Pay once, use forever, no recurring fees",
@@ -410,7 +404,7 @@ function FAQ() {
     },
     {
       q: "What's in Pro Pass?",
-      a: "Full-length state-specific mock exams, unlimited AI chat, all section quizzes, the sign-recognition drill, the behind-the-wheel checklists, and every state rule pack. One-time payment of $19, no subscriptions.",
+      a: "Full-length state-specific mock exams, unlimited AI chat, all section quizzes, the sign-recognition drill, and every state rule pack. One-time payment of $19, no subscriptions.",
     },
   ];
   return (
