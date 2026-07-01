@@ -44,7 +44,7 @@ export function ThreadSidebar() {
   const navigate = useNavigate();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { state: userState, setState: setUserState, isPro } = useUserProfile();
+  const { state: userState, setState: setUserState, isPro, openCheckout } = useUserProfile();
   const [statePickerOpen, setStatePickerOpen] = useState(false);
 
   const { pathname, search } = useRouterState({
