@@ -8,12 +8,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Globe, Crown, CheckCircle2, Lock, Sparkles, Loader2, Sun, Moon } from "lucide-react";
+import { Globe, Crown, CheckCircle2, Lock, Sparkles, Sun, Moon } from "lucide-react";
 import { toast } from "sonner";
 import { useUserProfile, US_STATES } from "@/lib/user-profile";
-import { useState } from "react";
-import { createPortalSession } from "@/lib/payments.functions";
-import { getStripeEnvironment } from "@/lib/stripe";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { TargetDatePicker } from "@/components/dashboard/TargetDatePicker";
 import { useTheme } from "@/lib/theme";
@@ -21,30 +18,13 @@ import { useTheme } from "@/lib/theme";
 export function AccountPanel() {
   const { state, setState, isPro, openCheckout, targetDate, setTargetDate } = useUserProfile();
   const { theme } = useTheme();
-  const [loadingPortal, setLoadingPortal] = useState(false);
 
   const onChangeState = (next: string) => {
     setState(next);
     toast.success(`AI knowledge base recalibrated to ${next}`);
   };
 
-  const onManageSubscription = async () => {
-    setLoadingPortal(true);
-    try {
-      const result = await createPortalSession({
-        data: {
-          environment: getStripeEnvironment(),
-          returnUrl: `${window.location.origin}/app`,
-        },
-      });
-      if ("error" in result) throw new Error(result.error);
-      window.open(result.url, "_blank", "noopener,noreferrer");
-    } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Could not open billing portal");
-    } finally {
-      setLoadingPortal(false);
-    }
-  };
+
 
 
   return (
