@@ -113,20 +113,7 @@ function AppDashboard() {
             <PermitExamSimulator />
           </TabsContent>
 
-          <TabsContent value="road-prep" className="h-full overflow-y-auto m-0 p-5 sm:p-7 data-[state=inactive]:hidden">
-            <div className="max-w-6xl mx-auto relative">
-              {/* Tasteful ambient glow — only behind the Behind-the-Wheel section */}
-              <div
-                aria-hidden
-                className="pointer-events-none absolute inset-0 -z-10"
-                style={{
-                  background:
-                    "radial-gradient(60% 50% at 50% 0%, color-mix(in oklab, var(--color-primary) 14%, transparent), transparent 70%)",
-                }}
-              />
-              {isPro ? <RoadPrepGuide /> : <RoadPrepPaywall />}
-            </div>
-          </TabsContent>
+
 
           <TabsContent value="chat" className="h-full m-0 data-[state=inactive]:hidden">
             <ChatTab />
