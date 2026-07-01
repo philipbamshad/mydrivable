@@ -175,13 +175,15 @@ function expandWithVariations(
         : interp(t.q, rules);
       if (used.has(qText)) continue;
       used.add(qText);
-      out.push({
-        q: qText,
-        options: t.options.map((o) => interp(o, rules)),
-        correct: t.correct,
-        explanation: interp(t.explanation, rules),
-        source: rules.abbr,
-      });
+      out.push(
+        shuffleAnswers({
+          q: qText,
+          options: t.options.map((o) => interp(o, rules)),
+          correct: t.correct,
+          explanation: interp(t.explanation, rules),
+          source: rules.abbr,
+        }),
+      );
     }
   }
   return out;
