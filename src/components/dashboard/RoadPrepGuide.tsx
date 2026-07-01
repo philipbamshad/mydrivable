@@ -145,8 +145,8 @@ const SCENARIOS: Scenario[] = [
       "You're on a short on-ramp. Traffic in the right lane is moving at 65 mph and there's a tight gap two cars ahead.",
     prompt: "What's your safest move?",
     choices: [
-      { id: "a", text: "Match freeway speed on the ramp, signal early, and merge into the gap.", correct: true, tip: "Matching the flow of traffic lets you slip in smoothly without forcing other drivers to brake — the defensive choice every time." },
-      { id: "b", text: "Slow down at the end of the ramp and wait for a bigger opening.", correct: false, tip: "Stopping on a ramp is dangerous — you lose the runway you need to match speed and risk a rear-end collision." },
+      { id: "a", text: "Match freeway speed on the ramp, signal early, and merge into the gap.", correct: true, tip: "Matching the flow of traffic lets you slip in smoothly without forcing other drivers to brake, the defensive choice every time." },
+      { id: "b", text: "Slow down at the end of the ramp and wait for a bigger opening.", correct: false, tip: "Stopping on a ramp is dangerous, you lose the runway you need to match speed and risk a rear-end collision." },
       { id: "c", text: "Speed past traffic and merge into the left lane.", correct: false, tip: "Cutting across multiple lanes from a merge is illegal in most states and unpredictable to other drivers." },
     ],
   },
@@ -169,7 +169,7 @@ const SCENARIOS: Scenario[] = [
     choices: [
       { id: "a", text: "Maintain speed since you have the right of way.", correct: false, tip: "Right of way doesn't protect you from a driver who doesn't see you. Visibility wins over right of way every time." },
       { id: "b", text: "Cover the brake, slow down, and scan left-right-left before entering.", correct: true, tip: "Covering the brake cuts your reaction time, and the slow approach buys you space to react to anyone running the cross street." },
-      { id: "c", text: "Honk to alert other drivers.", correct: false, tip: "A horn doesn't make you visible — it just notifies. You still need to slow down and scan." },
+      { id: "c", text: "Honk to alert other drivers.", correct: false, tip: "A horn doesn't make you visible, it just notifies. You still need to slow down and scan." },
     ],
   },
   {
@@ -200,9 +200,9 @@ const SCENARIOS: Scenario[] = [
     setup: "You're approaching a right turn at a residential intersection about 200 feet ahead.",
     prompt: "When should you start your turn signal?",
     choices: [
-      { id: "a", text: "Right as you begin the turn.", correct: false, tip: "Signaling at the turn gives drivers behind you no warning to slow down — it's also illegal in most states." },
+      { id: "a", text: "Right as you begin the turn.", correct: false, tip: "Signaling at the turn gives drivers behind you no warning to slow down, it's also illegal in most states." },
       { id: "b", text: "At least 100 feet before the turn.", correct: true, tip: "Most state laws require signaling at least 100 feet ahead (about 5 seconds at city speed) so drivers behind and ahead can react." },
-      { id: "c", text: "Only if there's a car behind you.", correct: false, tip: "Signal every time — pedestrians, cyclists, and cross-traffic depend on it too." },
+      { id: "c", text: "Only if there's a car behind you.", correct: false, tip: "Signal every time, pedestrians, cyclists, and cross-traffic depend on it too." },
     ],
   },
   {
@@ -212,7 +212,7 @@ const SCENARIOS: Scenario[] = [
     prompt: "What do you do?",
     choices: [
       { id: "a", text: "Yield to the circulating car, then enter when there's a safe gap.", correct: true, tip: "Traffic already in the roundabout always has the right of way. Yield, find a gap, and merge smoothly without stopping if possible." },
-      { id: "b", text: "Stop completely and wait for the roundabout to clear.", correct: false, tip: "Roundabouts aren't stop signs — stopping unnecessarily creates rear-end risk. Yield and flow when safe." },
+      { id: "b", text: "Stop completely and wait for the roundabout to clear.", correct: false, tip: "Roundabouts aren't stop signs, stopping unnecessarily creates rear-end risk. Yield and flow when safe." },
       { id: "c", text: "Enter quickly to claim your spot.", correct: false, tip: "You don't have right of way on entry. Forcing in causes crashes and is the #1 roundabout violation." },
     ],
   },
@@ -222,7 +222,7 @@ const SCENARIOS: Scenario[] = [
     setup: "You're cruising on a three-lane highway at the speed limit, not passing anyone.",
     prompt: "Which lane should you be in?",
     choices: [
-      { id: "a", text: "The far-left lane — it's the fastest.", correct: false, tip: "The left lane is for passing only in most states. Cruising there blocks faster traffic and can earn you a ticket." },
+      { id: "a", text: "The far-left lane, it's the fastest.", correct: false, tip: "The left lane is for passing only in most states. Cruising there blocks faster traffic and can earn you a ticket." },
       { id: "b", text: "The middle or right lane, leaving the left for passing.", correct: true, tip: "Keep right except to pass. The middle lane is fine for steady travel, and the right lane is the default cruising lane." },
       { id: "c", text: "Whichever lane has the fewest cars.", correct: false, tip: "Lane choice is about traffic law and predictability, not convenience. Stay right, use left to pass." },
     ],
@@ -233,9 +233,9 @@ const SCENARIOS: Scenario[] = [
     setup: "You and another car arrive at a four-way stop at exactly the same time. The other car is to your right.",
     prompt: "Who goes first?",
     choices: [
-      { id: "a", text: "You do — your direction has priority.", correct: false, tip: "There's no directional priority at a four-way stop. When tied, the car on the right goes first." },
+      { id: "a", text: "You do, your direction has priority.", correct: false, tip: "There's no directional priority at a four-way stop. When tied, the car on the right goes first." },
       { id: "b", text: "The car on the right goes first.", correct: true, tip: "Standard rule: when two cars arrive at the same time, yield to the car on your right." },
-      { id: "c", text: "Whoever waves the other through first.", correct: false, tip: "Waving creates confusion and liability. Follow the rule, not gestures — the car on the right has the right of way." },
+      { id: "c", text: "Whoever waves the other through first.", correct: false, tip: "Waving creates confusion and liability. Follow the rule, not gestures, the car on the right has the right of way." },
     ],
   },
   {
@@ -244,9 +244,9 @@ const SCENARIOS: Scenario[] = [
     setup: "You're driving through a school zone at 2:45 PM and the yellow lights are flashing.",
     prompt: "What's the right action?",
     choices: [
-      { id: "a", text: "Slow to the posted school-zone speed limit (usually 15-25 mph).", correct: true, tip: "Flashing lights mean the reduced speed limit is active. Kids can dart out unpredictably — slower speed = shorter stopping distance." },
+      { id: "a", text: "Slow to the posted school-zone speed limit (usually 15-25 mph).", correct: true, tip: "Flashing lights mean the reduced speed limit is active. Kids can dart out unpredictably, slower speed = shorter stopping distance." },
       { id: "b", text: "Maintain the regular street speed limit.", correct: false, tip: "Flashing lights override the regular limit. Ignoring them is a serious moving violation with doubled fines." },
-      { id: "c", text: "Stop completely and wait for the lights to turn off.", correct: false, tip: "You don't need to stop — just slow down to the posted reduced limit and stay alert for pedestrians." },
+      { id: "c", text: "Stop completely and wait for the lights to turn off.", correct: false, tip: "You don't need to stop, just slow down to the posted reduced limit and stay alert for pedestrians." },
     ],
   },
   {
@@ -257,7 +257,7 @@ const SCENARIOS: Scenario[] = [
     choices: [
       { id: "a", text: "Honk to warn them and keep driving.", correct: false, tip: "Pedestrians have right of way in any crosswalk, marked or not. Honking instead of yielding is both illegal and rude." },
       { id: "b", text: "Stop and yield until they're safely across.", correct: true, tip: "Every intersection has an unmarked crosswalk by law. Yield until the pedestrian is fully clear of your lane." },
-      { id: "c", text: "Only stop if they're already in your lane.", correct: false, tip: "You must yield as soon as they enter the crosswalk — not wait until they're in your path." },
+      { id: "c", text: "Only stop if they're already in your lane.", correct: false, tip: "You must yield as soon as they enter the crosswalk, not wait until they're in your path." },
     ],
   },
   {
@@ -277,7 +277,7 @@ const SCENARIOS: Scenario[] = [
     setup: "You hear sirens and see an ambulance approaching from behind with lights flashing.",
     prompt: "What should you do?",
     choices: [
-      { id: "a", text: "Speed up to get out of the way.", correct: false, tip: "Speeding up is dangerous and often illegal. Pull over and stop — that's what the siren is asking for." },
+      { id: "a", text: "Speed up to get out of the way.", correct: false, tip: "Speeding up is dangerous and often illegal. Pull over and stop, that's what the siren is asking for." },
       { id: "b", text: "Pull to the right shoulder and stop until it passes.", correct: true, tip: "Move-over laws require yielding to emergency vehicles by pulling right and stopping. This clears the lane safely." },
       { id: "c", text: "Stop immediately in your lane.", correct: false, tip: "Stopping mid-lane blocks the emergency vehicle. Always pull over to the right shoulder first." },
     ],
@@ -290,7 +290,7 @@ const SCENARIOS: Scenario[] = [
     choices: [
       { id: "a", text: "Pull into the intersection and wait for a safe gap.", correct: true, tip: "Enter the intersection so you can clear it on yellow if needed. Yield to oncoming traffic until a safe gap opens." },
       { id: "b", text: "Wait behind the line until oncoming traffic clears completely.", correct: false, tip: "Waiting behind the line means you may never get through. Enter the intersection so you can complete the turn." },
-      { id: "c", text: "Turn immediately — you have the green.", correct: false, tip: "Solid green for a left turn means yield to oncoming traffic. Turning without yielding causes head-on crashes." },
+      { id: "c", text: "Turn immediately, you have the green.", correct: false, tip: "Solid green for a left turn means yield to oncoming traffic. Turning without yielding causes head-on crashes." },
     ],
   },
   {
@@ -300,7 +300,7 @@ const SCENARIOS: Scenario[] = [
     prompt: "What's required?",
     choices: [
       { id: "a", text: "Stop and stay stopped until the lights stop flashing.", correct: true, tip: "On undivided roads, all traffic in both directions must stop until the red lights stop flashing and the stop sign retracts." },
-      { id: "b", text: "Slow down and pass carefully on the left.", correct: false, tip: "Passing a stopped school bus with flashing red lights is illegal and extremely dangerous — kids cross unpredictably." },
+      { id: "b", text: "Slow down and pass carefully on the left.", correct: false, tip: "Passing a stopped school bus with flashing red lights is illegal and extremely dangerous, kids cross unpredictably." },
       { id: "c", text: "Stop only if you see children.", correct: false, tip: "You must stop whether or not you see children. The flashing red lights are the legal trigger." },
     ],
   },
@@ -310,7 +310,7 @@ const SCENARIOS: Scenario[] = [
     setup: "You're in the right lane of a freeway. A car on the on-ramp is signaling to merge into your lane.",
     prompt: "Best response?",
     choices: [
-      { id: "a", text: "Hold your speed — they need to yield to you.", correct: false, tip: "Technically merging traffic yields, but defensive drivers help create space. Forcing them off the ramp causes crashes." },
+      { id: "a", text: "Hold your speed, they need to yield to you.", correct: false, tip: "Technically merging traffic yields, but defensive drivers help create space. Forcing them off the ramp causes crashes." },
       { id: "b", text: "Adjust your speed or change lanes if safe to make room.", correct: true, tip: "Cooperative merging keeps traffic flowing smoothly. Move left if possible, or adjust speed to open a gap." },
       { id: "c", text: "Speed up to close the gap so they go behind you.", correct: false, tip: "Speeding up to block a merger is aggressive and a leading cause of merge-area crashes." },
     ],
@@ -359,7 +359,7 @@ function ScenarioSimulator() {
             Scenario Simulator
           </p>
           <p className="text-xs text-muted-foreground mt-1">
-            One scenario at a time — answer, learn, move on.
+            One scenario at a time, answer, learn, move on.
           </p>
         </div>
         <Sparkles className="w-5 h-5 text-primary" />

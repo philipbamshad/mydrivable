@@ -29,7 +29,7 @@ import logo from "@/assets/drivable-logo.png";
 import { useUserProfile } from "@/lib/user-profile";
 
 const SUGGESTIONS = [
-  "I'm starting permit prep — where do I begin?",
+  "I'm starting permit prep, where do I begin?",
   "Quiz me on right-of-way rules.",
   "What does the examiner watch for during parallel parking?",
   "Walk me through a smooth highway merge.",
@@ -96,7 +96,7 @@ export function ChatWindow({
         <div className="max-w-3xl mx-auto flex items-center gap-2.5 text-xs">
           <span className="w-1.5 h-1.5 rounded-full bg-primary  animate-pulse" />
           <span className="text-foreground/90">
-            AI Assistant Active — {userState
+            AI Assistant Active, {userState
               ? <>Synced with the official <span className="font-semibold text-primary">{userState}</span> DMV Handbook</>
               : <span className="text-muted-foreground">No state set. Pick one in Settings for state-specific rules.</span>}
           </span>
@@ -111,8 +111,8 @@ export function ChatWindow({
               title="What are we tackling?"
               description={
                 userState
-                  ? `Permit, road test, or specific ${userState} rules — pick a starter or just ask.`
-                  : "Permit prep, road-test maneuvers, or sign meanings — pick a starter or just ask."
+                  ? `Permit, road test, or specific ${userState} rules, pick a starter or just ask.`
+                  : "Permit prep, road-test maneuvers, or sign meanings, pick a starter or just ask."
               }
             >
               <div className="mt-6 grid sm:grid-cols-2 gap-2 w-full max-w-xl">
@@ -165,7 +165,7 @@ export function ChatWindow({
           <PromptInput onSubmit={handleSubmit}>
             <PromptInputTextarea
               ref={textareaRef}
-              placeholder="Ask Drivable anything — sign meanings, right-of-way, parallel parking…"
+              placeholder="Ask Drivable anything, sign meanings, right-of-way, parallel parking…"
               disabled={isBusy}
             />
             <PromptInputFooter className="justify-end">
