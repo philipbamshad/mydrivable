@@ -530,7 +530,7 @@ export function TestHubDashboard() {
               style={{ boxShadow: "0 0 24px -4px var(--color-primary)" }}>
               <Lock className="w-6 h-6 text-primary" />
             </div>
-            <h3 className="font-display text-xl font-bold">Pro Pass required</h3>
+            <h3 className="font-display text-xl font-bold">Pro Pass Required</h3>
             <p className="text-sm text-muted-foreground mt-2">
               Unlock all 4 pillar quizzes, endless randomized sets, and instant explanations.
             </p>
