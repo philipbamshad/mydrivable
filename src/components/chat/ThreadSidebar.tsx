@@ -14,7 +14,6 @@ import {
   LogOut,
   MessageSquare,
   LayoutDashboard,
-  Car,
   ClipboardCheck,
   Timer,
   Settings,
