@@ -82,13 +82,23 @@ export function ThreadSidebar() {
           {PRIMARY_NAV.map((item) => {
             const { id, label, icon: Icon } = item;
             const isActive = activeTab === id;
-            const showProBadge = "pro" in item && item.pro && !isPro;
+            const isPro Only = "pro" in item && item.pro;
+            const locked = isProOnly && !isPro;
+            const showProBadge = isProOnly && !isPro;
             return (
               <Link
                 key={id}
                 to="/app"
                 search={{ tab: id }}
-                onClick={() => setMobileOpen(false)}
+                onClick={(e) => {
+                  if (locked) {
+                    e.preventDefault();
+                    setMobileOpen(false);
+                    openCheckout();
+                    return;
+                  }
+                  setMobileOpen(false);
+                }}
                 className={cn(
                   "nav-link min-h-11",
                   isActive && "nav-link-active",
