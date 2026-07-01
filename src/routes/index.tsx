@@ -184,7 +184,7 @@ function Hero() {
 
 
       <p className="relative mx-auto mt-8 max-w-2xl text-lg text-white/70">
-        An AI driving coach trained on every official DMV handbook —
+        An AI driving coach trained on every official DMV handbook, with
         full-length mock permit exams, targeted section drills, and behind-the-wheel
         action checklists. No fluff.
       </p>
