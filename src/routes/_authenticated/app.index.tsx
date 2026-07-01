@@ -43,7 +43,6 @@ const TABS = [
   { id: "dashboard", label: "Dashboard Overview", icon: LayoutDashboard },
   { id: "test-hub", label: "Test Hub", icon: ClipboardCheck },
   { id: "state-exam", label: "State Permit Exam", icon: Timer },
-  { id: "road-prep", label: "Behind-the-Wheel", icon: Car },
   { id: "chat", label: "Chat AI Assistant", icon: MessageSquare },
 ] as const;
 
