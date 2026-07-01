@@ -61,7 +61,7 @@ export function PermitExamSimulator() {
             className="press mt-6 "
           >
             <Sparkles className="w-4 h-4 mr-1.5" />
-            Upgrade to Pro · $9 / mo
+            Get Pro Pass · $19 one-time
           </Button>
         </Card>
       </div>

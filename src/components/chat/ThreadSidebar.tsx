@@ -35,7 +35,7 @@ import { useUserProfile, US_STATES } from "@/lib/user-profile";
 
 const PRIMARY_NAV = [
   { id: "dashboard", label: "Dashboard Overview", icon: LayoutDashboard },
-  { id: "test-hub", label: "Test Hub", icon: ClipboardCheck },
+  { id: "test-hub", label: "Test Hub", icon: ClipboardCheck, pro: true },
   { id: "state-exam", label: "State Permit Exam", icon: Timer, pro: true },
   { id: "chat", label: "Chat AI Assistant", icon: MessageSquare },
 ] as const;
@@ -44,7 +44,7 @@ export function ThreadSidebar() {
   const navigate = useNavigate();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { state: userState, setState: setUserState, isPro } = useUserProfile();
+  const { state: userState, setState: setUserState, isPro, openCheckout } = useUserProfile();
   const [statePickerOpen, setStatePickerOpen] = useState(false);
 
   const { pathname, search } = useRouterState({
@@ -82,13 +82,23 @@ export function ThreadSidebar() {
           {PRIMARY_NAV.map((item) => {
             const { id, label, icon: Icon } = item;
             const isActive = activeTab === id;
-            const showProBadge = "pro" in item && item.pro && !isPro;
+            const isProOnly = "pro" in item && item.pro;
+            const locked = isProOnly && !isPro;
+            const showProBadge = isProOnly && !isPro;
             return (
               <Link
                 key={id}
                 to="/app"
                 search={{ tab: id }}
-                onClick={() => setMobileOpen(false)}
+                onClick={(e) => {
+                  if (locked) {
+                    e.preventDefault();
+                    setMobileOpen(false);
+                    openCheckout();
+                    return;
+                  }
+                  setMobileOpen(false);
+                }}
                 className={cn(
                   "nav-link min-h-11",
                   isActive && "nav-link-active",

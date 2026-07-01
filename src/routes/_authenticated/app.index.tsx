@@ -61,6 +61,17 @@ function AppDashboard() {
     }
   }, [search.intent, isPro, openCheckout, navigate, tab]);
 
+  // Gate Pro-only tabs: opening test-hub or state-exam without Pro pops the
+  // same checkout modal and bounces the user back to the dashboard tab.
+  useEffect(() => {
+    if (hydrating || isPro) return;
+    if (tab === "test-hub" || tab === "state-exam") {
+      openCheckout();
+      navigate({ search: { tab: "dashboard" }, replace: true });
+    }
+  }, [hydrating, isPro, tab, openCheckout, navigate]);
+
+
 
   return (
     <div className="flex flex-col h-full">
