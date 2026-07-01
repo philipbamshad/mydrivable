@@ -145,23 +145,18 @@ function Nav() {
 
 function Hero() {
   return (
-    <section className="relative isolate overflow-hidden px-6 pt-24 pb-28 text-center">
-      {/* Subtle ambient hero glow — soft column behind the headline */}
+    <section className="relative isolate flex min-h-[calc(100svh-72px)] flex-col items-center justify-center overflow-hidden px-6 pt-6 pb-10 text-center">
+      {/* Subtle ambient hero glow, soft column behind the headline */}
       <div
         aria-hidden
-        className="pointer-events-none absolute left-1/2 top-[200px] -z-10 h-[700px] w-[900px] max-w-[110vw] -translate-x-1/2 rounded-full bg-blue-600/12 blur-[130px]"
+        className="pointer-events-none absolute left-1/2 top-[30%] -z-10 h-[700px] w-[900px] max-w-[110vw] -translate-x-1/2 rounded-full bg-blue-600/12 blur-[130px]"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute left-1/2 top-[280px] -z-10 h-[420px] w-[560px] max-w-[80vw] -translate-x-1/2 rounded-full bg-blue-500/14 blur-[100px]"
+        className="pointer-events-none absolute left-1/2 top-[45%] -z-10 h-[420px] w-[560px] max-w-[80vw] -translate-x-1/2 rounded-full bg-blue-500/14 blur-[100px]"
       />
 
-      <div className="mx-auto mb-10 grid h-24 w-24 place-items-center rounded-3xl">
-        <img src={logo} alt="Drivable" className="h-24 w-24 rounded-3xl" />
-      </div>
-
-
-      <div className="mx-auto mb-10 inline-flex max-w-[640px] items-center gap-3 rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-sm backdrop-blur-xl">
+      <div className="mx-auto mb-6 inline-flex max-w-[640px] items-center gap-3 rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-sm backdrop-blur-xl">
         <span className="inline-flex items-center gap-1.5 text-blue-300">
           <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-blue-400" />
           New
@@ -173,7 +168,7 @@ function Hero() {
       </div>
 
       <div className="relative mx-auto max-w-5xl">
-        <h1 className="relative text-5xl font-semibold leading-[1.02] tracking-[-0.03em] sm:text-7xl">
+        <h1 className="relative text-4xl font-semibold leading-[1.05] tracking-[-0.03em] sm:text-6xl">
           Master Your Permit and
           <br />
           Ace Your Road Test on the{" "}
@@ -183,23 +178,22 @@ function Hero() {
         </h1>
       </div>
 
-
-      <p className="relative mx-auto mt-8 max-w-2xl text-lg text-white/70">
+      <p className="relative mx-auto mt-6 max-w-2xl text-base text-white/70 sm:text-lg">
         An AI driving coach trained on every official DMV handbook, with
         full-length mock permit exams and targeted section drills. No fluff.
       </p>
 
-      <div className="relative mt-10 flex flex-wrap items-center justify-center gap-3">
+      <div className="relative mt-8 flex flex-wrap items-center justify-center gap-3">
         <Link
           to="/auth"
-          className={`${BTN_PRIMARY} px-10 py-5 text-base`}
+          className={`${BTN_PRIMARY} px-8 py-4 text-base`}
         >
           Get Started
         </Link>
 
         <a
           href="#features"
-          className="rounded-full border border-white/15 bg-white/[0.04] px-8 py-5 text-base font-medium text-white/90 backdrop-blur-xl transition hover:bg-white/10 hover:scale-[1.03] active:scale-[0.97]"
+          className="rounded-full border border-white/15 bg-white/[0.04] px-7 py-4 text-base font-medium text-white/90 backdrop-blur-xl transition hover:bg-white/10 hover:scale-[1.03] active:scale-[0.97]"
         >
           See how it works
         </a>
@@ -207,6 +201,7 @@ function Hero() {
     </section>
   );
 }
+
 
 function StatesMarquee() {
   const loop = [...US_STATES, ...US_STATES];
