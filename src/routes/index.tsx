@@ -8,7 +8,7 @@ import {
   Sparkles,
   MessageSquare,
   ClipboardCheck,
-  Car,
+  
   Timer,
   MapPin,
   Menu,
