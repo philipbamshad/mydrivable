@@ -80,7 +80,7 @@ const PILLARS: Pillar[] = [
         options: ["One Way", "Do Not Enter", "Stop Ahead", "Wrong Way"],
         correct: 1,
         explanation:
-          "A red square with white bar means Do Not Enter — you are about to enter traffic going the opposite direction.",
+          "A red square with white bar means Do Not Enter, you are about to enter traffic going the opposite direction.",
       },
       {
         q: "What does this sign mean?",
@@ -119,7 +119,7 @@ const PILLARS: Pillar[] = [
         options: ["Yellow", "Red", "Green", "Orange"],
         correct: 2,
         explanation:
-          "Green signs guide drivers — destinations, mileage, exits. Orange = construction, blue = services, brown = recreation.",
+          "Green signs guide drivers, destinations, mileage, exits. Orange = construction, blue = services, brown = recreation.",
       },
       {
         q: "What does this sign warn of?",
@@ -135,7 +135,7 @@ const PILLARS: Pillar[] = [
           "Stop completely",
           "Proceed with caution",
           "Pull over for emergency",
-          "Signal malfunction — stop",
+          "Signal malfunction, stop",
         ],
         correct: 1,
         explanation:
@@ -179,11 +179,11 @@ const PILLARS: Pillar[] = [
           "Only pedestrians",
           "Only oncoming traffic",
           "Both oncoming traffic AND pedestrians",
-          "Nothing — you have the light",
+          "Nothing, you have the light",
         ],
         correct: 2,
         explanation:
-          "Green ball is permissive — you must yield to oncoming traffic AND pedestrians in the crosswalk before turning.",
+          "Green ball is permissive, you must yield to oncoming traffic AND pedestrians in the crosswalk before turning.",
       },
       {
         q: "A flashing red light means…",
@@ -191,11 +191,11 @@ const PILLARS: Pillar[] = [
           "Slow down and continue",
           "Yield to oncoming traffic",
           "Stop fully, then proceed when safe",
-          "Caution — signal broken",
+          "Caution, signal broken",
         ],
         correct: 2,
         explanation:
-          "Flashing red is treated exactly like a stop sign — full stop, then proceed when safe.",
+          "Flashing red is treated exactly like a stop sign, full stop, then proceed when safe.",
       },
       {
         q: "An emergency vehicle approaches with lights and sirens. You should…",
@@ -248,14 +248,14 @@ const PILLARS: Pillar[] = [
       {
         q: "You're at a green light but the intersection is blocked. You should…",
         options: [
-          "Enter anyway — you have the green",
+          "Enter anyway, you have the green",
           "Wait until you can clear it without stopping inside",
           "Honk at the cars ahead",
           "Turn right instead",
         ],
         correct: 1,
         explanation:
-          "'Don't block the box' — never enter an intersection unless you can fully clear it. Blocking is illegal in most states.",
+          "'Don't block the box', never enter an intersection unless you can fully clear it. Blocking is illegal in most states.",
       },
       {
         q: "Right turn on red is permitted unless…",
@@ -279,7 +279,7 @@ const PILLARS: Pillar[] = [
         ],
         correct: 0,
         explanation:
-          "The vehicle going downhill yields and backs up — the uphill vehicle has the harder restart and right-of-way.",
+          "The vehicle going downhill yields and backs up, the uphill vehicle has the harder restart and right-of-way.",
       },
     ],
   },
@@ -301,7 +301,7 @@ const PILLARS: Pillar[] = [
         options: ["0.00–0.02%", "0.05%", "0.08%", "0.10%"],
         correct: 0,
         explanation:
-          "Most states set the under-21 limit at 0.00–0.02% — essentially any detectable alcohol can result in license suspension.",
+          "Most states set the under-21 limit at 0.00–0.02%, essentially any detectable alcohol can result in license suspension.",
       },
       {
         q: "Under implied consent laws, refusing a breathalyzer typically results in…",
@@ -309,7 +309,7 @@ const PILLARS: Pillar[] = [
           "A warning",
           "Automatic license suspension",
           "A small fine",
-          "Nothing — it's your right",
+          "Nothing, it's your right",
         ],
         correct: 1,
         explanation:
@@ -325,7 +325,7 @@ const PILLARS: Pillar[] = [
         ],
         correct: 1,
         explanation:
-          "Almost every state prohibits open containers in the passenger compartment of a moving vehicle — even for passengers.",
+          "Almost every state prohibits open containers in the passenger compartment of a moving vehicle, even for passengers.",
       },
       {
         q: "Cannabis impairment most affects which driving skill?",
@@ -337,7 +337,7 @@ const PILLARS: Pillar[] = [
         ],
         correct: 1,
         explanation:
-          "THC slows reaction time, impairs short-term memory, and damages judgment of speed and distance — all critical to safe driving.",
+          "THC slows reaction time, impairs short-term memory, and damages judgment of speed and distance, all critical to safe driving.",
       },
       {
         q: "Mixing alcohol with prescription medication…",
@@ -407,7 +407,7 @@ const PILLARS: Pillar[] = [
         ],
         correct: 1,
         explanation:
-          "Left lane = passing and faster traffic. Keep right except to pass — slow drivers in the left lane cause crashes.",
+          "Left lane = passing and faster traffic. Keep right except to pass, slow drivers in the left lane cause crashes.",
       },
       {
         q: "Penalties for speeding in a school zone are typically…",
@@ -443,14 +443,14 @@ const PILLARS: Pillar[] = [
         ],
         correct: 1,
         explanation:
-          "Steer where you want to go (into the skid), ease off the accelerator, and avoid hard braking — let traction recover.",
+          "Steer where you want to go (into the skid), ease off the accelerator, and avoid hard braking, let traction recover.",
       },
       {
         q: "Hydroplaning is most likely to begin at speeds of about…",
         options: ["10 mph", "25 mph", "35+ mph", "65+ mph"],
         correct: 2,
         explanation:
-          "Hydroplaning can start near 35 mph on wet roads with worn tires. Slow down in rain — water depth + speed + tread wear = lift-off.",
+          "Hydroplaning can start near 35 mph on wet roads with worn tires. Slow down in rain, water depth + speed + tread wear = lift-off.",
       },
       {
         q: "When merging onto a freeway from an on-ramp you should…",

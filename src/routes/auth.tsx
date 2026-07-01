@@ -17,7 +17,7 @@ export const Route = createFileRoute("/auth")({
   },
   head: () => ({
     meta: [
-      { title: "Sign in — Drivable" },
+      { title: "Sign in, Drivable" },
       { name: "description", content: "Sign in to Drivable to start coaching toward your permit and road test." },
     ],
   }),
@@ -44,7 +44,7 @@ function friendlyAuthError(message: string, mode: "sign-in" | "sign-up"): string
       return "No account found with those credentials. Double-check, or create an account first.";
     }
     if (m.includes("email not confirmed")) {
-      return "Confirm your email first — check your inbox for the link.";
+      return "Confirm your email first, check your inbox for the link.";
     }
   } else {
     if (m.includes("already registered") || m.includes("already been registered") || m.includes("user already")) {
@@ -106,7 +106,7 @@ function AuthPage() {
         });
         if (error) throw error;
         if (!data.session) {
-          toast.success("Account created — check your email to confirm, then sign in.");
+          toast.success("Account created, check your email to confirm, then sign in.");
           setMode("sign-in");
           setLoading(false);
           return;

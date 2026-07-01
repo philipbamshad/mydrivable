@@ -19,7 +19,7 @@ import { US_STATES } from "@/lib/user-profile";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Drivable — Master Your Permit & Ace Your Road Test" },
+      { title: "Drivable, Master Your Permit & Ace Your Road Test" },
       {
         name: "description",
         content:
@@ -167,7 +167,7 @@ function Hero() {
         </span>
 
         <span className="hidden text-white/80 sm:inline">
-          Full-length state-specific Mock Permit Exam simulator — now live
+          Full-length state-specific Mock Permit Exam simulator, now live
         </span>
       </div>
 
@@ -184,7 +184,7 @@ function Hero() {
 
 
       <p className="relative mx-auto mt-8 max-w-2xl text-lg text-white/70">
-        An AI driving coach trained on every official DMV handbook —
+        An AI driving coach trained on every official DMV handbook, with
         full-length mock permit exams, targeted section drills, and behind-the-wheel
         action checklists. No fluff.
       </p>
@@ -255,7 +255,7 @@ function Features() {
     {
       icon: Timer,
       title: "Full-Length Mock Permit Exam Simulator",
-      body: "Replicates the real state DMV test — exact question count, timing, and passing threshold for your state, from California's 46-question exam to Texas's 30-question test.",
+      body: "Replicates the real state DMV test, exact question count, timing, and passing threshold for your state, from California's 46-question exam to Texas's 30-question test.",
       tag: "PRO",
     },
     {
@@ -266,7 +266,7 @@ function Features() {
     {
       icon: ClipboardCheck,
       title: "Targeted Section Quizzes",
-      body: "Drill the topics examiners punish: signs, intersections, substance laws, and speed limits — short rounds with instant scoring and explanations.",
+      body: "Drill the topics examiners punish: signs, intersections, substance laws, and speed limits, short rounds with instant scoring and explanations.",
     },
     {
       icon: Car,
@@ -289,7 +289,7 @@ function Features() {
           </span>
         </h2>
         <p className="mx-auto mt-6 max-w-xl text-lg text-white/60">
-          Four focused tools, one outcome — pass on the first try.
+          Four focused tools, one outcome, pass on the first try.
         </p>
       </div>
 
@@ -328,7 +328,7 @@ function Pricing() {
     "Behind-the-wheel checklists & 50-hour log",
     "Sign recognition drills baked into the quiz hub",
     "All 50 state rule packs",
-    "Cancel anytime — no contracts",
+    "Cancel anytime, no contracts",
   ];
 
   return (
@@ -376,7 +376,7 @@ function Pricing() {
             search={{ next: "/app?intent=upgrade" }}
             className={`${BTN_PRIMARY} mt-7 w-full py-4 text-sm`}
           >
-            Start Pro Pass — $9 / mo
+            Start Pro Pass, $9 / mo
           </Link>
 
           <ul className="mt-7 space-y-3 text-[15px]">
@@ -398,19 +398,19 @@ function FAQ() {
   const items = [
     {
       q: "Does Drivable cover every U.S. state?",
-      a: "Yes — all 50 states. Every prompt and mock exam is grounded in the official DMV handbook for the state you select. Switch states anytime in Settings.",
+      a: "Yes, all 50 states. Every prompt and mock exam is grounded in the official DMV handbook for the state you select. Switch states anytime in Settings.",
     },
     {
       q: "How does the Mock Permit Exam simulator work?",
-      a: "It replicates your state's real DMV permit test — exact number of questions, exact passing threshold, randomized each attempt so you never see the same exam twice.",
+      a: "It replicates your state's real DMV permit test, exact number of questions, exact passing threshold, randomized each attempt so you never see the same exam twice.",
     },
     {
       q: "Can it actually prep me for the road test?",
-      a: "Each maneuver gets a walkthrough, an examiner-style fail checklist, and a step-by-step mechanical breakdown — parallel parking, hill parks, lane changes, yielding, all of it.",
+      a: "Each maneuver gets a walkthrough, an examiner-style fail checklist, and a step-by-step mechanical breakdown, parallel parking, hill parks, lane changes, yielding, all of it.",
     },
     {
       q: "What's in Pro Pass?",
-      a: "Full-length state-specific mock exams, unlimited AI chat, all section quizzes, the sign-recognition drill, the behind-the-wheel checklists, and every state rule pack — $9/month, cancel anytime.",
+      a: "Full-length state-specific mock exams, unlimited AI chat, all section quizzes, the sign-recognition drill, the behind-the-wheel checklists, and every state rule pack, $9/month, cancel anytime.",
     },
   ];
   return (

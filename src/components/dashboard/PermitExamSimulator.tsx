@@ -53,7 +53,7 @@ export function PermitExamSimulator() {
             Unlock Full-Length State-Specific Mock Exams with Pro Pass.
           </h2>
           <p className="text-sm text-muted-foreground mt-3 max-w-md mx-auto">
-            Simulates the real {state || "state"} DMV permit test — exact question count,
+            Simulates the real {state || "state"} DMV permit test, exact question count,
             passing threshold, and randomized each attempt.
           </p>
           <Button
@@ -128,7 +128,7 @@ export function PermitExamSimulator() {
       </Card>
 
       <p className="text-xs text-center text-muted-foreground">
-        Each attempt is freshly randomized — you'll never see the same exam twice.
+        Each attempt is freshly randomized, you'll never see the same exam twice.
       </p>
     </div>
   );
