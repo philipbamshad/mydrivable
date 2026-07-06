@@ -3,38 +3,50 @@ import { Card } from "@/components/ui/card";
 import { Check, RefreshCw } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useUserProfile } from "@/lib/user-profile";
-import { getStatePack } from "@/data/dmv";
 
-const KEY = "drivable-checklist-v2";
 const DAILY_COUNT = 5;
+const PREV_KEY = "drivable-daily-prev-v1";
 
 type Task = { id: string; label: string };
 
-/** Build the day's state-specific task pool. */
-function buildPool(stateName: string | null | undefined): Task[] {
-  const { rules } = getStatePack(stateName);
-  const s = rules.name;
+/** Punchy, action-oriented daily task pool. The 5 starter items lead the
+ *  pool and are picked first on the very first day the user opens the app. */
+function buildPool(state: string): Task[] {
+  const s = state;
   return [
-    { id: "bac-adult", label: `Memorize ${s}'s adult BAC limit (${rules.bacAdult.toFixed(2)}%)` },
-    { id: "bac-u21", label: `Review ${s}'s under-21 BAC rule (${rules.bacUnder21.toFixed(2)}%)` },
-    { id: "pass-score", label: `Recall ${s}'s permit pass score (${rules.minCorrectToPass}/${rules.questionsCount})` },
-    { id: "permit-age", label: `Confirm ${s}'s learner-permit minimum age (${rules.permitMinAge})` },
-    { id: "phone-law", label: rules.handheldPhoneBanAllDrivers
-        ? `Read ${s}'s hands-free phone statute`
-        : `Read ${s}'s texting-while-driving law` },
-    { id: "implied-consent", label: `Review ${s}'s implied-consent (breathalyzer) penalty` },
-    { id: "supervised-hours", label: `Log 30 min toward your ${rules.supervisedHoursRequired}-hour supervised drive` },
-    { id: "signs", label: "Complete 5 sign-recognition flashcards" },
-    { id: "right-of-way", label: "Drill 3 intersection right-of-way scenarios" },
-    { id: "parallel", label: "Watch the parallel-parking walkthrough" },
-    { id: "3point", label: "Practice the 3-point turn checklist" },
-    { id: "mock", label: "Run 1 full-length Mock Permit Exam attempt" },
-    { id: "speed", label: "Review default speed limits (residential / highway / school zone)" },
-    { id: "handbook", label: `Open the ${s} DMV handbook and read one new section` },
+    // ---- Starter set (leads the pool on day 1) ----
+    { id: "speed-5", label: `Master 5 speed limit laws for ${s}` },
+    { id: "hands-free", label: `Review ${s}'s hands-free mobile phone law` },
+    { id: "quiz-1", label: "Pass 1 targeted practice quiz section" },
+    { id: "ai-scenario", label: "Complete a scenario drill with your AI Coach" },
+    { id: "implied-consent", label: "Review the implied-consent breathalyzer rule" },
+
+    // ---- Rotating pool ----
+    { id: "bac-adult", label: `Lock in ${s}'s adult BAC limit` },
+    { id: "bac-u21", label: `Nail ${s}'s under-21 zero-tolerance BAC rule` },
+    { id: "permit-age", label: `Confirm ${s}'s minimum learner-permit age` },
+    { id: "signs-10", label: "Blitz 10 sign-recognition flashcards" },
+    { id: "row-3", label: "Drill 3 right-of-way intersection scenarios" },
+    { id: "parallel", label: "Rehearse the parallel-parking checklist" },
+    { id: "3point", label: "Walk through a 3-point turn step by step" },
+    { id: "mock-attempt", label: "Attempt 1 full-length Mock Permit Exam" },
+    { id: "school-zone", label: `Review ${s}'s school-zone speed rule` },
+    { id: "handbook-section", label: `Read one new section of the ${s} driver handbook` },
+    { id: "night-drive", label: "Review night-driving visibility and headlight rules" },
+    { id: "wet-road", label: "Study wet-road braking and hydroplaning recovery" },
+    { id: "merge", label: "Practice highway on-ramp merging technique" },
+    { id: "supervised-30", label: "Log 30 minutes of supervised drive time" },
+    { id: "roundabout", label: "Review the yield rules for entering a roundabout" },
+    { id: "school-bus", label: "Review when to stop for a school bus with red lights" },
+    { id: "hill-park", label: "Rehearse uphill and downhill parking wheel positions" },
+    { id: "signs-quiz", label: "Take a 5-question Signs & Markings mini-quiz" },
+    { id: "brake-fail", label: "Walk through the brake-failure response steps" },
+    { id: "distracted", label: "Review the 3 biggest distracted-driving triggers" },
   ];
 }
 
-/** Stable pseudo-random hash for (date, state) so the pick is deterministic per day. */
+/** Stable pseudo-random hash for (date, state) so the daily pick is
+ *  deterministic within a day but rotates across days and states. */
 function hash(str: string): number {
   let h = 2166136261;
   for (let i = 0; i < str.length; i++) {
@@ -44,9 +56,14 @@ function hash(str: string): number {
   return h >>> 0;
 }
 
-function pickDaily(pool: Task[], seed: number, count: number): Task[] {
-  const arr = pool.slice();
-  // Fisher-Yates with seeded LCG
+function pickDaily(pool: Task[], seed: number, count: number, exclude: Set<string>): Task[] {
+  // Prefer items not used yesterday. Fall back to full pool if we don't
+  // have enough non-repeating candidates.
+  let fresh = pool.filter((t) => !exclude.has(t.id));
+  if (fresh.length < count) fresh = pool.slice();
+
+  // Fisher-Yates with a seeded LCG for deterministic per-day ordering.
+  const arr = fresh.slice();
   let s = seed || 1;
   for (let i = arr.length - 1; i > 0; i--) {
     s = (s * 1664525 + 1013904223) >>> 0;
@@ -57,22 +74,57 @@ function pickDaily(pool: Task[], seed: number, count: number): Task[] {
 }
 
 function todayKey(): string {
-  return new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+  return new Date().toISOString().slice(0, 10);
+}
+
+type PrevRecord = { date: string; ids: string[] };
+
+function loadPrev(): PrevRecord | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = window.localStorage.getItem(PREV_KEY);
+    if (!raw) return null;
+    const v = JSON.parse(raw);
+    if (v && typeof v.date === "string" && Array.isArray(v.ids)) return v as PrevRecord;
+  } catch {
+    // ignore
+  }
+  return null;
+}
+
+function savePrev(rec: PrevRecord) {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.setItem(PREV_KEY, JSON.stringify(rec));
+  } catch {
+    // ignore
+  }
 }
 
 export function DailyChecklist() {
   const { state, dailyDone, dailyDoneDate, toggleDailyTask } = useUserProfile();
-  const stateLabel = state || "Default";
+  const stateLabel = state || "your state";
 
   const today = useMemo(todayKey, []);
+
   const items = useMemo<Task[]>(() => {
-    const pool = buildPool(state);
-    return pickDaily(pool, hash(`${today}|${stateLabel}`), DAILY_COUNT);
-  }, [today, state, stateLabel]);
+    const pool = buildPool(stateLabel);
+    const prev = loadPrev();
+    // Exclude yesterday's picks so no task repeats back-to-back.
+    const exclude =
+      prev && prev.date !== today ? new Set(prev.ids) : new Set<string>();
+
+    const picks = pickDaily(pool, hash(`${today}|${stateLabel}`), DAILY_COUNT, exclude);
+
+    // Persist today's picks so tomorrow can exclude them.
+    if (!prev || prev.date !== today) {
+      savePrev({ date: today, ids: picks.map((p) => p.id) });
+    }
+    return picks;
+  }, [today, stateLabel]);
 
   const done = dailyDoneDate === today ? dailyDone : {};
   const setDoneToggle = (id: string) => toggleDailyTask(id, today);
-
   const completed = items.filter((i) => done[i.id]).length;
 
   return (
@@ -83,7 +135,7 @@ export function DailyChecklist() {
       </div>
       <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground mb-3 flex items-center gap-1.5">
         <RefreshCw className="w-3 h-3 text-primary" />
-        <span>Refreshes daily · {stateLabel} ruleset</span>
+        <span>Refreshes daily · {stateLabel}</span>
       </p>
 
       <ul className="space-y-2.5 flex-1">
