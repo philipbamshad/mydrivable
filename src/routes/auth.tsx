@@ -117,6 +117,16 @@ function AuthPage() {
           options: { emailRedirectTo: window.location.origin + "/app" },
         });
         if (error) throw error;
+        // Supabase returns a user with an empty identities array when the
+        // email is already registered (obfuscation mode). Detect and surface.
+        if (data.user && Array.isArray(data.user.identities) && data.user.identities.length === 0) {
+          const msg = "An account with this email already exists. Try signing in instead.";
+          setFieldErrors({ email: msg });
+          toast.error(msg);
+          setMode("sign-in");
+          setLoading(false);
+          return;
+        }
         if (!data.session) {
           toast.success("Account created, check your email to confirm, then sign in.");
           setMode("sign-in");
@@ -135,7 +145,13 @@ function AuthPage() {
       goNext();
     } catch (err) {
       const raw = err instanceof Error ? err.message : "Something went wrong";
-      toast.error(friendlyAuthError(raw, mode));
+      const friendly = friendlyAuthError(raw, mode);
+      if (mode === "sign-in" && (raw.toLowerCase().includes("invalid") || raw.toLowerCase().includes("credentials"))) {
+        setFieldErrors({ password: friendly });
+      } else if (mode === "sign-up" && friendly.toLowerCase().includes("already exists")) {
+        setFieldErrors({ email: friendly });
+      }
+      toast.error(friendly);
     } finally {
       setLoading(false);
     }
