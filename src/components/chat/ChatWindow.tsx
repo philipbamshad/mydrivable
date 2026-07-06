@@ -37,11 +37,6 @@ const SUGGESTIONS = [
   "Walk me through a smooth highway merge.",
 ];
 
-const QUICK_CHIPS: string[] = [
-  "Right-of-Way Rules",
-  "The 3-Second Rule",
-  "Hand Signals",
-];
 
 export function ChatWindow({
   threadId,
