@@ -46,7 +46,34 @@ export function ChatWindow({
 }) {
   const queryClient = useQueryClient();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const { state: userState } = useUserProfile();
+  const { state: userState, isPro, openCheckout } = useUserProfile();
+
+  // Free tier daily usage tracker. Bypassed entirely for Pro Pass.
+  const FREE_DAILY_LIMIT = 5;
+  const todayKey = new Date().toISOString().slice(0, 10);
+  const storageKey = `drivable:chat-usage:${todayKey}`;
+  const [freeUsed, setFreeUsed] = useState<number>(() => {
+    if (typeof window === "undefined") return 0;
+    const raw = window.localStorage.getItem(storageKey);
+    const n = raw ? Number.parseInt(raw, 10) : 0;
+    return Number.isFinite(n) ? n : 0;
+  });
+
+  const bumpFreeUsage = useCallback(() => {
+    if (isPro) return;
+    setFreeUsed((prev) => {
+      const next = prev + 1;
+      try {
+        window.localStorage.setItem(storageKey, String(next));
+      } catch {
+        // ignore quota errors, in-memory state still enforces the cap
+      }
+      return next;
+    });
+  }, [isPro, storageKey]);
+
+  const limitReached = !isPro && freeUsed >= FREE_DAILY_LIMIT;
+  const remaining = Math.max(0, FREE_DAILY_LIMIT - freeUsed);
 
   const transport = useMemo(
     () =>
