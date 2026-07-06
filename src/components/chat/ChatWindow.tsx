@@ -110,10 +110,20 @@ export function ChatWindow({
 
   const handleSubmit = async (msg: PromptInputMessage) => {
     if (!msg.text.trim()) return;
+    if (limitReached) {
+      openCheckout();
+      return;
+    }
+    bumpFreeUsage();
     await sendMessage({ text: msg.text });
   };
 
   const handleSuggestion = async (text: string) => {
+    if (limitReached) {
+      openCheckout();
+      return;
+    }
+    bumpFreeUsage();
     await sendMessage({ text });
   };
 
