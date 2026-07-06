@@ -21,48 +21,54 @@ export function ExamProgressChart() {
 
   return (
     <Card className="p-5 glass glow-soft h-full flex flex-col relative overflow-hidden">
-      <div className="flex items-center justify-between mb-4">
-        <div>
-          <h3 className="font-display text-lg font-bold">Mock Permit Exam Analytics</h3>
+      <div className="flex items-center justify-between mb-4 gap-3">
+        <div className="min-w-0">
+          <h3 className="font-display text-lg font-bold">Mock Simulator Progress</h3>
           <p className="text-xs text-muted-foreground">
-            {state ? `${state} DMV · ` : ""}pass threshold {PASS_THRESHOLD}%
+            Full Exam History{state ? ` · ${state} DMV` : ""} · pass threshold {PASS_THRESHOLD}%
           </p>
         </div>
         {isPro ? (
           attempts.length === 0 ? (
-            <Badge variant="outline" className="text-xs bg-primary/15 text-primary border-primary/30">
+            <Badge variant="outline" className="text-xs bg-primary/15 text-primary border-primary/30 shrink-0">
               No attempts yet
             </Badge>
           ) : ready ? (
-            <Badge variant="outline" className="text-xs bg-emerald-500/15 text-emerald-300 border-emerald-500/40 ">
+            <Badge variant="outline" className="text-xs bg-emerald-500/15 text-emerald-300 border-emerald-500/40 shrink-0">
               <Trophy className="w-3 h-3 mr-1" /> Exam Ready
             </Badge>
           ) : (
-            <Badge variant="outline" className="text-xs bg-amber-500/15 text-amber-300 border-amber-500/40">
+            <Badge variant="outline" className="text-xs bg-amber-500/15 text-amber-300 border-amber-500/40 shrink-0">
               <AlertTriangle className="w-3 h-3 mr-1" /> Not Ready
             </Badge>
           )
         ) : (
-          <Badge variant="outline" className="text-xs bg-primary/15 text-primary border-primary/30">
+          <Badge variant="outline" className="text-xs bg-primary/15 text-primary border-primary/30 shrink-0">
             <Lock className="w-3 h-3 mr-1" /> Pro
           </Badge>
         )}
       </div>
 
-      {/* Latest score gauge */}
-      <div className="flex-1 min-h-[220px] flex flex-col items-center justify-center">
-        <ScoreDial value={latest ?? 0} threshold={PASS_THRESHOLD} hasData={latest !== null} />
-        {latest === null && (
-          <p className="mt-2 text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
-            No attempts yet · take your first mock exam
+      {attempts.length === 0 ? (
+        <div className="flex-1 min-h-[220px] flex flex-col items-center justify-center text-center px-4">
+          <div className="w-14 h-14 rounded-full border-2 border-dashed border-primary/40 bg-primary/10 grid place-items-center mb-4">
+            <Trophy className="w-6 h-6 text-primary/80" />
+          </div>
+          <p className="font-display text-base font-semibold leading-snug max-w-[280px]">
+            Take your first full-length Mock Permit Exam to unlock your progress tracking!
           </p>
-        )}
-
-        {/* Line chart history */}
-        <div className="w-full mt-6">
-          <ScoreLineChart attempts={attempts} threshold={PASS_THRESHOLD} slots={6} />
+          <p className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground mt-3">
+            Section quizzes not counted
+          </p>
         </div>
-      </div>
+      ) : (
+        <div className="flex-1 min-h-[220px] flex flex-col items-center justify-center">
+          <ScoreDial value={latest ?? 0} threshold={PASS_THRESHOLD} hasData={latest !== null} />
+          <div className="w-full mt-6">
+            <ScoreLineChart attempts={attempts} threshold={PASS_THRESHOLD} slots={6} />
+          </div>
+        </div>
+      )}
 
 
       <div className="grid grid-cols-3 gap-2 mt-4 pt-4 border-t border-border">
@@ -83,7 +89,7 @@ export function ExamProgressChart() {
             <Lock className="w-4 h-4 text-primary" />
           </div>
           <h4 className="font-display text-sm font-bold leading-snug mb-1">
-            Unlock Mock Permit Exam Analytics
+            Unlock Mock Simulator Progress
           </h4>
           <p className="text-xs text-muted-foreground mb-4">Pro Pass · $19 one-time</p>
           <Button
