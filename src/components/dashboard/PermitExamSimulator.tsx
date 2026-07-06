@@ -18,16 +18,8 @@ import {
 import { cn } from "@/lib/utils";
 import { useUserProfile } from "@/lib/user-profile";
 import { getStatePack, type Question as Q } from "@/data/dmv";
-
-
-function shuffle<T>(arr: T[]): T[] {
-  const a = arr.slice();
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
+import { shuffleAnswers } from "@/data/dmv/question-generator";
+import { pickUnseenQuestions } from "@/lib/seen-questions";
 
 export function PermitExamSimulator() {
   const { isPro, unlockPro, state, recordQuizScore } = useUserProfile();
