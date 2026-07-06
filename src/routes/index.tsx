@@ -330,10 +330,9 @@ function Pricing() {
   ];
 
   const freeFeatures = [
-    "Access to 1 diagnostic state practice quiz",
     "Limited AI coach chat questions per day",
-    "Standard sign recognition study hub",
     "Basic rule breakdown for your selected state",
+    "Daily study tips and progressive task reminders",
   ];
 
   return (
