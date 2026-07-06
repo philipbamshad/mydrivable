@@ -187,7 +187,7 @@ function QuizRunner({
   const advance = () => {
     if (idx + 1 >= questions.length) {
       const pct = Math.round((score / questions.length) * 100);
-      recordQuizScore(pct);
+      recordQuizScore(pct, "pillar");
       setDone(true);
     } else {
       setIdx((n) => n + 1);
