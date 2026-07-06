@@ -40,14 +40,26 @@ const credentialsSchema = z.object({
 function friendlyAuthError(message: string, mode: "sign-in" | "sign-up"): string {
   const m = message.toLowerCase();
   if (mode === "sign-in") {
-    if (m.includes("invalid login") || m.includes("invalid credentials")) {
-      return "No account found with those credentials. Double-check, or create an account first.";
+    if (
+      m.includes("invalid login") ||
+      m.includes("invalid credentials") ||
+      m.includes("invalid email or password")
+    ) {
+      return "Incorrect email or password. If you don't have an account yet, create one.";
     }
     if (m.includes("email not confirmed")) {
       return "Confirm your email first, check your inbox for the link.";
     }
+    if (m.includes("too many") || m.includes("rate limit")) {
+      return "Too many attempts. Wait a moment and try again.";
+    }
   } else {
-    if (m.includes("already registered") || m.includes("already been registered") || m.includes("user already")) {
+    if (
+      m.includes("already registered") ||
+      m.includes("already been registered") ||
+      m.includes("user already") ||
+      m.includes("duplicate")
+    ) {
       return "An account with this email already exists. Try signing in instead.";
     }
     if (m.includes("password")) return message;
@@ -105,6 +117,16 @@ function AuthPage() {
           options: { emailRedirectTo: window.location.origin + "/app" },
         });
         if (error) throw error;
+        // Supabase returns a user with an empty identities array when the
+        // email is already registered (obfuscation mode). Detect and surface.
+        if (data.user && Array.isArray(data.user.identities) && data.user.identities.length === 0) {
+          const msg = "An account with this email already exists. Try signing in instead.";
+          setFieldErrors({ email: msg });
+          toast.error(msg);
+          setMode("sign-in");
+          setLoading(false);
+          return;
+        }
         if (!data.session) {
           toast.success("Account created, check your email to confirm, then sign in.");
           setMode("sign-in");
@@ -123,7 +145,13 @@ function AuthPage() {
       goNext();
     } catch (err) {
       const raw = err instanceof Error ? err.message : "Something went wrong";
-      toast.error(friendlyAuthError(raw, mode));
+      const friendly = friendlyAuthError(raw, mode);
+      if (mode === "sign-in" && (raw.toLowerCase().includes("invalid") || raw.toLowerCase().includes("credentials"))) {
+        setFieldErrors({ password: friendly });
+      } else if (mode === "sign-up" && friendly.toLowerCase().includes("already exists")) {
+        setFieldErrors({ email: friendly });
+      }
+      toast.error(friendly);
     } finally {
       setLoading(false);
     }
