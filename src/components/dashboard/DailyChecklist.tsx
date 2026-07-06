@@ -21,27 +21,34 @@ function buildPool(state: string): Task[] {
     { id: "ai-scenario", label: "Complete a scenario drill with your AI Coach" },
     { id: "implied-consent", label: "Review the implied-consent breathalyzer rule" },
 
-    // ---- Rotating pool ----
+    // ---- Rotating pool (study-only, no behind-the-wheel tasks) ----
     { id: "bac-adult", label: `Lock in ${s}'s adult BAC limit` },
     { id: "bac-u21", label: `Nail ${s}'s under-21 zero-tolerance BAC rule` },
     { id: "permit-age", label: `Confirm ${s}'s minimum learner-permit age` },
     { id: "signs-10", label: "Blitz 10 sign-recognition flashcards" },
     { id: "row-3", label: "Drill 3 right-of-way intersection scenarios" },
-    { id: "parallel", label: "Rehearse the parallel-parking checklist" },
-    { id: "3point", label: "Walk through a 3-point turn step by step" },
     { id: "mock-attempt", label: "Attempt 1 full-length Mock Permit Exam" },
     { id: "school-zone", label: `Review ${s}'s school-zone speed rule` },
     { id: "handbook-section", label: `Read one new section of the ${s} driver handbook` },
     { id: "night-drive", label: "Review night-driving visibility and headlight rules" },
     { id: "wet-road", label: "Study wet-road braking and hydroplaning recovery" },
-    { id: "merge", label: "Practice highway on-ramp merging technique" },
-    { id: "supervised-30", label: "Log 30 minutes of supervised drive time" },
     { id: "roundabout", label: "Review the yield rules for entering a roundabout" },
     { id: "school-bus", label: "Review when to stop for a school bus with red lights" },
-    { id: "hill-park", label: "Rehearse uphill and downhill parking wheel positions" },
     { id: "signs-quiz", label: "Take a 5-question Signs & Markings mini-quiz" },
-    { id: "brake-fail", label: "Walk through the brake-failure response steps" },
+    { id: "brake-fail", label: "Study the brake-failure response steps" },
     { id: "distracted", label: "Review the 3 biggest distracted-driving triggers" },
+
+    // ---- 10 new permit-study ideas ----
+    { id: "warning-signs", label: "Memorize the 8 most common yellow warning sign shapes" },
+    { id: "regulatory-signs", label: "Review 6 regulatory sign meanings from the handbook" },
+    { id: "pavement-markings", label: "Study solid vs broken yellow and white lane markings" },
+    { id: "following-distance", label: "Review the 3-second following-distance rule" },
+    { id: "blind-spots", label: "Study mirror checks and blind-spot awareness rules" },
+    { id: "railroad", label: "Review railroad crossing signals and stop distances" },
+    { id: "emergency-vehicle", label: "Study how to yield to emergency vehicles safely" },
+    { id: "seat-belt-law", label: `Review ${s}'s seat belt law and passenger rules` },
+    { id: "penalties", label: `Read up on ${s}'s permit violation and point penalties` },
+    { id: "flashcards-15", label: "Run through 15 mixed permit flashcards" },
   ];
 }
 
