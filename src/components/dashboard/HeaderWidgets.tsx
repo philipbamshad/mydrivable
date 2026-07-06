@@ -19,16 +19,26 @@ function EmptyRing({ icon: Icon }: { icon: typeof Target }) {
 export function HeaderWidgets() {
   const { targetDate, setTargetDate } = useUserProfile();
 
-  const daysLeft = useMemo(() => {
+  // Parse YYYY-MM-DD as a local date so display and countdown match the
+  // calendar day the user selected, independent of their timezone offset.
+  const localTarget = useMemo(() => {
     if (!targetDate) return null;
-    const diff = Math.ceil((+new Date(targetDate) - Date.now()) / 86400000);
-    return diff;
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(targetDate);
+    if (!m) return new Date(targetDate);
+    return new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
   }, [targetDate]);
 
+  const daysLeft = useMemo(() => {
+    if (!localTarget) return null;
+    const startOfToday = new Date();
+    startOfToday.setHours(0, 0, 0, 0);
+    return Math.ceil((localTarget.getTime() - startOfToday.getTime()) / 86400000);
+  }, [localTarget]);
+
   const targetLabel = useMemo(() => {
-    if (!targetDate) return null;
-    return new Date(targetDate).toLocaleDateString("en-US", { month: "long", day: "numeric" });
-  }, [targetDate]);
+    if (!localTarget) return null;
+    return localTarget.toLocaleDateString("en-US", { month: "long", day: "numeric" });
+  }, [localTarget]);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
