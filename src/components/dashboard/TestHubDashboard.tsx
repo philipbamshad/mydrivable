@@ -163,16 +163,17 @@ function QuizRunner({
     // Rebuild banks fresh every set so answer positions re-shuffle every load.
     const bank = buildPillarBanks(stateName)[pillar.id];
     const take = Math.min(8, bank.length);
-    let candidate: Question[];
+    // Pull ONLY from questions the user hasn't already seen for this pillar
+    // and state. Auto-resets when the pool is exhausted.
+    let candidate: Question[] = [];
     let key = "";
     let tries = 0;
     do {
-      candidate = shuffle(bank)
-        .slice(0, take)
-        .map((q) => shuffleAnswers(q) as Question);
+      const picked = pickUnseenQuestions(`pillar:${pillar.id}`, stateName, bank, take);
+      candidate = picked.map((q) => shuffleAnswers(q) as Question);
       key = candidate.map((q) => q.q).join("|");
       tries++;
-    } while (key === lastSetRef.current && tries < 5);
+    } while (key === lastSetRef.current && tries < 3);
     lastSetRef.current = key;
     return candidate;
   };
