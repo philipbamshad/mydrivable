@@ -45,6 +45,9 @@ const SHELL_BG: React.CSSProperties = {
 const BTN_PRIMARY =
   "inline-flex items-center justify-center gap-2 rounded-full bg-[#0b1220] hover:bg-[#0f1830] border border-[#1e40af] hover:border-[#3b82f6] text-white font-semibold transition active:scale-[0.98]";
 
+const BTN_SECONDARY =
+  "inline-flex items-center justify-center gap-2 rounded-full bg-white/[0.04] hover:bg-white/[0.08] border border-white/15 hover:border-white/30 text-white font-semibold transition active:scale-[0.98]";
+
 
 
 function Landing() {
