@@ -40,14 +40,26 @@ const credentialsSchema = z.object({
 function friendlyAuthError(message: string, mode: "sign-in" | "sign-up"): string {
   const m = message.toLowerCase();
   if (mode === "sign-in") {
-    if (m.includes("invalid login") || m.includes("invalid credentials")) {
-      return "No account found with those credentials. Double-check, or create an account first.";
+    if (
+      m.includes("invalid login") ||
+      m.includes("invalid credentials") ||
+      m.includes("invalid email or password")
+    ) {
+      return "Incorrect email or password. If you don't have an account yet, create one.";
     }
     if (m.includes("email not confirmed")) {
       return "Confirm your email first, check your inbox for the link.";
     }
+    if (m.includes("too many") || m.includes("rate limit")) {
+      return "Too many attempts. Wait a moment and try again.";
+    }
   } else {
-    if (m.includes("already registered") || m.includes("already been registered") || m.includes("user already")) {
+    if (
+      m.includes("already registered") ||
+      m.includes("already been registered") ||
+      m.includes("user already") ||
+      m.includes("duplicate")
+    ) {
       return "An account with this email already exists. Try signing in instead.";
     }
     if (m.includes("password")) return message;
