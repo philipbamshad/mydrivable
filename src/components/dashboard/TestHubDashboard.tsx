@@ -24,6 +24,7 @@ import {
   type PillarId,
   type PracticeQuestion,
 } from "@/data/dmv/practice-bank";
+import { pickUnseenQuestions } from "@/lib/seen-questions";
 
 type Question = PracticeQuestion;
 
