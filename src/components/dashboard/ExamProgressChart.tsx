@@ -89,7 +89,7 @@ export function ExamProgressChart() {
             <Lock className="w-4 h-4 text-primary" />
           </div>
           <h4 className="font-display text-sm font-bold leading-snug mb-1">
-            Unlock Mock Permit Exam Analytics
+            Unlock Mock Simulator Progress
           </h4>
           <p className="text-xs text-muted-foreground mb-4">Pro Pass · $19 one-time</p>
           <Button
