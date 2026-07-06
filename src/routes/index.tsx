@@ -317,21 +317,27 @@ function Features() {
 }
 
 function Pricing() {
-  const features = [
+  const proFeatures = [
     "Full-length state-specific Mock Permit Exam simulator",
     "Unlimited AI coach chat synced to your DMV handbook",
     "All 4 targeted pillar quizzes with infinite question pool",
-    
     "Sign recognition drills baked into the quiz hub",
     "All 50 state rule packs",
     "Pay once, use forever, no recurring fees",
+  ];
+
+  const freeFeatures = [
+    "Access to 1 diagnostic state practice quiz",
+    "Limited AI coach chat questions per day",
+    "Standard sign recognition study hub",
+    "Basic rule breakdown for your selected state",
   ];
 
   return (
     <section id="pricing" className="px-6 py-28">
       <div className="mx-auto mb-14 max-w-3xl text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 text-sm text-white/80 backdrop-blur-xl">
-          One Plan
+          Two Plans
         </div>
         <h2 className="mt-6 text-5xl font-semibold tracking-[-0.03em] sm:text-6xl">
           Pick Your{" "}
@@ -339,50 +345,82 @@ function Pricing() {
             Lane
           </span>
         </h2>
-        <p className="mt-4 text-white/60">No tiers. No upsell. Just the test you're about to take.</p>
+        <p className="mt-4 text-white/60">Start free, or unlock the full test simulator with one payment.</p>
       </div>
 
-      <div className="relative mx-auto max-w-md">
-        {/* Centered ambient backlight behind the card */}
+      <div className="relative mx-auto max-w-5xl">
+        {/* Centered ambient backlight behind the Pro card */}
         <div
           aria-hidden
-          className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl"
+          className="pointer-events-none absolute right-0 top-1/2 -z-10 h-[520px] w-[520px] -translate-y-1/2 rounded-full blur-3xl"
           style={{
             background:
               "radial-gradient(closest-side, rgba(30,64,175,0.35), rgba(30,64,175,0.10) 55%, transparent 75%)",
           }}
         />
 
-        <div className="relative rounded-[28px] border border-white/10 bg-[#070b18]/70 p-8 backdrop-blur-xl">
-          <span className="absolute -top-3 left-1/2 z-10 -translate-x-1/2 rounded-full bg-[#1e40af] border border-[#3b82f6]/60 px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-white">
-            Pro Pass
-          </span>
-
-          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-7">
-            <div className="text-lg font-medium text-white/90">Pro Pass</div>
-            <div className="mt-8 flex items-end gap-2 text-white">
-              <span className="text-6xl font-semibold tracking-[-0.03em]">$19</span>
-              <span className="mb-2 text-sm text-white/85">one-time</span>
+        <div className="grid gap-6 md:grid-cols-2 md:items-stretch">
+          {/* Free Pass */}
+          <div className="relative flex flex-col rounded-[28px] border border-white/10 bg-[#070b18]/70 p-8 backdrop-blur-xl">
+            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-7">
+              <div className="text-lg font-medium text-white/90">Free Pass</div>
+              <div className="mt-8 flex items-end gap-2 text-white">
+                <span className="text-6xl font-semibold tracking-[-0.03em]">$0</span>
+                <span className="mb-2 text-sm text-white/85">forever free</span>
+              </div>
+              <p className="mt-2 text-sm text-white/75">Kick the tires and study the basics, no card required.</p>
             </div>
-            <p className="mt-2 text-sm text-white/75">Pay once. Lifetime access to everything Drivable builds.</p>
+
+            <Link
+              to="/auth"
+              search={{ next: "/app" }}
+              className={`${BTN_SECONDARY} mt-7 w-full py-4 text-sm`}
+            >
+              Start Free
+            </Link>
+
+            <ul className="mt-7 space-y-3 text-[15px]">
+              {freeFeatures.map((f) => (
+                <li key={f} className="flex items-center gap-3 text-white/85">
+                  <Check className="h-4 w-4 shrink-0 text-white/60" />
+                  {f}
+                </li>
+              ))}
+            </ul>
           </div>
 
-          <Link
-            to="/auth"
-            search={{ next: "/app?intent=upgrade" }}
-            className={`${BTN_PRIMARY} mt-7 w-full py-4 text-sm`}
-          >
-            Get Pro Pass, $19 one-time
-          </Link>
+          {/* Pro Pass */}
+          <div className="relative flex flex-col rounded-[28px] border border-[#3b82f6]/40 bg-[#070b18]/70 p-8 backdrop-blur-xl shadow-[0_0_60px_-20px_rgba(59,130,246,0.55)]">
+            <span className="absolute -top-3 left-1/2 z-10 -translate-x-1/2 rounded-full bg-[#1e40af] border border-[#3b82f6]/60 px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-white whitespace-nowrap">
+              Most Popular
+            </span>
 
-          <ul className="mt-7 space-y-3 text-[15px]">
-            {features.map((f) => (
-              <li key={f} className="flex items-center gap-3 text-white/85">
-                <Check className="h-4 w-4 shrink-0 text-blue-300" />
-                {f}
-              </li>
-            ))}
-          </ul>
+            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-7">
+              <div className="text-lg font-medium text-white/90">Pro Pass</div>
+              <div className="mt-8 flex items-end gap-2 text-white">
+                <span className="text-6xl font-semibold tracking-[-0.03em]">$19</span>
+                <span className="mb-2 text-sm text-white/85">one-time</span>
+              </div>
+              <p className="mt-2 text-sm text-white/75">Pay once. Lifetime access to everything Drivable builds.</p>
+            </div>
+
+            <Link
+              to="/auth"
+              search={{ next: "/app?intent=upgrade" }}
+              className={`${BTN_PRIMARY} mt-7 w-full py-4 text-sm`}
+            >
+              Get Pro Pass, $19 one-time
+            </Link>
+
+            <ul className="mt-7 space-y-3 text-[15px]">
+              {proFeatures.map((f) => (
+                <li key={f} className="flex items-center gap-3 text-white/85">
+                  <Check className="h-4 w-4 shrink-0 text-blue-300" />
+                  {f}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </section>
