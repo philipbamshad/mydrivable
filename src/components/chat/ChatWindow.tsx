@@ -201,19 +201,45 @@ export function ChatWindow({
 
       <div className="border-t border-border bg-background/80 backdrop-blur">
         <div className="max-w-3xl mx-auto w-full px-4 py-4">
-          <PromptInput onSubmit={handleSubmit}>
-            <PromptInputTextarea
-              ref={textareaRef}
-              placeholder="Ask Drivable anything, sign meanings, right-of-way, parallel parking…"
-              disabled={isBusy}
-            />
-            <PromptInputFooter className="justify-end">
-              <PromptInputSubmit status={status} disabled={isBusy} />
-            </PromptInputFooter>
-          </PromptInput>
-          <p className="text-[10px] text-muted-foreground mt-2 text-center">
-            Drivable can be wrong on state-specific rules. Always verify with your state DMV.
-          </p>
+          {limitReached ? (
+            <div className="mx-auto max-w-xl rounded-2xl border border-primary/40 bg-primary/10 px-5 py-5 text-center shadow-[0_0_40px_-18px_var(--color-primary)]">
+              <div className="mx-auto mb-3 grid h-10 w-10 place-items-center rounded-full border border-primary/40 bg-primary/15">
+                <Lock className="h-4 w-4 text-primary" />
+              </div>
+              <p className="text-sm font-semibold text-foreground leading-snug">
+                You've used your 5 free AI questions for today.
+              </p>
+              <p className="mt-1.5 text-xs text-muted-foreground leading-relaxed">
+                Upgrade to Pro Pass for unlimited chat, instant rule explanations, and full exam simulators!
+              </p>
+              <Button
+                onClick={() => openCheckout()}
+                className="mt-4 press w-full sm:w-auto"
+                size="sm"
+              >
+                <Sparkles className="mr-1.5 h-3.5 w-3.5" />
+                Get Pro Pass, $19
+              </Button>
+            </div>
+          ) : (
+            <>
+              <PromptInput onSubmit={handleSubmit}>
+                <PromptInputTextarea
+                  ref={textareaRef}
+                  placeholder="Ask Drivable anything, sign meanings, right-of-way, parallel parking…"
+                  disabled={isBusy}
+                />
+                <PromptInputFooter className="justify-end">
+                  <PromptInputSubmit status={status} disabled={isBusy} />
+                </PromptInputFooter>
+              </PromptInput>
+              <p className="text-[10px] text-muted-foreground mt-2 text-center">
+                {isPro
+                  ? "Drivable can be wrong on state-specific rules. Always verify with your state DMV."
+                  : `${remaining} of ${FREE_DAILY_LIMIT} free AI questions left today. Upgrade for unlimited chat.`}
+              </p>
+            </>
+          )}
         </div>
       </div>
     </div>
