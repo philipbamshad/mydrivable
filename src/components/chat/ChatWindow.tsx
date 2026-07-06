@@ -2,7 +2,9 @@
 
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, type UIMessage } from "ai";
-import { useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Sparkles, Lock } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import {
@@ -44,7 +46,34 @@ export function ChatWindow({
 }) {
   const queryClient = useQueryClient();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const { state: userState } = useUserProfile();
+  const { state: userState, isPro, openCheckout } = useUserProfile();
+
+  // Free tier daily usage tracker. Bypassed entirely for Pro Pass.
+  const FREE_DAILY_LIMIT = 5;
+  const todayKey = new Date().toISOString().slice(0, 10);
+  const storageKey = `drivable:chat-usage:${todayKey}`;
+  const [freeUsed, setFreeUsed] = useState<number>(() => {
+    if (typeof window === "undefined") return 0;
+    const raw = window.localStorage.getItem(storageKey);
+    const n = raw ? Number.parseInt(raw, 10) : 0;
+    return Number.isFinite(n) ? n : 0;
+  });
+
+  const bumpFreeUsage = useCallback(() => {
+    if (isPro) return;
+    setFreeUsed((prev) => {
+      const next = prev + 1;
+      try {
+        window.localStorage.setItem(storageKey, String(next));
+      } catch {
+        // ignore quota errors, in-memory state still enforces the cap
+      }
+      return next;
+    });
+  }, [isPro, storageKey]);
+
+  const limitReached = !isPro && freeUsed >= FREE_DAILY_LIMIT;
+  const remaining = Math.max(0, FREE_DAILY_LIMIT - freeUsed);
 
   const transport = useMemo(
     () =>
@@ -81,10 +110,20 @@ export function ChatWindow({
 
   const handleSubmit = async (msg: PromptInputMessage) => {
     if (!msg.text.trim()) return;
+    if (limitReached) {
+      openCheckout();
+      return;
+    }
+    bumpFreeUsage();
     await sendMessage({ text: msg.text });
   };
 
   const handleSuggestion = async (text: string) => {
+    if (limitReached) {
+      openCheckout();
+      return;
+    }
+    bumpFreeUsage();
     await sendMessage({ text });
   };
 
@@ -162,19 +201,45 @@ export function ChatWindow({
 
       <div className="border-t border-border bg-background/80 backdrop-blur">
         <div className="max-w-3xl mx-auto w-full px-4 py-4">
-          <PromptInput onSubmit={handleSubmit}>
-            <PromptInputTextarea
-              ref={textareaRef}
-              placeholder="Ask Drivable anything, sign meanings, right-of-way, parallel parking…"
-              disabled={isBusy}
-            />
-            <PromptInputFooter className="justify-end">
-              <PromptInputSubmit status={status} disabled={isBusy} />
-            </PromptInputFooter>
-          </PromptInput>
-          <p className="text-[10px] text-muted-foreground mt-2 text-center">
-            Drivable can be wrong on state-specific rules. Always verify with your state DMV.
-          </p>
+          {limitReached ? (
+            <div className="mx-auto max-w-xl rounded-2xl border border-primary/40 bg-primary/10 px-5 py-5 text-center shadow-[0_0_40px_-18px_var(--color-primary)]">
+              <div className="mx-auto mb-3 grid h-10 w-10 place-items-center rounded-full border border-primary/40 bg-primary/15">
+                <Lock className="h-4 w-4 text-primary" />
+              </div>
+              <p className="text-sm font-semibold text-foreground leading-snug">
+                You've used your 5 free AI questions for today.
+              </p>
+              <p className="mt-1.5 text-xs text-muted-foreground leading-relaxed">
+                Upgrade to Pro Pass for unlimited chat, instant rule explanations, and full exam simulators!
+              </p>
+              <Button
+                onClick={() => openCheckout()}
+                className="mt-4 press w-full sm:w-auto"
+                size="sm"
+              >
+                <Sparkles className="mr-1.5 h-3.5 w-3.5" />
+                Get Pro Pass, $19
+              </Button>
+            </div>
+          ) : (
+            <>
+              <PromptInput onSubmit={handleSubmit}>
+                <PromptInputTextarea
+                  ref={textareaRef}
+                  placeholder="Ask Drivable anything, sign meanings, right-of-way, parallel parking…"
+                  disabled={isBusy}
+                />
+                <PromptInputFooter className="justify-end">
+                  <PromptInputSubmit status={status} disabled={isBusy} />
+                </PromptInputFooter>
+              </PromptInput>
+              <p className="text-[10px] text-muted-foreground mt-2 text-center">
+                {isPro
+                  ? "Drivable can be wrong on state-specific rules. Always verify with your state DMV."
+                  : `${remaining} of ${FREE_DAILY_LIMIT} free AI questions left today. Upgrade for unlimited chat.`}
+              </p>
+            </>
+          )}
         </div>
       </div>
     </div>
