@@ -229,19 +229,6 @@ export function ChatWindow({
             </div>
           ) : (
             <>
-              <div className="mb-3 flex flex-wrap items-center justify-center gap-2">
-                {QUICK_CHIPS.map((chip) => (
-                  <button
-                    key={chip}
-                    type="button"
-                    onClick={() => handleSuggestion(chip)}
-                    disabled={isBusy}
-                    className="press rounded-full border border-border bg-card px-3 py-1.5 text-xs text-foreground/90 hover:border-primary/60 hover:bg-accent disabled:opacity-50 transition-colors"
-                  >
-                    {chip}
-                  </button>
-                ))}
-              </div>
               <PromptInput onSubmit={handleSubmit}>
                 <PromptInputTextarea
                   ref={textareaRef}
