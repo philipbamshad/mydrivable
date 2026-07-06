@@ -143,15 +143,18 @@ function ExamRunner({
 }) {
   const lastSetRef = useRef<string>("");
   const buildSet = () => {
+    // Pull exclusively from unseen questions for this state's full exam
+    // bucket. Auto-resets when the pool is exhausted so the next attempt
+    // starts fresh with a fully randomized order.
     let candidate: Q[] = [];
     let key = "";
     let tries = 0;
     do {
-      candidate = shuffle(pool).slice(0, count);
-
+      const picked = pickUnseenQuestions("exam:full", state, pool, count);
+      candidate = picked.map((q) => shuffleAnswers(q) as Q);
       key = candidate.map((q) => q.q).join("|");
       tries++;
-    } while (key === lastSetRef.current && tries < 5);
+    } while (key === lastSetRef.current && tries < 3);
     lastSetRef.current = key;
     return candidate;
   };
