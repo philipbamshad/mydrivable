@@ -28,8 +28,10 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { format } from "date-fns";
 import logo from "@/assets/drivable-logo.png";
 import { cn } from "@/lib/utils";
 import { AccountPanel } from "@/components/dashboard/AccountPanel";
@@ -46,8 +48,9 @@ export function ThreadSidebar() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
-  const { state: userState, setState: setUserState, targetDate, isPro, openCheckout } = useUserProfile();
+  const { state: userState, setState: setUserState, targetDate, setTargetDate, isPro, openCheckout } = useUserProfile();
   const [statePickerOpen, setStatePickerOpen] = useState(false);
+  const [targetDateOpen, setTargetDateOpen] = useState(false);
 
   const { pathname, search } = useRouterState({
     select: (s) => ({ pathname: s.location.pathname, search: s.location.search }),
@@ -74,29 +77,50 @@ export function ThreadSidebar() {
 
   const infoCards = (
     <div className={cn("space-y-2", collapsed ? "px-2" : "px-3")}>
-      <button
-        type="button"
-        aria-label="DMV target date"
-        className={cn(
-          "w-full text-left rounded-xl border border-primary/20 bg-primary/5 transition-colors press",
-          collapsed ? "px-0 py-3 flex justify-center" : "px-4 py-3 mx-0",
-        )}
-      >
-        {collapsed ? (
-          <CalendarDays className="w-5 h-5 text-primary shrink-0" />
-        ) : (
-          <>
-            <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground flex items-center justify-between">
-              <span>DMV Target Date</span>
-              <CalendarDays className="w-3.5 h-3.5 text-muted-foreground" />
-            </p>
-            <p className="text-sm font-semibold mt-0.5 flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-              <span className="truncate">{targetLabel}</span>
-            </p>
-          </>
-        )}
-      </button>
+      <Popover open={targetDateOpen} onOpenChange={setTargetDateOpen}>
+        <PopoverTrigger asChild>
+          <button
+            type="button"
+            aria-label="DMV target date"
+            className={cn(
+              "w-full text-left rounded-xl border border-primary/20 bg-primary/5 hover:bg-primary/10 hover:border-primary/40 transition-colors press",
+              collapsed ? "px-0 py-3 flex justify-center" : "px-4 py-3 mx-0",
+            )}
+          >
+            {collapsed ? (
+              <CalendarDays className="w-5 h-5 text-primary shrink-0" />
+            ) : (
+              <>
+                <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground flex items-center justify-between">
+                  <span>DMV Target Date</span>
+                  <CalendarDays className="w-3.5 h-3.5 text-muted-foreground" />
+                </p>
+                <p className="text-sm font-semibold mt-0.5 flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                  <span className="truncate">{targetLabel}</span>
+                </p>
+              </>
+            )}
+          </button>
+        </PopoverTrigger>
+        <PopoverContent
+          side="top"
+          align="start"
+          className="w-auto p-0 glass glow-soft border-primary/30"
+        >
+          <Calendar
+            mode="single"
+            selected={localTarget ?? undefined}
+            onSelect={(date) => {
+              if (!date) return;
+              setTargetDate(format(date, "yyyy-MM-dd"));
+              setTargetDateOpen(false);
+            }}
+            initialFocus
+            className="p-3 pointer-events-auto"
+          />
+        </PopoverContent>
+      </Popover>
 
       <Popover open={statePickerOpen} onOpenChange={setStatePickerOpen}>
         <PopoverTrigger asChild>
@@ -119,9 +143,6 @@ export function ThreadSidebar() {
                 <p className="text-sm font-semibold mt-0.5 flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-primary" />
                   <span className="truncate">{userState || "Not set"}</span>
-                </p>
-                <p className="text-[10px] text-muted-foreground mt-1">
-                  {isPro ? "Pro · all modules unlocked" : "Free tier"}
                 </p>
               </>
             )}
@@ -194,66 +215,66 @@ export function ThreadSidebar() {
           onClick={() => setCollapsed((c) => !c)}
           aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
           className={cn(
-            "hidden md:flex items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-sidebar-accent transition-colors shrink-0",
-            collapsed ? "w-8 h-8" : "w-8 h-8",
+            "items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-sidebar-accent transition-colors shrink-0",
+            collapsed ? "hidden" : "hidden md:flex w-8 h-8",
           )}
         >
           {collapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
         </button>
       </div>
 
+      <div className="flex-1 min-h-0 overflow-y-auto">
+        <nav className={cn("space-y-1", collapsed ? "px-2 py-3" : "px-4 py-3")}>
+          {PRIMARY_NAV.map((item) => {
+            const { id, label, icon: Icon } = item;
+            const isActive = activeTab === id;
+            const isProOnly = "pro" in item && item.pro;
+            const locked = isProOnly && !isPro;
+            const showProBadge = isProOnly && !isPro;
+            return (
+              <Link
+                key={id}
+                to="/app"
+                search={{ tab: id }}
+                onClick={(e) => {
+                  if (locked) {
+                    e.preventDefault();
+                    setMobileOpen(false);
+                    openCheckout();
+                    return;
+                  }
+                  setMobileOpen(false);
+                }}
+                className={cn(
+                  "nav-link min-h-11",
+                  isActive && "nav-link-active",
+                  collapsed && "justify-center px-0",
+                )}
+                title={collapsed ? label : undefined}
+              >
+                <Icon className="w-4 h-4 shrink-0" />
+                <span
+                  className={cn(
+                    "truncate flex-1 transition-all duration-300",
+                    collapsed && "w-0 opacity-0",
+                  )}
+                >
+                  {label}
+                </span>
+                {showProBadge && !collapsed && (
+                  <span className="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-primary/20 text-primary border border-primary/40">
+                    Pro
+                  </span>
+                )}
+              </Link>
+            );
+          })}
+        </nav>
+      </div>
+
       {infoCards}
 
-      <nav className={cn("space-y-1", collapsed ? "px-2 mt-3" : "px-4 mt-3")}>
-        {PRIMARY_NAV.map((item) => {
-          const { id, label, icon: Icon } = item;
-          const isActive = activeTab === id;
-          const isProOnly = "pro" in item && item.pro;
-          const locked = isProOnly && !isPro;
-          const showProBadge = isProOnly && !isPro;
-          return (
-            <Link
-              key={id}
-              to="/app"
-              search={{ tab: id }}
-              onClick={(e) => {
-                if (locked) {
-                  e.preventDefault();
-                  setMobileOpen(false);
-                  openCheckout();
-                  return;
-                }
-                setMobileOpen(false);
-              }}
-              className={cn(
-                "nav-link min-h-11",
-                isActive && "nav-link-active",
-                collapsed && "justify-center px-0",
-              )}
-              title={collapsed ? label : undefined}
-            >
-              <Icon className="w-4 h-4 shrink-0" />
-              <span
-                className={cn(
-                  "truncate flex-1 transition-all duration-300",
-                  collapsed && "w-0 opacity-0",
-                )}
-              >
-                {label}
-              </span>
-              {showProBadge && !collapsed && (
-                <span className="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-primary/20 text-primary border border-primary/40">
-                  Pro
-                </span>
-              )}
-            </Link>
-          );
-        })}
-      </nav>
-
-      <div className="flex-1" />
-
-      <div className={cn("border-t border-sidebar-border space-y-1", collapsed ? "p-2" : "p-3")}>
+      <div className={cn("border-t border-sidebar-border space-y-1 mt-auto", collapsed ? "p-2" : "p-3")}>
         <Sheet open={settingsOpen} onOpenChange={setSettingsOpen}>
           <SheetTrigger asChild>
             <Button
@@ -302,14 +323,28 @@ export function ThreadSidebar() {
 
   return (
     <>
-      <aside
-        className={cn(
-          "hidden md:flex shrink-0 flex-col rounded-2xl glass glow-soft bg-sidebar/85 backdrop-blur-xl text-sidebar-foreground border border-sidebar-border h-full overflow-hidden transition-all duration-300 ease-out",
-          collapsed ? "w-16" : "w-64 max-w-[256px]",
-        )}
-      >
-        {body}
-      </aside>
+      <div className="relative hidden md:flex shrink-0 h-full">
+        <aside
+          className={cn(
+            "flex shrink-0 flex-col min-w-0 rounded-2xl glass glow-soft bg-sidebar/85 backdrop-blur-xl text-sidebar-foreground border border-sidebar-border h-full overflow-hidden transition-all duration-300 ease-out",
+            collapsed ? "w-0 opacity-0 pointer-events-none border-none invisible" : "w-64 max-w-[256px]",
+          )}
+        >
+          {body}
+        </aside>
+
+        <button
+          type="button"
+          onClick={() => setCollapsed(false)}
+          aria-label="Open sidebar"
+          className={cn(
+            "top-3 left-3 z-50 hidden md:fixed md:flex items-center justify-center w-10 h-10 rounded-xl glass border border-sidebar-border bg-sidebar/85 backdrop-blur-xl text-muted-foreground hover:text-foreground transition-colors pointer-events-auto",
+            !collapsed && "hidden",
+          )}
+        >
+          <ChevronRight className="w-5 h-5" />
+        </button>
+      </div>
 
       <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
         <SheetTrigger asChild>
