@@ -208,7 +208,7 @@ export function ChatWindow({
                 <Lock className="h-4 w-4 text-primary" />
               </div>
               <p className="text-sm font-semibold text-foreground leading-snug">
-                🚫 You've used your 5 free AI questions for today. Upgrade to Pro Pass for unlimited chat, instant rule explanations, and full exam simulators! [Get Pro Pass — $9]
+                You've used your 5 free AI questions for today. Upgrade to Pro Pass for unlimited chat, instant rule explanations, and full exam simulators! [Get Pro Pass — $9]
               </p>
               <Button
                 onClick={() => openCheckout()}
