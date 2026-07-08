@@ -314,17 +314,16 @@ export function ThreadSidebar() {
           {body}
         </aside>
 
-        <button
-          type="button"
-          onClick={() => setCollapsed((c) => !c)}
-          aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-          className={cn(
-            "absolute top-3 right-2 z-50 flex items-center justify-center w-8 h-8 rounded-lg text-muted-foreground hover:text-foreground hover:bg-sidebar-accent transition-colors pointer-events-auto",
-            collapsed && "right-2",
-          )}
-        >
-          {collapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
-        </button>
+        {collapsed && (
+          <button
+            type="button"
+            onClick={() => setCollapsed((c) => !c)}
+            aria-label="Expand sidebar"
+            className="absolute top-3 -right-3.5 z-50 flex items-center justify-center w-8 h-8 rounded-lg text-muted-foreground hover:text-foreground hover:bg-sidebar-accent transition-colors pointer-events-auto"
+          >
+            <ChevronRight className="w-4 h-4" />
+          </button>
+        )}
       </div>
 
       <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
