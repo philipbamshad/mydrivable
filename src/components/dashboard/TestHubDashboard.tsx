@@ -130,7 +130,7 @@ export function TestHubDashboard() {
               Unlock all 4 pillar quizzes, endless randomized sets, and instant explanations.
             </p>
             <Button onClick={() => unlockPro()} className="press mt-5 ">
-              Unlock Pro
+              Unlock Pro — $9
             </Button>
           </Card>
         </div>

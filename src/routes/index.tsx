@@ -400,7 +400,7 @@ function Pricing() {
             <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-7">
               <div className="text-lg font-medium text-white/90">Pro Pass</div>
               <div className="mt-8 flex items-end gap-2 text-white">
-                <span className="text-6xl font-semibold tracking-[-0.03em]">$19</span>
+                <span className="text-6xl font-semibold tracking-[-0.03em]">$9</span>
                 <span className="mb-2 text-sm text-white/85">one-time</span>
               </div>
               <p className="mt-2 text-sm text-white/75">Pay once. Lifetime access to everything Drivable builds.</p>
@@ -411,7 +411,7 @@ function Pricing() {
               search={{ next: "/app?intent=upgrade" }}
               className={`${BTN_PRIMARY} mt-7 w-full py-4 text-sm`}
             >
-              Get Pro Pass, $19 one-time
+              Get Pro Pass — $9 one-time
             </Link>
 
             <ul className="mt-7 space-y-3 text-[15px]">
@@ -446,7 +446,7 @@ function FAQ() {
     },
     {
       q: "What's in Pro Pass?",
-      a: "Full-length state-specific mock exams, unlimited AI chat, all section quizzes, the sign-recognition drill, and every state rule pack. One-time payment of $19, no subscriptions.",
+      a: "Full-length state-specific mock exams, unlimited AI chat, all section quizzes, the sign-recognition drill, and every state rule pack. One-time payment of $9, no subscriptions.",
     },
   ];
   return (
