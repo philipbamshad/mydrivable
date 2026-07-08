@@ -38,9 +38,9 @@ import { AccountPanel } from "@/components/dashboard/AccountPanel";
 import { useUserProfile, US_STATES } from "@/lib/user-profile";
 
 const PRIMARY_NAV = [
+  { id: "chat", label: "AI Coach Chatbox", icon: MessageSquare },
+  { id: "state-exam", label: "Mock Permit Exam", icon: Timer, pro: true, emphasis: true },
   { id: "test-hub", label: "Test Hub", icon: ClipboardCheck, pro: true },
-  { id: "state-exam", label: "State Permit Exam", icon: Timer, pro: true },
-  { id: "chat", label: "Chat AI Assistant", icon: MessageSquare },
 ] as const;
 
 export function ThreadSidebar() {
