@@ -114,7 +114,7 @@ export function AccountPanel() {
                     <Badge className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
                       <CheckCircle2 className="w-3 h-3" /> Active
                     </Badge>
-                    <span className="text-xs text-muted-foreground">$19 one-time · lifetime access</span>
+                    <span className="text-xs text-muted-foreground">$9 one-time · lifetime access</span>
                   </>
                 ) : (
                   <Badge className="bg-muted/40 text-muted-foreground border border-border">

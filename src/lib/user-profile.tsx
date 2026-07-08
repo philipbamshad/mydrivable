@@ -536,7 +536,7 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
               Unlock Pro Pass
             </DialogTitle>
             <DialogDescription>
-              $19 one-time payment · lifetime access. Test mode is active in preview, use
+              $9 one-time payment · lifetime access. Test mode is active in preview, use
               card <span className="font-mono">4242 4242 4242 4242</span>.
             </DialogDescription>
           </DialogHeader>

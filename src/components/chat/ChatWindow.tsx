@@ -208,10 +208,7 @@ export function ChatWindow({
                 <Lock className="h-4 w-4 text-primary" />
               </div>
               <p className="text-sm font-semibold text-foreground leading-snug">
-                You've used your 5 free AI questions for today.
-              </p>
-              <p className="mt-1.5 text-xs text-muted-foreground leading-relaxed">
-                Upgrade to Pro Pass for unlimited chat, instant rule explanations, and full exam simulators!
+                🚫 You've used your 5 free AI questions for today. Upgrade to Pro Pass for unlimited chat, instant rule explanations, and full exam simulators! [Get Pro Pass — $9]
               </p>
               <Button
                 onClick={() => openCheckout()}
@@ -219,7 +216,7 @@ export function ChatWindow({
                 size="sm"
               >
                 <Sparkles className="mr-1.5 h-3.5 w-3.5" />
-                Get Pro Pass, $19
+                Get Pro Pass — $9
               </Button>
             </div>
           ) : (

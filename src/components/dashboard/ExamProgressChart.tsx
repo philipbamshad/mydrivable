@@ -91,7 +91,7 @@ export function ExamProgressChart() {
           <h4 className="font-display text-sm font-bold leading-snug mb-1">
             Unlock Mock Simulator Progress
           </h4>
-          <p className="text-xs text-muted-foreground mb-4">Pro Pass · $19 one-time</p>
+          <p className="text-xs text-muted-foreground mb-4">Pro Pass · $9 one-time</p>
           <Button
             size="sm"
             onClick={() => unlockPro()}
