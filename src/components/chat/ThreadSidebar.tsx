@@ -215,8 +215,8 @@ export function ThreadSidebar() {
           onClick={() => setCollapsed((c) => !c)}
           aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
           className={cn(
-            "hidden md:flex items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-sidebar-accent transition-colors shrink-0",
-            collapsed ? "w-8 h-8" : "w-8 h-8",
+            "items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-sidebar-accent transition-colors shrink-0",
+            collapsed ? "hidden" : "hidden md:flex w-8 h-8",
           )}
         >
           {collapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
