@@ -83,7 +83,6 @@ function AuthPage() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [forgotLoading, setForgotLoading] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<{ email?: string; password?: string }>({});
 
   useEffect(() => {
@@ -176,28 +175,6 @@ function AuthPage() {
     }
   };
 
-  const handleForgotPassword = async () => {
-    const emailParse = z.string().trim().email().max(255).safeParse(email);
-    if (!emailParse.success) {
-      setFieldErrors({ email: "Enter your email above so we can send the reset link." });
-      toast.error("Enter your email first.");
-      return;
-    }
-    setForgotLoading(true);
-    try {
-      const { error } = await supabase.auth.resetPasswordForEmail(emailParse.data, {
-        redirectTo: `${window.location.origin}/reset-password`,
-      });
-      if (error) throw error;
-      toast.success("Check your email for a reset link.");
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : "Could not send reset email";
-      toast.error(msg);
-    } finally {
-      setForgotLoading(false);
-    }
-  };
-
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-center px-4 bg-background overflow-hidden">
       {/* Ambient neon glow backdrop */}
@@ -277,21 +254,9 @@ function AuthPage() {
               )}
             </div>
             <div className="space-y-1.5">
-              <div className="flex items-center justify-between">
-                <Label htmlFor="password" className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
-                  Password
-                </Label>
-                {mode === "sign-in" && (
-                  <button
-                    type="button"
-                    onClick={handleForgotPassword}
-                    disabled={forgotLoading || loading}
-                    className="text-[11px] text-primary hover:text-primary/80 disabled:opacity-50 transition-colors"
-                  >
-                    {forgotLoading ? "Sending…" : "Forgot password?"}
-                  </button>
-                )}
-              </div>
+              <Label htmlFor="password" className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                Password
+              </Label>
               <div className="relative">
                 <Input
                   id="password"
