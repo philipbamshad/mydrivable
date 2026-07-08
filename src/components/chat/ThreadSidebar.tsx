@@ -76,7 +76,7 @@ export function ThreadSidebar() {
   }, [localTarget]);
 
   const infoCards = !collapsed && (
-    <div className="px-3 space-y-2">
+    <div className="px-3 space-y-2 mb-3">
       <Popover open={targetDateOpen} onOpenChange={setTargetDateOpen}>
         <PopoverTrigger asChild>
           <button
