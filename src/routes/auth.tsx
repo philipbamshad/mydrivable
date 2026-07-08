@@ -277,22 +277,45 @@ function AuthPage() {
               )}
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="password" className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
-                Password
-              </Label>
-              <Input
-                id="password"
-                type="password"
-                autoComplete={mode === "sign-up" ? "new-password" : "current-password"}
-                required
-                minLength={8}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                aria-invalid={!!fieldErrors.password}
-                className={`bg-background/40 border-border/60 focus-visible:ring-primary/40 ${
-                  fieldErrors.password ? "border-destructive/70" : ""
-                }`}
-              />
+              <div className="flex items-center justify-between">
+                <Label htmlFor="password" className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                  Password
+                </Label>
+                {mode === "sign-in" && (
+                  <button
+                    type="button"
+                    onClick={handleForgotPassword}
+                    disabled={forgotLoading || loading}
+                    className="text-[11px] text-primary hover:text-primary/80 disabled:opacity-50 transition-colors"
+                  >
+                    {forgotLoading ? "Sending…" : "Forgot password?"}
+                  </button>
+                )}
+              </div>
+              <div className="relative">
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  autoComplete={mode === "sign-up" ? "new-password" : "current-password"}
+                  required
+                  minLength={8}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  aria-invalid={!!fieldErrors.password}
+                  className={`bg-background/40 border-border/60 focus-visible:ring-primary/40 pr-10 ${
+                    fieldErrors.password ? "border-destructive/70" : ""
+                  }`}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((s) => !s)}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-muted-foreground hover:text-foreground transition-colors"
+                  tabIndex={-1}
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
               {fieldErrors.password ? (
                 <p className="text-[11px] text-destructive">{fieldErrors.password}</p>
               ) : mode === "sign-up" ? (
