@@ -215,6 +215,7 @@ export function ThreadSidebar() {
             const isProOnly = "pro" in item && item.pro;
             const locked = isProOnly && !isPro;
             const showProBadge = isProOnly && !isPro;
+            const emphasized = "emphasis" in item && item.emphasis;
             return (
               <Link
                 key={id}
@@ -233,14 +234,16 @@ export function ThreadSidebar() {
                   "nav-link min-h-11 w-full",
                   isActive && "nav-link-active",
                   collapsed && "justify-center px-0",
+                  emphasized && "font-bold bg-primary/10 ring-1 ring-primary/20",
                 )}
                 title={collapsed ? label : undefined}
               >
-                <Icon className="w-4 h-4 shrink-0" />
+                <Icon className={cn("w-4 h-4 shrink-0", emphasized && "text-primary")} />
                 <span
                   className={cn(
                     "truncate transition-all duration-300",
                     collapsed ? "w-0 opacity-0" : "flex-1",
+                    emphasized && "text-primary",
                   )}
                 >
                   {label}
