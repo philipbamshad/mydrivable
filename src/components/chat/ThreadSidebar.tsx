@@ -308,22 +308,11 @@ export function ThreadSidebar() {
         <aside
           className={cn(
             "flex shrink-0 flex-col min-w-0 rounded-2xl glass glow-soft bg-sidebar/85 backdrop-blur-xl text-sidebar-foreground border border-sidebar-border h-full overflow-hidden transition-all duration-300 ease-out",
-            collapsed ? "w-16" : "w-64 max-w-[256px]",
+            collapsed ? "w-24" : "w-64 max-w-[256px]",
           )}
         >
           {body}
         </aside>
-
-        {collapsed && (
-          <button
-            type="button"
-            onClick={() => setCollapsed((c) => !c)}
-            aria-label="Expand sidebar"
-            className="absolute top-3 -right-3.5 z-50 flex items-center justify-center w-8 h-8 rounded-lg text-muted-foreground hover:text-foreground hover:bg-sidebar-accent transition-colors pointer-events-auto"
-          >
-            <ChevronRight className="w-4 h-4" />
-          </button>
-        )}
       </div>
 
       <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
