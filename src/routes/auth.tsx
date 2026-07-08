@@ -221,6 +221,7 @@ function AuthPage() {
                 onClick={() => {
                   setMode(m);
                   setFieldErrors({});
+                  setSignupSuccess(false);
                 }}
                 className={`flex-1 text-sm py-1.5 rounded-md font-medium transition-all ${
                   mode === m
