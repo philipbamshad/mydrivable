@@ -184,7 +184,7 @@ export function ThreadSidebar() {
 
   const body = (
     <>
-      <div className={cn("flex items-center shrink-0 w-full", collapsed ? "justify-center gap-2 p-2" : "justify-between p-4")}>
+      <div className={cn("flex items-center shrink-0 w-full", collapsed ? "justify-between p-3" : "justify-between p-4")}>
         <Link
           to="/app"
           onClick={() => setMobileOpen(false)}
