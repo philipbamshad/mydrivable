@@ -184,17 +184,17 @@ export function ThreadSidebar() {
 
   const body = (
     <>
-      <div className={cn("flex items-center shrink-0 w-full", collapsed ? "justify-center p-3" : "justify-between p-4")}>
+      <div className={cn("flex items-center shrink-0 w-full", collapsed ? "justify-between p-3" : "justify-between p-4")}>
         <Link
           to="/app"
           onClick={() => setMobileOpen(false)}
-          className="flex items-center gap-2.5 group"
+          className={cn("flex items-center group", collapsed ? "gap-0" : "gap-2.5")}
         >
           <img src={logo} alt="" width={32} height={32} className="rounded-md shrink-0" />
           <div
             className={cn(
               "flex flex-col transition-all duration-300 overflow-hidden",
-              collapsed ? "w-0 opacity-0" : "w-auto opacity-100",
+              collapsed ? "hidden" : "w-auto opacity-100",
             )}
           >
             <div className="font-bold tracking-tight text-sm whitespace-nowrap">Drivable</div>
@@ -204,11 +204,11 @@ export function ThreadSidebar() {
           </div>
         </Link>
 
-        {!collapsed && toggleButton}
+        {toggleButton}
       </div>
 
       <div className="flex-1 min-h-0 overflow-y-auto">
-        <nav className={cn("space-y-1 w-full", collapsed ? "px-2 py-3" : "px-4 py-3")}>
+        <nav className={cn("space-y-1 w-full", collapsed ? "py-3" : "px-4 py-3")}>
           {PRIMARY_NAV.map((item) => {
             const { id, label, icon: Icon } = item;
             const isActive = activeTab === id;
@@ -232,15 +232,15 @@ export function ThreadSidebar() {
                 className={cn(
                   "nav-link min-h-11 w-full",
                   isActive && "nav-link-active",
-                  collapsed && "justify-end px-3",
+                  collapsed && "justify-center px-0",
                 )}
                 title={collapsed ? label : undefined}
               >
                 <Icon className="w-4 h-4 shrink-0" />
                 <span
                   className={cn(
-                    "truncate flex-1 transition-all duration-300",
-                    collapsed && "w-0 opacity-0",
+                    "truncate transition-all duration-300",
+                    collapsed ? "w-0 opacity-0" : "flex-1",
                   )}
                 >
                   {label}
@@ -308,22 +308,11 @@ export function ThreadSidebar() {
         <aside
           className={cn(
             "flex shrink-0 flex-col min-w-0 rounded-2xl glass glow-soft bg-sidebar/85 backdrop-blur-xl text-sidebar-foreground border border-sidebar-border h-full overflow-hidden transition-all duration-300 ease-out",
-            collapsed ? "w-16" : "w-64 max-w-[256px]",
+            collapsed ? "w-24" : "w-64 max-w-[256px]",
           )}
         >
           {body}
         </aside>
-
-        {collapsed && (
-          <button
-            type="button"
-            onClick={() => setCollapsed((c) => !c)}
-            aria-label="Expand sidebar"
-            className="absolute top-3 -right-3.5 z-50 flex items-center justify-center w-8 h-8 rounded-lg text-muted-foreground hover:text-foreground hover:bg-sidebar-accent transition-colors pointer-events-auto"
-          >
-            <ChevronRight className="w-4 h-4" />
-          </button>
-        )}
       </div>
 
       <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
