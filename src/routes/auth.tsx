@@ -234,7 +234,7 @@ function AuthPage() {
           {mode === "sign-up" && signupSuccess ? (
             <div className="text-center space-y-5 py-6">
               <p className="text-lg font-medium leading-relaxed">
-                🎉 Account created successfully! Click below to sign in.
+                Account created successfully! Click below to sign in.
               </p>
               <Button
                 type="button"
