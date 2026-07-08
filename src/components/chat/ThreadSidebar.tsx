@@ -171,9 +171,20 @@ export function ThreadSidebar() {
     </div>
   );
 
+  const toggleButton = (
+    <button
+      type="button"
+      onClick={() => setCollapsed((c) => !c)}
+      aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+      className="flex items-center justify-center w-8 h-8 rounded-lg text-muted-foreground hover:text-foreground hover:bg-sidebar-accent transition-colors pointer-events-auto shrink-0"
+    >
+      {collapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
+    </button>
+  );
+
   const body = (
     <>
-      <div className={cn("flex items-center", collapsed ? "justify-center p-3" : "justify-between p-4")}>
+      <div className={cn("flex items-center shrink-0 w-full", collapsed ? "justify-center p-3" : "justify-between p-4")}>
         <Link
           to="/app"
           onClick={() => setMobileOpen(false)}
@@ -192,10 +203,12 @@ export function ThreadSidebar() {
             </div>
           </div>
         </Link>
+
+        {!collapsed && toggleButton}
       </div>
 
       <div className="flex-1 min-h-0 overflow-y-auto">
-        <nav className={cn("space-y-1", collapsed ? "px-2 py-3" : "px-4 py-3")}>
+        <nav className={cn("space-y-1 w-full", collapsed ? "px-2 py-3" : "px-4 py-3")}>
           {PRIMARY_NAV.map((item) => {
             const { id, label, icon: Icon } = item;
             const isActive = activeTab === id;
@@ -217,9 +230,9 @@ export function ThreadSidebar() {
                   setMobileOpen(false);
                 }}
                 className={cn(
-                  "nav-link min-h-11",
+                  "nav-link min-h-11 w-full",
                   isActive && "nav-link-active",
-                  collapsed && "justify-center px-0",
+                  collapsed && "justify-end px-3",
                 )}
                 title={collapsed ? label : undefined}
               >
@@ -301,17 +314,16 @@ export function ThreadSidebar() {
           {body}
         </aside>
 
-        <button
-          type="button"
-          onClick={() => setCollapsed((c) => !c)}
-          aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-          className={cn(
-            "absolute top-3 right-2 z-50 flex items-center justify-center w-8 h-8 rounded-lg text-muted-foreground hover:text-foreground hover:bg-sidebar-accent transition-colors pointer-events-auto",
-            collapsed && "right-2",
-          )}
-        >
-          {collapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
-        </button>
+        {collapsed && (
+          <button
+            type="button"
+            onClick={() => setCollapsed((c) => !c)}
+            aria-label="Expand sidebar"
+            className="absolute top-3 -right-3.5 z-50 flex items-center justify-center w-8 h-8 rounded-lg text-muted-foreground hover:text-foreground hover:bg-sidebar-accent transition-colors pointer-events-auto"
+          >
+            <ChevronRight className="w-4 h-4" />
+          </button>
+        )}
       </div>
 
       <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
