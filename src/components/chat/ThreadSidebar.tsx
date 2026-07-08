@@ -75,32 +75,23 @@ export function ThreadSidebar() {
     return localTarget.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
   }, [localTarget]);
 
-  const infoCards = (
-    <div className={cn("space-y-2", collapsed ? "px-2" : "px-3")}>
+  const infoCards = !collapsed && (
+    <div className="px-3 space-y-2">
       <Popover open={targetDateOpen} onOpenChange={setTargetDateOpen}>
         <PopoverTrigger asChild>
           <button
             type="button"
             aria-label="DMV target date"
-            className={cn(
-              "w-full text-left rounded-xl border border-primary/20 bg-primary/5 hover:bg-primary/10 hover:border-primary/40 transition-colors press",
-              collapsed ? "px-0 py-3 flex justify-center" : "px-4 py-3 mx-0",
-            )}
+            className="w-full text-left rounded-xl border border-primary/20 bg-primary/5 hover:bg-primary/10 hover:border-primary/40 transition-colors press px-4 py-3 mx-0"
           >
-            {collapsed ? (
-              <CalendarDays className="w-5 h-5 text-primary shrink-0" />
-            ) : (
-              <>
-                <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground flex items-center justify-between">
-                  <span>DMV Target Date</span>
-                  <CalendarDays className="w-3.5 h-3.5 text-muted-foreground" />
-                </p>
-                <p className="text-sm font-semibold mt-0.5 flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-                  <span className="truncate">{targetLabel}</span>
-                </p>
-              </>
-            )}
+            <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground flex items-center justify-between">
+              <span>DMV Target Date</span>
+              <CalendarDays className="w-3.5 h-3.5 text-muted-foreground" />
+            </p>
+            <p className="text-sm font-semibold mt-0.5 flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+              <span className="truncate">{targetLabel}</span>
+            </p>
           </button>
         </PopoverTrigger>
         <PopoverContent
@@ -127,25 +118,16 @@ export function ThreadSidebar() {
           <button
             type="button"
             aria-label="Change active state"
-            className={cn(
-              "w-full text-left rounded-xl border border-primary/20 bg-primary/5 hover:bg-primary/10 hover:border-primary/40 transition-colors press",
-              collapsed ? "px-0 py-3 flex justify-center" : "px-4 py-3 mx-0",
-            )}
+            className="w-full text-left rounded-xl border border-primary/20 bg-primary/5 hover:bg-primary/10 hover:border-primary/40 transition-colors press px-4 py-3 mx-0"
           >
-            {collapsed ? (
-              <Settings2 className="w-5 h-5 text-primary shrink-0" />
-            ) : (
-              <>
-                <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground flex items-center justify-between">
-                  <span>Active state</span>
-                  <Settings2 className="w-3.5 h-3.5 text-muted-foreground transition-all duration-300 group-hover:text-primary group-hover:rotate-90" />
-                </p>
-                <p className="text-sm font-semibold mt-0.5 flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-                  <span className="truncate">{userState || "Not set"}</span>
-                </p>
-              </>
-            )}
+            <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground flex items-center justify-between">
+              <span>Active state</span>
+              <Settings2 className="w-3.5 h-3.5 text-muted-foreground transition-all duration-300 group-hover:text-primary group-hover:rotate-90" />
+            </p>
+            <p className="text-sm font-semibold mt-0.5 flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+              <span className="truncate">{userState || "Not set"}</span>
+            </p>
           </button>
         </PopoverTrigger>
         <PopoverContent
@@ -210,17 +192,6 @@ export function ThreadSidebar() {
             </div>
           </div>
         </Link>
-        <button
-          type="button"
-          onClick={() => setCollapsed((c) => !c)}
-          aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-          className={cn(
-            "items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-sidebar-accent transition-colors shrink-0",
-            collapsed ? "hidden" : "hidden md:flex w-8 h-8",
-          )}
-        >
-          {collapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
-        </button>
       </div>
 
       <div className="flex-1 min-h-0 overflow-y-auto">
@@ -302,21 +273,18 @@ export function ThreadSidebar() {
           </SheetContent>
         </Sheet>
 
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={signOut}
-          className={cn(
-            "w-full justify-start text-muted-foreground hover:text-foreground press min-h-11",
-            collapsed && "justify-center px-0",
-          )}
-          title={collapsed ? "Sign out" : undefined}
-        >
-          <LogOut className="w-4 h-4" />
-          <span className={cn("transition-all duration-300", collapsed && "w-0 opacity-0")}>
-            Sign out
-          </span>
-        </Button>
+        {!collapsed && (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={signOut}
+            className="w-full justify-start text-muted-foreground hover:text-foreground press min-h-11"
+            title="Sign out"
+          >
+            <LogOut className="w-4 h-4" />
+            <span className="transition-all duration-300">Sign out</span>
+          </Button>
+        )}
       </div>
     </>
   );
@@ -327,7 +295,7 @@ export function ThreadSidebar() {
         <aside
           className={cn(
             "flex shrink-0 flex-col min-w-0 rounded-2xl glass glow-soft bg-sidebar/85 backdrop-blur-xl text-sidebar-foreground border border-sidebar-border h-full overflow-hidden transition-all duration-300 ease-out",
-            collapsed ? "w-0 opacity-0 pointer-events-none border-none invisible" : "w-64 max-w-[256px]",
+            collapsed ? "w-16" : "w-64 max-w-[256px]",
           )}
         >
           {body}
@@ -335,14 +303,14 @@ export function ThreadSidebar() {
 
         <button
           type="button"
-          onClick={() => setCollapsed(false)}
-          aria-label="Open sidebar"
+          onClick={() => setCollapsed((c) => !c)}
+          aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
           className={cn(
-            "top-3 left-3 z-50 hidden md:fixed md:flex items-center justify-center w-10 h-10 rounded-xl glass border border-sidebar-border bg-sidebar/85 backdrop-blur-xl text-muted-foreground hover:text-foreground transition-colors pointer-events-auto",
-            !collapsed && "hidden",
+            "absolute top-3 right-2 z-50 flex items-center justify-center w-8 h-8 rounded-lg text-muted-foreground hover:text-foreground hover:bg-sidebar-accent transition-colors pointer-events-auto",
+            collapsed && "right-2",
           )}
         >
-          <ChevronRight className="w-5 h-5" />
+          {collapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
         </button>
       </div>
 
