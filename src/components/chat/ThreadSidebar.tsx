@@ -52,7 +52,7 @@ export function ThreadSidebar() {
   const { pathname, search } = useRouterState({
     select: (s) => ({ pathname: s.location.pathname, search: s.location.search }),
   });
-  const activeTab = (search as { tab?: string }).tab ?? null;
+  const activeTab = (search as { tab?: string }).tab ?? "chat";
 
   const signOut = async () => {
     await supabase.auth.signOut();
