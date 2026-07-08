@@ -171,9 +171,20 @@ export function ThreadSidebar() {
     </div>
   );
 
+  const toggleButton = (
+    <button
+      type="button"
+      onClick={() => setCollapsed((c) => !c)}
+      aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+      className="flex items-center justify-center w-8 h-8 rounded-lg text-muted-foreground hover:text-foreground hover:bg-sidebar-accent transition-colors pointer-events-auto shrink-0"
+    >
+      {collapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
+    </button>
+  );
+
   const body = (
     <>
-      <div className={cn("flex items-center", collapsed ? "justify-center p-3" : "justify-between p-4")}>
+      <div className={cn("flex items-center shrink-0 w-full", collapsed ? "justify-center p-3" : "justify-between p-4")}>
         <Link
           to="/app"
           onClick={() => setMobileOpen(false)}
@@ -192,6 +203,8 @@ export function ThreadSidebar() {
             </div>
           </div>
         </Link>
+
+        {!collapsed && toggleButton}
       </div>
 
       <div className="flex-1 min-h-0 overflow-y-auto">
