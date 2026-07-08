@@ -326,8 +326,8 @@ export function ThreadSidebar() {
       <div className="relative hidden md:flex shrink-0 h-full">
         <aside
           className={cn(
-            "flex shrink-0 flex-col rounded-2xl glass glow-soft bg-sidebar/85 backdrop-blur-xl text-sidebar-foreground border border-sidebar-border h-full overflow-hidden transition-all duration-300 ease-out",
-            collapsed ? "w-0 opacity-0 pointer-events-none border-none" : "w-64 max-w-[256px]",
+            "flex shrink-0 flex-col min-w-0 rounded-2xl glass glow-soft bg-sidebar/85 backdrop-blur-xl text-sidebar-foreground border border-sidebar-border h-full overflow-hidden transition-all duration-300 ease-out",
+            collapsed ? "w-0 opacity-0 pointer-events-none border-none invisible" : "w-64 max-w-[256px]",
           )}
         >
           {body}
