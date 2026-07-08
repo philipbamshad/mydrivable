@@ -208,7 +208,7 @@ export function ThreadSidebar() {
       </div>
 
       <div className="flex-1 min-h-0 overflow-y-auto">
-        <nav className={cn("space-y-1", collapsed ? "px-2 py-3" : "px-4 py-3")}>
+        <nav className={cn("space-y-1 w-full", collapsed ? "px-2 py-3" : "px-4 py-3")}>
           {PRIMARY_NAV.map((item) => {
             const { id, label, icon: Icon } = item;
             const isActive = activeTab === id;
@@ -230,9 +230,9 @@ export function ThreadSidebar() {
                   setMobileOpen(false);
                 }}
                 className={cn(
-                  "nav-link min-h-11",
+                  "nav-link min-h-11 w-full",
                   isActive && "nav-link-active",
-                  collapsed && "justify-center px-0",
+                  collapsed && "justify-end px-3",
                 )}
                 title={collapsed ? label : undefined}
               >
