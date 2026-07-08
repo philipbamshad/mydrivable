@@ -126,16 +126,13 @@ function AuthPage() {
           setFieldErrors({ email: msg });
           toast.error(msg);
           setMode("sign-in");
+          setSignupSuccess(false);
           setLoading(false);
           return;
         }
-        if (!data.session) {
-          toast.success("Account created, check your email to confirm, then sign in.");
-          setMode("sign-in");
-          setLoading(false);
-          return;
-        }
-        toast.success("Account created. You're in.");
+        setSignupSuccess(true);
+        setLoading(false);
+        return;
       } else {
         const { error } = await supabase.auth.signInWithPassword({
           email: parsed.data.email,
