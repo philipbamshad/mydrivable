@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,13 +13,15 @@ import {
 import {
   LogOut,
   MessageSquare,
-  LayoutDashboard,
   ClipboardCheck,
   Timer,
   Settings,
   Menu,
   Settings2,
   Check,
+  CalendarDays,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import {
   Popover,
@@ -34,7 +36,6 @@ import { AccountPanel } from "@/components/dashboard/AccountPanel";
 import { useUserProfile, US_STATES } from "@/lib/user-profile";
 
 const PRIMARY_NAV = [
-  { id: "dashboard", label: "Dashboard Overview", icon: LayoutDashboard },
   { id: "test-hub", label: "Test Hub", icon: ClipboardCheck, pro: true },
   { id: "state-exam", label: "State Permit Exam", icon: Timer, pro: true },
   { id: "chat", label: "Chat AI Assistant", icon: MessageSquare },
@@ -44,15 +45,14 @@ export function ThreadSidebar() {
   const navigate = useNavigate();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { state: userState, setState: setUserState, isPro, openCheckout } = useUserProfile();
+  const [collapsed, setCollapsed] = useState(false);
+  const { state: userState, setState: setUserState, targetDate, isPro, openCheckout } = useUserProfile();
   const [statePickerOpen, setStatePickerOpen] = useState(false);
 
   const { pathname, search } = useRouterState({
     select: (s) => ({ pathname: s.location.pathname, search: s.location.search }),
   });
-  const activeTab =
-    (search as { tab?: string }).tab ??
-    (pathname === "/app" ? "dashboard" : null);
+  const activeTab = (search as { tab?: string }).tab ?? "chat";
 
   const signOut = async () => {
     await supabase.auth.signOut();
@@ -60,85 +60,71 @@ export function ThreadSidebar() {
     navigate({ to: "/auth" });
   };
 
-  const body = (
-    <>
-      <div className="p-4">
-        <Link
-          to="/app"
-          onClick={() => setMobileOpen(false)}
-          className="flex items-center gap-2.5 mb-5 group"
-        >
-          <img src={logo} alt="" width={32} height={32} className="rounded-md" />
+  const localTarget = useMemo(() => {
+    if (!targetDate) return null;
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(targetDate);
+    if (!m) return new Date(targetDate);
+    return new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+  }, [targetDate]);
 
-          <div>
-            <div className="font-bold tracking-tight text-sm">Drivable</div>
-            <div className="text-[10px] text-muted-foreground uppercase tracking-[0.2em]">
-              Your road coach
-            </div>
-          </div>
-        </Link>
+  const targetLabel = useMemo(() => {
+    if (!localTarget) return "Not set";
+    return localTarget.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+  }, [localTarget]);
 
-        <nav className="space-y-1">
-          {PRIMARY_NAV.map((item) => {
-            const { id, label, icon: Icon } = item;
-            const isActive = activeTab === id;
-            const isProOnly = "pro" in item && item.pro;
-            const locked = isProOnly && !isPro;
-            const showProBadge = isProOnly && !isPro;
-            return (
-              <Link
-                key={id}
-                to="/app"
-                search={{ tab: id }}
-                onClick={(e) => {
-                  if (locked) {
-                    e.preventDefault();
-                    setMobileOpen(false);
-                    openCheckout();
-                    return;
-                  }
-                  setMobileOpen(false);
-                }}
-                className={cn(
-                  "nav-link min-h-11",
-                  isActive && "nav-link-active",
-                )}
-              >
-                <Icon className="w-4 h-4 shrink-0" />
-                <span className="truncate flex-1">{label}</span>
-                {showProBadge && (
-                  <span className="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-primary/20 text-primary border border-primary/40">
-                    Pro
-                  </span>
-                )}
-              </Link>
-            );
-          })}
-        </nav>
-      </div>
-
-      <div className="flex-1" />
+  const infoCards = (
+    <div className={cn("space-y-2", collapsed ? "px-2" : "px-3")}>
+      <button
+        type="button"
+        aria-label="DMV target date"
+        className={cn(
+          "w-full text-left rounded-xl border border-primary/20 bg-primary/5 transition-colors press",
+          collapsed ? "px-0 py-3 flex justify-center" : "px-4 py-3 mx-0",
+        )}
+      >
+        {collapsed ? (
+          <CalendarDays className="w-5 h-5 text-primary shrink-0" />
+        ) : (
+          <>
+            <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground flex items-center justify-between">
+              <span>DMV Target Date</span>
+              <CalendarDays className="w-3.5 h-3.5 text-muted-foreground" />
+            </p>
+            <p className="text-sm font-semibold mt-0.5 flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+              <span className="truncate">{targetLabel}</span>
+            </p>
+          </>
+        )}
+      </button>
 
       <Popover open={statePickerOpen} onOpenChange={setStatePickerOpen}>
         <PopoverTrigger asChild>
           <button
             type="button"
             aria-label="Change active state"
-            className="group w-[calc(100%-1.5rem)] mx-3 mb-2 text-left px-4 py-3 rounded-xl border border-primary/20 bg-primary/5 hover:bg-primary/10 hover:border-primary/40 transition-colors press"
+            className={cn(
+              "w-full text-left rounded-xl border border-primary/20 bg-primary/5 hover:bg-primary/10 hover:border-primary/40 transition-colors press",
+              collapsed ? "px-0 py-3 flex justify-center" : "px-4 py-3 mx-0",
+            )}
           >
-            <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground flex items-center justify-between">
-              <span>Active state</span>
-              <Settings2
-                className="w-3.5 h-3.5 text-muted-foreground transition-all duration-300 group-hover:text-primary group-hover:rotate-90 group-hover:"
-              />
-            </p>
-            <p className="text-sm font-semibold mt-0.5 flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-primary " />
-              <span className="truncate">{userState || "Not set"}</span>
-            </p>
-            <p className="text-[10px] text-muted-foreground mt-1">
-              {isPro ? "Pro · all modules unlocked" : "Free tier"}
-            </p>
+            {collapsed ? (
+              <Settings2 className="w-5 h-5 text-primary shrink-0" />
+            ) : (
+              <>
+                <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground flex items-center justify-between">
+                  <span>Active state</span>
+                  <Settings2 className="w-3.5 h-3.5 text-muted-foreground transition-all duration-300 group-hover:text-primary group-hover:rotate-90" />
+                </p>
+                <p className="text-sm font-semibold mt-0.5 flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                  <span className="truncate">{userState || "Not set"}</span>
+                </p>
+                <p className="text-[10px] text-muted-foreground mt-1">
+                  {isPro ? "Pro · all modules unlocked" : "Free tier"}
+                </p>
+              </>
+            )}
           </button>
         </PopoverTrigger>
         <PopoverContent
@@ -179,14 +165,110 @@ export function ThreadSidebar() {
           </div>
         </PopoverContent>
       </Popover>
+    </div>
+  );
 
+  const body = (
+    <>
+      <div className={cn("flex items-center", collapsed ? "justify-center p-3" : "justify-between p-4")}>
+        <Link
+          to="/app"
+          onClick={() => setMobileOpen(false)}
+          className="flex items-center gap-2.5 group"
+        >
+          <img src={logo} alt="" width={32} height={32} className="rounded-md shrink-0" />
+          <div
+            className={cn(
+              "flex flex-col transition-all duration-300 overflow-hidden",
+              collapsed ? "w-0 opacity-0" : "w-auto opacity-100",
+            )}
+          >
+            <div className="font-bold tracking-tight text-sm whitespace-nowrap">Drivable</div>
+            <div className="text-[10px] text-muted-foreground uppercase tracking-[0.2em] whitespace-nowrap">
+              Your road coach
+            </div>
+          </div>
+        </Link>
+        <button
+          type="button"
+          onClick={() => setCollapsed((c) => !c)}
+          aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+          className={cn(
+            "hidden md:flex items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-sidebar-accent transition-colors shrink-0",
+            collapsed ? "w-8 h-8" : "w-8 h-8",
+          )}
+        >
+          {collapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
+        </button>
+      </div>
 
-      <div className="p-3 border-t border-sidebar-border space-y-1">
+      {infoCards}
+
+      <nav className={cn("space-y-1", collapsed ? "px-2 mt-3" : "px-4 mt-3")}>
+        {PRIMARY_NAV.map((item) => {
+          const { id, label, icon: Icon } = item;
+          const isActive = activeTab === id;
+          const isProOnly = "pro" in item && item.pro;
+          const locked = isProOnly && !isPro;
+          const showProBadge = isProOnly && !isPro;
+          return (
+            <Link
+              key={id}
+              to="/app"
+              search={{ tab: id }}
+              onClick={(e) => {
+                if (locked) {
+                  e.preventDefault();
+                  setMobileOpen(false);
+                  openCheckout();
+                  return;
+                }
+                setMobileOpen(false);
+              }}
+              className={cn(
+                "nav-link min-h-11",
+                isActive && "nav-link-active",
+                collapsed && "justify-center px-0",
+              )}
+              title={collapsed ? label : undefined}
+            >
+              <Icon className="w-4 h-4 shrink-0" />
+              <span
+                className={cn(
+                  "truncate flex-1 transition-all duration-300",
+                  collapsed && "w-0 opacity-0",
+                )}
+              >
+                {label}
+              </span>
+              {showProBadge && !collapsed && (
+                <span className="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-primary/20 text-primary border border-primary/40">
+                  Pro
+                </span>
+              )}
+            </Link>
+          );
+        })}
+      </nav>
+
+      <div className="flex-1" />
+
+      <div className={cn("border-t border-sidebar-border space-y-1", collapsed ? "p-2" : "p-3")}>
         <Sheet open={settingsOpen} onOpenChange={setSettingsOpen}>
           <SheetTrigger asChild>
-            <Button variant="ghost" size="sm" className="w-full justify-start text-muted-foreground hover:text-foreground press min-h-11">
+            <Button
+              variant="ghost"
+              size="sm"
+              className={cn(
+                "w-full justify-start text-muted-foreground hover:text-foreground press min-h-11",
+                collapsed && "justify-center px-0",
+              )}
+              title={collapsed ? "Settings" : undefined}
+            >
               <Settings className="w-4 h-4" />
-              Settings
+              <span className={cn("transition-all duration-300", collapsed && "w-0 opacity-0")}>
+                Settings
+              </span>
             </Button>
           </SheetTrigger>
           <SheetContent side="right" className="w-full sm:max-w-lg overflow-y-auto">
@@ -203,10 +285,16 @@ export function ThreadSidebar() {
           variant="ghost"
           size="sm"
           onClick={signOut}
-          className="w-full justify-start text-muted-foreground hover:text-foreground press min-h-11"
+          className={cn(
+            "w-full justify-start text-muted-foreground hover:text-foreground press min-h-11",
+            collapsed && "justify-center px-0",
+          )}
+          title={collapsed ? "Sign out" : undefined}
         >
           <LogOut className="w-4 h-4" />
-          Sign out
+          <span className={cn("transition-all duration-300", collapsed && "w-0 opacity-0")}>
+            Sign out
+          </span>
         </Button>
       </div>
     </>
@@ -214,12 +302,15 @@ export function ThreadSidebar() {
 
   return (
     <>
-      {/* Desktop sidebar — unchanged from before */}
-      <aside className="hidden md:flex w-64 max-w-[256px] shrink-0 flex-col rounded-2xl glass glow-soft bg-sidebar/85 backdrop-blur-xl text-sidebar-foreground border border-sidebar-border h-full overflow-hidden">
+      <aside
+        className={cn(
+          "hidden md:flex shrink-0 flex-col rounded-2xl glass glow-soft bg-sidebar/85 backdrop-blur-xl text-sidebar-foreground border border-sidebar-border h-full overflow-hidden transition-all duration-300 ease-out",
+          collapsed ? "w-16" : "w-64 max-w-[256px]",
+        )}
+      >
         {body}
       </aside>
 
-      {/* Mobile hamburger trigger — fixed top-left */}
       <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
         <SheetTrigger asChild>
           <Button
@@ -244,4 +335,3 @@ export function ThreadSidebar() {
     </>
   );
 }
-
