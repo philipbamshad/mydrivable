@@ -336,9 +336,9 @@ export function ThreadSidebar() {
         <button
           type="button"
           onClick={() => setCollapsed(false)}
-          aria-label="Expand sidebar"
+          aria-label="Open sidebar"
           className={cn(
-            "absolute top-3 left-3 z-50 hidden md:flex items-center justify-center w-10 h-10 rounded-xl glass border border-sidebar-border bg-sidebar/85 backdrop-blur-xl text-muted-foreground hover:text-foreground transition-colors",
+            "top-3 left-3 z-50 hidden md:fixed md:flex items-center justify-center w-10 h-10 rounded-xl glass border border-sidebar-border bg-sidebar/85 backdrop-blur-xl text-muted-foreground hover:text-foreground transition-colors pointer-events-auto",
             !collapsed && "hidden",
           )}
         >
