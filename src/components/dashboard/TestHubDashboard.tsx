@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -42,10 +42,27 @@ const PILLAR_ORDER: { id: PillarId; icon: typeof TrafficCone }[] = [
   { id: "speed", icon: Gauge },
 ];
 
+const FREE_PILLAR_LIFETIME_LIMIT = 3;
+const pillarUsageKey = (id: PillarId) => `drivable:testhub-usage:lifetime:${id}`;
+
+function readPillarUsage(id: PillarId): number {
+  if (typeof window === "undefined") return 0;
+  const raw = window.localStorage.getItem(pillarUsageKey(id));
+  const n = raw ? Number.parseInt(raw, 10) : 0;
+  return Number.isFinite(n) ? n : 0;
+}
+
+function readAllPillarUsage(): Record<PillarId, number> {
+  return PILLAR_ORDER.reduce((acc, { id }) => {
+    acc[id] = readPillarUsage(id);
+    return acc;
+  }, {} as Record<PillarId, number>);
+}
 
 export function TestHubDashboard() {
   const { isPro, unlockPro, state } = useUserProfile();
   const [active, setActive] = useState<PillarId | null>(null);
+  const [usage, setUsage] = useState<Record<PillarId, number>>(() => readAllPillarUsage());
 
   // State-tailored banks: rebuilt when the user's active state changes so
   // numeric values (speed limits, alley, school zone, accident threshold,
@@ -59,19 +76,37 @@ export function TestHubDashboard() {
     blurb: PILLAR_META[id].blurb,
   }));
 
+  const bumpPillarUsage = (id: PillarId) => {
+    if (isPro) return;
+    setUsage((prev) => {
+      const next = { ...prev, [id]: prev[id] + 1 };
+      try {
+        window.localStorage.setItem(pillarUsageKey(id), String(next[id]));
+      } catch {
+        // ignore quota errors
+      }
+      return next;
+    });
+  };
+
   if (active) {
     const p = pillars.find((x) => x.id === active)!;
     return (
       <QuizRunner
         pillar={p}
         stateName={state}
+        isPro={isPro}
+        pillarUsed={usage[active]}
+        lifetimeLimit={FREE_PILLAR_LIFETIME_LIMIT}
+        onAnswered={() => bumpPillarUsage(active)}
+        onUpgrade={() => unlockPro()}
         onExit={() => setActive(null)}
       />
     );
   }
 
   return (
-    <div className="relative max-w-6xl mx-auto space-y-6">
+    <div className="max-w-6xl mx-auto space-y-6">
       <div>
         <h2 className="font-display text-2xl font-bold">Permit Pillar Quiz Dashboard</h2>
         <p className="text-sm text-muted-foreground mt-1">
@@ -79,15 +114,13 @@ export function TestHubDashboard() {
         </p>
       </div>
 
-      <div
-        className={cn(
-          "grid grid-cols-1 md:grid-cols-2 gap-5 transition-all",
-          !isPro && "blur-sm pointer-events-none select-none",
-        )}
-      >
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {pillars.map((p) => {
           const Icon = p.icon;
           const count = banks[p.id].length;
+          const used = usage[p.id];
+          const remaining = Math.max(0, FREE_PILLAR_LIFETIME_LIMIT - used);
+          const locked = !isPro && remaining <= 0;
           return (
             <Card key={p.id} className="glass glow-soft p-6 rounded-2xl flex flex-col gap-4">
               <div className="flex items-start gap-3">
@@ -108,33 +141,50 @@ export function TestHubDashboard() {
                   {count} qs
                 </Badge>
               </div>
-              <Button onClick={() => setActive(p.id)} className="press w-full ">
-                <Sparkles className="w-4 h-4" /> Start Test
+              {!isPro && (
+                <p className="text-[11px] text-muted-foreground">
+                  {locked
+                    ? "Free limit reached for this section."
+                    : `${remaining} of ${FREE_PILLAR_LIFETIME_LIMIT} free lifetime questions left`}
+                </p>
+              )}
+              <Button
+                onClick={() => (locked ? unlockPro() : setActive(p.id))}
+                className="press w-full"
+              >
+                {locked ? (
+                  <>
+                    <Lock className="w-4 h-4" /> Unlock with Pro Pass
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="w-4 h-4" /> Start Test
+                  </>
+                )}
               </Button>
             </Card>
           );
         })}
       </div>
+    </div>
+  );
+}
 
-      {!isPro && (
-        <div className="absolute inset-0 grid place-items-center">
-          <Card className="glass-strong glow-strong p-8 rounded-2xl text-center max-w-md mx-auto">
-            <div
-              className="grid h-14 w-14 place-items-center rounded-2xl bg-primary/15 border border-primary/40 mx-auto mb-4"
-              style={{ boxShadow: "0 0 24px -4px var(--color-primary)" }}
-            >
-              <Lock className="w-6 h-6 text-primary" />
-            </div>
-            <h3 className="font-display text-xl font-bold">Pro Pass Required</h3>
-            <p className="text-sm text-muted-foreground mt-2">
-              Unlock all 4 pillar quizzes, endless randomized sets, and instant explanations.
-            </p>
-            <Button onClick={() => unlockPro()} className="press mt-5 ">
-              Unlock Pro — $9
-            </Button>
-          </Card>
+function PillarPaywall({ onUpgrade }: { onUpgrade: () => void }) {
+  return (
+    <div className="max-w-xl mx-auto p-5">
+      <div className="rounded-2xl border border-primary/40 bg-primary/10 px-6 py-8 text-center shadow-[0_0_40px_-18px_var(--color-primary)]">
+        <div className="mx-auto mb-4 grid h-12 w-12 place-items-center rounded-full border border-primary/40 bg-primary/15">
+          <Lock className="h-5 w-5 text-primary" />
         </div>
-      )}
+        <p className="text-sm font-semibold text-foreground leading-snug">
+          You've answered your 3 free lifetime questions for this quiz section. Upgrade to Pro Pass to unlock unlimited questions, practice modes, and get full explanations! [Get Pro Pass — $9]
+        </p>
+        <Button onClick={onUpgrade} className="press mt-5">
+          <Sparkles className="mr-1.5 h-4 w-4" />
+          Get Pro Pass — $9
+        </Button>
+      </div>
     </div>
   );
 }
@@ -142,10 +192,20 @@ export function TestHubDashboard() {
 function QuizRunner({
   pillar,
   stateName,
+  isPro,
+  pillarUsed,
+  lifetimeLimit,
+  onAnswered,
+  onUpgrade,
   onExit,
 }: {
   pillar: Pillar;
   stateName?: string | null;
+  isPro: boolean;
+  pillarUsed: number;
+  lifetimeLimit: number;
+  onAnswered: () => void;
+  onUpgrade: () => void;
   onExit: () => void;
 }) {
   const { recordQuizScore } = useUserProfile();
@@ -177,17 +237,32 @@ function QuizRunner({
   const [done, setDone] = useState(false);
 
   const q = questions[idx];
+  const reveal = picked !== null;
+  // Strict per-section lifetime gate: only lock once the user has actually
+  // used all 3 free questions in THIS section. Other sections stay unlocked.
+  const freeLocked = !isPro && pillarUsed >= lifetimeLimit;
+
+  // Guard against `recordQuizScore` being called twice from a single render
+  // path when the last answer both completes the set and triggers advance.
+  const completedRef = useRef(false);
+  useEffect(() => {
+    completedRef.current = false;
+  }, [pillar.id]);
 
   const choose = (i: number) => {
     if (picked !== null) return;
     setPicked(i);
     if (i === q.correct) setScore((s) => s + 1);
+    onAnswered();
   };
 
   const advance = () => {
     if (idx + 1 >= questions.length) {
-      const pct = Math.round((score / questions.length) * 100);
-      recordQuizScore(pct, "pillar");
+      if (!completedRef.current) {
+        completedRef.current = true;
+        const pct = Math.round((score / questions.length) * 100);
+        recordQuizScore(pct, "pillar");
+      }
       setDone(true);
     } else {
       setIdx((n) => n + 1);
@@ -196,12 +271,32 @@ function QuizRunner({
   };
 
   const restartFresh = () => {
+    completedRef.current = false;
     setQuestions(buildSet());
     setIdx(0);
     setPicked(null);
     setScore(0);
     setDone(false);
   };
+
+  if (freeLocked) {
+    return (
+      <div className="max-w-3xl mx-auto p-5 space-y-5">
+        <div className="flex items-center justify-between">
+          <button
+            onClick={onExit}
+            className="flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground"
+          >
+            <ArrowLeft className="w-3.5 h-3.5" /> Back to pillars
+          </button>
+          <span className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
+            {pillar.title}
+          </span>
+        </div>
+        <PillarPaywall onUpgrade={onUpgrade} />
+      </div>
+    );
+  }
 
   if (done) {
     const pct = Math.round((score / questions.length) * 100);
@@ -238,8 +333,6 @@ function QuizRunner({
       </div>
     );
   }
-
-  const reveal = picked !== null;
 
   return (
     <div className="max-w-3xl mx-auto p-5 space-y-5">
