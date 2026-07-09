@@ -102,7 +102,7 @@ export function ChatWindow({
       openCheckout();
       return;
     }
-    bumpFreeUsage();
+    bumpChatUsage();
     await sendMessage({ text: msg.text });
   };
 
@@ -111,7 +111,7 @@ export function ChatWindow({
       openCheckout();
       return;
     }
-    bumpFreeUsage();
+    bumpChatUsage();
     await sendMessage({ text });
   };
 
