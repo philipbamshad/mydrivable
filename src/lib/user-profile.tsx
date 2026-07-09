@@ -39,6 +39,14 @@ export type SkillMasteryEntry = {
   verified: boolean;
 };
 
+export type FreeUsageKind = "chat" | "exam" | `pillar:${string}`;
+
+export type FreeUsage = {
+  chat: number;
+  exam: number;
+  pillars: Record<string, number>;
+};
+
 export type ProfileState = {
   state: string;
   targetDate: string | null;
@@ -47,6 +55,7 @@ export type ProfileState = {
   dailyDone: Record<string, boolean>;
   dailyDoneDate: string | null;
   skillMastery: Record<string, SkillMasteryEntry>;
+  freeUsage: FreeUsage;
 };
 
 export type NewDriveSession = {
@@ -74,8 +83,11 @@ type ProfileContextValue = ProfileState & {
   deleteDriveSession: (id: string) => void;
   toggleDailyTask: (taskId: string, dateKey: string) => void;
   setSkillMastery: (skillId: string, patch: Partial<SkillMasteryEntry>) => void;
+  bumpFreeUsage: (kind: FreeUsageKind) => void;
   reset: () => void;
 };
+
+const DEFAULT_FREE_USAGE: FreeUsage = { chat: 0, exam: 0, pillars: {} };
 
 const DEFAULT: ProfileState = {
   state: "",
@@ -85,7 +97,58 @@ const DEFAULT: ProfileState = {
   dailyDone: {},
   dailyDoneDate: null,
   skillMastery: {},
+  freeUsage: DEFAULT_FREE_USAGE,
 };
+
+// localStorage keys are shared with the anonymous / pre-login experience so
+// counters persist across refreshes even before we know the userId. Once the
+// user signs in we merge with the DB copy and keep both in sync.
+const LS_KEY = "drivable:free-usage:lifetime";
+
+function readLocalFreeUsage(): FreeUsage {
+  if (typeof window === "undefined") return { ...DEFAULT_FREE_USAGE, pillars: {} };
+  try {
+    const raw = window.localStorage.getItem(LS_KEY);
+    if (!raw) return { ...DEFAULT_FREE_USAGE, pillars: {} };
+    const parsed = JSON.parse(raw) as Partial<FreeUsage>;
+    return {
+      chat: Number.isFinite(parsed.chat) ? Number(parsed.chat) : 0,
+      exam: Number.isFinite(parsed.exam) ? Number(parsed.exam) : 0,
+      pillars:
+        parsed.pillars && typeof parsed.pillars === "object"
+          ? Object.fromEntries(
+              Object.entries(parsed.pillars).map(([k, v]) => [
+                k,
+                Number.isFinite(v as number) ? Number(v) : 0,
+              ]),
+            )
+          : {},
+    };
+  } catch {
+    return { ...DEFAULT_FREE_USAGE, pillars: {} };
+  }
+}
+
+function writeLocalFreeUsage(u: FreeUsage) {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.setItem(LS_KEY, JSON.stringify(u));
+  } catch {
+    // ignore quota errors
+  }
+}
+
+function mergeFreeUsage(a: FreeUsage, b: FreeUsage): FreeUsage {
+  const pillars: Record<string, number> = { ...a.pillars };
+  for (const [k, v] of Object.entries(b.pillars ?? {})) {
+    pillars[k] = Math.max(pillars[k] ?? 0, v);
+  }
+  return {
+    chat: Math.max(a.chat, b.chat),
+    exam: Math.max(a.exam, b.exam),
+    pillars,
+  };
+}
 
 const Ctx = createContext<ProfileContextValue | null>(null);
 const PRO_PASS_PRICE_ID = "pro_pass_lifetime_9";
