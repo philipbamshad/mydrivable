@@ -308,6 +308,18 @@ function ExamRunner({
     );
   }
 
+  if (freeLocked) {
+    return (
+      <div className="max-w-3xl mx-auto p-5 space-y-5">
+        <div className="flex items-center justify-between">
+          <button onClick={onExit} className="flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground">
+            <ArrowLeft className="w-3.5 h-3.5" /> Exit exam
+          </button>
+        </div>
+        <ExamPaywall onUpgrade={onUpgrade} />
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-3xl mx-auto p-5 space-y-5">
