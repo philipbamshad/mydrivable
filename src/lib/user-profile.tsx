@@ -88,7 +88,7 @@ const DEFAULT: ProfileState = {
 };
 
 const Ctx = createContext<ProfileContextValue | null>(null);
-const PRO_PASS_PRICE_ID = "pro_pass_lifetime";
+const PRO_PASS_PRICE_ID = "pro_pass_lifetime_9";
 
 type DrivingLogRow = {
   id: string;
