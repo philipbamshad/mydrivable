@@ -43,26 +43,10 @@ const PILLAR_ORDER: { id: PillarId; icon: typeof TrafficCone }[] = [
 ];
 
 const FREE_PILLAR_LIFETIME_LIMIT = 3;
-const pillarUsageKey = (id: PillarId) => `drivable:testhub-usage:lifetime:${id}`;
-
-function readPillarUsage(id: PillarId): number {
-  if (typeof window === "undefined") return 0;
-  const raw = window.localStorage.getItem(pillarUsageKey(id));
-  const n = raw ? Number.parseInt(raw, 10) : 0;
-  return Number.isFinite(n) ? n : 0;
-}
-
-function readAllPillarUsage(): Record<PillarId, number> {
-  return PILLAR_ORDER.reduce((acc, { id }) => {
-    acc[id] = readPillarUsage(id);
-    return acc;
-  }, {} as Record<PillarId, number>);
-}
 
 export function TestHubDashboard() {
-  const { isPro, unlockPro, state } = useUserProfile();
+  const { isPro, unlockPro, state, freeUsage, bumpFreeUsage } = useUserProfile();
   const [active, setActive] = useState<PillarId | null>(null);
-  const [usage, setUsage] = useState<Record<PillarId, number>>(() => readAllPillarUsage());
 
   // State-tailored banks: rebuilt when the user's active state changes so
   // numeric values (speed limits, alley, school zone, accident threshold,
@@ -76,18 +60,7 @@ export function TestHubDashboard() {
     blurb: PILLAR_META[id].blurb,
   }));
 
-  const bumpPillarUsage = (id: PillarId) => {
-    if (isPro) return;
-    setUsage((prev) => {
-      const next = { ...prev, [id]: prev[id] + 1 };
-      try {
-        window.localStorage.setItem(pillarUsageKey(id), String(next[id]));
-      } catch {
-        // ignore quota errors
-      }
-      return next;
-    });
-  };
+  const usage = freeUsage.pillars;
 
   if (active) {
     const p = pillars.find((x) => x.id === active)!;
@@ -96,9 +69,9 @@ export function TestHubDashboard() {
         pillar={p}
         stateName={state}
         isPro={isPro}
-        pillarUsed={usage[active]}
+        pillarUsed={usage[active] ?? 0}
         lifetimeLimit={FREE_PILLAR_LIFETIME_LIMIT}
-        onAnswered={() => bumpPillarUsage(active)}
+        onAnswered={() => bumpFreeUsage(`pillar:${active}`)}
         onUpgrade={() => unlockPro()}
         onExit={() => setActive(null)}
       />
