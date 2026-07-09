@@ -49,11 +49,15 @@ export function ChatWindow({
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { state: userState, isPro, openCheckout } = useUserProfile();
 
-  // Free tier daily usage tracker. Bypassed entirely for Pro Pass.
-  const FREE_DAILY_LIMIT = 5;
-  const todayKey = new Date().toISOString().slice(0, 10);
-  const storageKey = `drivable:chat-usage:${todayKey}`;
+  // Free tier lifetime usage tracker. Bypassed entirely for Pro Pass.
+  const FREE_LIFETIME_LIMIT = 5;
+  const storageKey = `drivable:chat-usage:lifetime`;
   const [freeUsed, setFreeUsed] = useState<number>(() => {
+    if (typeof window === "undefined") return 0;
+    const raw = window.localStorage.getItem(storageKey);
+    const n = raw ? Number.parseInt(raw, 10) : 0;
+    return Number.isFinite(n) ? n : 0;
+  });
     if (typeof window === "undefined") return 0;
     const raw = window.localStorage.getItem(storageKey);
     const n = raw ? Number.parseInt(raw, 10) : 0;
