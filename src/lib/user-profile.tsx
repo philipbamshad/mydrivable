@@ -210,7 +210,9 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!userId) {
       activeUserRef.current = null;
-      setProfile(DEFAULT);
+      // Even when signed out, keep the anonymous localStorage counters visible
+      // so free-tier limits carry through the auth screen.
+      setProfile({ ...DEFAULT, freeUsage: readLocalFreeUsage() });
       setHydrating(false);
       return;
     }
@@ -222,7 +224,7 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
       const { data: existing } = await supabase
         .from("user_profiles" as never)
         .select(
-          "active_state, target_date, daily_done, daily_done_date, skill_mastery",
+          "active_state, target_date, daily_done, daily_done_date, skill_mastery, free_usage",
         )
         .eq("user_id", userId)
         .maybeSingle();
@@ -234,6 +236,7 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
             daily_done: Record<string, boolean> | null;
             daily_done_date: string | null;
             skill_mastery: Record<string, SkillMasteryEntry> | null;
+            free_usage: Partial<FreeUsage> | null;
           }
         | null;
 
@@ -247,6 +250,7 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
           daily_done: {},
           daily_done_date: null,
           skill_mastery: {},
+          free_usage: {},
         };
       }
 
@@ -272,6 +276,27 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
       const dailyDate = prof.daily_done_date;
       const dailyDone = dailyDate === today ? (prof.daily_done ?? {}) : {};
 
+      // Merge DB copy with any pre-login localStorage counters so the higher
+      // value always wins. This makes the lock permanent even if the user
+      // switches devices or clears one storage layer.
+      const remote: FreeUsage = {
+        chat: Number(prof.free_usage?.chat ?? 0) || 0,
+        exam: Number(prof.free_usage?.exam ?? 0) || 0,
+        pillars: (prof.free_usage?.pillars ?? {}) as Record<string, number>,
+      };
+      const merged = mergeFreeUsage(readLocalFreeUsage(), remote);
+      writeLocalFreeUsage(merged);
+      if (
+        merged.chat !== remote.chat ||
+        merged.exam !== remote.exam ||
+        JSON.stringify(merged.pillars) !== JSON.stringify(remote.pillars)
+      ) {
+        void supabase
+          .from("user_profiles" as never)
+          .update({ free_usage: merged } as never)
+          .eq("user_id", userId);
+      }
+
       setProfile({
         state: prof.active_state ?? "",
         targetDate: prof.target_date,
@@ -282,6 +307,7 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
         dailyDone,
         dailyDoneDate: dailyDate,
         skillMastery: prof.skill_mastery ?? {},
+        freeUsage: merged,
       });
       setHydrating(false);
     })();
