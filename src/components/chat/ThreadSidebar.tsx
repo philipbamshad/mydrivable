@@ -40,7 +40,7 @@ import { useUserProfile, US_STATES } from "@/lib/user-profile";
 const PRIMARY_NAV = [
   { id: "chat", label: "AI Coach Chatbox", icon: MessageSquare },
   { id: "state-exam", label: "Mock Permit Exam", icon: Timer, emphasis: true },
-  { id: "test-hub", label: "Test Hub", icon: ClipboardCheck, pro: true },
+  { id: "test-hub", label: "Test Hub", icon: ClipboardCheck },
 ] as const;
 
 export function ThreadSidebar() {
