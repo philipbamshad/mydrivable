@@ -72,8 +72,8 @@ export function ChatWindow({
     });
   }, [isPro, storageKey]);
 
-  const limitReached = !isPro && freeUsed >= FREE_DAILY_LIMIT;
-  const remaining = Math.max(0, FREE_DAILY_LIMIT - freeUsed);
+  const limitReached = !isPro && freeUsed >= FREE_LIFETIME_LIMIT;
+  const remaining = Math.max(0, FREE_LIFETIME_LIMIT - freeUsed);
 
   const transport = useMemo(
     () =>
