@@ -233,7 +233,7 @@ export function ChatWindow({
               <p className="text-[10px] text-muted-foreground mt-2 text-center">
                 {isPro
                   ? "Drivable can be wrong on state-specific rules. Always verify with your state DMV."
-                  : `${remaining} of ${FREE_DAILY_LIMIT} free AI questions left today. Upgrade for unlimited chat.`}
+                  : `${remaining} of ${FREE_LIFETIME_LIMIT} free lifetime AI questions left. Upgrade for unlimited chat.`}
               </p>
             </>
           )}
