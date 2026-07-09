@@ -39,7 +39,7 @@ import { useUserProfile, US_STATES } from "@/lib/user-profile";
 
 const PRIMARY_NAV = [
   { id: "chat", label: "AI Coach Chatbox", icon: MessageSquare },
-  { id: "state-exam", label: "Mock Permit Exam", icon: Timer, pro: true, emphasis: true },
+  { id: "state-exam", label: "Mock Permit Exam", icon: Timer, emphasis: true },
   { id: "test-hub", label: "Test Hub", icon: ClipboardCheck, pro: true },
 ] as const;
 
