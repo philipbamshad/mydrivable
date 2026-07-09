@@ -67,7 +67,8 @@ export function PermitExamSimulator() {
         passPct={cfg.pass}
         pool={pool}
         isPro={isPro}
-        remainingFree={remaining}
+        examUsed={examUsed}
+        lifetimeLimit={FREE_EXAM_LIFETIME_LIMIT}
         onAnswered={bumpExamUsage}
         onUpgrade={() => unlockPro()}
         onExit={() => setRunning(false)}
