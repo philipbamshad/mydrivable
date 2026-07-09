@@ -219,7 +219,6 @@ function ExamRunner({
       return next;
     });
     if (i === q.correct) setScore((s) => s + 1);
-    setAnsweredInSession((n) => n + 1);
     onAnswered();
   };
 
