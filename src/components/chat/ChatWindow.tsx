@@ -49,10 +49,9 @@ export function ChatWindow({
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { state: userState, isPro, openCheckout } = useUserProfile();
 
-  // Free tier daily usage tracker. Bypassed entirely for Pro Pass.
-  const FREE_DAILY_LIMIT = 5;
-  const todayKey = new Date().toISOString().slice(0, 10);
-  const storageKey = `drivable:chat-usage:${todayKey}`;
+  // Free tier lifetime usage tracker. Bypassed entirely for Pro Pass.
+  const FREE_LIFETIME_LIMIT = 5;
+  const storageKey = `drivable:chat-usage:lifetime`;
   const [freeUsed, setFreeUsed] = useState<number>(() => {
     if (typeof window === "undefined") return 0;
     const raw = window.localStorage.getItem(storageKey);
@@ -73,8 +72,8 @@ export function ChatWindow({
     });
   }, [isPro, storageKey]);
 
-  const limitReached = !isPro && freeUsed >= FREE_DAILY_LIMIT;
-  const remaining = Math.max(0, FREE_DAILY_LIMIT - freeUsed);
+  const limitReached = !isPro && freeUsed >= FREE_LIFETIME_LIMIT;
+  const remaining = Math.max(0, FREE_LIFETIME_LIMIT - freeUsed);
 
   const transport = useMemo(
     () =>
@@ -208,7 +207,7 @@ export function ChatWindow({
                 <Lock className="h-4 w-4 text-primary" />
               </div>
               <p className="text-sm font-semibold text-foreground leading-snug">
-                You've used your 5 free AI questions for today. Upgrade to Pro Pass for unlimited chat, instant rule explanations, and full exam simulators! [Get Pro Pass — $9]
+                You've used your 5 free lifetime AI questions. Upgrade to Pro Pass to continue chatting, get instant rule explanations, and access full exam simulators! [Get Pro Pass — $9]
               </p>
               <Button
                 onClick={() => openCheckout()}
@@ -234,7 +233,7 @@ export function ChatWindow({
               <p className="text-[10px] text-muted-foreground mt-2 text-center">
                 {isPro
                   ? "Drivable can be wrong on state-specific rules. Always verify with your state DMV."
-                  : `${remaining} of ${FREE_DAILY_LIMIT} free AI questions left today. Upgrade for unlimited chat.`}
+                  : `${remaining} of ${FREE_LIFETIME_LIMIT} free lifetime AI questions left. Upgrade for unlimited chat.`}
               </p>
             </>
           )}
