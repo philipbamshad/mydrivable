@@ -299,11 +299,7 @@ function Features() {
               key={f.title}
               className="group relative rounded-[28px] border border-white/10 bg-white/[0.03] p-8 backdrop-blur-xl transition hover:border-white/20"
             >
-              {f.tag && (
-                <span className="absolute right-6 top-6 rounded-full bg-[#1e40af] border border-white/10 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
-                  {f.tag}
-                </span>
-              )}
+
               <span className="grid h-12 w-12 place-items-center rounded-2xl bg-[#1e40af] border border-white/10 text-white">
                 <Icon className="h-5 w-5" />
               </span>
