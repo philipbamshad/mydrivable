@@ -212,9 +212,6 @@ export function ThreadSidebar() {
           {PRIMARY_NAV.map((item) => {
             const { id, label, icon: Icon } = item;
             const isActive = activeTab === id;
-            const isProOnly = "pro" in item && item.pro;
-            const locked = isProOnly && !isPro;
-            const showProBadge = isProOnly && !isPro;
             const emphasized = "emphasis" in item && item.emphasis;
             return (
               <Link
