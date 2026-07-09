@@ -574,6 +574,35 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
     [persistProfileFields],
   );
 
+  const bumpFreeUsage = useCallback(
+    (kind: FreeUsageKind) => {
+      // Pro users bypass every lifetime counter entirely — never persist.
+      if (isPro) return;
+      let nextUsage: FreeUsage = { ...DEFAULT_FREE_USAGE, pillars: {} };
+      setProfile((p) => {
+        const prev = p.freeUsage;
+        if (kind === "chat") {
+          nextUsage = { ...prev, chat: prev.chat + 1 };
+        } else if (kind === "exam") {
+          nextUsage = { ...prev, exam: prev.exam + 1 };
+        } else {
+          const pillarId = kind.slice("pillar:".length);
+          nextUsage = {
+            ...prev,
+            pillars: {
+              ...prev.pillars,
+              [pillarId]: (prev.pillars[pillarId] ?? 0) + 1,
+            },
+          };
+        }
+        return { ...p, freeUsage: nextUsage };
+      });
+      writeLocalFreeUsage(nextUsage);
+      void persistProfileFields({ free_usage: nextUsage });
+    },
+    [isPro, persistProfileFields],
+  );
+
   const reset = useCallback(() => setProfile(DEFAULT), []);
 
   const driveHours = useMemo(
