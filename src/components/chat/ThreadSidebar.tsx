@@ -40,7 +40,7 @@ import { useUserProfile, US_STATES } from "@/lib/user-profile";
 const PRIMARY_NAV = [
   { id: "chat", label: "AI Coach Chatbox", icon: MessageSquare },
   { id: "state-exam", label: "Mock Permit Exam", icon: Timer, emphasis: true },
-  { id: "test-hub", label: "Test Hub", icon: ClipboardCheck, pro: true },
+  { id: "test-hub", label: "Test Hub", icon: ClipboardCheck },
 ] as const;
 
 export function ThreadSidebar() {
@@ -212,24 +212,13 @@ export function ThreadSidebar() {
           {PRIMARY_NAV.map((item) => {
             const { id, label, icon: Icon } = item;
             const isActive = activeTab === id;
-            const isProOnly = "pro" in item && item.pro;
-            const locked = isProOnly && !isPro;
-            const showProBadge = isProOnly && !isPro;
             const emphasized = "emphasis" in item && item.emphasis;
             return (
               <Link
                 key={id}
                 to="/app"
                 search={{ tab: id }}
-                onClick={(e) => {
-                  if (locked) {
-                    e.preventDefault();
-                    setMobileOpen(false);
-                    openCheckout();
-                    return;
-                  }
-                  setMobileOpen(false);
-                }}
+                onClick={() => setMobileOpen(false)}
                 className={cn(
                   "nav-link min-h-11 w-full",
                   isActive && "nav-link-active",
@@ -248,11 +237,6 @@ export function ThreadSidebar() {
                 >
                   {label}
                 </span>
-                {showProBadge && !collapsed && (
-                  <span className="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-primary/20 text-primary border border-primary/40">
-                    Pro
-                  </span>
-                )}
               </Link>
             );
           })}
