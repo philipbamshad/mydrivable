@@ -45,7 +45,7 @@ function AppDashboard() {
   const navigate = Route.useNavigate();
   const tab: TabId = search.tab ?? "chat";
   const setTab = (v: TabId) => navigate({ search: { tab: v }, replace: true });
-  const { state: userState, openCheckout, isPro, hydrating } = useUserProfile();
+  const { state: userState, openCheckout, isPro } = useUserProfile();
 
   // Auto-open checkout when arriving with ?intent=upgrade; clear the query.
   useEffect(() => {
@@ -55,17 +55,9 @@ function AppDashboard() {
     }
   }, [search.intent, isPro, openCheckout, navigate, tab]);
 
-  // Gate Pro-only tabs: opening test-hub without Pro pops the
-  // checkout modal and bounces the user back to the chat tab.
-  // The Mock Permit Exam tab handles its own inline paywall after the
-  // free lifetime question limit is reached.
-  useEffect(() => {
-    if (hydrating || isPro) return;
-    if (tab === "test-hub") {
-      openCheckout();
-      navigate({ search: { tab: "chat" }, replace: true });
-    }
-  }, [hydrating, isPro, tab, openCheckout, navigate]);
+  // Both the Test Hub and Mock Permit Exam tabs now handle their own inline
+  // free-tier paywalls after the per-section / lifetime question limits are
+  // reached, so no eager redirect to checkout on tab open.
 
   return (
     <div className="flex flex-col h-full">
