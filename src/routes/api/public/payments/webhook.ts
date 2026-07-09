@@ -103,7 +103,7 @@ async function handleCheckoutSessionCompleted(session: any, env: StripeEnv) {
     console.error("No userId in checkout session metadata");
     return;
   }
-  const priceId = session.metadata?.priceId || "pro_pass_lifetime";
+  const priceId = session.metadata?.priceId || "pro_pass_lifetime_9";
   const productId = session.metadata?.productId || "pro_pass";
   await getSupabase().from("subscriptions").upsert(
     {
