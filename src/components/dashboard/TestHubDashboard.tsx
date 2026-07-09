@@ -91,7 +91,7 @@ export function TestHubDashboard() {
         {pillars.map((p) => {
           const Icon = p.icon;
           const count = banks[p.id].length;
-          const used = usage[p.id];
+          const used = usage[p.id] ?? 0;
           const remaining = Math.max(0, FREE_PILLAR_LIFETIME_LIMIT - used);
           const locked = !isPro && remaining <= 0;
           return (
