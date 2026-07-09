@@ -58,11 +58,6 @@ export function ChatWindow({
     const n = raw ? Number.parseInt(raw, 10) : 0;
     return Number.isFinite(n) ? n : 0;
   });
-    if (typeof window === "undefined") return 0;
-    const raw = window.localStorage.getItem(storageKey);
-    const n = raw ? Number.parseInt(raw, 10) : 0;
-    return Number.isFinite(n) ? n : 0;
-  });
 
   const bumpFreeUsage = useCallback(() => {
     if (isPro) return;
