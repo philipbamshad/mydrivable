@@ -218,15 +218,7 @@ export function ThreadSidebar() {
                 key={id}
                 to="/app"
                 search={{ tab: id }}
-                onClick={(e) => {
-                  if (locked) {
-                    e.preventDefault();
-                    setMobileOpen(false);
-                    openCheckout();
-                    return;
-                  }
-                  setMobileOpen(false);
-                }}
+                onClick={() => setMobileOpen(false)}
                 className={cn(
                   "nav-link min-h-11 w-full",
                   isActive && "nav-link-active",
@@ -245,11 +237,6 @@ export function ThreadSidebar() {
                 >
                   {label}
                 </span>
-                {showProBadge && !collapsed && (
-                  <span className="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-primary/20 text-primary border border-primary/40">
-                    Pro
-                  </span>
-                )}
               </Link>
             );
           })}
