@@ -47,30 +47,18 @@ export function ChatWindow({
 }) {
   const queryClient = useQueryClient();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const { state: userState, isPro, openCheckout } = useUserProfile();
+  const { state: userState, isPro, openCheckout, freeUsage, bumpFreeUsage } =
+    useUserProfile();
 
   // Free tier lifetime usage tracker. Bypassed entirely for Pro Pass.
+  // Counter persists via the profile provider (localStorage + user_profiles
+  // row) so the limit is permanent across refresh, logout, and devices.
   const FREE_LIFETIME_LIMIT = 5;
-  const storageKey = `drivable:chat-usage:lifetime`;
-  const [freeUsed, setFreeUsed] = useState<number>(() => {
-    if (typeof window === "undefined") return 0;
-    const raw = window.localStorage.getItem(storageKey);
-    const n = raw ? Number.parseInt(raw, 10) : 0;
-    return Number.isFinite(n) ? n : 0;
-  });
-
-  const bumpFreeUsage = useCallback(() => {
-    if (isPro) return;
-    setFreeUsed((prev) => {
-      const next = prev + 1;
-      try {
-        window.localStorage.setItem(storageKey, String(next));
-      } catch {
-        // ignore quota errors, in-memory state still enforces the cap
-      }
-      return next;
-    });
-  }, [isPro, storageKey]);
+  const freeUsed = freeUsage.chat;
+  const bumpChatUsage = useCallback(
+    () => bumpFreeUsage("chat"),
+    [bumpFreeUsage],
+  );
 
   const limitReached = !isPro && freeUsed >= FREE_LIFETIME_LIMIT;
   const remaining = Math.max(0, FREE_LIFETIME_LIMIT - freeUsed);
