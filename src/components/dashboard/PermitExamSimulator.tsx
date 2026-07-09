@@ -21,43 +21,42 @@ import { getStatePack, type Question as Q } from "@/data/dmv";
 import { shuffleAnswers } from "@/data/dmv/question-generator";
 import { pickUnseenQuestions } from "@/lib/seen-questions";
 
+const FREE_EXAM_LIFETIME_LIMIT = 5;
+const EXAM_USAGE_KEY = "drivable:exam-usage:lifetime";
+
+function readExamUsage(): number {
+  if (typeof window === "undefined") return 0;
+  const raw = window.localStorage.getItem(EXAM_USAGE_KEY);
+  const n = raw ? Number.parseInt(raw, 10) : 0;
+  return Number.isFinite(n) ? n : 0;
+}
+
 export function PermitExamSimulator() {
   const { isPro, unlockPro, state, recordQuizScore } = useUserProfile();
   const pack = getStatePack(state);
   const cfg = { count: pack.rules.questionsCount, pass: pack.rules.passingScorePct };
   const pool = pack.questions;
   const [running, setRunning] = useState(false);
+  const [examUsed, setExamUsed] = useState<number>(() => readExamUsage());
 
+  const freeLocked = !isPro && examUsed >= FREE_EXAM_LIFETIME_LIMIT;
+  const remaining = Math.max(0, FREE_EXAM_LIFETIME_LIMIT - examUsed);
 
-  if (!isPro) {
-    return (
-      <div className="max-w-3xl mx-auto">
-        <Card className="relative overflow-hidden p-10 rounded-2xl border-primary/40 glass-strong glow-strong text-center"
-          style={{
-            background:
-              "linear-gradient(135deg, oklch(0.18 0.04 240 / 0.75), oklch(0.22 0.08 240 / 0.55))",
-          }}>
-          <div className="mx-auto mb-5 grid h-16 w-16 place-items-center rounded-2xl bg-primary/15 border border-primary/50"
-            style={{ boxShadow: "0 0 36px -4px var(--color-primary)" }}>
-            <Lock className="w-7 h-7 text-primary" />
-          </div>
-          <h2 className="font-display text-2xl sm:text-3xl font-bold leading-tight">
-            Unlock Full-Length State-Specific Mock Exams with Pro Pass.
-          </h2>
-          <p className="text-sm text-muted-foreground mt-3 max-w-md mx-auto">
-            Simulates the real {state || "state"} DMV permit test, exact question count,
-            passing threshold, and randomized each attempt.
-          </p>
-          <Button
-            onClick={() => unlockPro()}
-            className="press mt-6 "
-          >
-            <Sparkles className="w-4 h-4 mr-1.5" />
-            Get Pro Pass — $9 one-time
-          </Button>
-        </Card>
-      </div>
-    );
+  const bumpExamUsage = () => {
+    if (isPro) return;
+    setExamUsed((prev) => {
+      const next = prev + 1;
+      try {
+        window.localStorage.setItem(EXAM_USAGE_KEY, String(next));
+      } catch {
+        // ignore quota errors
+      }
+      return next;
+    });
+  };
+
+  if (freeLocked) {
+    return <ExamPaywall onUpgrade={() => unlockPro()} />;
   }
 
   if (running) {
@@ -67,6 +66,10 @@ export function PermitExamSimulator() {
         count={Math.min(cfg.count, pool.length)}
         passPct={cfg.pass}
         pool={pool}
+        isPro={isPro}
+        remainingFree={remaining}
+        onAnswered={bumpExamUsage}
+        onUpgrade={() => unlockPro()}
         onExit={() => setRunning(false)}
         onComplete={(pct) => recordQuizScore(pct)}
       />
@@ -95,7 +98,7 @@ export function PermitExamSimulator() {
                 {state || "Default"} DMV Permit Exam
               </h3>
               <Badge className="bg-primary/15 text-primary border-primary/40 border">
-                Pro
+                {isPro ? "Pro" : "Free preview"}
               </Badge>
             </div>
             <p className="text-sm text-muted-foreground mt-1">
@@ -120,11 +123,33 @@ export function PermitExamSimulator() {
       </Card>
 
       <p className="text-xs text-center text-muted-foreground">
-        Each attempt is freshly randomized, you'll never see the same exam twice.
+        {isPro
+          ? "Each attempt is freshly randomized, you'll never see the same exam twice."
+          : `${remaining} of ${FREE_EXAM_LIFETIME_LIMIT} free lifetime exam questions left. Upgrade for unlimited practice.`}
       </p>
     </div>
   );
 }
+
+function ExamPaywall({ onUpgrade }: { onUpgrade: () => void }) {
+  return (
+    <div className="max-w-xl mx-auto p-5">
+      <div className="rounded-2xl border border-primary/40 bg-primary/10 px-6 py-8 text-center shadow-[0_0_40px_-18px_var(--color-primary)]">
+        <div className="mx-auto mb-4 grid h-12 w-12 place-items-center rounded-full border border-primary/40 bg-primary/15">
+          <Lock className="h-5 w-5 text-primary" />
+        </div>
+        <p className="text-sm font-semibold text-foreground leading-snug">
+          You've answered your 5 free lifetime exam questions. Upgrade to Pro Pass to continue practicing, get instant rule explanations, and access unlimited exam simulators! [Get Pro Pass — $9]
+        </p>
+        <Button onClick={onUpgrade} className="press mt-5">
+          <Sparkles className="mr-1.5 h-4 w-4" />
+          Get Pro Pass — $9
+        </Button>
+      </div>
+    </div>
+  );
+}
+
 
 function ExamRunner({
   state,
