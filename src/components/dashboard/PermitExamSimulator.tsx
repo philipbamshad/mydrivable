@@ -22,38 +22,26 @@ import { shuffleAnswers } from "@/data/dmv/question-generator";
 import { pickUnseenQuestions } from "@/lib/seen-questions";
 
 const FREE_EXAM_LIFETIME_LIMIT = 5;
-const EXAM_USAGE_KEY = "drivable:exam-usage:lifetime";
-
-function readExamUsage(): number {
-  if (typeof window === "undefined") return 0;
-  const raw = window.localStorage.getItem(EXAM_USAGE_KEY);
-  const n = raw ? Number.parseInt(raw, 10) : 0;
-  return Number.isFinite(n) ? n : 0;
-}
 
 export function PermitExamSimulator() {
-  const { isPro, unlockPro, state, recordQuizScore } = useUserProfile();
+  const {
+    isPro,
+    unlockPro,
+    state,
+    recordQuizScore,
+    freeUsage,
+    bumpFreeUsage,
+  } = useUserProfile();
   const pack = getStatePack(state);
   const cfg = { count: pack.rules.questionsCount, pass: pack.rules.passingScorePct };
   const pool = pack.questions;
   const [running, setRunning] = useState(false);
-  const [examUsed, setExamUsed] = useState<number>(() => readExamUsage());
+  const examUsed = freeUsage.exam;
 
   const freeLocked = !isPro && examUsed >= FREE_EXAM_LIFETIME_LIMIT;
   const remaining = Math.max(0, FREE_EXAM_LIFETIME_LIMIT - examUsed);
 
-  const bumpExamUsage = () => {
-    if (isPro) return;
-    setExamUsed((prev) => {
-      const next = prev + 1;
-      try {
-        window.localStorage.setItem(EXAM_USAGE_KEY, String(next));
-      } catch {
-        // ignore quota errors
-      }
-      return next;
-    });
-  };
+  const bumpExamUsage = () => bumpFreeUsage("exam");
 
   if (freeLocked) {
     return <ExamPaywall onUpgrade={() => unlockPro()} />;

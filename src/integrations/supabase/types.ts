@@ -196,6 +196,7 @@ export type Database = {
           created_at: string
           daily_done: Json
           daily_done_date: string | null
+          free_usage: Json
           skill_mastery: Json
           target_date: string | null
           theme: string
@@ -207,6 +208,7 @@ export type Database = {
           created_at?: string
           daily_done?: Json
           daily_done_date?: string | null
+          free_usage?: Json
           skill_mastery?: Json
           target_date?: string | null
           theme?: string
@@ -218,6 +220,7 @@ export type Database = {
           created_at?: string
           daily_done?: Json
           daily_done_date?: string | null
+          free_usage?: Json
           skill_mastery?: Json
           target_date?: string | null
           theme?: string
