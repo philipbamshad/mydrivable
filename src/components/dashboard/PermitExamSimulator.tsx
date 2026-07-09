@@ -67,7 +67,8 @@ export function PermitExamSimulator() {
         passPct={cfg.pass}
         pool={pool}
         isPro={isPro}
-        remainingFree={remaining}
+        examUsed={examUsed}
+        lifetimeLimit={FREE_EXAM_LIFETIME_LIMIT}
         onAnswered={bumpExamUsage}
         onUpgrade={() => unlockPro()}
         onExit={() => setRunning(false)}
@@ -157,7 +158,8 @@ function ExamRunner({
   passPct,
   pool,
   isPro,
-  remainingFree,
+  examUsed,
+  lifetimeLimit,
   onAnswered,
   onUpgrade,
   onExit,
@@ -168,7 +170,8 @@ function ExamRunner({
   passPct: number;
   pool: Q[];
   isPro: boolean;
-  remainingFree: number;
+  examUsed: number;
+  lifetimeLimit: number;
   onAnswered: () => void;
   onUpgrade: () => void;
   onExit: () => void;
@@ -199,11 +202,13 @@ function ExamRunner({
   const [score, setScore] = useState(0);
   const [done, setDone] = useState(false);
   const [reviewing, setReviewing] = useState(false);
-  const [answeredInSession, setAnsweredInSession] = useState(0);
 
   const q = questions[idx];
   const reveal = picked !== null;
-  const freeLocked = !isPro && answeredInSession >= remainingFree;
+  // Strict lifetime gate: only lock once the user has actually used all 5
+  // free questions across every session. Answering fewer than the limit
+  // must never trigger the paywall mid-exam.
+  const freeLocked = !isPro && examUsed >= lifetimeLimit;
 
   const choose = (i: number) => {
     if (reveal) return;
@@ -214,7 +219,6 @@ function ExamRunner({
       return next;
     });
     if (i === q.correct) setScore((s) => s + 1);
-    setAnsweredInSession((n) => n + 1);
     onAnswered();
   };
 
