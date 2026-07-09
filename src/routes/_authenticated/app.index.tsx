@@ -45,7 +45,7 @@ function AppDashboard() {
   const navigate = Route.useNavigate();
   const tab: TabId = search.tab ?? "chat";
   const setTab = (v: TabId) => navigate({ search: { tab: v }, replace: true });
-  const { state: userState, openCheckout, isPro, hydrating } = useUserProfile();
+  const { state: userState, openCheckout, isPro } = useUserProfile();
 
   // Auto-open checkout when arriving with ?intent=upgrade; clear the query.
   useEffect(() => {
