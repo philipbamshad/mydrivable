@@ -636,6 +636,7 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
     deleteDriveSession,
     toggleDailyTask,
     setSkillMastery,
+    bumpFreeUsage,
     reset,
   };
 
