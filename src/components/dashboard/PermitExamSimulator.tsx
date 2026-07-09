@@ -156,6 +156,10 @@ function ExamRunner({
   count,
   passPct,
   pool,
+  isPro,
+  remainingFree,
+  onAnswered,
+  onUpgrade,
   onExit,
   onComplete,
 }: {
@@ -163,6 +167,10 @@ function ExamRunner({
   count: number;
   passPct: number;
   pool: Q[];
+  isPro: boolean;
+  remainingFree: number;
+  onAnswered: () => void;
+  onUpgrade: () => void;
   onExit: () => void;
   onComplete: (pct: number) => void;
 }) {
@@ -191,9 +199,11 @@ function ExamRunner({
   const [score, setScore] = useState(0);
   const [done, setDone] = useState(false);
   const [reviewing, setReviewing] = useState(false);
+  const [answeredInSession, setAnsweredInSession] = useState(0);
 
   const q = questions[idx];
   const reveal = picked !== null;
+  const freeLocked = !isPro && answeredInSession >= remainingFree;
 
   const choose = (i: number) => {
     if (reveal) return;
@@ -204,7 +214,10 @@ function ExamRunner({
       return next;
     });
     if (i === q.correct) setScore((s) => s + 1);
+    setAnsweredInSession((n) => n + 1);
+    onAnswered();
   };
+
 
   const advance = () => {
     if (idx + 1 >= questions.length) {
