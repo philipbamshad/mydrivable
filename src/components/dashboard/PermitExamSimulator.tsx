@@ -158,7 +158,8 @@ function ExamRunner({
   passPct,
   pool,
   isPro,
-  remainingFree,
+  examUsed,
+  lifetimeLimit,
   onAnswered,
   onUpgrade,
   onExit,
@@ -169,7 +170,8 @@ function ExamRunner({
   passPct: number;
   pool: Q[];
   isPro: boolean;
-  remainingFree: number;
+  examUsed: number;
+  lifetimeLimit: number;
   onAnswered: () => void;
   onUpgrade: () => void;
   onExit: () => void;
