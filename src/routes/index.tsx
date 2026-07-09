@@ -254,7 +254,6 @@ function Features() {
       icon: Timer,
       title: "Full-Length Mock Permit Exam Simulator",
       body: "Replicates the real state DMV test, exact question count, timing, and passing threshold for your state, from California's 46-question exam to Texas's 30-question test.",
-      tag: "PRO",
     },
     {
       icon: MessageSquare,
@@ -265,7 +264,6 @@ function Features() {
       icon: ClipboardCheck,
       title: "Targeted Section Quizzes",
       body: "Drill the topics examiners punish: signs, intersections, substance laws, and speed limits, short rounds with instant scoring and explanations.",
-      tag: "PRO",
     },
     {
       icon: LayoutDashboard,
@@ -273,6 +271,7 @@ function Features() {
       body: "Track your overall readiness score, view detailed progress history across all topics, and manage your custom test schedule in one centralized place.",
     },
   ];
+
 
   return (
     <section id="features" className="px-6 pt-28 pb-20">
