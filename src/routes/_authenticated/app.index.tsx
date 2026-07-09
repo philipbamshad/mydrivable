@@ -55,11 +55,13 @@ function AppDashboard() {
     }
   }, [search.intent, isPro, openCheckout, navigate, tab]);
 
-  // Gate Pro-only tabs: opening test-hub or state-exam without Pro pops the
-  // same checkout modal and bounces the user back to the chat tab.
+  // Gate Pro-only tabs: opening test-hub without Pro pops the
+  // checkout modal and bounces the user back to the chat tab.
+  // The Mock Permit Exam tab handles its own inline paywall after the
+  // free lifetime question limit is reached.
   useEffect(() => {
     if (hydrating || isPro) return;
-    if (tab === "test-hub" || tab === "state-exam") {
+    if (tab === "test-hub") {
       openCheckout();
       navigate({ search: { tab: "chat" }, replace: true });
     }
