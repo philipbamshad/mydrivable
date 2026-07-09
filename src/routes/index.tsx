@@ -325,9 +325,8 @@ function Pricing() {
   ];
 
   const freeFeatures = [
-    "Limited AI coach chat questions per day",
-    "Basic rule breakdown for your selected state",
-    "Daily study tips and progressive task reminders",
+    "Very limited AI coach chat (5 lifetime questions max)",
+    "Limited practice tests (5 exam questions & 3 questions per quiz section max)",
   ];
 
   return (
