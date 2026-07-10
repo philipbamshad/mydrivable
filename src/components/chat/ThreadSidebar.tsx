@@ -22,6 +22,7 @@ import {
   CalendarDays,
   ChevronLeft,
   ChevronRight,
+  Star,
 } from "lucide-react";
 import {
   Popover,
@@ -39,7 +40,7 @@ import { useUserProfile, US_STATES } from "@/lib/user-profile";
 
 const PRIMARY_NAV = [
   { id: "chat", label: "AI Coach Chatbox", icon: MessageSquare },
-  { id: "state-exam", label: "Mock Permit Exam", icon: Timer, emphasis: true },
+  { id: "state-exam", label: "Mock Permit Exam", icon: Timer },
   { id: "test-hub", label: "Test Hub", icon: ClipboardCheck },
 ] as const;
 
@@ -212,7 +213,7 @@ export function ThreadSidebar() {
           {PRIMARY_NAV.map((item) => {
             const { id, label, icon: Icon } = item;
             const isActive = activeTab === id;
-            const emphasized = "emphasis" in item && item.emphasis;
+            const showStar = id === "state-exam";
             return (
               <Link
                 key={id}
@@ -223,20 +224,21 @@ export function ThreadSidebar() {
                   "nav-link min-h-11 w-full",
                   isActive && "nav-link-active",
                   collapsed && "justify-center px-0",
-                  emphasized && "font-bold bg-primary/10 ring-1 ring-primary/20",
                 )}
                 title={collapsed ? label : undefined}
               >
-                <Icon className={cn("w-4 h-4 shrink-0", emphasized && "text-primary")} />
+                <Icon className="w-4 h-4 shrink-0" />
                 <span
                   className={cn(
                     "truncate transition-all duration-300",
                     collapsed ? "w-0 opacity-0" : "flex-1",
-                    emphasized && "text-primary",
                   )}
                 >
                   {label}
                 </span>
+                {showStar && (
+                  <Star className={cn("w-3.5 h-3.5 shrink-0 fill-primary text-primary", collapsed && "hidden")} />
+                )}
               </Link>
             );
           })}
