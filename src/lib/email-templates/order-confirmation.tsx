@@ -30,9 +30,7 @@ const OrderConfirmationEmail = ({
     <Body style={main}>
       <Container style={container}>
         <Heading style={h1}>Welcome to Pro Pass 🚗</Heading>
-        <Text style={text}>
-          {name ? `Hi ${name},` : 'Hi there,'}
-        </Text>
+        <Text style={text}>Hi,</Text>
         <Text style={text}>
           Thank you for purchasing the <strong>Drivable Pro Pass</strong>. Your
           account has been upgraded and you now have lifetime, unlimited access
