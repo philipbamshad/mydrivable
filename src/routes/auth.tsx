@@ -113,10 +113,11 @@ function AuthPage() {
     setLoading(true);
     try {
       if (mode === "sign-up") {
+        const returnTo = next ?? "/app";
         const { data, error } = await supabase.auth.signUp({
           email: parsed.data.email,
           password: parsed.data.password,
-          options: { emailRedirectTo: window.location.origin + "/app" },
+          options: { emailRedirectTo: window.location.origin + returnTo },
         });
         if (error) throw error;
         // Supabase returns a user with an empty identities array when the
@@ -159,8 +160,14 @@ function AuthPage() {
   const handleGoogle = async () => {
     setLoading(true);
     try {
+      // Preserve `next` (e.g. the OAuth consent URL) through Google's redirect
+      // by pointing the OAuth callback back at /auth?next=..., which then
+      // consumes `next` after the session hydrates.
+      const redirectUri = next
+        ? `${window.location.origin}/auth?next=${encodeURIComponent(next)}`
+        : window.location.origin;
       const result = await lovable.auth.signInWithOAuth("google", {
-        redirect_uri: window.location.origin,
+        redirect_uri: redirectUri,
       });
       if (result.error) {
         toast.error(result.error.message ?? "Google sign-in failed");
