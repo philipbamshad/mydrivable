@@ -85,6 +85,9 @@ function AuthPage() {
   const [loading, setLoading] = useState(false);
   const [signupSuccess, setSignupSuccess] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<{ email?: string; password?: string }>({});
+  const [forgotSent, setForgotSent] = useState(false);
+
+
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
@@ -179,6 +182,32 @@ function AuthPage() {
       setLoading(false);
     }
   };
+
+  const handleForgot = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const parsed = credentialsSchema.shape.email.safeParse(email);
+    if (!parsed.success) {
+      const msg = parsed.error.issues[0]?.message ?? "Enter a valid email";
+      setFieldErrors({ email: msg });
+      toast.error(msg);
+      return;
+    }
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(parsed.data, {
+        redirectTo: `${window.location.origin}/reset-password`,
+      });
+      if (error) throw error;
+      setForgotSent(true);
+      toast.success("Check your inbox for a reset link.");
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Couldn't send reset email";
+      toast.error(msg);
+    } finally {
+      setLoading(false);
+    }
+  };
+
 
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-center px-4 bg-background overflow-hidden">
@@ -315,6 +344,22 @@ function AuthPage() {
                     <p className="text-[11px] text-muted-foreground">Use at least 8 characters.</p>
                   ) : null}
                 </div>
+                {mode === "sign-in" && (
+                  <div className="flex justify-end">
+                    {forgotSent ? (
+                      <span className="text-[11px] text-muted-foreground">Reset link sent. Check your inbox.</span>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={handleForgot}
+                        disabled={loading}
+                        className="text-[11px] text-muted-foreground hover:text-foreground underline underline-offset-2"
+                      >
+                        Forgot your password?
+                      </button>
+                    )}
+                  </div>
+                )}
                 <Button
                   type="submit"
                   className="w-full"
@@ -324,6 +369,7 @@ function AuthPage() {
                   {mode === "sign-in" ? "Sign in" : "Create account"}
                 </Button>
               </form>
+
 
               <div className="my-4 flex items-center gap-3 text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
                 <div className="h-px flex-1 bg-border/70" />
