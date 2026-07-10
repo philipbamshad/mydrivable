@@ -344,6 +344,22 @@ function AuthPage() {
                     <p className="text-[11px] text-muted-foreground">Use at least 8 characters.</p>
                   ) : null}
                 </div>
+                {mode === "sign-in" && (
+                  <div className="flex justify-end">
+                    {forgotSent ? (
+                      <span className="text-[11px] text-muted-foreground">Reset link sent. Check your inbox.</span>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={handleForgot}
+                        disabled={loading}
+                        className="text-[11px] text-muted-foreground hover:text-foreground underline underline-offset-2"
+                      >
+                        Forgot your password?
+                      </button>
+                    )}
+                  </div>
+                )}
                 <Button
                   type="submit"
                   className="w-full"
@@ -353,6 +369,7 @@ function AuthPage() {
                   {mode === "sign-in" ? "Sign in" : "Create account"}
                 </Button>
               </form>
+
 
               <div className="my-4 flex items-center gap-3 text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
                 <div className="h-px flex-1 bg-border/70" />
