@@ -121,6 +121,35 @@ async function handleCheckoutSessionCompleted(session: any, env: StripeEnv) {
     },
     { onConflict: "stripe_subscription_id" },
   );
+
+  // Fire the Pro Pass order confirmation email once the profile is upgraded.
+  try {
+    const supabase = getSupabase();
+    const { data: userLookup } = await supabase.auth.admin.getUserById(userId);
+    const email =
+      session.customer_details?.email ||
+      session.customer_email ||
+      userLookup?.user?.email;
+    if (!email) {
+      console.warn("No email available for Pro Pass confirmation", { userId });
+      return;
+    }
+    const meta = (userLookup?.user?.user_metadata ?? {}) as Record<string, any>;
+    const name =
+      meta.full_name || meta.name || meta.first_name || email.split("@")[0];
+
+    const { enqueueTransactionalEmail } = await import(
+      "@/lib/email/send-transactional.server"
+    );
+    await enqueueTransactionalEmail({
+      templateName: "order-confirmation",
+      recipientEmail: email,
+      idempotencyKey: `order-confirmation-${session.id}`,
+      templateData: { name, appUrl: "https://mydrivable.com/app" },
+    });
+  } catch (err) {
+    console.error("Failed to enqueue Pro Pass confirmation email", err);
+  }
 }
 
 async function handleWebhook(req: Request, env: StripeEnv) {
