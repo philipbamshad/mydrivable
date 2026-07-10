@@ -183,6 +183,32 @@ function AuthPage() {
     }
   };
 
+  const handleForgot = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const parsed = credentialsSchema.shape.email.safeParse(email);
+    if (!parsed.success) {
+      const msg = parsed.error.issues[0]?.message ?? "Enter a valid email";
+      setFieldErrors({ email: msg });
+      toast.error(msg);
+      return;
+    }
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(parsed.data, {
+        redirectTo: `${window.location.origin}/reset-password`,
+      });
+      if (error) throw error;
+      setForgotSent(true);
+      toast.success("Check your inbox for a reset link.");
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Couldn't send reset email";
+      toast.error(msg);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-center px-4 bg-background overflow-hidden">
       {/* Ambient neon glow backdrop */}
