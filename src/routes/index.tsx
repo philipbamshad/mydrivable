@@ -502,15 +502,26 @@ function CTA() {
 
 function Footer() {
   return (
-    <footer className="border-t border-white/5 px-6 py-10 text-sm text-white/50">
-      <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 sm:flex-row">
-        <div className="flex items-center gap-2">
-          <span className="grid h-7 w-7 place-items-center rounded-full bg-[#1e40af] border border-white/10">
-            <img src={logo} alt="" className="h-4 w-4" />
-          </span>
-          <span className="font-semibold text-white">Drivable</span>
+    <footer className="border-t border-white/5 px-6 py-10 pb-24 text-sm text-white/50 sm:pb-10">
+      <div className="mx-auto flex max-w-6xl flex-col items-center gap-6">
+        <div className="flex flex-col items-center gap-2 text-center">
+          <span className="text-xs uppercase tracking-wider text-white/40">Need help?</span>
+          <a
+            href="mailto:philip@mydrivable.com"
+            className="inline-flex min-h-11 items-center rounded-md px-3 py-2 text-white/80 transition hover:text-white"
+          >
+            Contact Support: philip@mydrivable.com
+          </a>
         </div>
-        <span>© {new Date().getFullYear()} Drivable · Drive safe. Drive legal.</span>
+        <div className="flex w-full flex-col items-center justify-between gap-4 border-t border-white/5 pt-6 sm:flex-row">
+          <div className="flex items-center gap-2">
+            <span className="grid h-7 w-7 place-items-center rounded-full bg-[#1e40af] border border-white/10">
+              <img src={logo} alt="" className="h-4 w-4" />
+            </span>
+            <span className="font-semibold text-white">Drivable</span>
+          </div>
+          <span>© {new Date().getFullYear()} Drivable · Drive safe. Drive legal.</span>
+        </div>
       </div>
     </footer>
   );
