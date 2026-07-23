@@ -83,7 +83,9 @@ export function ThreadSidebar() {
     <div className="px-3 space-y-2 mb-3">
       <Popover
         open={activePopover === datePopoverKey}
-        onOpenChange={(open) => setActivePopover(open ? datePopoverKey : null)}
+        onOpenChange={(open) => {
+          setActivePopover((current) => (open ? datePopoverKey : current === datePopoverKey ? null : current));
+        }}
         modal
       >
         <PopoverTrigger asChild>
@@ -105,28 +107,32 @@ export function ThreadSidebar() {
             </p>
           </button>
         </PopoverTrigger>
-        <PopoverContent
-          side="top"
-          align="start"
-          className="w-auto p-0 glass glow-soft border-primary/30 z-[70] pointer-events-auto"
-        >
-          <Calendar
-            mode="single"
-            selected={localTarget ?? undefined}
-            onSelect={(date) => {
-              if (!date) return;
-              setTargetDate(format(date, "yyyy-MM-dd"));
-              setActivePopover(null);
-            }}
-            initialFocus
-            className="p-3 pointer-events-auto"
-          />
-        </PopoverContent>
+        {activePopover === datePopoverKey && (
+          <PopoverContent
+            side="top"
+            align="start"
+            className="w-auto p-0 glass glow-soft border-primary/30 z-[70] pointer-events-auto"
+          >
+            <Calendar
+              mode="single"
+              selected={localTarget ?? undefined}
+              onSelect={(date) => {
+                if (!date) return;
+                setTargetDate(format(date, "yyyy-MM-dd"));
+                setActivePopover(null);
+              }}
+              initialFocus
+              className="p-3 pointer-events-auto"
+            />
+          </PopoverContent>
+        )}
       </Popover>
 
       <Popover
         open={activePopover === statePopoverKey}
-        onOpenChange={(open) => setActivePopover(open ? statePopoverKey : null)}
+        onOpenChange={(open) => {
+          setActivePopover((current) => (open ? statePopoverKey : current === statePopoverKey ? null : current));
+        }}
         modal
       >
         <PopoverTrigger asChild>
@@ -148,44 +154,46 @@ export function ThreadSidebar() {
             </p>
           </button>
         </PopoverTrigger>
-        <PopoverContent
-          side="top"
-          align="start"
-          className="w-64 p-0 glass glow-soft border-primary/30 z-[70] pointer-events-auto"
-        >
-          <div className="px-3 py-2 border-b border-border/60">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-              Select your state
-            </p>
-            <p className="text-[11px] text-muted-foreground/80">
-              Recalibrates rules, quizzes, and AI answers.
-            </p>
-          </div>
-          <div className="max-h-72 overflow-y-auto py-1">
-            {US_STATES.map((s) => {
-              const active = s === userState;
-              return (
-                <button
-                  key={s}
-                  type="button"
-                  onClick={() => {
-                    setUserState(s);
-                    setActivePopover(null);
-                    toast.success(`AI knowledge base recalibrated to ${s}`);
-                  }}
-                  style={{ WebkitTapHighlightColor: "transparent" }}
-                  className={cn(
-                    "w-full flex items-center justify-between gap-2 px-3 py-3 min-h-11 text-sm text-left hover:bg-primary/10 active:bg-primary/15 transition-colors touch-manipulation",
-                    active && "bg-primary/15 text-foreground font-medium",
-                  )}
-                >
-                  <span className="truncate">{s}</span>
-                  {active && <Check className="w-4 h-4 text-primary shrink-0" />}
-                </button>
-              );
-            })}
-          </div>
-        </PopoverContent>
+        {activePopover === statePopoverKey && (
+          <PopoverContent
+            side="top"
+            align="start"
+            className="w-64 p-0 glass glow-soft border-primary/30 z-[70] pointer-events-auto"
+          >
+            <div className="px-3 py-2 border-b border-border/60">
+              <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+                Select your state
+              </p>
+              <p className="text-[11px] text-muted-foreground/80">
+                Recalibrates rules, quizzes, and AI answers.
+              </p>
+            </div>
+            <div className="max-h-72 overflow-y-auto py-1">
+              {US_STATES.map((s) => {
+                const active = s === userState;
+                return (
+                  <button
+                    key={s}
+                    type="button"
+                    onClick={() => {
+                      setUserState(s);
+                      setActivePopover(null);
+                      toast.success(`AI knowledge base recalibrated to ${s}`);
+                    }}
+                    style={{ WebkitTapHighlightColor: "transparent" }}
+                    className={cn(
+                      "w-full flex items-center justify-between gap-2 px-3 py-3 min-h-11 text-sm text-left hover:bg-primary/10 active:bg-primary/15 transition-colors touch-manipulation",
+                      active && "bg-primary/15 text-foreground font-medium",
+                    )}
+                  >
+                    <span className="truncate">{s}</span>
+                    {active && <Check className="w-4 h-4 text-primary shrink-0" />}
+                  </button>
+                );
+              })}
+            </div>
+          </PopoverContent>
+        )}
       </Popover>
     </div>
     );
