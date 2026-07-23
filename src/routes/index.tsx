@@ -87,7 +87,6 @@ function Nav() {
           <a href="#features" className="transition hover:text-white">Features</a>
           <a href="#states" className="transition hover:text-white">States</a>
           <a href="#pricing" className="transition hover:text-white">Pricing</a>
-          <a href="#faq" className="transition hover:text-white">FAQ</a>
         </nav>
 
         <div className="flex items-center gap-2">
