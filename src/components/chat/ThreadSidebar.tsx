@@ -49,9 +49,8 @@ export function ThreadSidebar() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
-  const { state: userState, setState: setUserState, targetDate, setTargetDate, isPro, openCheckout } = useUserProfile();
-  const [statePickerOpen, setStatePickerOpen] = useState(false);
-  const [targetDateOpen, setTargetDateOpen] = useState(false);
+  const { state: userState, setState: setUserState, targetDate, setTargetDate } = useUserProfile();
+  const [activePopover, setActivePopover] = useState<"desktop-date" | "desktop-state" | "mobile-date" | "mobile-state" | null>(null);
 
   const { pathname, search } = useRouterState({
     select: (s) => ({ pathname: s.location.pathname, search: s.location.search }),
@@ -76,15 +75,23 @@ export function ThreadSidebar() {
     return localTarget.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
   }, [localTarget]);
 
-  const infoCards = !collapsed && (
+  const createInfoCards = (surface: "desktop" | "mobile") => {
+    const datePopoverKey = surface === "desktop" ? "desktop-date" : "mobile-date";
+    const statePopoverKey = surface === "desktop" ? "desktop-state" : "mobile-state";
+
+    return !collapsed && (
     <div className="px-3 space-y-2 mb-3">
-      <Popover open={targetDateOpen} onOpenChange={setTargetDateOpen} modal>
+      <Popover
+        open={activePopover === datePopoverKey}
+        onOpenChange={(open) => setActivePopover(open ? datePopoverKey : null)}
+        modal
+      >
         <PopoverTrigger asChild>
           <button
             type="button"
             aria-label="DMV target date"
             aria-haspopup="dialog"
-            aria-expanded={targetDateOpen}
+            aria-expanded={activePopover === datePopoverKey}
             style={{ WebkitTapHighlightColor: "transparent", cursor: "pointer", pointerEvents: "auto" }}
             className="w-full text-left rounded-xl border border-primary/20 bg-primary/5 hover:bg-primary/10 hover:border-primary/40 active:bg-primary/15 transition-colors press px-4 py-3 mx-0 min-h-[56px] touch-manipulation select-none"
           >
@@ -109,7 +116,7 @@ export function ThreadSidebar() {
             onSelect={(date) => {
               if (!date) return;
               setTargetDate(format(date, "yyyy-MM-dd"));
-              setTargetDateOpen(false);
+              setActivePopover(null);
             }}
             initialFocus
             className="p-3 pointer-events-auto"
@@ -117,13 +124,17 @@ export function ThreadSidebar() {
         </PopoverContent>
       </Popover>
 
-      <Popover open={statePickerOpen} onOpenChange={setStatePickerOpen} modal>
+      <Popover
+        open={activePopover === statePopoverKey}
+        onOpenChange={(open) => setActivePopover(open ? statePopoverKey : null)}
+        modal
+      >
         <PopoverTrigger asChild>
           <button
             type="button"
             aria-label="Change active state"
             aria-haspopup="dialog"
-            aria-expanded={statePickerOpen}
+            aria-expanded={activePopover === statePopoverKey}
             style={{ WebkitTapHighlightColor: "transparent", cursor: "pointer", pointerEvents: "auto" }}
             className="w-full text-left rounded-xl border border-primary/20 bg-primary/5 hover:bg-primary/10 hover:border-primary/40 active:bg-primary/15 transition-colors press px-4 py-3 mx-0 min-h-[56px] touch-manipulation select-none"
           >
@@ -159,7 +170,7 @@ export function ThreadSidebar() {
                   type="button"
                   onClick={() => {
                     setUserState(s);
-                    setStatePickerOpen(false);
+                    setActivePopover(null);
                     toast.success(`AI knowledge base recalibrated to ${s}`);
                   }}
                   style={{ WebkitTapHighlightColor: "transparent" }}
@@ -177,7 +188,8 @@ export function ThreadSidebar() {
         </PopoverContent>
       </Popover>
     </div>
-  );
+    );
+  };
 
   const toggleButton = (
     <button
@@ -190,7 +202,7 @@ export function ThreadSidebar() {
     </button>
   );
 
-  const body = (
+  const createBody = (surface: "desktop" | "mobile") => (
     <>
       <div className={cn("flex items-center shrink-0 w-full", collapsed ? "justify-between p-3" : "justify-between p-4")}>
         <Link
@@ -252,7 +264,7 @@ export function ThreadSidebar() {
         </nav>
       </div>
 
-      {infoCards}
+      {createInfoCards(surface)}
 
       <div className={cn("border-t border-sidebar-border space-y-1 mt-auto", collapsed ? "p-2" : "p-3")}>
         <Sheet open={settingsOpen} onOpenChange={setSettingsOpen}>
@@ -307,7 +319,7 @@ export function ThreadSidebar() {
             collapsed ? "w-24" : "w-64 max-w-[256px]",
           )}
         >
-          {body}
+          {createBody("desktop")}
         </aside>
       </div>
 
@@ -329,7 +341,7 @@ export function ThreadSidebar() {
           <SheetHeader className="sr-only">
             <SheetTitle>Navigation</SheetTitle>
           </SheetHeader>
-          {body}
+          {createBody("mobile")}
         </SheetContent>
       </Sheet>
     </>
