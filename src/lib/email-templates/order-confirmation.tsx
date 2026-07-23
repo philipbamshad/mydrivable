@@ -42,7 +42,7 @@ const OrderConfirmationEmail = ({
           <Text style={bullet}>• Unlimited full length mock permit exams</Text>
           <Text style={bullet}>• Targeted quizzes on every topic and weak spot</Text>
           <Text style={bullet}>• Personal AI driving coach, available anytime</Text>
-          <Text style={bullet}>• Progress tracking and daily study plan</Text>
+          
         </Section>
 
         <Section style={{ textAlign: 'center', marginTop: '28px' }}>
