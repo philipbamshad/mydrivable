@@ -83,7 +83,7 @@ export function ThreadSidebar() {
           <button
             type="button"
             aria-label="DMV target date"
-            className="w-full text-left rounded-xl border border-primary/20 bg-primary/5 hover:bg-primary/10 hover:border-primary/40 transition-colors press px-4 py-3 mx-0"
+            className="w-full text-left rounded-xl border border-primary/20 bg-primary/5 hover:bg-primary/10 hover:border-primary/40 transition-colors press px-4 py-3 mx-0 min-h-[56px] touch-manipulation"
           >
             <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground flex items-center justify-between">
               <span>DMV Target Date</span>
@@ -119,7 +119,7 @@ export function ThreadSidebar() {
           <button
             type="button"
             aria-label="Change active state"
-            className="w-full text-left rounded-xl border border-primary/20 bg-primary/5 hover:bg-primary/10 hover:border-primary/40 transition-colors press px-4 py-3 mx-0"
+            className="w-full text-left rounded-xl border border-primary/20 bg-primary/5 hover:bg-primary/10 hover:border-primary/40 transition-colors press px-4 py-3 mx-0 min-h-[56px] touch-manipulation"
           >
             <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground flex items-center justify-between">
               <span>Active state</span>
