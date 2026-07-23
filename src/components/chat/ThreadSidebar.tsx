@@ -134,7 +134,7 @@ export function ThreadSidebar() {
         <PopoverContent
           side="top"
           align="start"
-          className="w-64 p-0 glass glow-soft border-primary/30"
+          className="w-64 p-0 glass glow-soft border-primary/30 z-[70] pointer-events-auto"
         >
           <div className="px-3 py-2 border-b border-border/60">
             <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
