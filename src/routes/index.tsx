@@ -65,7 +65,6 @@ function Landing() {
       <StatesMarquee />
       <Features />
       <Pricing />
-      <FAQ />
       <CTA />
       <Footer />
     </div>
