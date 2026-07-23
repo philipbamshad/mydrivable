@@ -85,7 +85,6 @@ export function ThreadSidebar() {
             aria-label="DMV target date"
             aria-haspopup="dialog"
             aria-expanded={targetDateOpen}
-            onClick={() => setTargetDateOpen((o) => !o)}
             style={{ WebkitTapHighlightColor: "transparent", cursor: "pointer", pointerEvents: "auto" }}
             className="w-full text-left rounded-xl border border-primary/20 bg-primary/5 hover:bg-primary/10 hover:border-primary/40 active:bg-primary/15 transition-colors press px-4 py-3 mx-0 min-h-[56px] touch-manipulation select-none"
           >
