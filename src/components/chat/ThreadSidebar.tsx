@@ -78,18 +78,22 @@ export function ThreadSidebar() {
 
   const infoCards = !collapsed && (
     <div className="px-3 space-y-2 mb-3">
-      <Popover open={targetDateOpen} onOpenChange={setTargetDateOpen}>
+      <Popover open={targetDateOpen} onOpenChange={setTargetDateOpen} modal>
         <PopoverTrigger asChild>
           <button
             type="button"
             aria-label="DMV target date"
-            className="w-full text-left rounded-xl border border-primary/20 bg-primary/5 hover:bg-primary/10 hover:border-primary/40 transition-colors press px-4 py-3 mx-0 min-h-[56px] touch-manipulation"
+            aria-haspopup="dialog"
+            aria-expanded={targetDateOpen}
+            onClick={() => setTargetDateOpen((o) => !o)}
+            style={{ WebkitTapHighlightColor: "transparent", cursor: "pointer", pointerEvents: "auto" }}
+            className="w-full text-left rounded-xl border border-primary/20 bg-primary/5 hover:bg-primary/10 hover:border-primary/40 active:bg-primary/15 transition-colors press px-4 py-3 mx-0 min-h-[56px] touch-manipulation select-none"
           >
-            <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground flex items-center justify-between">
+            <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground flex items-center justify-between pointer-events-none">
               <span>DMV Target Date</span>
               <CalendarDays className="w-3.5 h-3.5 text-muted-foreground" />
             </p>
-            <p className="text-sm font-semibold mt-0.5 flex items-center gap-2">
+            <p className="text-sm font-semibold mt-0.5 flex items-center gap-2 pointer-events-none">
               <span className="w-1.5 h-1.5 rounded-full bg-primary" />
               <span className="truncate">{targetLabel}</span>
             </p>
@@ -114,18 +118,22 @@ export function ThreadSidebar() {
         </PopoverContent>
       </Popover>
 
-      <Popover open={statePickerOpen} onOpenChange={setStatePickerOpen}>
+      <Popover open={statePickerOpen} onOpenChange={setStatePickerOpen} modal>
         <PopoverTrigger asChild>
           <button
             type="button"
             aria-label="Change active state"
-            className="w-full text-left rounded-xl border border-primary/20 bg-primary/5 hover:bg-primary/10 hover:border-primary/40 transition-colors press px-4 py-3 mx-0 min-h-[56px] touch-manipulation"
+            aria-haspopup="dialog"
+            aria-expanded={statePickerOpen}
+            onClick={() => setStatePickerOpen((o) => !o)}
+            style={{ WebkitTapHighlightColor: "transparent", cursor: "pointer", pointerEvents: "auto" }}
+            className="w-full text-left rounded-xl border border-primary/20 bg-primary/5 hover:bg-primary/10 hover:border-primary/40 active:bg-primary/15 transition-colors press px-4 py-3 mx-0 min-h-[56px] touch-manipulation select-none"
           >
-            <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground flex items-center justify-between">
+            <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground flex items-center justify-between pointer-events-none">
               <span>Active state</span>
-              <Settings2 className="w-3.5 h-3.5 text-muted-foreground transition-all duration-300 group-hover:text-primary group-hover:rotate-90" />
+              <Settings2 className="w-3.5 h-3.5 text-muted-foreground" />
             </p>
-            <p className="text-sm font-semibold mt-0.5 flex items-center gap-2">
+            <p className="text-sm font-semibold mt-0.5 flex items-center gap-2 pointer-events-none">
               <span className="w-1.5 h-1.5 rounded-full bg-primary" />
               <span className="truncate">{userState || "Not set"}</span>
             </p>
@@ -156,6 +164,7 @@ export function ThreadSidebar() {
                     setStatePickerOpen(false);
                     toast.success(`AI knowledge base recalibrated to ${s}`);
                   }}
+                  style={{ WebkitTapHighlightColor: "transparent" }}
                   className={cn(
                     "w-full flex items-center justify-between gap-2 px-3 py-3 min-h-11 text-sm text-left hover:bg-primary/10 active:bg-primary/15 transition-colors touch-manipulation",
                     active && "bg-primary/15 text-foreground font-medium",
