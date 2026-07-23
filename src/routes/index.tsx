@@ -266,8 +266,8 @@ function Features() {
     },
     {
       icon: LayoutDashboard,
-      title: "Personalized Driving Dashboard",
-      body: "Track your overall readiness score, view detailed progress history across all topics, and manage your custom test schedule in one centralized place.",
+      title: "State-Specific & Schedule-Tailored Practice",
+      body: "Set your target test date and select your state to instantly adapt your prep program. Track your overall readiness score and stay on schedule all in one centralized dashboard.",
     },
   ];
 
