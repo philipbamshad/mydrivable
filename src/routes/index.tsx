@@ -65,7 +65,6 @@ function Landing() {
       <StatesMarquee />
       <Features />
       <Pricing />
-      <FAQ />
       <CTA />
       <Footer />
     </div>
@@ -88,7 +87,6 @@ function Nav() {
           <a href="#features" className="transition hover:text-white">Features</a>
           <a href="#states" className="transition hover:text-white">States</a>
           <a href="#pricing" className="transition hover:text-white">Pricing</a>
-          <a href="#faq" className="transition hover:text-white">FAQ</a>
         </nav>
 
         <div className="flex items-center gap-2">
@@ -120,7 +118,7 @@ function Nav() {
               ["Features", "#features"],
               ["States", "#states"],
               ["Pricing", "#pricing"],
-              ["FAQ", "#faq"],
+              
             ].map(([label, href]) => (
               <a
                 key={href}
@@ -424,54 +422,6 @@ function Pricing() {
   );
 }
 
-
-function FAQ() {
-  const items = [
-    {
-      q: "Does Drivable cover every U.S. state?",
-      a: "Yes, all 50 states. Every prompt and mock exam is grounded in the official DMV handbook for the state you select. Switch states anytime in Settings.",
-    },
-    {
-      q: "How does the Mock Permit Exam simulator work?",
-      a: "It replicates your state's real DMV permit test, exact number of questions, exact passing threshold, randomized each attempt so you never see the same exam twice.",
-    },
-    {
-      q: "Can it actually prep me for the road test?",
-      a: "Each maneuver gets a walkthrough, an examiner-style fail checklist, and a step-by-step mechanical breakdown, parallel parking, hill parks, lane changes, yielding, all of it.",
-    },
-    {
-      q: "What's in Pro Pass?",
-      a: "Full-length state-specific mock exams, unlimited AI chat, all section quizzes, the sign-recognition drill, and every state rule pack. One-time payment of $9, no subscriptions.",
-    },
-  ];
-  return (
-    <section id="faq" className="mx-auto max-w-3xl px-6 py-24">
-      <h2 className="mb-12 text-center text-5xl font-semibold tracking-[-0.03em]">
-        Questions,{" "}
-        <span className="italic font-medium [font-family:'Cormorant_Garamond',Georgia,serif] bg-gradient-to-r from-blue-300 to-cyan-300 bg-clip-text text-transparent">
-          Answered
-        </span>
-      </h2>
-      <div className="space-y-3">
-        {items.map((it) => (
-          <details
-            key={it.q}
-            className="group rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-xl transition open:bg-white/[0.05]"
-          >
-            <summary className="flex cursor-pointer list-none items-center justify-between text-base font-medium text-white">
-              {it.q}
-              <span className="ml-4 grid h-7 w-7 place-items-center rounded-full bg-white/[0.06] text-sm text-blue-300 ring-1 ring-white/10 transition group-open:rotate-45">
-                +
-              </span>
-            </summary>
-
-            <p className="mt-4 text-[15px] text-white/70">{it.a}</p>
-          </details>
-        ))}
-      </div>
-    </section>
-  );
-}
 
 function CTA() {
   return (
