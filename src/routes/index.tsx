@@ -118,7 +118,7 @@ function Nav() {
               ["Features", "#features"],
               ["States", "#states"],
               ["Pricing", "#pricing"],
-              ["FAQ", "#faq"],
+              
             ].map(([label, href]) => (
               <a
                 key={href}
