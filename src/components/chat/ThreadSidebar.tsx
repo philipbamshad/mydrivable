@@ -157,7 +157,7 @@ export function ThreadSidebar() {
                     toast.success(`AI knowledge base recalibrated to ${s}`);
                   }}
                   className={cn(
-                    "w-full flex items-center justify-between gap-2 px-3 py-2 text-sm text-left hover:bg-primary/10 transition-colors",
+                    "w-full flex items-center justify-between gap-2 px-3 py-3 min-h-11 text-sm text-left hover:bg-primary/10 active:bg-primary/15 transition-colors touch-manipulation",
                     active && "bg-primary/15 text-foreground font-medium",
                   )}
                 >
