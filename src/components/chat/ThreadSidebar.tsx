@@ -124,7 +124,6 @@ export function ThreadSidebar() {
             aria-label="Change active state"
             aria-haspopup="dialog"
             aria-expanded={statePickerOpen}
-            onClick={() => setStatePickerOpen((o) => !o)}
             style={{ WebkitTapHighlightColor: "transparent", cursor: "pointer", pointerEvents: "auto" }}
             className="w-full text-left rounded-xl border border-primary/20 bg-primary/5 hover:bg-primary/10 hover:border-primary/40 active:bg-primary/15 transition-colors press px-4 py-3 mx-0 min-h-[56px] touch-manipulation select-none"
           >
