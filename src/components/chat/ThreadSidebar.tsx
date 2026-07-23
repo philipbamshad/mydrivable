@@ -83,7 +83,7 @@ export function ThreadSidebar() {
           <button
             type="button"
             aria-label="DMV target date"
-            className="w-full text-left rounded-xl border border-primary/20 bg-primary/5 hover:bg-primary/10 hover:border-primary/40 transition-colors press px-4 py-3 mx-0"
+            className="w-full text-left rounded-xl border border-primary/20 bg-primary/5 hover:bg-primary/10 hover:border-primary/40 transition-colors press px-4 py-3 mx-0 min-h-[56px] touch-manipulation"
           >
             <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground flex items-center justify-between">
               <span>DMV Target Date</span>
@@ -98,7 +98,7 @@ export function ThreadSidebar() {
         <PopoverContent
           side="top"
           align="start"
-          className="w-auto p-0 glass glow-soft border-primary/30"
+          className="w-auto p-0 glass glow-soft border-primary/30 z-[70] pointer-events-auto"
         >
           <Calendar
             mode="single"
@@ -119,7 +119,7 @@ export function ThreadSidebar() {
           <button
             type="button"
             aria-label="Change active state"
-            className="w-full text-left rounded-xl border border-primary/20 bg-primary/5 hover:bg-primary/10 hover:border-primary/40 transition-colors press px-4 py-3 mx-0"
+            className="w-full text-left rounded-xl border border-primary/20 bg-primary/5 hover:bg-primary/10 hover:border-primary/40 transition-colors press px-4 py-3 mx-0 min-h-[56px] touch-manipulation"
           >
             <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground flex items-center justify-between">
               <span>Active state</span>
@@ -134,7 +134,7 @@ export function ThreadSidebar() {
         <PopoverContent
           side="top"
           align="start"
-          className="w-64 p-0 glass glow-soft border-primary/30"
+          className="w-64 p-0 glass glow-soft border-primary/30 z-[70] pointer-events-auto"
         >
           <div className="px-3 py-2 border-b border-border/60">
             <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
@@ -157,7 +157,7 @@ export function ThreadSidebar() {
                     toast.success(`AI knowledge base recalibrated to ${s}`);
                   }}
                   className={cn(
-                    "w-full flex items-center justify-between gap-2 px-3 py-2 text-sm text-left hover:bg-primary/10 transition-colors",
+                    "w-full flex items-center justify-between gap-2 px-3 py-3 min-h-11 text-sm text-left hover:bg-primary/10 active:bg-primary/15 transition-colors touch-manipulation",
                     active && "bg-primary/15 text-foreground font-medium",
                   )}
                 >
