@@ -98,7 +98,7 @@ export function ThreadSidebar() {
         <PopoverContent
           side="top"
           align="start"
-          className="w-auto p-0 glass glow-soft border-primary/30"
+          className="w-auto p-0 glass glow-soft border-primary/30 z-[70] pointer-events-auto"
         >
           <Calendar
             mode="single"
