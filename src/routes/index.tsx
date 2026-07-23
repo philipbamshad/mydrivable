@@ -148,16 +148,17 @@ function Nav() {
 
 function Hero() {
   return (
-    <section className="relative isolate flex min-h-[calc(100svh-72px)] flex-col items-center justify-center overflow-hidden px-6 pt-6 pb-10 text-center">
-      {/* Subtle ambient hero glow, soft column behind the headline */}
+    <section className="relative isolate flex min-h-[calc(100svh-72px)] flex-col items-center justify-center overflow-hidden px-6 pt-10 pb-14 text-center sm:pt-6 sm:pb-10">
+      {/* Ambient hero glow — sized for both mobile and desktop */}
       <div
         aria-hidden
-        className="pointer-events-none absolute left-1/2 top-[30%] -z-10 h-[700px] w-[900px] max-w-[110vw] -translate-x-1/2 rounded-full bg-blue-600/12 blur-[130px]"
+        className="pointer-events-none absolute left-1/2 top-[22%] -z-10 h-[420px] w-[520px] max-w-[95vw] -translate-x-1/2 rounded-full bg-blue-600/20 blur-[90px] sm:top-[30%] sm:h-[700px] sm:w-[900px] sm:max-w-[110vw] sm:bg-blue-600/12 sm:blur-[130px]"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute left-1/2 top-[45%] -z-10 h-[420px] w-[560px] max-w-[80vw] -translate-x-1/2 rounded-full bg-blue-500/14 blur-[100px]"
+        className="pointer-events-none absolute left-1/2 top-[38%] -z-10 h-[260px] w-[340px] max-w-[75vw] -translate-x-1/2 rounded-full bg-blue-500/20 blur-[70px] sm:top-[45%] sm:h-[420px] sm:w-[560px] sm:max-w-[80vw] sm:bg-blue-500/14 sm:blur-[100px]"
       />
+
 
       <div className="mx-auto mb-6 inline-flex max-w-[640px] items-center gap-3 rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-sm backdrop-blur-xl">
         <span className="inline-flex items-center gap-1.5 text-blue-300">
