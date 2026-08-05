@@ -241,7 +241,7 @@ function AuthPage() {
         <Link to="/" className="flex flex-col items-center gap-3 mb-8 group">
           <div className="relative">
             <div className="absolute inset-0 rounded-full bg-primary/30 blur-xl group-hover:bg-primary/50 transition-colors" />
-            <img src={logo} alt="Drivable logo" width={56} height={56} className="relative" />
+            <img src={logo} alt="Drivable logo" width={56} height={56} className="relative logo-mask" />
           </div>
           <div className="text-center">
             <h1 className="font-display text-2xl font-bold tracking-tight">Drivable</h1>

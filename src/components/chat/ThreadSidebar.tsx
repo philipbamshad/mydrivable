@@ -218,7 +218,7 @@ export function ThreadSidebar() {
           onClick={() => setMobileOpen(false)}
           className={cn("flex items-center group", collapsed ? "gap-0" : "gap-2.5")}
         >
-          <img src={logo} alt="" width={32} height={32} className="rounded-md shrink-0" />
+          <img src={logo} alt="" width={32} height={32} className="shrink-0 logo-mask" />
           <div
             className={cn(
               "flex flex-col transition-all duration-300 overflow-hidden",
