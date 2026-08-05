@@ -356,3 +356,12 @@
 ::-webkit-scrollbar-thumb:hover {
   background: color-mix(in oklab, var(--color-foreground) 22%, transparent);
 }
+
+/* Global logo mask: crops white corner artifacts baked into the logo bitmap */
+@utility logo-mask {
+  border-radius: 22%;
+  overflow: hidden;
+  object-fit: cover;
+  clip-path: inset(4% round 22%);
+  transform: scale(1.09);
+}
