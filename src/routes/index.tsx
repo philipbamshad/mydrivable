@@ -498,9 +498,8 @@ function Footer() {
         </div>
         <div className="flex w-full flex-col items-center justify-between gap-4 border-t border-white/5 pt-6 sm:flex-row">
           <div className="flex items-center gap-2">
-            <span className="grid h-7 w-7 place-items-center rounded-full bg-[#1e40af] border border-white/10">
-              <img src={logo} alt="" className="h-4 w-4 logo-mask" />
-            </span>
+            <img src={logo} alt="" className="h-7 w-7 logo-mask" />
+
             <span className="font-semibold text-white">Drivable</span>
           </div>
           <span>© {new Date().getFullYear()} Drivable · Drive safe. Drive legal.</span>
