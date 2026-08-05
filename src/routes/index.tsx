@@ -26,11 +26,44 @@ export const Route = createFileRoute("/")({
         content:
           "Master your permit and ace your road test on the first try. AI coach, full-length mock permit exam simulator, and targeted section quizzes tuned to your state.",
       },
-      { property: "og:title", content: "Drivable" },
+      { property: "og:title", content: "Drivable, Master Your Permit & Ace Your Road Test" },
       {
         property: "og:description",
         content:
-          "Master your permit and ace your road test on the first try.",
+          "Practice with an AI driving coach, a full-length mock permit exam, and state-specific section quizzes. Set your test date and track readiness in one dashboard.",
+      },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://mydrivable.com/" },
+      { name: "twitter:title", content: "Drivable, Master Your Permit & Ace Your Road Test" },
+      {
+        name: "twitter:description",
+        content:
+          "Practice with an AI driving coach, a full-length mock permit exam, and state-specific section quizzes. Set your test date and track readiness in one dashboard.",
+      },
+    ],
+    links: [{ rel: "canonical", href: "https://mydrivable.com/" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: "Drivable",
+          url: "https://mydrivable.com/",
+          logo: "https://mydrivable.com/favicon.png",
+          email: "philip@mydrivable.com",
+          description:
+            "Drivable coaches new drivers through the permit test and road test with an AI coach, mock permit exams, and state-specific quizzes.",
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: "Drivable",
+          url: "https://mydrivable.com/",
+        }),
       },
     ],
   }),
