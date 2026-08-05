@@ -46,7 +46,7 @@ export function HeaderWidgets() {
         <img
           src={logo}
           alt="Drivable"
-          className="h-20 w-20 rounded-2xl"
+          className="h-20 w-20 logo-mask"
           style={{}}
         />
         <span

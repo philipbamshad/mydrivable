@@ -134,7 +134,7 @@ export function ChatWindow({
         <ConversationContent className="max-w-3xl mx-auto w-full px-4 py-6">
           {messages.length === 0 ? (
             <ConversationEmptyState
-              icon={<img src={logo} alt="" width={56} height={56} className="opacity-90" />}
+              icon={<img src={logo} alt="" width={56} height={56} className="opacity-90 logo-mask" />}
               title="What are we tackling?"
               description={
                 userState

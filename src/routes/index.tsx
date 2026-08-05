@@ -110,7 +110,7 @@ function Nav() {
     <header className="sticky top-4 z-50 px-4">
       <div className="mx-auto flex max-w-5xl items-center justify-between rounded-full border border-white/10 bg-white/[0.03] px-3 py-2 backdrop-blur-xl">
         <Link to="/" className="flex items-center gap-2 pl-2">
-          <img src={logo} alt="Drivable logo" className="h-9 w-9 rounded-lg" />
+          <img src={logo} alt="Drivable logo" className="h-9 w-9 logo-mask" />
           <span className="hidden text-[15px] font-semibold tracking-tight text-white sm:inline">
             Drivable
           </span>
@@ -499,7 +499,7 @@ function Footer() {
         <div className="flex w-full flex-col items-center justify-between gap-4 border-t border-white/5 pt-6 sm:flex-row">
           <div className="flex items-center gap-2">
             <span className="grid h-7 w-7 place-items-center rounded-full bg-[#1e40af] border border-white/10">
-              <img src={logo} alt="" className="h-4 w-4" />
+              <img src={logo} alt="" className="h-4 w-4 logo-mask" />
             </span>
             <span className="font-semibold text-white">Drivable</span>
           </div>
