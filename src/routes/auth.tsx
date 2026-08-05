@@ -160,20 +160,20 @@ function AuthPage() {
     }
   };
 
-  const handleGoogle = async () => {
+  const handleOAuth = async (provider: "google" | "apple") => {
     setLoading(true);
     try {
-      // Preserve `next` (e.g. the OAuth consent URL) through Google's redirect
-      // by pointing the OAuth callback back at /auth?next=..., which then
+      // Preserve `next` (e.g. the OAuth consent URL) through the provider
+      // redirect by pointing the callback back at /auth?next=..., which then
       // consumes `next` after the session hydrates.
       const redirectUri = next
         ? `${window.location.origin}/auth?next=${encodeURIComponent(next)}`
         : window.location.origin;
-      const result = await lovable.auth.signInWithOAuth("google", {
+      const result = await lovable.auth.signInWithOAuth(provider, {
         redirect_uri: redirectUri,
       });
       if (result.error) {
-        toast.error(result.error.message ?? "Google sign-in failed");
+        toast.error(result.error.message ?? "Sign-in failed. Try again.");
         return;
       }
       if (result.redirected) return;
