@@ -26,11 +26,44 @@ export const Route = createFileRoute("/")({
         content:
           "Master your permit and ace your road test on the first try. AI coach, full-length mock permit exam simulator, and targeted section quizzes tuned to your state.",
       },
-      { property: "og:title", content: "Drivable" },
+      { property: "og:title", content: "Drivable, Master Your Permit & Ace Your Road Test" },
       {
         property: "og:description",
         content:
-          "Master your permit and ace your road test on the first try.",
+          "Practice with an AI driving coach, a full-length mock permit exam, and state-specific section quizzes. Set your test date and track readiness in one dashboard.",
+      },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://mydrivable.com/" },
+      { name: "twitter:title", content: "Drivable, Master Your Permit & Ace Your Road Test" },
+      {
+        name: "twitter:description",
+        content:
+          "Practice with an AI driving coach, a full-length mock permit exam, and state-specific section quizzes. Set your test date and track readiness in one dashboard.",
+      },
+    ],
+    links: [{ rel: "canonical", href: "https://mydrivable.com/" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: "Drivable",
+          url: "https://mydrivable.com/",
+          logo: "https://mydrivable.com/favicon.png",
+          email: "philip@mydrivable.com",
+          description:
+            "Drivable coaches new drivers through the permit test and road test with an AI coach, mock permit exams, and state-specific quizzes.",
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: "Drivable",
+          url: "https://mydrivable.com/",
+        }),
       },
     ],
   }),
@@ -77,7 +110,7 @@ function Nav() {
     <header className="sticky top-4 z-50 px-4">
       <div className="mx-auto flex max-w-5xl items-center justify-between rounded-full border border-white/10 bg-white/[0.03] px-3 py-2 backdrop-blur-xl">
         <Link to="/" className="flex items-center gap-2 pl-2">
-          <img src={logo} alt="" className="h-9 w-9 rounded-lg" />
+          <img src={logo} alt="Drivable logo" className="h-9 w-9 rounded-lg" />
           <span className="hidden text-[15px] font-semibold tracking-tight text-white sm:inline">
             Drivable
           </span>

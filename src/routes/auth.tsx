@@ -19,7 +19,13 @@ export const Route = createFileRoute("/auth")({
     meta: [
       { title: "Sign in, Drivable" },
       { name: "description", content: "Sign in to Drivable to start coaching toward your permit and road test." },
+      { property: "og:title", content: "Sign in, Drivable" },
+      { property: "og:description", content: "Sign in to Drivable to start coaching toward your permit and road test." },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://mydrivable.com/auth" },
+      { name: "robots", content: "noindex" },
     ],
+    links: [{ rel: "canonical", href: "https://mydrivable.com/auth" }],
   }),
   component: AuthPage,
 });
@@ -235,7 +241,7 @@ function AuthPage() {
         <Link to="/" className="flex flex-col items-center gap-3 mb-8 group">
           <div className="relative">
             <div className="absolute inset-0 rounded-full bg-primary/30 blur-xl group-hover:bg-primary/50 transition-colors" />
-            <img src={logo} alt="Drivable" width={56} height={56} className="relative" />
+            <img src={logo} alt="Drivable logo" width={56} height={56} className="relative" />
           </div>
           <div className="text-center">
             <h1 className="font-display text-2xl font-bold tracking-tight">Drivable</h1>

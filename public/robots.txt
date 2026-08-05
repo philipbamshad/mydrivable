@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+Disallow: /app
+Disallow: /auth
+Disallow: /reset-password
+Disallow: /checkout/
+Disallow: /api/
+Disallow: /lovable/
+
+Sitemap: https://mydrivable.com/sitemap.xml
