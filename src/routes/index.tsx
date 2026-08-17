@@ -314,7 +314,7 @@ function Features() {
         </div>
         <h2 className="mt-8 text-5xl font-semibold tracking-[-0.03em] sm:text-6xl">
           Everything Between You and a{" "}
-          <span className="italic font-medium [font-family:'Cormorant_Garamond',Georgia,serif] bg-gradient-to-r from-blue-300 to-cyan-300 bg-clip-text text-transparent">
+          <span className="italic font-medium [font-family:'Cormorant_Garamond',Georgia,serif] bg-linear-to-r from-blue-700 to-cyan-600 bg-clip-text text-transparent">
             Real License
           </span>
         </h2>
@@ -369,7 +369,7 @@ function Pricing() {
         </div>
         <h2 className="mt-6 text-5xl font-semibold tracking-[-0.03em] sm:text-6xl">
           Pick Your{" "}
-          <span className="italic font-medium [font-family:'Cormorant_Garamond',Georgia,serif] bg-gradient-to-r from-blue-300 to-cyan-300 bg-clip-text text-transparent">
+          <span className="italic font-medium [font-family:'Cormorant_Garamond',Georgia,serif] bg-linear-to-r from-blue-700 to-cyan-600 bg-clip-text text-transparent">
             Lane
           </span>
         </h2>
