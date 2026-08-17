@@ -503,6 +503,9 @@ function Footer() {
           <Link to="/guides/used-car-inspection" className="transition hover:text-white">
             Used Car Inspection Checklist
           </Link>
+          <Link to="/guides/road-test-checklist" className="transition hover:text-white">
+            DMV Road Test Checklist
+          </Link>
         </nav>
         <div className="flex w-full flex-col items-center justify-between gap-4 border-t border-white/5 pt-6 sm:flex-row">
           <div className="flex items-center gap-2">
