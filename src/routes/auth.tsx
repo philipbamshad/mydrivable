@@ -244,7 +244,7 @@ function AuthPage() {
             <img src={logo} alt="Drivable logo" width={56} height={56} className="relative logo-mask" />
           </div>
           <div className="text-center">
-            <h1 className="font-display text-2xl font-bold tracking-tight">Drivable</h1>
+            <h1 className="font-display text-2xl font-bold tracking-tight">Drivable, Sign In</h1>
             <p className="text-[10px] text-muted-foreground mt-1 uppercase tracking-[0.28em]">
               Permit · Road Test
             </p>
