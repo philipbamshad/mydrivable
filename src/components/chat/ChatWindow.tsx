@@ -152,7 +152,7 @@ export function ChatWindow({
           ref={textareaRef}
           placeholder="Ask Drivable AI anything about your permit test..."
           disabled={isBusy}
-          className="px-5 pt-4"
+          className="px-5 pt-4 outline-none ring-0 focus:outline-none focus-visible:ring-0"
         />
         <PromptInputFooter className="items-center justify-between border-0 px-3 pb-3">
           <button
