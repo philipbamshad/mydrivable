@@ -319,7 +319,7 @@ function StatesMarquee() {
           {loop.map((s, i) => (
             <span
               key={`${s}-${i}`}
-              className="inline-flex items-center gap-1.5 rounded-full border border-[#1e40af]/18 bg-[#1e40af]/[0.045] px-3.5 py-1.5 text-[13px] font-medium text-[#1f2b4d]/85 backdrop-blur-md transition-colors hover:border-[#1e40af]/35 hover:bg-[#1e40af]/[0.09] hover:text-[#0f172a]"
+              className="inline-flex items-center gap-1.5 rounded-full border border-[#1e40af]/18 bg-white/75 px-3.5 py-1.5 text-[13px] font-medium text-[#1f2b4d]/85 backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5 hover:border-[#1e40af]/35 hover:bg-white hover:text-[#0f172a]"
             >
               <MapPin className="h-3 w-3 text-[#1e40af]" />
               {s}
@@ -359,6 +359,8 @@ function Features() {
   ];
 
 
+  const grid = useReveal<HTMLDivElement>();
+
   return (
     <section id="features" className="px-6 pt-28 pb-20">
       <div className="mx-auto max-w-3xl text-center">
@@ -377,13 +379,13 @@ function Features() {
         </p>
       </div>
 
-      <div className="mx-auto mt-14 grid max-w-6xl gap-6 md:grid-cols-2">
+      <div ref={grid} className="mx-auto mt-14 grid max-w-6xl gap-6 md:grid-cols-2">
         {features.map((f) => {
           const Icon = f.icon;
           return (
             <div
               key={f.title}
-              className="group relative rounded-[28px] border border-[#1e40af]/18 bg-[#1e40af]/[0.045] p-8 backdrop-blur-xl transition hover:border-[#1e40af]/30"
+              className="lift reveal group relative rounded-[28px] border border-[#1e40af]/18 bg-white/75 p-8 backdrop-blur-xl hover:border-[#1e40af]/30"
             >
 
               <span className="grid h-12 w-12 place-items-center rounded-2xl bg-[#e8eefc] border border-[#1e40af]/18 text-[#1e40af]">
@@ -463,7 +465,7 @@ function Pricing() {
 
             <ul className="mt-7 space-y-3 text-[15px]">
               {freeFeatures.map((f) => (
-                <li key={f} className="flex items-center gap-3 text-[#1f2b4d]/85">
+                <li key={f} className="flex items-center gap-3 rounded-lg text-[#1f2b4d]/85 transition-transform duration-200 hover:-translate-y-1">
                   <Check className="h-4 w-4 shrink-0 text-[#1f2b4d]/70" />
                   {f}
                 </li>
@@ -496,7 +498,7 @@ function Pricing() {
 
             <ul className="mt-7 space-y-3 text-[15px]">
               {proFeatures.map((f) => (
-                <li key={f} className="flex items-center gap-3 text-[#1f2b4d]/85">
+                <li key={f} className="flex items-center gap-3 rounded-lg text-[#1f2b4d]/85 transition-transform duration-200 hover:-translate-y-1">
                   <Check className="h-4 w-4 shrink-0 text-[#1e40af]" />
                   {f}
                 </li>
