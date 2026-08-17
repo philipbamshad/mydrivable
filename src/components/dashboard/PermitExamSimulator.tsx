@@ -73,7 +73,7 @@ export function PermitExamSimulator() {
       </div>
 
       <Card className="glass glow-strong p-8 rounded-[32px]">
-        <div className="flex items-start gap-4">
+        <div className="flex items-center gap-4">
           <div className="grid h-14 w-14 place-items-center rounded-2xl bg-primary/15 border border-primary/40 text-primary shrink-0"
             style={{ boxShadow: "0 0 24px -4px var(--color-primary)" }}>
             <Timer className="w-6 h-6" />
