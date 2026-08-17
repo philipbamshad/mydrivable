@@ -85,10 +85,9 @@ export function AccountPanel() {
 
       <Card className="glass glow-soft p-6 rounded-2xl">
         <h2 className="font-display text-lg font-bold">DMV Target Date</h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Set the day you plan to take the written exam, it powers the countdown on your dashboard.
-        </p>
-        <TargetDatePicker value={targetDate} onChange={setTargetDate} />
+        <div className="mt-4">
+          <TargetDatePicker value={targetDate} onChange={setTargetDate} />
+        </div>
       </Card>
 
       <Card className="glass glow-soft p-6 rounded-2xl">
