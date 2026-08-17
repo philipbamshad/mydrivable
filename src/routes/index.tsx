@@ -496,6 +496,14 @@ function Footer() {
             Contact Support: philip@mydrivable.com
           </a>
         </div>
+        <nav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-white/70">
+          <Link to="/tools/vin-lookup" className="transition hover:text-white">
+            Free VIN Lookup
+          </Link>
+          <Link to="/guides/used-car-inspection" className="transition hover:text-white">
+            Used Car Inspection Checklist
+          </Link>
+        </nav>
         <div className="flex w-full flex-col items-center justify-between gap-4 border-t border-white/5 pt-6 sm:flex-row">
           <div className="flex items-center gap-2">
             <img src={logo} alt="" className="h-7 w-7 logo-mask" />
