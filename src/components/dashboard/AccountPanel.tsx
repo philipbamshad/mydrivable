@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Globe, Crown, CheckCircle2, Lock, Sparkles, Sun, Moon } from "lucide-react";
+import { Crown, CheckCircle2, Lock, Sparkles, Sun, Moon } from "lucide-react";
 import { toast } from "sonner";
 import { useUserProfile, US_STATES } from "@/lib/user-profile";
 import { ThemeToggle } from "@/components/ThemeToggle";
