@@ -151,8 +151,13 @@ export function ChatWindow({
     <>
       <PromptInput
         onSubmit={handleSubmit}
+        accept="image/*,application/pdf"
+        maxFiles={4}
+        maxFileSize={8 * 1024 * 1024}
+        onError={(e) => toast.error(e.message)}
         className="rounded-[28px] border border-primary/25 bg-card/90 backdrop-blur shadow-[0_18px_50px_-28px_var(--color-primary)] outline-none transition-colors focus-within:border-primary/50 overflow-hidden has-[[data-slot=input-group-control]:focus-visible]:ring-0 has-[[data-slot=input-group-control]:focus-visible]:border-primary/50"
       >
+        <AttachmentChips />
         <PromptInputTextarea
           ref={textareaRef}
           placeholder="Ask Drivable AI anything about your permit test..."
@@ -160,21 +165,9 @@ export function ChatWindow({
           className="px-5 pt-4 outline-none ring-0 focus:outline-none focus-visible:ring-0 rounded-[28px]"
         />
         <PromptInputFooter className="items-center justify-between border-0 px-3 pb-3">
-          <button
-            type="button"
-            aria-label="Add attachment"
-            className="grid h-9 w-9 place-items-center rounded-full border border-primary/25 bg-primary/5 text-primary transition-colors hover:bg-primary/10"
-          >
-            <Plus className="h-4 w-4" />
-          </button>
+          <AttachButton />
           <div className="flex items-center gap-2">
-            <button
-              type="button"
-              aria-label="Voice input"
-              className="grid h-9 w-9 place-items-center rounded-full border border-primary/25 bg-primary/5 text-primary transition-colors hover:bg-primary/10"
-            >
-              <Mic className="h-4 w-4" />
-            </button>
+            <MicButton textareaRef={textareaRef} />
             <PromptInputSubmit status={status} disabled={isBusy} />
           </div>
         </PromptInputFooter>
@@ -186,6 +179,7 @@ export function ChatWindow({
       )}
     </>
   );
+
 
   if (isEmpty) {
     return (
