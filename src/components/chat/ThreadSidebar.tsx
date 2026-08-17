@@ -210,19 +210,21 @@ export function ThreadSidebar() {
     </button>
   );
 
-  const createBody = (surface: "desktop" | "mobile") => (
+  const createBody = (surface: "desktop" | "mobile") => {
+    const isCollapsed = surface === "desktop" && collapsed;
+    return (
     <>
-      <div className={cn("flex items-center shrink-0 w-full", collapsed ? "justify-between p-3" : "justify-between p-4")}>
+      <div className={cn("flex items-center shrink-0 w-full", isCollapsed ? "justify-between p-3" : "justify-between p-4")}>
         <Link
           to="/app"
           onClick={() => setMobileOpen(false)}
-          className={cn("flex items-center group", collapsed ? "gap-0" : "gap-2.5")}
+          className={cn("flex items-center group", isCollapsed ? "gap-0" : "gap-2.5")}
         >
           <img src={logo} alt="" width={32} height={32} className="shrink-0 logo-mask" />
           <div
             className={cn(
               "flex flex-col transition-all duration-300 overflow-hidden",
-              collapsed ? "hidden" : "w-auto opacity-100",
+              isCollapsed ? "hidden" : "w-auto opacity-100",
             )}
           >
             <div className="font-bold tracking-tight text-sm whitespace-nowrap">Drivable</div>
@@ -234,7 +236,7 @@ export function ThreadSidebar() {
       </div>
 
       <div className="flex-1 min-h-0 overflow-y-auto">
-        <nav className={cn("space-y-1 w-full", collapsed ? "py-3" : "px-4 py-3")}>
+        <nav className={cn("space-y-1 w-full", isCollapsed ? "py-3" : "px-4 py-3")}>
           {PRIMARY_NAV.map((item) => {
             const { id, label, icon: Icon } = item;
             const isActive = activeTab === id;
@@ -248,21 +250,21 @@ export function ThreadSidebar() {
                 className={cn(
                   "nav-link min-h-11 w-full",
                   isActive && "nav-link-active",
-                  collapsed && "justify-center px-0",
+                  isCollapsed && "justify-center px-0",
                 )}
-                title={collapsed ? label : undefined}
+                title={isCollapsed ? label : undefined}
               >
                 <Icon className="w-4 h-4 shrink-0" />
                 <span
                   className={cn(
                     "truncate transition-all duration-300",
-                    collapsed ? "w-0 opacity-0" : "flex-1",
+                    isCollapsed ? "w-0 opacity-0" : "flex-1",
                   )}
                 >
                   {label}
                 </span>
                 {showStar && (
-                  <Star className={cn("w-3.5 h-3.5 shrink-0 fill-primary text-primary", collapsed && "hidden")} />
+                  <Star className={cn("w-3.5 h-3.5 shrink-0 fill-primary text-primary", isCollapsed && "hidden")} />
                 )}
               </Link>
             );
@@ -272,7 +274,7 @@ export function ThreadSidebar() {
 
       {createInfoCards(surface)}
 
-      <div className={cn("border-t border-sidebar-border space-y-1 mt-auto", collapsed ? "p-2" : "p-3")}>
+      <div className={cn("border-t border-sidebar-border space-y-1 mt-auto", isCollapsed ? "p-2" : "p-3")}>
         <Sheet open={settingsOpen} onOpenChange={setSettingsOpen}>
           <SheetTrigger asChild>
             <Button
@@ -280,12 +282,12 @@ export function ThreadSidebar() {
               size="sm"
               className={cn(
                 "w-full justify-start text-muted-foreground hover:text-foreground press min-h-11",
-                collapsed && "justify-center px-0",
+                isCollapsed && "justify-center px-0",
               )}
-              title={collapsed ? "Settings" : undefined}
+              title={isCollapsed ? "Settings" : undefined}
             >
               <Settings className="w-4 h-4" />
-              <span className={cn("transition-all duration-300", collapsed && "w-0 opacity-0")}>
+              <span className={cn("transition-all duration-300", isCollapsed && "w-0 opacity-0")}>
                 Settings
               </span>
             </Button>
@@ -300,7 +302,7 @@ export function ThreadSidebar() {
           </SheetContent>
         </Sheet>
 
-        {!collapsed && (
+        {!isCollapsed && (
           <Button
             variant="ghost"
             size="sm"
@@ -315,6 +317,7 @@ export function ThreadSidebar() {
       </div>
     </>
   );
+  };
 
   return (
     <>
