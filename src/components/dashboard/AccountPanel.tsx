@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Globe, Crown, CheckCircle2, Lock, Sparkles, Sun, Moon } from "lucide-react";
+import { Crown, CheckCircle2, Lock, Sparkles, Sun, Moon } from "lucide-react";
 import { toast } from "sonner";
 import { useUserProfile, US_STATES } from "@/lib/user-profile";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -55,10 +55,7 @@ export function AccountPanel() {
 
 
       <Card className="glass glow-soft p-6 rounded-2xl">
-        <h2 className="font-display text-lg font-bold">Local Rules Engine</h2>
-        <p className="text-sm text-muted-foreground mb-5">
-          Set your jurisdiction. All quizzes and AI answers conform to local code.
-        </p>
+        <h2 className="font-display text-lg font-bold mb-5">Local Rules Engine</h2>
 
         <div className="grid sm:grid-cols-[260px_1fr] gap-4 items-start">
           <Select value={state || undefined} onValueChange={onChangeState}>
@@ -71,16 +68,8 @@ export function AccountPanel() {
               ))}
             </SelectContent>
           </Select>
-
-          <div className="flex items-start gap-3 rounded-xl border border-primary/30 bg-primary/10 p-3.5">
-            <Globe className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-            <p className="text-xs text-foreground/85 leading-relaxed">
-              {state
-                ? <>AI Knowledge Base and question banks have dynamically recalibrated to match the vehicle code and traffic statutes of <span className="font-bold text-primary">{state}</span>.</>
-                : <>AI Knowledge Base switches dynamic regulatory definitions based on the territory specified here.</>}
-            </p>
-          </div>
         </div>
+
       </Card>
 
       <Card className="glass glow-soft p-6 rounded-2xl">
