@@ -246,7 +246,7 @@ function AuthPage() {
           <div className="text-center">
             <h1 className="font-display text-2xl font-bold tracking-tight">Drivable, Sign In</h1>
             <p className="text-[10px] text-muted-foreground mt-1 uppercase tracking-[0.28em]">
-              Permit · Road Test
+              Permit
             </p>
           </div>
         </Link>
