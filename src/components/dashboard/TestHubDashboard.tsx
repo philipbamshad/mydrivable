@@ -95,7 +95,7 @@ export function TestHubDashboard() {
           const remaining = Math.max(0, FREE_PILLAR_LIFETIME_LIMIT - used);
           const locked = !isPro && remaining <= 0;
           return (
-            <Card key={p.id} className="glass glow-soft p-6 rounded-2xl flex flex-col gap-4">
+            <Card key={p.id} className="glass glow-soft lift fade-in-up p-6 rounded-2xl flex flex-col gap-4">
               <div className="flex items-start gap-3">
                 <span
                   className="grid h-12 w-12 place-items-center rounded-xl bg-primary/15 border border-primary/40 text-primary shrink-0"
@@ -345,12 +345,13 @@ function QuizRunner({
             return (
               <button
                 key={i}
+                style={{ "--reveal-delay": `${i * 70}ms` } as React.CSSProperties}
                 onClick={() => choose(i)}
                 disabled={reveal}
                 className={cn(
-                  "p-3.5 rounded-xl border text-sm font-medium text-left transition-all duration-200 flex items-center justify-between gap-2",
+                  "p-3.5 rounded-xl border text-sm font-medium text-left transition-all duration-200 flex items-center justify-between gap-2 fade-in-up",
                   !reveal &&
-                    "border-border bg-card/40 hover:scale-[1.02] hover:border-primary/50  active:scale-[0.98]",
+                    "border-border bg-card/40 hover:-translate-y-1 hover:scale-[1.02] hover:border-accent-violet/60 hover:shadow-[0_18px_36px_-22px_color-mix(in_oklab,var(--accent-violet)_60%,transparent)] active:scale-[0.98]",
                   reveal && isCorrect && "border-emerald-400 bg-emerald-500/25 text-emerald-100 ",
                   reveal &&
                     isPicked &&
