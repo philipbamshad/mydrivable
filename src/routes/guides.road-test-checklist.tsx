@@ -190,11 +190,11 @@ function RoadTestChecklistGuide() {
   return (
     <MarketingLayout>
       <article className="mx-auto max-w-3xl">
-        <p className="text-xs uppercase tracking-[0.22em] text-blue-300">Road test guide</p>
+        <p className="text-xs uppercase tracking-[0.22em] text-[#1e40af]">Road test guide</p>
         <h1 className="mt-3 text-4xl font-semibold tracking-[-0.03em] sm:text-5xl">
           DMV road test checklist
         </h1>
-        <p className="mt-4 text-white/70">
+        <p className="mt-4 text-[#1f2b4d]/70">
           The road test is not a mystery. Examiners work from a score sheet, and almost
           every failure comes from the same short list of habits. Work through these
           seven sections before your appointment, tap each line to tick it off, and take
@@ -202,12 +202,12 @@ function RoadTestChecklistGuide() {
           state, so confirm the document and vehicle requirements with your local office.
         </p>
 
-        <div className="sticky top-20 z-40 mt-8 flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-[#070b18]/90 px-5 py-3 backdrop-blur-xl">
+        <div className="sticky top-20 z-40 mt-8 flex items-center justify-between gap-4 rounded-2xl border border-[#1e40af]/18 bg-[#f4f7fd]/90 px-5 py-3 backdrop-blur-xl">
           <div>
             <p className="text-sm font-semibold">
               {checked} of {TOTAL} checks complete
             </p>
-            <div className="mt-2 h-1.5 w-40 overflow-hidden rounded-full bg-white/10 sm:w-64">
+            <div className="mt-2 h-1.5 w-40 overflow-hidden rounded-full bg-[#1e40af]/10 sm:w-64">
               <div
                 className="h-full rounded-full bg-[#3b82f6] transition-all"
                 style={{ width: `${(checked / TOTAL) * 100}%` }}
@@ -227,7 +227,7 @@ function RoadTestChecklistGuide() {
         {SECTIONS.map((section) => (
           <section key={section.title} className="mt-12">
             <h2 className="text-2xl font-semibold tracking-[-0.02em]">{section.title}</h2>
-            <p className="mt-2 text-white/65">{section.blurb}</p>
+            <p className="mt-2 text-[#1f2b4d]/65">{section.blurb}</p>
             <ul className="mt-5 space-y-2">
               {section.items.map((item) => {
                 const key = `${section.title}:${item}`;
@@ -240,16 +240,16 @@ function RoadTestChecklistGuide() {
                       aria-pressed={on}
                       className={`flex w-full items-start gap-3 rounded-2xl border p-4 text-left text-[15px] transition ${
                         on
-                          ? "border-[#3b82f6]/40 bg-[#3b82f6]/10 text-white/60 line-through"
-                          : "border-white/10 bg-white/[0.03] text-white/85 hover:bg-white/[0.06]"
+                          ? "border-[#3b82f6]/40 bg-[#3b82f6]/10 text-[#1f2b4d]/60 line-through"
+                          : "border-[#1e40af]/18 bg-[#1e40af]/[0.045] text-[#1f2b4d]/85 hover:bg-[#1e40af]/[0.08]"
                       }`}
                     >
                       <span
                         aria-hidden
                         className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-md border text-[10px] ${
                           on
-                            ? "border-[#3b82f6] bg-[#3b82f6] text-white"
-                            : "border-white/25 bg-transparent"
+                            ? "border-[#3b82f6] bg-[#3b82f6] text-[#0f172a]"
+                            : "border-[#1e40af]/35 bg-transparent"
                         }`}
                       >
                         {on ? "✓" : ""}
@@ -267,19 +267,19 @@ function RoadTestChecklistGuide() {
           <h2 className="text-2xl font-semibold tracking-[-0.02em]">Road test questions</h2>
           <div className="mt-5 space-y-5">
             {FAQ.map((f) => (
-              <div key={f.q} className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
+              <div key={f.q} className="rounded-2xl border border-[#1e40af]/18 bg-[#1e40af]/[0.045] p-5">
                 <h3 className="text-base font-semibold">{f.q}</h3>
-                <p className="mt-2 text-white/70">{f.a}</p>
+                <p className="mt-2 text-[#1f2b4d]/70">{f.a}</p>
               </div>
             ))}
           </div>
         </section>
 
-        <section className="mt-14 rounded-[28px] border border-[#3b82f6]/30 bg-white/[0.02] p-8 text-center">
+        <section className="mt-14 rounded-[28px] border border-[#3b82f6]/30 bg-[#1e40af]/[0.035] p-8 text-center">
           <h2 className="text-2xl font-semibold tracking-[-0.02em]">
             Pass the written test first
           </h2>
-          <p className="mx-auto mt-3 max-w-xl text-white/70">
+          <p className="mx-auto mt-3 max-w-xl text-[#1f2b4d]/70">
             Drivable gives you a full length mock permit exam for your state, section
             quizzes on signs and right of way, and an AI coach that explains every miss.
           </p>
@@ -289,7 +289,7 @@ function RoadTestChecklistGuide() {
             </Link>
             <Link
               to="/guides/used-car-inspection"
-              className="text-sm font-semibold text-blue-300 underline-offset-4 hover:underline"
+              className="text-sm font-semibold text-[#1e40af] underline-offset-4 hover:underline"
             >
               Buying a car next? Use the inspection checklist
             </Link>

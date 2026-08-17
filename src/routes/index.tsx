@@ -71,15 +71,15 @@ export const Route = createFileRoute("/")({
 });
 
 const SHELL =
-  "relative min-h-screen overflow-hidden text-white [color-scheme:dark] [font-family:'Inter',ui-sans-serif,system-ui]";
+  "relative min-h-screen overflow-hidden text-[#0f172a] [color-scheme:light] [font-family:'Inter',ui-sans-serif,system-ui]";
 const SHELL_BG: React.CSSProperties = {
-  background: "linear-gradient(180deg, #05070d 0%, #070b18 50%, #05070d 100%)",
+  background: "linear-gradient(180deg, #ffffff 0%, #f4f7fd 50%, #ffffff 100%)",
 };
 const BTN_PRIMARY =
-  "inline-flex items-center justify-center gap-2 rounded-full bg-[#0b1220] hover:bg-[#0f1830] border border-[#1e40af] hover:border-[#3b82f6] text-white font-semibold transition active:scale-[0.98]";
+  "inline-flex items-center justify-center gap-2 rounded-full bg-[#ffffff] hover:bg-[#eef3ff] border border-[#1e40af] hover:border-[#3b82f6] text-[#0f172a] font-semibold transition active:scale-[0.98]";
 
 const BTN_SECONDARY =
-  "inline-flex items-center justify-center gap-2 rounded-full bg-white/[0.04] hover:bg-white/[0.08] border border-white/15 hover:border-white/30 text-white font-semibold transition active:scale-[0.98]";
+  "inline-flex items-center justify-center gap-2 rounded-full bg-[#1e40af]/[0.055] hover:bg-[#1e40af]/[0.1] border border-[#1e40af]/25 hover:border-[#1e40af]/40 text-[#0f172a] font-semibold transition active:scale-[0.98]";
 
 
 
@@ -108,18 +108,18 @@ function Nav() {
   const [open, setOpen] = useState(false);
   return (
     <header className="sticky top-4 z-50 px-4">
-      <div className="mx-auto flex max-w-5xl items-center justify-between rounded-full border border-white/10 bg-white/[0.03] px-3 py-2 backdrop-blur-xl">
+      <div className="mx-auto flex max-w-5xl items-center justify-between rounded-full border border-[#1e40af]/18 bg-[#1e40af]/[0.045] px-3 py-2 backdrop-blur-xl">
         <Link to="/" className="flex items-center gap-2 pl-2">
           <img src={logo} alt="Drivable logo" className="h-9 w-9 logo-mask" />
-          <span className="hidden text-[15px] font-semibold tracking-tight text-white sm:inline">
+          <span className="hidden text-[15px] font-semibold tracking-tight text-[#0f172a] sm:inline">
             Drivable
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-7 text-[15px] font-medium text-white/70 sm:flex">
-          <a href="#features" className="transition hover:text-white">Features</a>
-          <a href="#states" className="transition hover:text-white">States</a>
-          <a href="#pricing" className="transition hover:text-white">Pricing</a>
+        <nav className="hidden items-center gap-7 text-[15px] font-medium text-[#1f2b4d]/70 sm:flex">
+          <a href="#features" className="transition hover:text-[#0f172a]">Features</a>
+          <a href="#states" className="transition hover:text-[#0f172a]">States</a>
+          <a href="#pricing" className="transition hover:text-[#0f172a]">Pricing</a>
         </nav>
 
         <div className="flex items-center gap-2">
@@ -128,7 +128,7 @@ function Nav() {
             className={`${BTN_PRIMARY} group hidden sm:inline-flex px-5 py-2.5 text-sm`}
           >
             Sign Up
-            <span className="grid h-6 w-6 place-items-center rounded-full bg-white/15 transition group-hover:translate-x-0.5">
+            <span className="grid h-6 w-6 place-items-center rounded-full bg-[#1e40af]/15 transition group-hover:translate-x-0.5">
               <ArrowRight className="h-3.5 w-3.5" />
             </span>
           </Link>
@@ -136,7 +136,7 @@ function Nav() {
             type="button"
             aria-label={open ? "Close menu" : "Open menu"}
             onClick={() => setOpen((v) => !v)}
-            className="sm:hidden grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-white/5 text-white"
+            className="sm:hidden grid h-10 w-10 place-items-center rounded-full border border-[#1e40af]/18 bg-[#1e40af]/8 text-[#0f172a]"
           >
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
@@ -145,8 +145,8 @@ function Nav() {
 
 
       {open && (
-        <div className="sm:hidden mx-auto mt-2 max-w-5xl rounded-2xl border border-white/10 bg-[#070b18]/95 p-4 backdrop-blur-xl shadow-[0_20px_50px_-20px_rgba(0,0,0,0.8)]">
-          <nav className="flex flex-col text-base font-medium text-white/85">
+        <div className="sm:hidden mx-auto mt-2 max-w-5xl rounded-2xl border border-[#1e40af]/18 bg-[#f4f7fd]/95 p-4 backdrop-blur-xl shadow-[0_20px_50px_-20px_rgba(0,0,0,0.8)]">
+          <nav className="flex flex-col text-base font-medium text-[#1f2b4d]/85">
             {[
               ["Features", "#features"],
               ["States", "#states"],
@@ -157,7 +157,7 @@ function Nav() {
                 key={href}
                 href={href}
                 onClick={() => setOpen(false)}
-                className="rounded-lg px-3 py-3 hover:bg-white/5"
+                className="rounded-lg px-3 py-3 hover:bg-[#1e40af]/8"
               >
                 {label}
               </a>
@@ -191,13 +191,13 @@ function Hero() {
       />
 
 
-      <div className="mx-auto mb-6 inline-flex max-w-[640px] items-center gap-3 rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-sm backdrop-blur-xl">
-        <span className="inline-flex items-center gap-1.5 text-blue-300">
+      <div className="mx-auto mb-6 inline-flex max-w-[640px] items-center gap-3 rounded-full border border-[#1e40af]/18 bg-[#1e40af]/[0.045] px-4 py-2 text-sm backdrop-blur-xl">
+        <span className="inline-flex items-center gap-1.5 text-[#1e40af]">
           <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-blue-400" />
           New
         </span>
 
-        <span className="hidden text-white/80 sm:inline">
+        <span className="hidden text-[#1f2b4d]/80 sm:inline">
           Full-length state-specific Mock Permit Exam simulator, now live
         </span>
       </div>
@@ -207,13 +207,13 @@ function Hero() {
           Master Your Permit and
           <br />
           Ace Your Road Test on the{" "}
-          <span className="italic font-medium [font-family:'Cormorant_Garamond',Georgia,serif] text-blue-300">
+          <span className="italic font-medium [font-family:'Cormorant_Garamond',Georgia,serif] text-[#1e40af]">
             First Try
           </span>
         </h1>
       </div>
 
-      <p className="relative mx-auto mt-6 max-w-2xl text-base text-white/70 sm:text-lg">
+      <p className="relative mx-auto mt-6 max-w-2xl text-base text-[#1f2b4d]/70 sm:text-lg">
         An AI driving coach trained on every official DMV handbook, with
         full-length mock permit exams and targeted section drills. No fluff.
       </p>
@@ -228,7 +228,7 @@ function Hero() {
 
         <a
           href="#features"
-          className="rounded-full border border-white/15 bg-white/[0.04] px-7 py-4 text-base font-medium text-white/90 backdrop-blur-xl transition hover:bg-white/10 hover:scale-[1.03] active:scale-[0.97]"
+          className="rounded-full border border-[#1e40af]/25 bg-[#1e40af]/[0.055] px-7 py-4 text-base font-medium text-[#1f2b4d]/90 backdrop-blur-xl transition hover:bg-[#1e40af]/10 hover:scale-[1.03] active:scale-[0.97]"
         >
           See how it works
         </a>
@@ -241,9 +241,9 @@ function Hero() {
 function StatesMarquee() {
   const loop = [...US_STATES, ...US_STATES];
   return (
-    <section id="states" className="border-y border-white/5 bg-white/[0.02] py-16 backdrop-blur-sm">
+    <section id="states" className="border-y border-[#1e40af]/12 bg-[#1e40af]/[0.035] py-16 backdrop-blur-sm">
       <div className="mx-auto max-w-6xl px-6 text-center">
-        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-blue-300/80">
+        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#1e40af]/80">
           All 50 States · Grounded in Official DMV Handbooks
         </p>
         <h2 className="mb-10 text-3xl font-semibold tracking-[-0.02em] sm:text-4xl">
@@ -265,9 +265,9 @@ function StatesMarquee() {
           {loop.map((s, i) => (
             <span
               key={`${s}-${i}`}
-              className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1.5 text-[13px] font-medium text-white/85 backdrop-blur-md transition-colors hover:border-white/25 hover:bg-white/[0.07] hover:text-white"
+              className="inline-flex items-center gap-1.5 rounded-full border border-[#1e40af]/18 bg-[#1e40af]/[0.045] px-3.5 py-1.5 text-[13px] font-medium text-[#1f2b4d]/85 backdrop-blur-md transition-colors hover:border-[#1e40af]/35 hover:bg-[#1e40af]/[0.09] hover:text-[#0f172a]"
             >
-              <MapPin className="h-3 w-3 text-blue-300" />
+              <MapPin className="h-3 w-3 text-[#1e40af]" />
               {s}
             </span>
           ))}
@@ -308,8 +308,8 @@ function Features() {
   return (
     <section id="features" className="px-6 pt-28 pb-20">
       <div className="mx-auto max-w-3xl text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 text-sm text-white/80 backdrop-blur-xl">
-          <Sparkles className="h-4 w-4 text-blue-300" />
+        <div className="inline-flex items-center gap-2 rounded-full border border-[#1e40af]/18 bg-[#1e40af]/[0.055] px-4 py-1.5 text-sm text-[#1f2b4d]/80 backdrop-blur-xl">
+          <Sparkles className="h-4 w-4 text-[#1e40af]" />
           Four Pillars
         </div>
         <h2 className="mt-8 text-5xl font-semibold tracking-[-0.03em] sm:text-6xl">
@@ -318,7 +318,7 @@ function Features() {
             Real License
           </span>
         </h2>
-        <p className="mx-auto mt-6 max-w-xl text-lg text-white/60">
+        <p className="mx-auto mt-6 max-w-xl text-lg text-[#1f2b4d]/60">
           Four focused tools, one outcome, pass on the first try.
         </p>
       </div>
@@ -329,15 +329,15 @@ function Features() {
           return (
             <div
               key={f.title}
-              className="group relative rounded-[28px] border border-white/10 bg-white/[0.03] p-8 backdrop-blur-xl transition hover:border-white/20"
+              className="group relative rounded-[28px] border border-[#1e40af]/18 bg-[#1e40af]/[0.045] p-8 backdrop-blur-xl transition hover:border-[#1e40af]/30"
             >
 
-              <span className="grid h-12 w-12 place-items-center rounded-2xl bg-[#1e40af] border border-white/10 text-white">
+              <span className="grid h-12 w-12 place-items-center rounded-2xl bg-[#e8eefc] border border-[#1e40af]/18 text-[#0f172a]">
                 <Icon className="h-5 w-5" />
               </span>
 
               <h3 className="mt-6 text-xl font-semibold tracking-tight">{f.title}</h3>
-              <p className="mt-3 text-[15px] leading-relaxed text-white/65">{f.body}</p>
+              <p className="mt-3 text-[15px] leading-relaxed text-[#1f2b4d]/65">{f.body}</p>
             </div>
           );
         })}
@@ -364,7 +364,7 @@ function Pricing() {
   return (
     <section id="pricing" className="px-6 py-28">
       <div className="mx-auto mb-14 max-w-3xl text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 text-sm text-white/80 backdrop-blur-xl">
+        <div className="inline-flex items-center gap-2 rounded-full border border-[#1e40af]/18 bg-[#1e40af]/[0.055] px-4 py-1.5 text-sm text-[#1f2b4d]/80 backdrop-blur-xl">
           Two Plans
         </div>
         <h2 className="mt-6 text-5xl font-semibold tracking-[-0.03em] sm:text-6xl">
@@ -373,7 +373,7 @@ function Pricing() {
             Lane
           </span>
         </h2>
-        <p className="mt-4 text-white/60">Start free, or unlock the full test simulator with one payment.</p>
+        <p className="mt-4 text-[#1f2b4d]/60">Start free, or unlock the full test simulator with one payment.</p>
       </div>
 
       <div className="relative mx-auto max-w-5xl">
@@ -389,14 +389,14 @@ function Pricing() {
 
         <div className="grid gap-6 md:grid-cols-2 md:items-stretch">
           {/* Free Pass */}
-          <div className="relative flex flex-col rounded-[28px] border border-white/10 bg-[#070b18]/70 p-8 backdrop-blur-xl">
-            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-7">
-              <div className="text-lg font-medium text-white/90">Free Pass</div>
-              <div className="mt-8 flex items-end gap-2 text-white">
+          <div className="relative flex flex-col rounded-[28px] border border-[#1e40af]/18 bg-[#f4f7fd]/70 p-8 backdrop-blur-xl">
+            <div className="rounded-2xl border border-[#1e40af]/18 bg-[#1e40af]/[0.045] p-7">
+              <div className="text-lg font-medium text-[#1f2b4d]/90">Free Pass</div>
+              <div className="mt-8 flex items-end gap-2 text-[#0f172a]">
                 <span className="text-6xl font-semibold tracking-[-0.03em]">$0</span>
-                <span className="mb-2 text-sm text-white/85">forever free</span>
+                <span className="mb-2 text-sm text-[#1f2b4d]/85">forever free</span>
               </div>
-              <p className="mt-2 text-sm text-white/75">Kick the tires and study the basics, no card required.</p>
+              <p className="mt-2 text-sm text-[#1f2b4d]/75">Kick the tires and study the basics, no card required.</p>
             </div>
 
             <Link
@@ -409,8 +409,8 @@ function Pricing() {
 
             <ul className="mt-7 space-y-3 text-[15px]">
               {freeFeatures.map((f) => (
-                <li key={f} className="flex items-center gap-3 text-white/85">
-                  <Check className="h-4 w-4 shrink-0 text-white/60" />
+                <li key={f} className="flex items-center gap-3 text-[#1f2b4d]/85">
+                  <Check className="h-4 w-4 shrink-0 text-[#1f2b4d]/60" />
                   {f}
                 </li>
               ))}
@@ -418,18 +418,18 @@ function Pricing() {
           </div>
 
           {/* Pro Pass */}
-          <div className="relative flex flex-col rounded-[28px] border border-[#3b82f6]/40 bg-[#070b18]/70 p-8 backdrop-blur-xl shadow-[0_0_60px_-20px_rgba(59,130,246,0.55)]">
-            <span className="absolute -top-3 left-1/2 z-10 -translate-x-1/2 rounded-full bg-[#1e40af] border border-[#3b82f6]/60 px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-white whitespace-nowrap">
+          <div className="relative flex flex-col rounded-[28px] border border-[#3b82f6]/40 bg-[#f4f7fd]/70 p-8 backdrop-blur-xl shadow-[0_0_60px_-20px_rgba(59,130,246,0.55)]">
+            <span className="absolute -top-3 left-1/2 z-10 -translate-x-1/2 rounded-full bg-[#e8eefc] border border-[#3b82f6]/60 px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-[#0f172a] whitespace-nowrap">
               Most Popular
             </span>
 
-            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-7">
-              <div className="text-lg font-medium text-white/90">Pro Pass</div>
-              <div className="mt-8 flex items-end gap-2 text-white">
+            <div className="rounded-2xl border border-[#1e40af]/18 bg-[#1e40af]/[0.045] p-7">
+              <div className="text-lg font-medium text-[#1f2b4d]/90">Pro Pass</div>
+              <div className="mt-8 flex items-end gap-2 text-[#0f172a]">
                 <span className="text-6xl font-semibold tracking-[-0.03em]">$9</span>
-                <span className="mb-2 text-sm text-white/85">one-time</span>
+                <span className="mb-2 text-sm text-[#1f2b4d]/85">one-time</span>
               </div>
-              <p className="mt-2 text-sm text-white/75">Pay once. Lifetime access to everything Drivable builds.</p>
+              <p className="mt-2 text-sm text-[#1f2b4d]/75">Pay once. Lifetime access to everything Drivable builds.</p>
             </div>
 
             <Link
@@ -442,8 +442,8 @@ function Pricing() {
 
             <ul className="mt-7 space-y-3 text-[15px]">
               {proFeatures.map((f) => (
-                <li key={f} className="flex items-center gap-3 text-white/85">
-                  <Check className="h-4 w-4 shrink-0 text-blue-300" />
+                <li key={f} className="flex items-center gap-3 text-[#1f2b4d]/85">
+                  <Check className="h-4 w-4 shrink-0 text-[#1e40af]" />
                   {f}
                 </li>
               ))}
@@ -459,15 +459,15 @@ function Pricing() {
 function CTA() {
   return (
     <section className="px-6 pb-24">
-      <div className="relative mx-auto max-w-5xl overflow-hidden rounded-[36px] border border-white/10 bg-white/[0.02] p-16 text-center text-white backdrop-blur-xl">
+      <div className="relative mx-auto max-w-5xl overflow-hidden rounded-[36px] border border-[#1e40af]/18 bg-[#1e40af]/[0.035] p-16 text-center text-[#0f172a] backdrop-blur-xl">
         <h2 className="text-5xl font-semibold tracking-[-0.03em] sm:text-6xl">
           Get Your License.
           <br />
-          <span className="italic font-medium [font-family:'Cormorant_Garamond',Georgia,serif] text-blue-300">
+          <span className="italic font-medium [font-family:'Cormorant_Garamond',Georgia,serif] text-[#1e40af]">
             First Try.
           </span>
         </h2>
-        <p className="mx-auto mt-6 max-w-xl text-white/70">
+        <p className="mx-auto mt-6 max-w-xl text-[#1f2b4d]/70">
           Sign up, pick your state, and start your first mock exam in under a minute.
         </p>
         <Link
@@ -485,33 +485,33 @@ function CTA() {
 
 function Footer() {
   return (
-    <footer className="border-t border-white/5 px-6 py-10 pb-24 text-sm text-white/50 sm:pb-10">
+    <footer className="border-t border-[#1e40af]/12 px-6 py-10 pb-24 text-sm text-[#1f2b4d]/50 sm:pb-10">
       <div className="mx-auto flex max-w-6xl flex-col items-center gap-6">
         <div className="flex flex-col items-center gap-2 text-center">
-          <span className="text-xs uppercase tracking-wider text-white/40">Need help?</span>
+          <span className="text-xs uppercase tracking-wider text-[#1f2b4d]/40">Need help?</span>
           <a
             href="mailto:philip@mydrivable.com"
-            className="inline-flex min-h-11 items-center rounded-md px-3 py-2 text-white/80 transition hover:text-white"
+            className="inline-flex min-h-11 items-center rounded-md px-3 py-2 text-[#1f2b4d]/80 transition hover:text-[#0f172a]"
           >
             Contact Support: philip@mydrivable.com
           </a>
         </div>
-        <nav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-white/70">
-          <Link to="/tools/vin-lookup" className="transition hover:text-white">
+        <nav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[#1f2b4d]/70">
+          <Link to="/tools/vin-lookup" className="transition hover:text-[#0f172a]">
             Free VIN Lookup
           </Link>
-          <Link to="/guides/used-car-inspection" className="transition hover:text-white">
+          <Link to="/guides/used-car-inspection" className="transition hover:text-[#0f172a]">
             Used Car Inspection Checklist
           </Link>
-          <Link to="/guides/road-test-checklist" className="transition hover:text-white">
+          <Link to="/guides/road-test-checklist" className="transition hover:text-[#0f172a]">
             DMV Road Test Checklist
           </Link>
         </nav>
-        <div className="flex w-full flex-col items-center justify-between gap-4 border-t border-white/5 pt-6 sm:flex-row">
+        <div className="flex w-full flex-col items-center justify-between gap-4 border-t border-[#1e40af]/12 pt-6 sm:flex-row">
           <div className="flex items-center gap-2">
             <img src={logo} alt="" className="h-7 w-7 logo-mask" />
 
-            <span className="font-semibold text-white">Drivable</span>
+            <span className="font-semibold text-[#0f172a]">Drivable</span>
           </div>
           <span>© {new Date().getFullYear()} Drivable · Drive safe. Drive legal.</span>
         </div>

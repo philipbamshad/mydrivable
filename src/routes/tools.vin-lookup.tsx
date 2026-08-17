@@ -154,11 +154,11 @@ function VinLookupPage() {
   return (
     <MarketingLayout>
       <div className="mx-auto max-w-3xl">
-        <p className="text-xs uppercase tracking-[0.22em] text-blue-300">Free tool</p>
+        <p className="text-xs uppercase tracking-[0.22em] text-[#1e40af]">Free tool</p>
         <h1 className="mt-3 text-4xl font-semibold tracking-[-0.03em] sm:text-5xl">
           VIN lookup
         </h1>
-        <p className="mt-4 text-white/70">
+        <p className="mt-4 text-[#1f2b4d]/70">
           Buying your first car? Decode any 17 character VIN to confirm the factory
           year, make, model, engine, and safety equipment before you hand over money.
           Results come straight from the public NHTSA vPIC vehicle database.
@@ -177,7 +177,7 @@ function VinLookupPage() {
             autoComplete="off"
             spellCheck={false}
             maxLength={17}
-            className="min-h-12 flex-1 rounded-2xl border border-white/15 bg-white/[0.04] px-4 font-mono text-base tracking-[0.14em] text-white placeholder:text-white/30 focus:border-[#3b82f6] focus:outline-none"
+            className="min-h-12 flex-1 rounded-2xl border border-[#1e40af]/25 bg-[#1e40af]/[0.055] px-4 font-mono text-base tracking-[0.14em] text-[#0f172a] placeholder:text-[#1f2b4d]/30 focus:border-[#3b82f6] focus:outline-none"
           />
           <button type="submit" className={`${BTN_PRIMARY} min-h-12 px-6 text-sm`}>
             {loading ? (
@@ -188,7 +188,7 @@ function VinLookupPage() {
             Decode VIN
           </button>
         </form>
-        <p className="mt-2 text-xs text-white/40">
+        <p className="mt-2 text-xs text-[#1f2b4d]/40">
           {clean.length}/17 characters. Letters I, O, and Q are never used in a VIN.
         </p>
 
@@ -203,25 +203,25 @@ function VinLookupPage() {
         )}
 
         {rows && (
-          <section className="mt-8 rounded-[28px] border border-white/10 bg-white/[0.03] p-6 backdrop-blur-xl">
+          <section className="mt-8 rounded-[28px] border border-[#1e40af]/18 bg-[#1e40af]/[0.045] p-6 backdrop-blur-xl">
             <h2 className="text-2xl font-semibold tracking-[-0.02em]">{heading}</h2>
-            <p className="mt-1 font-mono text-xs tracking-[0.14em] text-white/50">
+            <p className="mt-1 font-mono text-xs tracking-[0.14em] text-[#1f2b4d]/50">
               {clean}
             </p>
             <dl className="mt-5 grid gap-x-8 gap-y-3 sm:grid-cols-2">
               {rows.map((r) => (
                 <div
                   key={r.label}
-                  className="flex items-baseline justify-between gap-4 border-b border-white/5 pb-2"
+                  className="flex items-baseline justify-between gap-4 border-b border-[#1e40af]/12 pb-2"
                 >
-                  <dt className="text-sm text-white/55">{r.label}</dt>
-                  <dd className="text-right text-sm font-medium text-white">
+                  <dt className="text-sm text-[#1f2b4d]/55">{r.label}</dt>
+                  <dd className="text-right text-sm font-medium text-[#0f172a]">
                     {r.value}
                   </dd>
                 </div>
               ))}
             </dl>
-            <p className="mt-5 text-xs text-white/45">
+            <p className="mt-5 text-xs text-[#1f2b4d]/45">
               Build data only. A VIN decode does not show accidents, odometer
               rollbacks, or title brands. Check open recalls free at nhtsa.gov/recalls
               and pull a full history report before you buy.
@@ -233,13 +233,13 @@ function VinLookupPage() {
           <h2 className="text-2xl font-semibold tracking-[-0.02em]">
             Where to find the VIN
           </h2>
-          <ul className="mt-4 space-y-3 text-white/75">
+          <ul className="mt-4 space-y-3 text-[#1f2b4d]/75">
             <li>Driver side dashboard, visible through the windshield.</li>
             <li>Sticker inside the driver door jamb, with tire and weight ratings.</li>
             <li>Under the hood on the firewall or strut tower on many vehicles.</li>
             <li>Title, registration, and insurance card.</li>
           </ul>
-          <p className="mt-4 text-white/70">
+          <p className="mt-4 text-[#1f2b4d]/70">
             Every copy should match. A mismatch, a scratched plate, or a fresh rivet on
             the dash VIN plate is a walk away signal.
           </p>
@@ -250,22 +250,22 @@ function VinLookupPage() {
             What a VIN does and does not tell you
           </h2>
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
-            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
+            <div className="rounded-2xl border border-[#1e40af]/18 bg-[#1e40af]/[0.045] p-5">
               <h3 className="flex items-center gap-2 font-semibold">
-                <ShieldCheck className="h-4 w-4 text-blue-300" /> Included
+                <ShieldCheck className="h-4 w-4 text-[#1e40af]" /> Included
               </h3>
-              <ul className="mt-3 space-y-2 text-sm text-white/70">
+              <ul className="mt-3 space-y-2 text-sm text-[#1f2b4d]/70">
                 <li>Model year, make, model, trim, body style</li>
                 <li>Engine, displacement, fuel, transmission</li>
                 <li>Assembly plant and manufacturer</li>
                 <li>Factory safety equipment such as airbags and stability control</li>
               </ul>
             </div>
-            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
+            <div className="rounded-2xl border border-[#1e40af]/18 bg-[#1e40af]/[0.045] p-5">
               <h3 className="flex items-center gap-2 font-semibold">
                 <AlertTriangle className="h-4 w-4 text-amber-300" /> Not included
               </h3>
-              <ul className="mt-3 space-y-2 text-sm text-white/70">
+              <ul className="mt-3 space-y-2 text-sm text-[#1f2b4d]/70">
                 <li>Accident and repair history</li>
                 <li>Salvage, flood, or lemon title brands</li>
                 <li>Odometer readings and service records</li>
@@ -275,11 +275,11 @@ function VinLookupPage() {
           </div>
         </section>
 
-        <section className="mt-14 rounded-[28px] border border-[#3b82f6]/30 bg-white/[0.02] p-8 text-center">
+        <section className="mt-14 rounded-[28px] border border-[#3b82f6]/30 bg-[#1e40af]/[0.035] p-8 text-center">
           <h2 className="text-2xl font-semibold tracking-[-0.02em]">
             Next step: pass the test that comes with the car
           </h2>
-          <p className="mx-auto mt-3 max-w-xl text-white/70">
+          <p className="mx-auto mt-3 max-w-xl text-[#1f2b4d]/70">
             Drivable pairs an AI driving coach with a full length mock permit exam tuned
             to your state, so the license is ready before the keys are.
           </p>
@@ -289,7 +289,7 @@ function VinLookupPage() {
             </Link>
             <Link
               to="/guides/used-car-inspection"
-              className="text-sm font-semibold text-blue-300 underline-offset-4 hover:underline"
+              className="text-sm font-semibold text-[#1e40af] underline-offset-4 hover:underline"
             >
               Read the used car inspection checklist
             </Link>
