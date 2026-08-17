@@ -4,6 +4,7 @@ import { createLovableAiGatewayProvider } from "@/lib/ai-gateway.server";
 import { buildSystemPrompt } from "@/lib/system-prompt";
 import { createClient } from "@supabase/supabase-js";
 import type { Database } from "@/integrations/supabase/types";
+import { consumeChatCredit } from "@/lib/entitlements.server";
 
 type Body = { messages?: UIMessage[]; threadId?: string; userState?: string };
 
@@ -47,6 +48,14 @@ export const Route = createFileRoute("/api/chat")({
           .eq("user_id", userId)
           .maybeSingle();
         if (!thread) return new Response("Thread not found", { status: 404 });
+
+        // Authoritative paywall / free tier enforcement. The UI also gates this,
+        // but the credit is consumed and checked here so a direct API call or a
+        // modified client cannot get unlimited paid AI usage.
+        const quota = await consumeChatCredit(supabase, userId);
+        if (!quota.allowed) {
+          return new Response(quota.reason, { status: 402 });
+        }
 
         const lastUser = [...messages].reverse().find((m) => m.role === "user");
         if (lastUser) {

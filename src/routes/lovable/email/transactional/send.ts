@@ -20,6 +20,48 @@ function redactEmail(email: string | null | undefined): string {
   return `${localPart[0]}***@${domain}`
 }
 
+// Origins that caller-supplied link fields may point at. Anything else is
+// dropped so the verified sending domain cannot be used to deliver
+// attacker-chosen links (phishing) to recipients.
+const ALLOWED_LINK_ORIGINS = [
+  'https://mydrivable.com',
+  'https://www.mydrivable.com',
+  'https://mydrivable.lovable.app',
+]
+
+function isAllowedLink(value: string): boolean {
+  try {
+    const url = new URL(value)
+    return ALLOWED_LINK_ORIGINS.includes(url.origin)
+  } catch {
+    return false
+  }
+}
+
+// Strip any caller-supplied value that looks like a URL but is not on the
+// allowlist, and cap plain strings so templates cannot be stuffed with content.
+function sanitizeTemplateData(data: Record<string, any>): Record<string, any> {
+  const clean: Record<string, any> = {}
+  for (const [key, value] of Object.entries(data)) {
+    if (typeof value === 'string') {
+      const looksLikeUrl = /^[a-z][a-z0-9+.-]*:/i.test(value.trim()) || value.trim().startsWith('//')
+      if (looksLikeUrl) {
+        if (isAllowedLink(value.trim())) clean[key] = value.trim()
+        continue
+      }
+      clean[key] = value.slice(0, 200)
+      continue
+    }
+    if (typeof value === 'number' || typeof value === 'boolean') {
+      clean[key] = value
+    }
+  }
+  return clean
+}
+
+// Cheap per-account volume cap on top of the suppression list.
+const MAX_EMAILS_PER_USER_PER_HOUR = 10
+
 // Generate a cryptographically random 32-byte hex token
 function generateToken(): string {
   const bytes = new Uint8Array(32)
@@ -72,7 +114,7 @@ export const Route = createFileRoute("/lovable/email/transactional/send")({
           messageId = crypto.randomUUID()
           idempotencyKey = body.idempotencyKey || body.idempotency_key || messageId
           if (body.templateData && typeof body.templateData === 'object') {
-            templateData = body.templateData
+            templateData = sanitizeTemplateData(body.templateData as Record<string, any>)
           }
         } catch {
           return Response.json(
@@ -112,6 +154,50 @@ export const Route = createFileRoute("/lovable/email/transactional/send")({
               error: 'recipientEmail is required (unless the template defines a fixed recipient)',
             },
             { status: 400 }
+          )
+        }
+
+        // Authorization: a signed in caller may only mail their own verified
+        // address. Templates with a fixed `to` (site owner notifications) are
+        // exempt because the recipient is not caller controlled. Server
+        // triggered flows should use enqueueTransactionalEmail instead of this
+        // endpoint.
+        if (!template.to) {
+          const callerEmail = user.email?.toLowerCase()
+          if (!callerEmail || callerEmail !== effectiveRecipient.toLowerCase()) {
+            console.warn('Blocked attempt to email a third party address', {
+              templateName,
+              recipient_redacted: redactEmail(effectiveRecipient),
+            })
+            return Response.json(
+              { error: 'You can only send this email to your own account address' },
+              { status: 403 }
+            )
+          }
+        }
+
+        // Per-account volume cap so a single account cannot be used as a relay.
+        const windowStart = new Date(Date.now() - 60 * 60 * 1000).toISOString()
+        const { count: recentCount, error: recentError } = await supabase
+          .from('email_send_log')
+          .select('id', { count: 'exact', head: true })
+          .eq('recipient_email', effectiveRecipient)
+          .gte('created_at', windowStart)
+
+        if (recentError) {
+          console.error('Send volume check failed — refusing to send', {
+            error: recentError,
+          })
+          return Response.json(
+            { error: 'Failed to verify send volume' },
+            { status: 500 }
+          )
+        }
+
+        if ((recentCount ?? 0) >= MAX_EMAILS_PER_USER_PER_HOUR) {
+          return Response.json(
+            { success: false, reason: 'rate_limited' },
+            { status: 429 }
           )
         }
 

@@ -84,6 +84,7 @@ type ProfileContextValue = ProfileState & {
   toggleDailyTask: (taskId: string, dateKey: string) => void;
   setSkillMastery: (skillId: string, patch: Partial<SkillMasteryEntry>) => void;
   bumpFreeUsage: (kind: FreeUsageKind) => void;
+  refreshFreeUsage: () => void;
   reset: () => void;
 };
 
@@ -603,6 +604,27 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
     [isPro, persistProfileFields],
   );
 
+  // The AI chat endpoint consumes free chat credits server side, so the client
+  // re reads the authoritative counter instead of incrementing it locally.
+  const refreshFreeUsage = useCallback(async () => {
+    if (!userId) return;
+    const { data } = await supabase
+      .from("user_profiles")
+      .select("free_usage")
+      .eq("user_id", userId)
+      .maybeSingle();
+    const raw = (data?.free_usage ?? null) as Partial<FreeUsage> | null;
+    if (!raw) return;
+    const local = readLocalFreeUsage();
+    const merged: FreeUsage = {
+      chat: Math.max(Number(raw.chat ?? 0) || 0, local.chat),
+      exam: Math.max(Number(raw.exam ?? 0) || 0, local.exam),
+      pillars: { ...local.pillars, ...((raw.pillars ?? {}) as Record<string, number>) },
+    };
+    writeLocalFreeUsage(merged);
+    setProfile((p) => ({ ...p, freeUsage: merged }));
+  }, [userId]);
+
   const reset = useCallback(() => setProfile(DEFAULT), []);
 
   const driveHours = useMemo(
@@ -637,6 +659,7 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
     toggleDailyTask,
     setSkillMastery,
     bumpFreeUsage,
+    refreshFreeUsage: () => void refreshFreeUsage(),
     reset,
   };
 
