@@ -1,6 +1,8 @@
 import baseline from "./questions-baseline.json";
 import rulesJson from "./state-rules.json";
 import { buildQuestionBank } from "./question-generator";
+import { buildOfficialPool } from "./official-pool";
+import { DEFAULT_STATE_NAME } from "./state-numerics";
 import type { Question, StateRules, StatePack } from "./types";
 
 
