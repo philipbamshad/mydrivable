@@ -93,7 +93,7 @@ export function TestHubDashboard() {
           const locked = !isPro && remaining <= 0;
           return (
             <Card key={p.id} className="glass glow-soft lift fade-in-up p-6 rounded-[32px] flex flex-col gap-4">
-              <div className="flex items-start gap-4">
+              <div className="flex items-center gap-4">
                 <span
                   className="grid h-14 w-14 place-items-center rounded-2xl bg-primary/15 border border-primary/40 text-primary shrink-0"
                   style={{ boxShadow: "0 0 24px -4px var(--color-primary)" }}
