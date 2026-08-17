@@ -5,11 +5,9 @@ import logo from "@/assets/drivable-logo.png";
 import {
   ArrowRight,
   Check,
-  Sparkles,
   MessageSquare,
   ClipboardCheck,
   LayoutDashboard,
-  
   Timer,
   MapPin,
   Menu,
