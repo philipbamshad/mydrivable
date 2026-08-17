@@ -8,7 +8,7 @@ Drivable adapts prep to the learner's state and target test date, tracks readine
 
 - [Home](/): What Drivable does, features, and pricing for the Free Pass and Pro Pass.
 
-- [DMV Road Test Checklist](/guides/road-test-checklist): Documents to bring, vehicle requirements, pre drive safety check, scored maneuvers, and the automatic fail list.
+- [Privacy Policy](/privacy): How Bedford Global collects, uses, and protects user information.
 
 ## Optional
 
