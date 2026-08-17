@@ -79,7 +79,7 @@ export function ThreadSidebar() {
     const datePopoverKey = surface === "desktop" ? "desktop-date" : "mobile-date";
     const statePopoverKey = surface === "desktop" ? "desktop-state" : "mobile-state";
 
-    return !collapsed && (
+    return !(surface === "desktop" && collapsed) && (
     <div className="px-3 space-y-2 mb-3">
       <Popover
         open={activePopover === datePopoverKey}
