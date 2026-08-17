@@ -486,7 +486,7 @@ function Pricing() {
 
           {/* Pro Pass */}
           <div className="lift relative flex flex-col rounded-[28px] border border-[#3b82f6]/40 bg-white/85 p-8 backdrop-blur-xl shadow-[0_0_60px_-20px_rgba(30,64,175,0.22)]">
-            <span className="grad-violet-cyan absolute -top-3 left-1/2 z-10 -translate-x-1/2 rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-white whitespace-nowrap">
+            <span className="grad-orange-cyan absolute -top-3 left-1/2 z-10 -translate-x-1/2 rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-white whitespace-nowrap">
               Most Popular
             </span>
 
