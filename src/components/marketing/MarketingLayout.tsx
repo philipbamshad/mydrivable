@@ -51,9 +51,14 @@ export function MarketingLayout({ children }: { children: ReactNode }) {
             <img src={logo} alt="" className="h-7 w-7 logo-mask" />
             <span className="font-semibold text-[#0f172a]">Drivable</span>
           </div>
-          <a href="mailto:philip@mydrivable.com" className="text-[#1f2b4d]/70 hover:text-[#0f172a]">
-            philip@mydrivable.com
-          </a>
+          <div className="flex items-center gap-6">
+            <Link to="/privacy" className="text-[#1f2b4d]/70 hover:text-[#0f172a]">
+              Privacy Policy
+            </Link>
+            <a href="mailto:philip@mydrivable.com" className="text-[#1f2b4d]/70 hover:text-[#0f172a]">
+              philip@mydrivable.com
+            </a>
+          </div>
           <span>© {new Date().getFullYear()} Drivable · Drive safe. Drive legal.</span>
         </div>
       </footer>
