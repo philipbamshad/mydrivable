@@ -32,6 +32,9 @@ export function MarketingLayout({ children }: { children: ReactNode }) {
             <Link to="/guides/used-car-inspection" className="transition hover:text-white">
               Inspection Guide
             </Link>
+            <Link to="/guides/road-test-checklist" className="transition hover:text-white">
+              Road Test Checklist
+            </Link>
           </nav>
           <Link to="/auth" className={`${BTN_PRIMARY} px-5 py-2.5 text-sm`}>
             Sign Up
