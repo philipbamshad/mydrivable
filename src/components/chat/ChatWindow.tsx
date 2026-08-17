@@ -232,11 +232,28 @@ export function ChatWindow({
               <Message key={m.id} from={m.role}>
                 {m.role === "user" ? (
                   <MessageContent>
+                    {m.parts.some(
+                      (p) => p.type === "file" && p.mediaType?.startsWith("image/"),
+                    ) && (
+                      <div className="mb-2 flex flex-wrap gap-2">
+                        {m.parts.map((p, i) =>
+                          p.type === "file" && p.mediaType?.startsWith("image/") ? (
+                            <img
+                              key={i}
+                              src={p.url}
+                              alt={p.filename ?? "Attached image"}
+                              className="max-h-56 w-auto max-w-full rounded-xl border border-border object-contain"
+                            />
+                          ) : null,
+                        )}
+                      </div>
+                    )}
                     {m.parts.map((p, i) =>
                       p.type === "text" ? <span key={i}>{p.text}</span> : null,
                     )}
                   </MessageContent>
                 ) : (
+
                   <MessageContent className="px-0 group-[.is-assistant]:bg-transparent">
                     {m.parts.map((p, i) =>
                       p.type === "text" ? <MessageResponse key={i}>{p.text}</MessageResponse> : null,
