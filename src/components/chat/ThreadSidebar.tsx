@@ -226,9 +226,7 @@ export function ThreadSidebar() {
             )}
           >
             <div className="font-bold tracking-tight text-sm whitespace-nowrap">Drivable</div>
-            <div className="text-[10px] text-muted-foreground uppercase tracking-[0.2em] whitespace-nowrap">
-              Your permit coach
-            </div>
+
           </div>
         </Link>
 
