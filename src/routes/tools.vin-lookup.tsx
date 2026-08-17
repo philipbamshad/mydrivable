@@ -177,7 +177,7 @@ function VinLookupPage() {
             autoComplete="off"
             spellCheck={false}
             maxLength={17}
-            className="min-h-12 flex-1 rounded-2xl border border-[#1e40af]/25 bg-[#1e40af]/[0.055] px-4 font-mono text-base tracking-[0.14em] text-[#0f172a] placeholder:text-[#1f2b4d]/30 focus:border-[#3b82f6] focus:outline-none"
+            className="min-h-12 flex-1 rounded-2xl border border-[#1e40af]/25 bg-[#1e40af]/[0.055] px-4 font-mono text-base tracking-[0.14em] text-[#0f172a] placeholder:text-[#1f2b4d]/45 focus:border-[#3b82f6] focus:outline-none"
           />
           <button type="submit" className={`${BTN_PRIMARY} min-h-12 px-6 text-sm`}>
             {loading ? (
@@ -188,7 +188,7 @@ function VinLookupPage() {
             Decode VIN
           </button>
         </form>
-        <p className="mt-2 text-xs text-[#1f2b4d]/40">
+        <p className="mt-2 text-xs text-[#1f2b4d]/70">
           {clean.length}/17 characters. Letters I, O, and Q are never used in a VIN.
         </p>
 
@@ -205,7 +205,7 @@ function VinLookupPage() {
         {rows && (
           <section className="mt-8 rounded-[28px] border border-[#1e40af]/18 bg-[#1e40af]/[0.045] p-6 backdrop-blur-xl">
             <h2 className="text-2xl font-semibold tracking-[-0.02em]">{heading}</h2>
-            <p className="mt-1 font-mono text-xs tracking-[0.14em] text-[#1f2b4d]/50">
+            <p className="mt-1 font-mono text-xs tracking-[0.14em] text-[#1f2b4d]/65">
               {clean}
             </p>
             <dl className="mt-5 grid gap-x-8 gap-y-3 sm:grid-cols-2">

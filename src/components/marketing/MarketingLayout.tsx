@@ -10,7 +10,7 @@ const SHELL_BG: React.CSSProperties = {
 };
 
 export const BTN_PRIMARY =
-  "inline-flex items-center justify-center gap-2 rounded-full bg-[#ffffff] hover:bg-[#eef3ff] border border-[#1e40af] hover:border-[#3b82f6] text-[#0f172a] font-semibold transition active:scale-[0.98]";
+  "inline-flex items-center justify-center gap-2 rounded-full bg-[#ffffff] hover:bg-[#eef3ff] border border-[#1e40af] hover:border-[#3b82f6] text-[#1e40af] font-semibold transition active:scale-[0.98]";
 export const BTN_SECONDARY =
   "inline-flex items-center justify-center gap-2 rounded-full bg-[#1e40af]/[0.055] hover:bg-[#1e40af]/[0.1] border border-[#1e40af]/25 hover:border-[#1e40af]/40 text-[#0f172a] font-semibold transition active:scale-[0.98]";
 
@@ -45,7 +45,7 @@ export function MarketingLayout({ children }: { children: ReactNode }) {
 
       <main className="px-6 py-14">{children}</main>
 
-      <footer className="border-t border-[#1e40af]/12 px-6 py-10 text-sm text-[#1f2b4d]/50">
+      <footer className="border-t border-[#1e40af]/12 px-6 py-10 text-sm text-[#1f2b4d]/65">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 sm:flex-row">
           <div className="flex items-center gap-2">
             <img src={logo} alt="" className="h-7 w-7 logo-mask" />

@@ -207,7 +207,7 @@ function UsedCarInspectionGuide() {
                       aria-pressed={on}
                       className={`flex w-full items-start gap-3 rounded-2xl border p-4 text-left text-[15px] transition ${
                         on
-                          ? "border-[#3b82f6]/40 bg-[#3b82f6]/10 text-[#1f2b4d]/60 line-through"
+                          ? "border-[#3b82f6]/40 bg-[#3b82f6]/10 text-[#1f2b4d]/70 line-through"
                           : "border-[#1e40af]/18 bg-[#1e40af]/[0.045] text-[#1f2b4d]/85 hover:bg-[#1e40af]/[0.08]"
                       }`}
                     >

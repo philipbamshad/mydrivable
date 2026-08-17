@@ -76,7 +76,7 @@ const SHELL_BG: React.CSSProperties = {
   background: "linear-gradient(180deg, #ffffff 0%, #f4f7fd 50%, #ffffff 100%)",
 };
 const BTN_PRIMARY =
-  "inline-flex items-center justify-center gap-2 rounded-full bg-[#ffffff] hover:bg-[#eef3ff] border border-[#1e40af] hover:border-[#3b82f6] text-[#0f172a] font-semibold transition active:scale-[0.98]";
+  "inline-flex items-center justify-center gap-2 rounded-full bg-[#ffffff] hover:bg-[#eef3ff] border border-[#1e40af] hover:border-[#3b82f6] text-[#1e40af] font-semibold transition active:scale-[0.98]";
 
 const BTN_SECONDARY =
   "inline-flex items-center justify-center gap-2 rounded-full bg-[#1e40af]/[0.055] hover:bg-[#1e40af]/[0.1] border border-[#1e40af]/25 hover:border-[#1e40af]/40 text-[#0f172a] font-semibold transition active:scale-[0.98]";
@@ -145,7 +145,7 @@ function Nav() {
 
 
       {open && (
-        <div className="sm:hidden mx-auto mt-2 max-w-5xl rounded-2xl border border-[#1e40af]/18 bg-[#f4f7fd]/95 p-4 backdrop-blur-xl shadow-[0_20px_50px_-20px_rgba(0,0,0,0.8)]">
+        <div className="sm:hidden mx-auto mt-2 max-w-5xl rounded-2xl border border-[#1e40af]/18 bg-[#f4f7fd]/95 p-4 backdrop-blur-xl shadow-[0_20px_50px_-20px_rgba(30,64,175,0.14)]">
           <nav className="flex flex-col text-base font-medium text-[#1f2b4d]/85">
             {[
               ["Features", "#features"],
@@ -183,11 +183,11 @@ function Hero() {
       {/* Ambient hero glow — sized for both mobile and desktop */}
       <div
         aria-hidden
-        className="pointer-events-none absolute left-1/2 top-[22%] -z-10 h-[420px] w-[520px] max-w-[95vw] -translate-x-1/2 rounded-full bg-blue-600/20 blur-[90px] sm:top-[30%] sm:h-[700px] sm:w-[900px] sm:max-w-[110vw] sm:bg-blue-600/12 sm:blur-[130px]"
+        className="pointer-events-none absolute left-1/2 top-[22%] -z-10 h-[420px] w-[520px] max-w-[95vw] -translate-x-1/2 rounded-full bg-blue-500/12 blur-[90px] sm:top-[30%] sm:h-[700px] sm:w-[900px] sm:max-w-[110vw] sm:bg-blue-500/8 sm:blur-[130px]"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute left-1/2 top-[38%] -z-10 h-[260px] w-[340px] max-w-[75vw] -translate-x-1/2 rounded-full bg-blue-500/20 blur-[70px] sm:top-[45%] sm:h-[420px] sm:w-[560px] sm:max-w-[80vw] sm:bg-blue-500/14 sm:blur-[100px]"
+        className="pointer-events-none absolute left-1/2 top-[38%] -z-10 h-[260px] w-[340px] max-w-[75vw] -translate-x-1/2 rounded-full bg-blue-400/12 blur-[70px] sm:top-[45%] sm:h-[420px] sm:w-[560px] sm:max-w-[80vw] sm:bg-blue-400/8 sm:blur-[100px]"
       />
 
 
@@ -318,7 +318,7 @@ function Features() {
             Real License
           </span>
         </h2>
-        <p className="mx-auto mt-6 max-w-xl text-lg text-[#1f2b4d]/60">
+        <p className="mx-auto mt-6 max-w-xl text-lg text-[#1f2b4d]/70">
           Four focused tools, one outcome, pass on the first try.
         </p>
       </div>
@@ -332,7 +332,7 @@ function Features() {
               className="group relative rounded-[28px] border border-[#1e40af]/18 bg-[#1e40af]/[0.045] p-8 backdrop-blur-xl transition hover:border-[#1e40af]/30"
             >
 
-              <span className="grid h-12 w-12 place-items-center rounded-2xl bg-[#e8eefc] border border-[#1e40af]/18 text-[#0f172a]">
+              <span className="grid h-12 w-12 place-items-center rounded-2xl bg-[#e8eefc] border border-[#1e40af]/18 text-[#1e40af]">
                 <Icon className="h-5 w-5" />
               </span>
 
@@ -373,7 +373,7 @@ function Pricing() {
             Lane
           </span>
         </h2>
-        <p className="mt-4 text-[#1f2b4d]/60">Start free, or unlock the full test simulator with one payment.</p>
+        <p className="mt-4 text-[#1f2b4d]/70">Start free, or unlock the full test simulator with one payment.</p>
       </div>
 
       <div className="relative mx-auto max-w-5xl">
@@ -410,7 +410,7 @@ function Pricing() {
             <ul className="mt-7 space-y-3 text-[15px]">
               {freeFeatures.map((f) => (
                 <li key={f} className="flex items-center gap-3 text-[#1f2b4d]/85">
-                  <Check className="h-4 w-4 shrink-0 text-[#1f2b4d]/60" />
+                  <Check className="h-4 w-4 shrink-0 text-[#1f2b4d]/70" />
                   {f}
                 </li>
               ))}
@@ -418,8 +418,8 @@ function Pricing() {
           </div>
 
           {/* Pro Pass */}
-          <div className="relative flex flex-col rounded-[28px] border border-[#3b82f6]/40 bg-[#f4f7fd]/70 p-8 backdrop-blur-xl shadow-[0_0_60px_-20px_rgba(59,130,246,0.55)]">
-            <span className="absolute -top-3 left-1/2 z-10 -translate-x-1/2 rounded-full bg-[#e8eefc] border border-[#3b82f6]/60 px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-[#0f172a] whitespace-nowrap">
+          <div className="relative flex flex-col rounded-[28px] border border-[#3b82f6]/40 bg-[#f4f7fd]/70 p-8 backdrop-blur-xl shadow-[0_0_60px_-20px_rgba(30,64,175,0.22)]">
+            <span className="absolute -top-3 left-1/2 z-10 -translate-x-1/2 rounded-full bg-[#e8eefc] border border-[#3b82f6]/60 px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-[#1e40af] whitespace-nowrap">
               Most Popular
             </span>
 
@@ -485,10 +485,10 @@ function CTA() {
 
 function Footer() {
   return (
-    <footer className="border-t border-[#1e40af]/12 px-6 py-10 pb-24 text-sm text-[#1f2b4d]/50 sm:pb-10">
+    <footer className="border-t border-[#1e40af]/12 px-6 py-10 pb-24 text-sm text-[#1f2b4d]/65 sm:pb-10">
       <div className="mx-auto flex max-w-6xl flex-col items-center gap-6">
         <div className="flex flex-col items-center gap-2 text-center">
-          <span className="text-xs uppercase tracking-wider text-[#1f2b4d]/40">Need help?</span>
+          <span className="text-xs uppercase tracking-wider text-[#1f2b4d]/70">Need help?</span>
           <a
             href="mailto:philip@mydrivable.com"
             className="inline-flex min-h-11 items-center rounded-md px-3 py-2 text-[#1f2b4d]/80 transition hover:text-[#0f172a]"

@@ -240,7 +240,7 @@ function RoadTestChecklistGuide() {
                       aria-pressed={on}
                       className={`flex w-full items-start gap-3 rounded-2xl border p-4 text-left text-[15px] transition ${
                         on
-                          ? "border-[#3b82f6]/40 bg-[#3b82f6]/10 text-[#1f2b4d]/60 line-through"
+                          ? "border-[#3b82f6]/40 bg-[#3b82f6]/10 text-[#1f2b4d]/70 line-through"
                           : "border-[#1e40af]/18 bg-[#1e40af]/[0.045] text-[#1f2b4d]/85 hover:bg-[#1e40af]/[0.08]"
                       }`}
                     >
@@ -248,7 +248,7 @@ function RoadTestChecklistGuide() {
                         aria-hidden
                         className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-md border text-[10px] ${
                           on
-                            ? "border-[#3b82f6] bg-[#3b82f6] text-[#0f172a]"
+                            ? "border-[#1e40af] bg-[#1e40af] text-white"
                             : "border-[#1e40af]/35 bg-transparent"
                         }`}
                       >
