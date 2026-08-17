@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import logo from "@/assets/drivable-logo.png";
 import {
@@ -75,11 +75,33 @@ const SHELL =
 const SHELL_BG: React.CSSProperties = {
   background: "linear-gradient(180deg, #ffffff 0%, #f4f7fd 50%, #ffffff 100%)",
 };
-const BTN_PRIMARY =
-  "inline-flex items-center justify-center gap-2 rounded-full bg-[#ffffff] hover:bg-[#eef3ff] border border-[#1e40af] hover:border-[#3b82f6] text-[#1e40af] font-semibold transition active:scale-[0.98]";
+const BTN_PRIMARY = "cta-pill";
 
 const BTN_SECONDARY =
-  "inline-flex items-center justify-center gap-2 rounded-full bg-[#1e40af]/[0.055] hover:bg-[#1e40af]/[0.1] border border-[#1e40af]/25 hover:border-[#1e40af]/40 text-[#0f172a] font-semibold transition active:scale-[0.98]";
+  "inline-flex items-center justify-center gap-2 rounded-full bg-[#1e40af]/[0.055] hover:bg-[#1e40af]/[0.1] border border-[#1e40af]/25 hover:border-[#1e40af]/40 text-[#0f172a] font-semibold transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]";
+
+function useReveal<T extends HTMLElement>() {
+  const ref = useRef<T | null>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            el.setAttribute("data-revealed", "true");
+            io.unobserve(el);
+          }
+        });
+      },
+      { threshold: 0.15 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  return ref;
+}
+
 
 
 
@@ -106,9 +128,23 @@ function Landing() {
 
 function Nav() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 12);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
   return (
     <header className="sticky top-4 z-50 px-4">
-      <div className="mx-auto flex max-w-5xl items-center justify-between rounded-full border border-[#1e40af]/18 bg-[#1e40af]/[0.045] px-3 py-2 backdrop-blur-xl">
+      <div
+        className={`nav-float mx-auto flex max-w-5xl items-center justify-between rounded-full border bg-white/85 px-3 py-2 backdrop-blur-xl ${
+          scrolled
+            ? "border-[#1e40af]/20 shadow-[0_18px_44px_-24px_rgba(30,64,175,0.42)]"
+            : "border-[#1e40af]/10 shadow-[0_8px_24px_-20px_rgba(30,64,175,0.28)]"
+        }`}
+      >
+
         <Link to="/" className="flex items-center gap-2 pl-2">
           <img src={logo} alt="Drivable logo" className="h-9 w-9 logo-mask" />
           <span className="hidden text-[15px] font-semibold tracking-tight text-[#0f172a] sm:inline">
@@ -128,7 +164,7 @@ function Nav() {
             className={`${BTN_PRIMARY} group hidden sm:inline-flex px-5 py-2.5 text-sm`}
           >
             Sign Up
-            <span className="grid h-6 w-6 place-items-center rounded-full bg-[#1e40af]/15 transition group-hover:translate-x-0.5">
+            <span className="grid h-6 w-6 place-items-center rounded-full bg-white/15 transition-transform duration-300 group-hover:translate-x-0.5">
               <ArrowRight className="h-3.5 w-3.5" />
             </span>
           </Link>
@@ -180,27 +216,43 @@ function Nav() {
 function Hero() {
   return (
     <section className="relative isolate flex min-h-[calc(100svh-72px)] flex-col items-center justify-center overflow-hidden px-6 pt-10 pb-14 text-center sm:pt-6 sm:pb-10">
-      {/* Ambient hero glow — sized for both mobile and desktop */}
+      {/* Ambient hero glow, soft pastel cyan, slate blue and violet, gently drifting */}
       <div
         aria-hidden
-        className="pointer-events-none absolute left-1/2 top-[22%] -z-10 h-[420px] w-[520px] max-w-[95vw] -translate-x-1/2 rounded-full bg-blue-500/12 blur-[90px] sm:top-[30%] sm:h-[700px] sm:w-[900px] sm:max-w-[110vw] sm:bg-blue-500/8 sm:blur-[130px]"
+        className="ambient-blob absolute inset-x-0 top-[22%] -z-10 mx-auto h-[420px] w-[520px] max-w-[95vw] rounded-full blur-3xl sm:top-[30%] sm:h-[700px] sm:w-[900px] sm:max-w-[110vw]"
+        style={{
+          background:
+            "radial-gradient(closest-side, rgba(56,189,248,0.20), rgba(99,102,241,0.14) 55%, transparent 78%)",
+        }}
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute left-1/2 top-[38%] -z-10 h-[260px] w-[340px] max-w-[75vw] -translate-x-1/2 rounded-full bg-blue-400/12 blur-[70px] sm:top-[45%] sm:h-[420px] sm:w-[560px] sm:max-w-[80vw] sm:bg-blue-400/8 sm:blur-[100px]"
+        className="ambient-blob-slow absolute left-[18%] top-[30%] -z-10 h-[300px] w-[380px] max-w-[80vw] rounded-full blur-3xl sm:h-[460px] sm:w-[600px]"
+        style={{
+          background:
+            "radial-gradient(closest-side, rgba(167,139,250,0.18), rgba(167,139,250,0.08) 55%, transparent 78%)",
+        }}
+      />
+      <div
+        aria-hidden
+        className="ambient-spin-slow absolute inset-x-0 top-[42%] -z-10 mx-auto h-[320px] w-[320px] max-w-[80vw] rounded-full blur-3xl sm:h-[560px] sm:w-[560px]"
+        style={{
+          background:
+            "conic-gradient(from 0deg, rgba(56,189,248,0.14), rgba(129,140,248,0.12), rgba(196,181,253,0.14), rgba(56,189,248,0.14))",
+        }}
       />
 
-
-      <div className="mx-auto mb-6 inline-flex max-w-[640px] items-center gap-3 rounded-full border border-[#1e40af]/18 bg-[#1e40af]/[0.045] px-4 py-2 text-sm backdrop-blur-xl">
-        <span className="inline-flex items-center gap-1.5 text-[#1e40af]">
-          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-blue-400" />
-          New
+      <div className="mx-auto mb-6 inline-flex max-w-[640px] items-center gap-3 rounded-full border border-[#1e40af]/18 bg-white/80 px-4 py-2 text-sm shadow-[0_10px_30px_-24px_rgba(30,64,175,0.5)] backdrop-blur-xl">
+        <span className="inline-flex items-center gap-2 font-semibold text-[#1e40af]">
+          <span className="status-dot h-1.5 w-1.5 rounded-full bg-[#1e40af]" />
+          Updated for 2026
         </span>
 
         <span className="hidden text-[#1f2b4d]/80 sm:inline">
           Full-length state-specific Mock Permit Exam simulator, now live
         </span>
       </div>
+
 
       <div className="relative mx-auto max-w-5xl">
         <h1 className="relative text-4xl font-semibold leading-[1.05] tracking-[-0.03em] sm:text-6xl">
@@ -224,12 +276,14 @@ function Hero() {
           className={`${BTN_PRIMARY} px-8 py-4 text-base`}
         >
           Get Started
+          <ArrowRight className="h-4 w-4" />
         </Link>
 
         <a
           href="#features"
-          className="rounded-full border border-[#1e40af]/25 bg-[#1e40af]/[0.055] px-7 py-4 text-base font-medium text-[#1f2b4d]/90 backdrop-blur-xl transition hover:bg-[#1e40af]/10 hover:scale-[1.03] active:scale-[0.97]"
+          className="rounded-full border border-[#1e40af]/25 bg-white/70 px-7 py-4 text-base font-medium text-[#1f2b4d]/90 backdrop-blur-xl transition-all duration-300 hover:bg-white hover:scale-[1.02] active:scale-[0.97]"
         >
+
           See how it works
         </a>
       </div>
@@ -265,7 +319,7 @@ function StatesMarquee() {
           {loop.map((s, i) => (
             <span
               key={`${s}-${i}`}
-              className="inline-flex items-center gap-1.5 rounded-full border border-[#1e40af]/18 bg-[#1e40af]/[0.045] px-3.5 py-1.5 text-[13px] font-medium text-[#1f2b4d]/85 backdrop-blur-md transition-colors hover:border-[#1e40af]/35 hover:bg-[#1e40af]/[0.09] hover:text-[#0f172a]"
+              className="inline-flex items-center gap-1.5 rounded-full border border-[#1e40af]/18 bg-white/75 px-3.5 py-1.5 text-[13px] font-medium text-[#1f2b4d]/85 backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5 hover:border-[#1e40af]/35 hover:bg-white hover:text-[#0f172a]"
             >
               <MapPin className="h-3 w-3 text-[#1e40af]" />
               {s}
@@ -305,12 +359,15 @@ function Features() {
   ];
 
 
+  const grid = useReveal<HTMLDivElement>();
+
   return (
     <section id="features" className="px-6 pt-28 pb-20">
       <div className="mx-auto max-w-3xl text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-[#1e40af]/18 bg-[#1e40af]/[0.055] px-4 py-1.5 text-sm text-[#1f2b4d]/80 backdrop-blur-xl">
+          <span className="status-dot h-1.5 w-1.5 rounded-full bg-[#1e40af]" />
           <Sparkles className="h-4 w-4 text-[#1e40af]" />
-          Four Pillars
+          State-Specific DMV Prep
         </div>
         <h2 className="mt-8 text-5xl font-semibold tracking-[-0.03em] sm:text-6xl">
           Everything Between You and a{" "}
@@ -323,13 +380,13 @@ function Features() {
         </p>
       </div>
 
-      <div className="mx-auto mt-14 grid max-w-6xl gap-6 md:grid-cols-2">
+      <div ref={grid} className="mx-auto mt-14 grid max-w-6xl gap-6 md:grid-cols-2">
         {features.map((f) => {
           const Icon = f.icon;
           return (
             <div
               key={f.title}
-              className="group relative rounded-[28px] border border-[#1e40af]/18 bg-[#1e40af]/[0.045] p-8 backdrop-blur-xl transition hover:border-[#1e40af]/30"
+              className="lift reveal group relative rounded-[28px] border border-[#1e40af]/18 bg-white/75 p-8 backdrop-blur-xl hover:border-[#1e40af]/30"
             >
 
               <span className="grid h-12 w-12 place-items-center rounded-2xl bg-[#e8eefc] border border-[#1e40af]/18 text-[#1e40af]">
@@ -365,6 +422,7 @@ function Pricing() {
     <section id="pricing" className="px-6 py-28">
       <div className="mx-auto mb-14 max-w-3xl text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-[#1e40af]/18 bg-[#1e40af]/[0.055] px-4 py-1.5 text-sm text-[#1f2b4d]/80 backdrop-blur-xl">
+          <span className="status-dot h-1.5 w-1.5 rounded-full bg-[#1e40af]" />
           Two Plans
         </div>
         <h2 className="mt-6 text-5xl font-semibold tracking-[-0.03em] sm:text-6xl">
@@ -380,7 +438,7 @@ function Pricing() {
         {/* Centered ambient backlight behind the Pro card */}
         <div
           aria-hidden
-          className="pointer-events-none absolute right-0 top-1/2 -z-10 h-[520px] w-[520px] -translate-y-1/2 rounded-full blur-3xl"
+          className="ambient-blob-slow absolute right-0 top-[calc(50%-260px)] -z-10 h-[520px] w-[520px] rounded-full blur-3xl"
           style={{
             background:
               "radial-gradient(closest-side, rgba(30,64,175,0.35), rgba(30,64,175,0.10) 55%, transparent 75%)",
@@ -389,7 +447,7 @@ function Pricing() {
 
         <div className="grid gap-6 md:grid-cols-2 md:items-stretch">
           {/* Free Pass */}
-          <div className="relative flex flex-col rounded-[28px] border border-[#1e40af]/18 bg-[#f4f7fd]/70 p-8 backdrop-blur-xl">
+          <div className="lift relative flex flex-col rounded-[28px] border border-[#1e40af]/18 bg-white/80 p-8 backdrop-blur-xl">
             <div className="rounded-2xl border border-[#1e40af]/18 bg-[#1e40af]/[0.045] p-7">
               <div className="text-lg font-medium text-[#1f2b4d]/90">Free Pass</div>
               <div className="mt-8 flex items-end gap-2 text-[#0f172a]">
@@ -409,7 +467,7 @@ function Pricing() {
 
             <ul className="mt-7 space-y-3 text-[15px]">
               {freeFeatures.map((f) => (
-                <li key={f} className="flex items-center gap-3 text-[#1f2b4d]/85">
+                <li key={f} className="flex items-center gap-3 rounded-lg text-[#1f2b4d]/85 transition-transform duration-200 hover:-translate-y-1">
                   <Check className="h-4 w-4 shrink-0 text-[#1f2b4d]/70" />
                   {f}
                 </li>
@@ -418,7 +476,7 @@ function Pricing() {
           </div>
 
           {/* Pro Pass */}
-          <div className="relative flex flex-col rounded-[28px] border border-[#3b82f6]/40 bg-[#f4f7fd]/70 p-8 backdrop-blur-xl shadow-[0_0_60px_-20px_rgba(30,64,175,0.22)]">
+          <div className="lift relative flex flex-col rounded-[28px] border border-[#3b82f6]/40 bg-white/85 p-8 backdrop-blur-xl shadow-[0_0_60px_-20px_rgba(30,64,175,0.22)]">
             <span className="absolute -top-3 left-1/2 z-10 -translate-x-1/2 rounded-full bg-[#e8eefc] border border-[#3b82f6]/60 px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-[#1e40af] whitespace-nowrap">
               Most Popular
             </span>
@@ -442,7 +500,7 @@ function Pricing() {
 
             <ul className="mt-7 space-y-3 text-[15px]">
               {proFeatures.map((f) => (
-                <li key={f} className="flex items-center gap-3 text-[#1f2b4d]/85">
+                <li key={f} className="flex items-center gap-3 rounded-lg text-[#1f2b4d]/85 transition-transform duration-200 hover:-translate-y-1">
                   <Check className="h-4 w-4 shrink-0 text-[#1e40af]" />
                   {f}
                 </li>
