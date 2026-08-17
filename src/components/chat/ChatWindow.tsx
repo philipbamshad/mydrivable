@@ -33,8 +33,8 @@ import { useUserProfile } from "@/lib/user-profile";
 const SUGGESTIONS = [
   "I'm starting permit prep, where do I begin?",
   "Quiz me on right-of-way rules.",
-  "What does the examiner watch for during parallel parking?",
-  "Walk me through a smooth highway merge.",
+  "Explain right turn on red rules for the written test.",
+  "What do the warning sign shapes and colors mean?",
 ];
 
 
@@ -135,8 +135,8 @@ export function ChatWindow({
               title="What are we tackling?"
               description={
                 userState
-                  ? `Permit, road test, or specific ${userState} rules, pick a starter or just ask.`
-                  : "Permit prep, road-test maneuvers, or sign meanings, pick a starter or just ask."
+                  ? `Road signs, traffic laws, or specific ${userState} permit rules, pick a starter or just ask.`
+                  : "Permit prep, traffic laws, or road sign meanings, pick a starter or just ask."
               }
             >
               <div className="mt-6 grid sm:grid-cols-2 gap-2 w-full max-w-xl">
@@ -208,7 +208,7 @@ export function ChatWindow({
               <PromptInput onSubmit={handleSubmit}>
                 <PromptInputTextarea
                   ref={textareaRef}
-                  placeholder="Ask Drivable anything, sign meanings, right-of-way, parallel parking…"
+                  placeholder="Ask Drivable anything, road signs, right-of-way, traffic laws…"
                   disabled={isBusy}
                 />
                 <PromptInputFooter className="justify-end">

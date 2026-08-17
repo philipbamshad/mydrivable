@@ -1,6 +1,6 @@
 # Drivable
 
-> Drivable helps new drivers master the permit test and pass the road test, with an AI coach, a full-length mock permit exam, and state-specific section quizzes.
+> Drivable helps new drivers pass the DMV written permit test, with an AI coach, a full-length mock permit exam, and state-specific road signs and traffic law quizzes.
 
 Drivable adapts prep to the learner's state and target test date, tracks readiness, and coaches on rules of the road, signs, and safe driving habits.
 

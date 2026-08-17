@@ -83,7 +83,7 @@ export function TestHubDashboard() {
       <div>
         <h2 className="font-display text-2xl font-bold">Permit Pillar Quiz Dashboard</h2>
         <p className="text-sm text-muted-foreground mt-1">
-          Drill the four topics examiners weight most. Endless randomized sets tailored to {state || "your state"}
+          Drill the four topics the DMV written exam weights most. Endless randomized sets tailored to {state || "your state"}
           <Badge className="ml-2 align-middle bg-primary/15 text-primary border-primary/40 border">
             {isPro ? "Pro" : "Free preview"}
           </Badge>

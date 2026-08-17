@@ -21,7 +21,7 @@ export const Route = createFileRoute("/_authenticated/app/")({
       {
         name: "description",
         content:
-          "Track permit readiness, run mock exams, and chat with your AI driving coach.",
+          "Track permit readiness, run mock written exams, and chat with your AI permit coach.",
       },
       { name: "robots", content: "noindex" },
     ],

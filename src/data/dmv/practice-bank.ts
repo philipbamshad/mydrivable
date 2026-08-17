@@ -756,6 +756,6 @@ export const PILLAR_META: Record<
   },
   speed: {
     title: "Speed & Vehicle Ops",
-    blurb: "Speed limits, braking, curves, and maneuvers",
+    blurb: "Speed limits, braking, curves, and safe following rules",
   },
 };

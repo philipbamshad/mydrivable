@@ -18,9 +18,9 @@ export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
       { title: "Drivable" },
-      { name: "description", content: "Sign in to Drivable to start coaching toward your permit and road test." },
+      { name: "description", content: "Sign in to Drivable to start studying for your DMV permit written exam." },
       { property: "og:title", content: "Sign in, Drivable" },
-      { property: "og:description", content: "Sign in to Drivable to start coaching toward your permit and road test." },
+      { property: "og:description", content: "Sign in to Drivable to start studying for your DMV permit written exam." },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://mydrivable.com/auth" },
       { name: "robots", content: "noindex" },

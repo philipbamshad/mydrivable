@@ -280,7 +280,7 @@ function VinLookupPage() {
             Next step: pass the test that comes with the car
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-[#1f2b4d]/70">
-            Drivable pairs an AI driving coach with a full length mock permit exam tuned
+            Drivable pairs an AI permit coach with a full length mock permit exam tuned
             to your state, so the license is ready before the keys are.
           </p>
           <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
