@@ -128,9 +128,23 @@ function Landing() {
 
 function Nav() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 12);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
   return (
     <header className="sticky top-4 z-50 px-4">
-      <div className="mx-auto flex max-w-5xl items-center justify-between rounded-full border border-[#1e40af]/18 bg-[#1e40af]/[0.045] px-3 py-2 backdrop-blur-xl">
+      <div
+        className={`nav-float mx-auto flex max-w-5xl items-center justify-between rounded-full border bg-white/85 px-3 py-2 backdrop-blur-xl ${
+          scrolled
+            ? "border-[#1e40af]/20 shadow-[0_18px_44px_-24px_rgba(30,64,175,0.42)]"
+            : "border-[#1e40af]/10 shadow-[0_8px_24px_-20px_rgba(30,64,175,0.28)]"
+        }`}
+      >
+
         <Link to="/" className="flex items-center gap-2 pl-2">
           <img src={logo} alt="Drivable logo" className="h-9 w-9 logo-mask" />
           <span className="hidden text-[15px] font-semibold tracking-tight text-[#0f172a] sm:inline">
