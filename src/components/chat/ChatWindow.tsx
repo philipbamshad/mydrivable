@@ -47,18 +47,16 @@ export function ChatWindow({
 }) {
   const queryClient = useQueryClient();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const { state: userState, isPro, openCheckout, freeUsage, bumpFreeUsage } =
+  const { state: userState, isPro, openCheckout, freeUsage, refreshFreeUsage } =
     useUserProfile();
 
   // Free tier lifetime usage tracker. Bypassed entirely for Pro Pass.
   // Counter persists via the profile provider (localStorage + user_profiles
   // row) so the limit is permanent across refresh, logout, and devices.
   const FREE_LIFETIME_LIMIT = 5;
+  // The counter itself is incremented by the /api/chat handler, which is the
+  // authoritative gate; the client only reads it back for display.
   const freeUsed = freeUsage.chat;
-  const bumpChatUsage = useCallback(
-    () => bumpFreeUsage("chat"),
-    [bumpFreeUsage],
-  );
 
   const limitReached = !isPro && freeUsed >= FREE_LIFETIME_LIMIT;
   const remaining = Math.max(0, FREE_LIFETIME_LIMIT - freeUsed);
@@ -89,6 +87,7 @@ export function ChatWindow({
     onError: (e) => toast.error(e.message ?? "Something went wrong"),
     onFinish: () => {
       queryClient.invalidateQueries({ queryKey: ["threads"] });
+      refreshFreeUsage();
     },
   });
 
@@ -102,7 +101,6 @@ export function ChatWindow({
       openCheckout();
       return;
     }
-    bumpChatUsage();
     await sendMessage({ text: msg.text });
   };
 
@@ -111,7 +109,6 @@ export function ChatWindow({
       openCheckout();
       return;
     }
-    bumpChatUsage();
     await sendMessage({ text });
   };
 
