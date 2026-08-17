@@ -146,7 +146,7 @@ export function ChatWindow({
     <>
       <PromptInput
         onSubmit={handleSubmit}
-        className="rounded-[28px] border border-primary/25 bg-card/90 backdrop-blur shadow-[0_18px_50px_-28px_var(--color-primary)] transition-colors focus-within:border-primary/50"
+        className="rounded-[28px] border border-primary/25 bg-card/90 backdrop-blur shadow-[0_18px_50px_-28px_var(--color-primary)] outline-none transition-colors focus-within:border-primary/50 has-[[data-slot=input-group-control]:focus-visible]:ring-0 has-[[data-slot=input-group-control]:focus-visible]:border-primary/50"
       >
         <PromptInputTextarea
           ref={textareaRef}
