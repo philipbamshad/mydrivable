@@ -3,7 +3,7 @@
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, type UIMessage } from "ai";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Sparkles, Lock, Plus, Mic } from "lucide-react";
+import { Sparkles, Lock, Plus, Mic, Paperclip, Square, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -22,6 +22,7 @@ import {
   PromptInputTextarea,
   PromptInputFooter,
   PromptInputSubmit,
+  usePromptInputAttachments,
   type PromptInputMessage,
 } from "@/components/ai-elements/prompt-input";
 import { Shimmer } from "@/components/ai-elements/shimmer";
@@ -264,5 +265,113 @@ export function ChatWindow({
         </div>
       </div>
     </div>
+  );
+}
+
+function AttachmentChips() {
+  const attachments = usePromptInputAttachments();
+  if (attachments.files.length === 0) return null;
+  return (
+    <div className="flex flex-wrap gap-2 px-4 pt-3">
+      {attachments.files.map((f) => (
+        <span
+          key={f.id}
+          className="flex items-center gap-1.5 rounded-full border border-primary/25 bg-primary/5 py-1 pl-2.5 pr-1.5 text-xs text-foreground"
+        >
+          <Paperclip className="h-3 w-3 text-primary" />
+          <span className="max-w-[140px] truncate">{f.filename ?? "attachment"}</span>
+          <button
+            type="button"
+            aria-label="Remove attachment"
+            onClick={() => attachments.remove(f.id)}
+            className="grid h-4 w-4 place-items-center rounded-full text-muted-foreground hover:bg-primary/10 hover:text-foreground"
+          >
+            <X className="h-3 w-3" />
+          </button>
+        </span>
+      ))}
+    </div>
+  );
+}
+
+function AttachButton() {
+  const attachments = usePromptInputAttachments();
+  return (
+    <button
+      type="button"
+      aria-label="Add attachment"
+      onClick={() => attachments.openFileDialog()}
+      className="grid h-9 w-9 place-items-center rounded-full border border-primary/25 bg-primary/5 text-primary transition-colors hover:bg-primary/10"
+    >
+      <Plus className="h-4 w-4" />
+    </button>
+  );
+}
+
+function MicButton({
+  textareaRef,
+}: {
+  textareaRef: React.RefObject<HTMLTextAreaElement | null>;
+}) {
+  const [listening, setListening] = useState(false);
+  const recognitionRef = useRef<any>(null);
+
+  const stop = useCallback(() => {
+    recognitionRef.current?.stop?.();
+    setListening(false);
+  }, []);
+
+  useEffect(() => () => recognitionRef.current?.abort?.(), []);
+
+  const start = useCallback(() => {
+    const w = window as any;
+    const Recognition = w.SpeechRecognition ?? w.webkitSpeechRecognition;
+    if (!Recognition) {
+      toast.error("Voice input is not supported in this browser.");
+      return;
+    }
+    const rec = new Recognition();
+    rec.lang = "en-US";
+    rec.interimResults = true;
+    rec.continuous = false;
+    const base = textareaRef.current?.value ?? "";
+    rec.onresult = (event: any) => {
+      let transcript = "";
+      for (let i = 0; i < event.results.length; i++) {
+        transcript += event.results[i][0].transcript;
+      }
+      const el = textareaRef.current;
+      if (!el) return;
+      const next = (base ? `${base.trimEnd()} ` : "") + transcript;
+      el.value = next;
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+    };
+    rec.onerror = (event: any) => {
+      setListening(false);
+      if (event?.error === "not-allowed") {
+        toast.error("Microphone access was blocked.");
+      }
+    };
+    rec.onend = () => setListening(false);
+    recognitionRef.current = rec;
+    rec.start();
+    setListening(true);
+    textareaRef.current?.focus();
+  }, [textareaRef]);
+
+  return (
+    <button
+      type="button"
+      aria-label={listening ? "Stop voice input" : "Voice input"}
+      aria-pressed={listening}
+      onClick={() => (listening ? stop() : start())}
+      className={
+        listening
+          ? "grid h-9 w-9 place-items-center rounded-full border border-primary bg-primary text-primary-foreground transition-colors"
+          : "grid h-9 w-9 place-items-center rounded-full border border-primary/25 bg-primary/5 text-primary transition-colors hover:bg-primary/10"
+      }
+    >
+      {listening ? <Square className="h-3.5 w-3.5" /> : <Mic className="h-4 w-4" />}
+    </button>
   );
 }
