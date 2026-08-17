@@ -82,12 +82,6 @@ export function TestHubDashboard() {
     <div className="max-w-6xl mx-auto space-y-6">
       <div>
         <h2 className="font-display text-2xl font-bold">Permit Pillar Quiz Dashboard</h2>
-        <p className="text-sm text-muted-foreground mt-1">
-          Drill the four topics the DMV written exam weights most. Endless randomized sets tailored to {state || "your state"}
-          <Badge className="ml-2 align-middle bg-primary/15 text-primary border-primary/40 border">
-            {isPro ? "Pro" : "Free preview"}
-          </Badge>
-        </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -98,17 +92,21 @@ export function TestHubDashboard() {
           const remaining = Math.max(0, FREE_PILLAR_LIFETIME_LIMIT - used);
           const locked = !isPro && remaining <= 0;
           return (
-            <Card key={p.id} className="glass glow-soft lift fade-in-up p-6 rounded-2xl flex flex-col gap-4">
-              <div className="flex items-start gap-3">
+            <Card key={p.id} className="glass glow-soft lift fade-in-up p-6 rounded-[32px] flex flex-col gap-4">
+              <div className="flex items-start gap-4">
                 <span
-                  className="grid h-12 w-12 place-items-center rounded-xl bg-primary/15 border border-primary/40 text-primary shrink-0"
-                  style={{ boxShadow: "0 0 20px -4px var(--color-primary)" }}
+                  className="grid h-14 w-14 place-items-center rounded-2xl bg-primary/15 border border-primary/40 text-primary shrink-0"
+                  style={{ boxShadow: "0 0 24px -4px var(--color-primary)" }}
                 >
-                  <Icon className="w-5 h-5" />
+                  <Icon className="w-6 h-6" />
                 </span>
-                <div className="min-w-0 flex-1">
-                  <h3 className="font-display text-lg font-bold">{p.title}</h3>
-                  <p className="text-xs text-muted-foreground mt-0.5">{p.blurb}</p>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h3 className="font-display text-xl font-bold">{p.title}</h3>
+                    <Badge className="bg-primary/15 text-primary border-primary/40 border">
+                      {isPro ? "Pro" : "Free preview"}
+                    </Badge>
+                  </div>
                 </div>
                 <Badge
                   variant="outline"
@@ -126,16 +124,14 @@ export function TestHubDashboard() {
               )}
               <Button
                 onClick={() => (locked ? unlockPro() : setActive(p.id))}
-                className="press w-full"
+                className="press w-full rounded-2xl"
               >
                 {locked ? (
                   <>
                     <Lock className="w-4 h-4" /> Unlock with Pro Pass
                   </>
                 ) : (
-                  <>
-                    <Sparkles className="w-4 h-4" /> Start Test
-                  </>
+                  "Start Test"
                 )}
               </Button>
             </Card>
@@ -149,14 +145,14 @@ export function TestHubDashboard() {
 function PillarPaywall({ onUpgrade }: { onUpgrade: () => void }) {
   return (
     <div className="max-w-xl mx-auto p-5">
-      <div className="rounded-2xl border border-primary/40 bg-primary/10 px-6 py-8 text-center shadow-[0_0_40px_-18px_var(--color-primary)]">
+      <div className="rounded-[32px] border border-primary/40 bg-primary/10 px-6 py-8 text-center shadow-[0_0_40px_-18px_var(--color-primary)]">
         <div className="mx-auto mb-4 grid h-12 w-12 place-items-center rounded-full border border-primary/40 bg-primary/15">
           <Lock className="h-5 w-5 text-primary" />
         </div>
         <p className="text-sm font-semibold text-foreground leading-snug">
           You've answered your 3 free lifetime questions for this quiz section. Upgrade to Pro Pass to unlock unlimited questions, practice modes, and get full explanations! [Get Pro Pass — $9]
         </p>
-        <Button onClick={onUpgrade} className="press mt-5">
+        <Button onClick={onUpgrade} className="press mt-5 rounded-2xl">
           <Sparkles className="mr-1.5 h-4 w-4" />
           Get Pro Pass — $9
         </Button>
@@ -284,7 +280,7 @@ function QuizRunner({
         >
           <ArrowLeft className="w-3.5 h-3.5" /> Back to pillars
         </button>
-        <Card className="glass glow-strong p-10 rounded-2xl text-center">
+        <Card className="glass glow-strong p-10 rounded-[32px] text-center">
           <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
             {pillar.title}
           </p>
@@ -334,7 +330,7 @@ function QuizRunner({
         />
       </div>
 
-      <Card className="glass glow-soft p-6 rounded-2xl">
+      <Card className="glass glow-soft p-6 rounded-[32px]">
         {q.sign && (
           <div className="grid place-items-center mb-5">
             <SignVisual s={q.sign} />
