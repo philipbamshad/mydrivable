@@ -3,7 +3,7 @@
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, type UIMessage } from "ai";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Sparkles, Lock, Plus, Mic, Paperclip, Square, X } from "lucide-react";
+import { Sparkles, Lock, Plus, Paperclip, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -168,7 +168,6 @@ export function ChatWindow({
         <PromptInputFooter className="items-center justify-between border-0 px-3 pb-3">
           <AttachButton />
           <div className="flex items-center gap-2">
-            <MicButton textareaRef={textareaRef} />
             <PromptInputSubmit status={status} disabled={isBusy} />
           </div>
         </PromptInputFooter>
@@ -304,74 +303,6 @@ function AttachButton() {
       className="grid h-9 w-9 place-items-center rounded-full border border-primary/25 bg-primary/5 text-primary transition-colors hover:bg-primary/10"
     >
       <Plus className="h-4 w-4" />
-    </button>
-  );
-}
-
-function MicButton({
-  textareaRef,
-}: {
-  textareaRef: React.RefObject<HTMLTextAreaElement | null>;
-}) {
-  const [listening, setListening] = useState(false);
-  const recognitionRef = useRef<any>(null);
-
-  const stop = useCallback(() => {
-    recognitionRef.current?.stop?.();
-    setListening(false);
-  }, []);
-
-  useEffect(() => () => recognitionRef.current?.abort?.(), []);
-
-  const start = useCallback(() => {
-    const w = window as any;
-    const Recognition = w.SpeechRecognition ?? w.webkitSpeechRecognition;
-    if (!Recognition) {
-      toast.error("Voice input is not supported in this browser.");
-      return;
-    }
-    const rec = new Recognition();
-    rec.lang = "en-US";
-    rec.interimResults = true;
-    rec.continuous = false;
-    const base = textareaRef.current?.value ?? "";
-    rec.onresult = (event: any) => {
-      let transcript = "";
-      for (let i = 0; i < event.results.length; i++) {
-        transcript += event.results[i][0].transcript;
-      }
-      const el = textareaRef.current;
-      if (!el) return;
-      const next = (base ? `${base.trimEnd()} ` : "") + transcript;
-      el.value = next;
-      el.dispatchEvent(new Event("input", { bubbles: true }));
-    };
-    rec.onerror = (event: any) => {
-      setListening(false);
-      if (event?.error === "not-allowed") {
-        toast.error("Microphone access was blocked.");
-      }
-    };
-    rec.onend = () => setListening(false);
-    recognitionRef.current = rec;
-    rec.start();
-    setListening(true);
-    textareaRef.current?.focus();
-  }, [textareaRef]);
-
-  return (
-    <button
-      type="button"
-      aria-label={listening ? "Stop voice input" : "Voice input"}
-      aria-pressed={listening}
-      onClick={() => (listening ? stop() : start())}
-      className={
-        listening
-          ? "grid h-9 w-9 place-items-center rounded-full border border-primary bg-primary text-primary-foreground transition-colors"
-          : "grid h-9 w-9 place-items-center rounded-full border border-primary/25 bg-primary/5 text-primary transition-colors hover:bg-primary/10"
-      }
-    >
-      {listening ? <Square className="h-3.5 w-3.5" /> : <Mic className="h-4 w-4" />}
     </button>
   );
 }
