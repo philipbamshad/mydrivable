@@ -365,3 +365,105 @@
   clip-path: inset(4% round 22%);
   transform: scale(1.09);
 }
+
+/* ===== Ambient motion + interaction polish (Drivable) ===== */
+
+@keyframes ambient-drift {
+  0%   { transform: translate3d(-3%, -2%, 0) scale(1); opacity: 0.55; }
+  50%  { transform: translate3d(3%, 2%, 0) scale(1.08); opacity: 0.85; }
+  100% { transform: translate3d(-3%, -2%, 0) scale(1); opacity: 0.55; }
+}
+
+@keyframes ambient-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes status-dot {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--color-primary) 45%, transparent); opacity: 1; }
+  50%      { box-shadow: 0 0 0 6px color-mix(in oklab, var(--color-primary) 0%, transparent); opacity: 0.65; }
+}
+
+@keyframes reveal-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Slow looping ambient blobs. Always non interactive. */
+@utility ambient-blob {
+  pointer-events: none;
+  will-change: transform, opacity;
+  animation: ambient-drift 18s ease-in-out infinite;
+}
+@utility ambient-blob-slow {
+  pointer-events: none;
+  will-change: transform, opacity;
+  animation: ambient-drift 26s ease-in-out infinite reverse;
+}
+@utility ambient-spin-slow {
+  pointer-events: none;
+  will-change: transform;
+  animation: ambient-spin 48s linear infinite;
+}
+
+/* Pulsing status dot for badge pills */
+@utility status-dot {
+  animation: status-dot 2.2s ease-in-out infinite;
+}
+
+/* Scroll reveal, driven by a data attribute toggled on intersection */
+@utility reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+[data-revealed="true"].reveal,
+[data-revealed="true"] .reveal {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Lift on hover for cards, quiz containers and list items */
+@utility lift {
+  transition: transform 0.2s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  &:hover {
+    transform: translateY(-0.25rem);
+    box-shadow: 0 18px 40px -24px color-mix(in oklab, var(--color-primary) 45%, transparent);
+  }
+}
+
+/* Solid charcoal pill CTA with animated glow ring */
+@utility cta-pill {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  background: #111418;
+  color: #ffffff;
+  font-weight: 600;
+  border: 1px solid #111418;
+  box-shadow: 0 10px 26px -16px rgba(17, 20, 24, 0.7);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+  &:hover {
+    transform: scale(1.02);
+    background: #0b0d10;
+    box-shadow:
+      0 0 0 3px color-mix(in oklab, var(--color-primary) 22%, transparent),
+      0 16px 34px -18px rgba(17, 20, 24, 0.8);
+  }
+  &:active { transform: scale(0.98); }
+  & svg { transition: transform 0.3s ease; }
+  &:hover svg { transform: translateX(3px); }
+}
+
+/* Floating nav shell: white pill with shadow that deepens on scroll */
+@utility nav-float {
+  transition: box-shadow 0.35s ease, background-color 0.35s ease, border-color 0.35s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ambient-blob, .ambient-blob-slow, .ambient-spin-slow, .status-dot { animation: none; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+}
