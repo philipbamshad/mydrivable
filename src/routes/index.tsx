@@ -216,13 +216,13 @@ function Nav() {
 function Hero() {
   return (
     <section className="relative isolate flex min-h-[calc(100svh-72px)] flex-col items-center justify-center overflow-hidden px-6 pt-10 pb-14 text-center sm:pt-6 sm:pb-10">
-      {/* Ambient hero glow, soft pastel cyan, slate blue and violet, gently drifting */}
+      {/* Ambient hero glow, soft pastel cyan, slate blue and orange, gently drifting */}
       <div
         aria-hidden
         className="ambient-blob absolute inset-x-0 top-[22%] -z-10 mx-auto h-[420px] w-[520px] max-w-[95vw] rounded-full blur-3xl sm:top-[30%] sm:h-[700px] sm:w-[900px] sm:max-w-[110vw]"
         style={{
           background:
-            "radial-gradient(closest-side, rgba(56,189,248,0.20), rgba(99,102,241,0.14) 55%, transparent 78%)",
+            "radial-gradient(closest-side, rgba(56,189,248,0.20), rgba(59,130,246,0.14) 55%, transparent 78%)",
         }}
       />
       <div
@@ -230,7 +230,7 @@ function Hero() {
         className="ambient-blob-slow absolute left-[18%] top-[30%] -z-10 h-[300px] w-[380px] max-w-[80vw] rounded-full blur-3xl sm:h-[460px] sm:w-[600px]"
         style={{
           background:
-            "radial-gradient(closest-side, rgba(167,139,250,0.18), rgba(167,139,250,0.08) 55%, transparent 78%)",
+            "radial-gradient(closest-side, rgba(249,115,22,0.18), rgba(249,115,22,0.08) 55%, transparent 78%)",
         }}
       />
       <div
@@ -238,7 +238,7 @@ function Hero() {
         className="ambient-spin-slow absolute inset-x-0 top-[42%] -z-10 mx-auto h-[320px] w-[320px] max-w-[80vw] rounded-full blur-3xl sm:h-[560px] sm:w-[560px]"
         style={{
           background:
-            "conic-gradient(from 0deg, rgba(56,189,248,0.14), rgba(129,140,248,0.12), rgba(196,181,253,0.14), rgba(56,189,248,0.14))",
+            "conic-gradient(from 0deg, rgba(56,189,248,0.14), rgba(59,130,246,0.12), rgba(249,115,22,0.14), rgba(56,189,248,0.14))",
         }}
       />
       <div
@@ -246,7 +246,7 @@ function Hero() {
         className="aura-orbit absolute inset-x-0 top-[26%] -z-10 mx-auto h-[380px] w-[380px] max-w-[92vw] rounded-full blur-3xl sm:h-[680px] sm:w-[680px]"
         style={{
           background:
-            "conic-gradient(from 90deg, rgba(0,240,255,0.20), rgba(232,121,249,0.16), rgba(139,92,246,0.20), rgba(16,185,129,0.14), rgba(0,240,255,0.20))",
+            "conic-gradient(from 90deg, rgba(0,240,255,0.20), rgba(249,115,22,0.18), rgba(251,146,60,0.16), rgba(16,185,129,0.14), rgba(0,240,255,0.20))",
         }}
       />
 
