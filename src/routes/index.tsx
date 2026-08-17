@@ -569,7 +569,15 @@ function Footer() {
 
             <span className="font-semibold text-[#0f172a]">Drivable</span>
           </div>
-          <span>© {new Date().getFullYear()} Drivable · Drive safe. Drive legal.</span>
+          <div className="flex items-center gap-6">
+            <Link
+              to="/privacy"
+              className="transition hover:text-[#0f172a]"
+            >
+              Privacy Policy
+            </Link>
+            <span>© {new Date().getFullYear()} Drivable · Drive safe. Drive legal.</span>
+          </div>
         </div>
       </div>
     </footer>
