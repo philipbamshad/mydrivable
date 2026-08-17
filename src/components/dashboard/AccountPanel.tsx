@@ -47,9 +47,6 @@ export function AccountPanel() {
               <h2 className="font-display text-lg font-bold">
                 {theme === "dark" ? "Dark Mode" : "Light Mode"}
               </h2>
-              <p className="text-xs text-muted-foreground mt-0.5">
-                Switch between our neon-on-charcoal night theme and the frosty daylight palette. Your choice is saved.
-              </p>
             </div>
           </div>
           <ThemeToggle />
