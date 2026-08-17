@@ -41,7 +41,7 @@ const OrderConfirmationEmail = ({
           <Text style={cardTitle}>What is now unlocked</Text>
           <Text style={bullet}>• Unlimited full length mock permit exams</Text>
           <Text style={bullet}>• Targeted quizzes on every topic and weak spot</Text>
-          <Text style={bullet}>• Personal AI driving coach, available anytime</Text>
+          <Text style={bullet}>• Personal AI permit coach, available anytime</Text>
           
         </Section>
 
