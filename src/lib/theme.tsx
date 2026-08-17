@@ -9,7 +9,7 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 
 export type Theme = "light" | "dark";
-const STORAGE_KEY = "drivable.theme";
+const STORAGE_KEY = "drivable.theme.v2";
 
 type ThemeContextValue = {
   theme: Theme;
