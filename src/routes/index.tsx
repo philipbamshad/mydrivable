@@ -373,7 +373,6 @@ function Features() {
       <div className="mx-auto max-w-3xl text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-[#1e40af]/18 bg-[#1e40af]/[0.055] px-4 py-1.5 text-sm text-[#1f2b4d]/80 backdrop-blur-xl">
           <span className="status-dot h-1.5 w-1.5 rounded-full bg-[#f97316]" />
-          <Sparkles className="h-4 w-4 text-[#1e40af]" />
           State-Specific DMV Prep
         </div>
         <h2 className="mt-8 text-5xl font-semibold tracking-[-0.03em] sm:text-6xl">
