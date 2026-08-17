@@ -79,7 +79,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
       { name: "apple-mobile-web-app-capable", content: "yes" },
       { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
-      { title: "Drivable, AI Driving Coach and Permit Practice" },
+      { title: "Drivable" },
       { name: "description", content: "Drivable coaches teens through permit, road tests, and car maintenance with practical, expert guidance." },
       { name: "author", content: "Drivable" },
       { name: "google-site-verification", content: "NUwVkbtxYDBMMYIJckQW9XUdhSufkUu6g1ZoA28bsUw" },
