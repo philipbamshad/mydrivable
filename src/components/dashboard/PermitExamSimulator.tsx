@@ -70,12 +70,9 @@ export function PermitExamSimulator() {
     <div className="max-w-3xl mx-auto space-y-6">
       <div>
         <h2 className="font-display text-2xl font-bold">State Permit Exam Simulator</h2>
-        <p className="text-sm text-muted-foreground mt-1">
-          Full-length mock test calibrated to the {state || "your state"} DMV.
-        </p>
       </div>
 
-      <Card className="glass glow-strong p-8 rounded-2xl">
+      <Card className="glass glow-strong p-8 rounded-[32px]">
         <div className="flex items-start gap-4">
           <div className="grid h-14 w-14 place-items-center rounded-2xl bg-primary/15 border border-primary/40 text-primary shrink-0"
             style={{ boxShadow: "0 0 24px -4px var(--color-primary)" }}>
@@ -90,9 +87,6 @@ export function PermitExamSimulator() {
                 {isPro ? "Pro" : "Free preview"}
               </Badge>
             </div>
-            <p className="text-sm text-muted-foreground mt-1">
-              {cfg.count} questions · pass at {cfg.pass}%
-            </p>
           </div>
         </div>
 
@@ -104,18 +98,17 @@ export function PermitExamSimulator() {
 
         <Button
           onClick={() => setRunning(true)}
-          className="press w-full mt-6 "
+          className="press w-full mt-6 rounded-2xl"
         >
-          <Sparkles className="w-4 h-4 mr-1.5" />
           Start full-length exam
         </Button>
       </Card>
 
-      <p className="text-xs text-center text-muted-foreground">
-        {isPro
-          ? "Each attempt is freshly randomized, you'll never see the same exam twice."
-          : `${remaining} of ${FREE_EXAM_LIFETIME_LIMIT} free lifetime exam questions left. Upgrade for unlimited practice.`}
-      </p>
+      {!isPro && (
+        <p className="text-xs text-center text-muted-foreground">
+          {remaining} of {FREE_EXAM_LIFETIME_LIMIT} free lifetime exam questions left. Upgrade for unlimited practice.
+        </p>
+      )}
     </div>
   );
 }
@@ -385,7 +378,7 @@ function ExamRunner({
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-xl border border-border bg-card/40 p-3 text-center">
+    <div className="rounded-2xl border border-border bg-card/40 p-3 text-center">
       <div className="text-[10px] uppercase tracking-widest text-muted-foreground">{label}</div>
       <div className="font-display text-xl font-bold mt-0.5">{value}</div>
     </div>
