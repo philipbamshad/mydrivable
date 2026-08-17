@@ -451,9 +451,9 @@
 }
 
 /* Gradient fills */
-@utility grad-violet-cyan { background-image: var(--gradient-violet-cyan); }
+@utility grad-orange-cyan { background-image: var(--gradient-orange-cyan); }
 @utility grad-emerald-blue { background-image: var(--gradient-emerald-blue); }
-@utility grad-amber-magenta { background-image: var(--gradient-amber-magenta); }
+@utility grad-amber-orange { background-image: var(--gradient-amber-orange); }
 
 /* Animated gradient text */
 @keyframes grad-shift {
@@ -461,7 +461,7 @@
   50%      { background-position: 100% 50%; }
 }
 @utility text-grad {
-  background-image: var(--gradient-violet-cyan);
+  background-image: var(--gradient-orange-cyan);
   background-size: 220% 220%;
   -webkit-background-clip: text;
   background-clip: text;
@@ -469,7 +469,7 @@
   animation: grad-shift 9s ease-in-out infinite;
 }
 @utility text-grad-warm {
-  background-image: var(--gradient-amber-magenta);
+  background-image: var(--gradient-amber-orange);
   background-size: 220% 220%;
   -webkit-background-clip: text;
   background-clip: text;
