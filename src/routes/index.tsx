@@ -365,8 +365,9 @@ function Features() {
     <section id="features" className="px-6 pt-28 pb-20">
       <div className="mx-auto max-w-3xl text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-[#1e40af]/18 bg-[#1e40af]/[0.055] px-4 py-1.5 text-sm text-[#1f2b4d]/80 backdrop-blur-xl">
+          <span className="status-dot h-1.5 w-1.5 rounded-full bg-[#1e40af]" />
           <Sparkles className="h-4 w-4 text-[#1e40af]" />
-          Four Pillars
+          State-Specific DMV Prep
         </div>
         <h2 className="mt-8 text-5xl font-semibold tracking-[-0.03em] sm:text-6xl">
           Everything Between You and a{" "}
@@ -421,6 +422,7 @@ function Pricing() {
     <section id="pricing" className="px-6 py-28">
       <div className="mx-auto mb-14 max-w-3xl text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-[#1e40af]/18 bg-[#1e40af]/[0.055] px-4 py-1.5 text-sm text-[#1f2b4d]/80 backdrop-blur-xl">
+          <span className="status-dot h-1.5 w-1.5 rounded-full bg-[#1e40af]" />
           Two Plans
         </div>
         <h2 className="mt-6 text-5xl font-semibold tracking-[-0.03em] sm:text-6xl">
@@ -436,7 +438,7 @@ function Pricing() {
         {/* Centered ambient backlight behind the Pro card */}
         <div
           aria-hidden
-          className="pointer-events-none absolute right-0 top-1/2 -z-10 h-[520px] w-[520px] -translate-y-1/2 rounded-full blur-3xl"
+          className="ambient-blob-slow absolute right-0 top-1/2 -z-10 h-[520px] w-[520px] -translate-y-1/2 rounded-full blur-3xl"
           style={{
             background:
               "radial-gradient(closest-side, rgba(30,64,175,0.35), rgba(30,64,175,0.10) 55%, transparent 75%)",
@@ -445,7 +447,7 @@ function Pricing() {
 
         <div className="grid gap-6 md:grid-cols-2 md:items-stretch">
           {/* Free Pass */}
-          <div className="relative flex flex-col rounded-[28px] border border-[#1e40af]/18 bg-[#f4f7fd]/70 p-8 backdrop-blur-xl">
+          <div className="lift relative flex flex-col rounded-[28px] border border-[#1e40af]/18 bg-white/80 p-8 backdrop-blur-xl">
             <div className="rounded-2xl border border-[#1e40af]/18 bg-[#1e40af]/[0.045] p-7">
               <div className="text-lg font-medium text-[#1f2b4d]/90">Free Pass</div>
               <div className="mt-8 flex items-end gap-2 text-[#0f172a]">
@@ -474,7 +476,7 @@ function Pricing() {
           </div>
 
           {/* Pro Pass */}
-          <div className="relative flex flex-col rounded-[28px] border border-[#3b82f6]/40 bg-[#f4f7fd]/70 p-8 backdrop-blur-xl shadow-[0_0_60px_-20px_rgba(30,64,175,0.22)]">
+          <div className="lift relative flex flex-col rounded-[28px] border border-[#3b82f6]/40 bg-white/85 p-8 backdrop-blur-xl shadow-[0_0_60px_-20px_rgba(30,64,175,0.22)]">
             <span className="absolute -top-3 left-1/2 z-10 -translate-x-1/2 rounded-full bg-[#e8eefc] border border-[#3b82f6]/60 px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-[#1e40af] whitespace-nowrap">
               Most Popular
             </span>
