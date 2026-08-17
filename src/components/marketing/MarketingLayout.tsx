@@ -26,14 +26,8 @@ export function MarketingLayout({ children }: { children: ReactNode }) {
             </span>
           </Link>
           <nav className="hidden items-center gap-6 text-[15px] font-medium text-[#1f2b4d]/70 sm:flex">
-            <Link to="/tools/vin-lookup" className="transition hover:text-[#0f172a]">
-              VIN Lookup
-            </Link>
-            <Link to="/guides/used-car-inspection" className="transition hover:text-[#0f172a]">
-              Inspection Guide
-            </Link>
-            <Link to="/guides/road-test-checklist" className="transition hover:text-[#0f172a]">
-              Road Test Checklist
+            <Link to="/privacy" className="transition hover:text-[#0f172a]">
+              Privacy Policy
             </Link>
           </nav>
           <Link to="/auth" className={`${BTN_PRIMARY} px-5 py-2.5 text-sm`}>

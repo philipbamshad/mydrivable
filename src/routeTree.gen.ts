@@ -16,9 +16,6 @@ import { Route as McpRouteImport } from './routes/mcp'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ToolsVinLookupRouteImport } from './routes/tools.vin-lookup'
-import { Route as GuidesUsedCarInspectionRouteImport } from './routes/guides.used-car-inspection'
-import { Route as GuidesRoadTestChecklistRouteImport } from './routes/guides.road-test-checklist'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
 import { Route as CheckoutReturnRouteImport } from './routes/checkout.return'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
@@ -69,21 +66,6 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ToolsVinLookupRoute = ToolsVinLookupRouteImport.update({
-  id: '/tools/vin-lookup',
-  path: '/tools/vin-lookup',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const GuidesUsedCarInspectionRoute = GuidesUsedCarInspectionRouteImport.update({
-  id: '/guides/used-car-inspection',
-  path: '/guides/used-car-inspection',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const GuidesRoadTestChecklistRoute = GuidesRoadTestChecklistRouteImport.update({
-  id: '/guides/road-test-checklist',
-  path: '/guides/road-test-checklist',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EmailUnsubscribeRoute = EmailUnsubscribeRouteImport.update({
@@ -193,9 +175,6 @@ export interface FileRoutesByFullPath {
   '/api/chat': typeof ApiChatRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
-  '/guides/road-test-checklist': typeof GuidesRoadTestChecklistRoute
-  '/guides/used-car-inspection': typeof GuidesUsedCarInspectionRoute
-  '/tools/vin-lookup': typeof ToolsVinLookupRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
@@ -220,9 +199,6 @@ export interface FileRoutesByTo {
   '/api/chat': typeof ApiChatRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
-  '/guides/road-test-checklist': typeof GuidesRoadTestChecklistRoute
-  '/guides/used-car-inspection': typeof GuidesUsedCarInspectionRoute
-  '/tools/vin-lookup': typeof ToolsVinLookupRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
@@ -250,9 +226,6 @@ export interface FileRoutesById {
   '/api/chat': typeof ApiChatRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
-  '/guides/road-test-checklist': typeof GuidesRoadTestChecklistRoute
-  '/guides/used-car-inspection': typeof GuidesUsedCarInspectionRoute
-  '/tools/vin-lookup': typeof ToolsVinLookupRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
@@ -280,9 +253,6 @@ export interface FileRouteTypes {
     | '/api/chat'
     | '/checkout/return'
     | '/email/unsubscribe'
-    | '/guides/road-test-checklist'
-    | '/guides/used-car-inspection'
-    | '/tools/vin-lookup'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
     | '/lovable/email/suppression'
@@ -307,9 +277,6 @@ export interface FileRouteTypes {
     | '/api/chat'
     | '/checkout/return'
     | '/email/unsubscribe'
-    | '/guides/road-test-checklist'
-    | '/guides/used-car-inspection'
-    | '/tools/vin-lookup'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
     | '/lovable/email/suppression'
@@ -336,9 +303,6 @@ export interface FileRouteTypes {
     | '/api/chat'
     | '/checkout/return'
     | '/email/unsubscribe'
-    | '/guides/road-test-checklist'
-    | '/guides/used-car-inspection'
-    | '/tools/vin-lookup'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
     | '/lovable/email/suppression'
@@ -365,9 +329,6 @@ export interface RootRouteChildren {
   ApiChatRoute: typeof ApiChatRoute
   CheckoutReturnRoute: typeof CheckoutReturnRoute
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
-  GuidesRoadTestChecklistRoute: typeof GuidesRoadTestChecklistRoute
-  GuidesUsedCarInspectionRoute: typeof GuidesUsedCarInspectionRoute
-  ToolsVinLookupRoute: typeof ToolsVinLookupRoute
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
   Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
   LovableEmailSuppressionRoute: typeof LovableEmailSuppressionRoute
@@ -428,27 +389,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/tools/vin-lookup': {
-      id: '/tools/vin-lookup'
-      path: '/tools/vin-lookup'
-      fullPath: '/tools/vin-lookup'
-      preLoaderRoute: typeof ToolsVinLookupRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/guides/used-car-inspection': {
-      id: '/guides/used-car-inspection'
-      path: '/guides/used-car-inspection'
-      fullPath: '/guides/used-car-inspection'
-      preLoaderRoute: typeof GuidesUsedCarInspectionRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/guides/road-test-checklist': {
-      id: '/guides/road-test-checklist'
-      path: '/guides/road-test-checklist'
-      fullPath: '/guides/road-test-checklist'
-      preLoaderRoute: typeof GuidesRoadTestChecklistRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/email/unsubscribe': {
@@ -611,9 +551,6 @@ const rootRouteChildren: RootRouteChildren = {
   ApiChatRoute: ApiChatRoute,
   CheckoutReturnRoute: CheckoutReturnRoute,
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,
-  GuidesRoadTestChecklistRoute: GuidesRoadTestChecklistRoute,
-  GuidesUsedCarInspectionRoute: GuidesUsedCarInspectionRoute,
-  ToolsVinLookupRoute: ToolsVinLookupRoute,
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
   Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
   LovableEmailSuppressionRoute: LovableEmailSuppressionRoute,
