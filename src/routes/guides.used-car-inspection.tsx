@@ -216,7 +216,7 @@ function UsedCarInspectionGuide() {
                           on ? "border-[#3b82f6] bg-[#3b82f6]" : "border-[#1e40af]/35"
                         }`}
                       >
-                        {on && <Check className="h-3.5 w-3.5 text-[#0f172a]" />}
+                        {on && <Check className="h-3.5 w-3.5 text-white" />}
                       </span>
                       {item}
                     </button>
