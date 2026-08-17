@@ -6,6 +6,12 @@ import { getThreadMessages } from "@/lib/threads.functions";
 import { ChatWindow } from "@/components/chat/ChatWindow";
 
 export const Route = createFileRoute("/_authenticated/app/c/$threadId")({
+  head: () => ({
+    meta: [
+      { title: "Coach Conversation, Drivable" },
+      { name: "robots", content: "noindex" },
+    ],
+  }),
   component: ThreadPage,
 });
 

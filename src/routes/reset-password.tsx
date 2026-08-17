@@ -102,7 +102,7 @@ function ResetPasswordPage() {
       <div className="w-full max-w-sm">
         <Link to="/" className="flex flex-col items-center gap-3 mb-8">
           <img src={logo} alt="Drivable" width={56} height={56} className="logo-mask" />
-          <h1 className="font-display text-2xl font-bold tracking-tight">Drivable</h1>
+          <h1 className="font-display text-2xl font-bold tracking-tight">Reset your Drivable password</h1>
         </Link>
 
         <div className="glass glow-soft rounded-2xl border border-primary/20 p-6">

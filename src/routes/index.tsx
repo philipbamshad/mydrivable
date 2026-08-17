@@ -20,7 +20,7 @@ import { US_STATES } from "@/lib/user-profile";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Drivable" },
+      { title: "Drivable, AI Driving Coach and Permit Test Practice" },
       {
         name: "description",
         content:

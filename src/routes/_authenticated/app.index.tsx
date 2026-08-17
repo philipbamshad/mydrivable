@@ -15,6 +15,17 @@ import { useUserProfile } from "@/lib/user-profile";
 type TabId = "test-hub" | "state-exam" | "chat";
 
 export const Route = createFileRoute("/_authenticated/app/")({
+  head: () => ({
+    meta: [
+      { title: "Your Dashboard, Drivable" },
+      {
+        name: "description",
+        content:
+          "Track permit readiness, run mock exams, and chat with your AI driving coach.",
+      },
+      { name: "robots", content: "noindex" },
+    ],
+  }),
   validateSearch: (
     s: Record<string, unknown>,
   ): { tab?: TabId; checkout?: string; intent?: string } => {
