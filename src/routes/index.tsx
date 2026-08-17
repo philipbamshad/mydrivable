@@ -276,12 +276,14 @@ function Hero() {
           className={`${BTN_PRIMARY} px-8 py-4 text-base`}
         >
           Get Started
+          <ArrowRight className="h-4 w-4" />
         </Link>
 
         <a
           href="#features"
-          className="rounded-full border border-[#1e40af]/25 bg-[#1e40af]/[0.055] px-7 py-4 text-base font-medium text-[#1f2b4d]/90 backdrop-blur-xl transition hover:bg-[#1e40af]/10 hover:scale-[1.03] active:scale-[0.97]"
+          className="rounded-full border border-[#1e40af]/25 bg-white/70 px-7 py-4 text-base font-medium text-[#1f2b4d]/90 backdrop-blur-xl transition-all duration-300 hover:bg-white hover:scale-[1.02] active:scale-[0.97]"
         >
+
           See how it works
         </a>
       </div>
