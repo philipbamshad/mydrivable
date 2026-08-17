@@ -1,6 +1,8 @@
 import baseline from "./questions-baseline.json";
 import rulesJson from "./state-rules.json";
 import { buildQuestionBank } from "./question-generator";
+import { buildOfficialPool } from "./official-pool";
+import { DEFAULT_STATE_NAME } from "./state-numerics";
 import type { Question, StateRules, StatePack } from "./types";
 
 
@@ -124,14 +126,30 @@ function buildStateFactQuestions(r: StateRules): Question[] {
   return out;
 }
 
-/** Build the full pack (rules + question pool) for a given state name. */
+/**
+ * Build the full pack (rules + question pool) for a given state name.
+ *
+ * Order of the pool: the official handbook questions for that state code
+ * first (the same rows the Sections tab uses), then auto derived state fact
+ * questions, then the generated template bank, then the shared baseline.
+ * With no state selected we default to California, per product.
+ */
 export function getStatePack(stateName: string | null | undefined): StatePack {
-  const rules = (stateName && RULES[stateName]) || DEFAULT_RULES;
+  const resolvedName =
+    stateName && RULES[stateName] ? stateName : DEFAULT_STATE_NAME;
+  const rules = RULES[resolvedName] ?? DEFAULT_RULES;
+  const official = buildOfficialPool(resolvedName).map<Question>((q) => ({
+    q: q.q,
+    options: q.options,
+    correct: q.correct,
+    explanation: q.explanation,
+    source: q.state_code,
+  }));
   const stateFacts = buildStateFactQuestions(rules);
   const generated = buildQuestionBank(rules);
   return {
     rules,
-    questions: [...stateFacts, ...generated, ...BASELINE],
+    questions: [...official, ...stateFacts, ...generated, ...BASELINE],
   };
 }
 

@@ -11,6 +11,7 @@
 import type { SignSpec } from "@/components/dashboard/SignVisual";
 import { STATE_DRIVING_RULES } from "@/data/states";
 import { shuffleAnswers } from "./question-generator";
+import { buildOfficialPool } from "./official-pool";
 
 export type PracticeQuestion = {
   q: string;
@@ -690,6 +691,9 @@ const TEMPLATES: Template[] = [
 /**
  * Build fresh pillar banks for the active state. Every option array is
  * re-shuffled on each call so answer positions rotate unpredictably.
+ *
+ * The official handbook pool for the active state code is merged in first, so
+ * the Sections tab and the mock exam draw from the exact same core questions.
  */
 export function buildPillarBanks(
   stateName?: string | null,
@@ -701,6 +705,17 @@ export function buildPillarBanks(
     substances: [],
     speed: [],
   };
+
+  for (const o of buildOfficialPool(stateName)) {
+    out[o.pillar].push(
+      shuffleAnswers({
+        q: o.q,
+        options: o.options,
+        correct: o.correct,
+        explanation: o.explanation,
+      }) as PracticeQuestion,
+    );
+  }
 
   for (const t of TEMPLATES) {
     const interpolated: PracticeQuestion = {
