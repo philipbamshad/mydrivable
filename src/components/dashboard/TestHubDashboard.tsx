@@ -83,7 +83,10 @@ export function TestHubDashboard() {
       <div>
         <h2 className="font-display text-2xl font-bold">Permit Pillar Quiz Dashboard</h2>
         <p className="text-sm text-muted-foreground mt-1">
-          Drill the four topics examiners weight most. Endless randomized sets tailored to {state || "your state"}.
+          Drill the four topics examiners weight most. Endless randomized sets tailored to {state || "your state"}
+          <span className="inline-flex items-center align-middle ml-2 rounded-full border border-primary/40 bg-primary/10 px-2 py-0.5 text-[11px] font-semibold text-primary">
+            Pro
+          </span>
         </p>
       </div>
 
