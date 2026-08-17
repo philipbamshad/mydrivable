@@ -164,7 +164,7 @@ function Nav() {
             className={`${BTN_PRIMARY} group hidden sm:inline-flex px-5 py-2.5 text-sm`}
           >
             Sign Up
-            <span className="grid h-6 w-6 place-items-center rounded-full bg-[#1e40af]/15 transition group-hover:translate-x-0.5">
+            <span className="grid h-6 w-6 place-items-center rounded-full bg-white/15 transition-transform duration-300 group-hover:translate-x-0.5">
               <ArrowRight className="h-3.5 w-3.5" />
             </span>
           </Link>
