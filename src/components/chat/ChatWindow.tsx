@@ -232,11 +232,28 @@ export function ChatWindow({
               <Message key={m.id} from={m.role}>
                 {m.role === "user" ? (
                   <MessageContent>
+                    {m.parts.some(
+                      (p) => p.type === "file" && p.mediaType?.startsWith("image/"),
+                    ) && (
+                      <div className="mb-2 flex flex-wrap gap-2">
+                        {m.parts.map((p, i) =>
+                          p.type === "file" && p.mediaType?.startsWith("image/") ? (
+                            <img
+                              key={i}
+                              src={p.url}
+                              alt={p.filename ?? "Attached image"}
+                              className="max-h-56 w-auto max-w-full rounded-xl border border-border object-contain"
+                            />
+                          ) : null,
+                        )}
+                      </div>
+                    )}
                     {m.parts.map((p, i) =>
                       p.type === "text" ? <span key={i}>{p.text}</span> : null,
                     )}
                   </MessageContent>
                 ) : (
+
                   <MessageContent className="px-0 group-[.is-assistant]:bg-transparent">
                     {m.parts.map((p, i) =>
                       p.type === "text" ? <MessageResponse key={i}>{p.text}</MessageResponse> : null,
@@ -272,26 +289,40 @@ function AttachmentChips() {
   if (attachments.files.length === 0) return null;
   return (
     <div className="flex flex-wrap gap-2 px-4 pt-3">
-      {attachments.files.map((f) => (
-        <span
-          key={f.id}
-          className="flex items-center gap-1.5 rounded-full border border-primary/25 bg-primary/5 py-1 pl-2.5 pr-1.5 text-xs text-foreground"
-        >
-          <Paperclip className="h-3 w-3 text-primary" />
-          <span className="max-w-[140px] truncate">{f.filename ?? "attachment"}</span>
-          <button
-            type="button"
-            aria-label="Remove attachment"
-            onClick={() => attachments.remove(f.id)}
-            className="grid h-4 w-4 place-items-center rounded-full text-muted-foreground hover:bg-primary/10 hover:text-foreground"
+      {attachments.files.map((f) => {
+        const isImage = Boolean(f.mediaType?.startsWith("image/") && f.url);
+        return (
+          <div
+            key={f.id}
+            className="relative rounded-2xl border border-primary/25 bg-primary/5 text-xs text-foreground"
           >
-            <X className="h-3 w-3" />
-          </button>
-        </span>
-      ))}
+            {isImage ? (
+              <img
+                src={f.url}
+                alt={f.filename ?? "Attached image"}
+                className="h-20 w-20 rounded-2xl object-cover"
+              />
+            ) : (
+              <span className="flex items-center gap-1.5 py-2 pl-2.5 pr-6">
+                <Paperclip className="h-3 w-3 text-primary" />
+                <span className="max-w-[140px] truncate">{f.filename ?? "attachment"}</span>
+              </span>
+            )}
+            <button
+              type="button"
+              aria-label="Remove attachment"
+              onClick={() => attachments.remove(f.id)}
+              className="absolute right-1 top-1 grid h-5 w-5 place-items-center rounded-full border border-border bg-background/90 text-muted-foreground shadow-sm hover:text-foreground"
+            >
+              <X className="h-3 w-3" />
+            </button>
+          </div>
+        );
+      })}
     </div>
   );
 }
+
 
 function AttachButton() {
   const attachments = usePromptInputAttachments();
