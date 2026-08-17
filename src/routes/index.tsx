@@ -241,10 +241,18 @@ function Hero() {
             "conic-gradient(from 0deg, rgba(56,189,248,0.14), rgba(129,140,248,0.12), rgba(196,181,253,0.14), rgba(56,189,248,0.14))",
         }}
       />
+      <div
+        aria-hidden
+        className="aura-orbit absolute inset-x-0 top-[26%] -z-10 mx-auto h-[380px] w-[380px] max-w-[92vw] rounded-full blur-3xl sm:h-[680px] sm:w-[680px]"
+        style={{
+          background:
+            "conic-gradient(from 90deg, rgba(0,240,255,0.20), rgba(232,121,249,0.16), rgba(139,92,246,0.20), rgba(16,185,129,0.14), rgba(0,240,255,0.20))",
+        }}
+      />
 
       <div className="mx-auto mb-6 inline-flex max-w-[640px] items-center gap-3 rounded-full border border-[#1e40af]/18 bg-white/80 px-4 py-2 text-sm shadow-[0_10px_30px_-24px_rgba(30,64,175,0.5)] backdrop-blur-xl">
-        <span className="inline-flex items-center gap-2 font-semibold text-[#1e40af]">
-          <span className="status-dot h-1.5 w-1.5 rounded-full bg-[#1e40af]" />
+        <span className="grad-violet-cyan inline-flex items-center gap-2 rounded-full px-3 py-1 font-semibold text-white">
+          <span className="status-dot h-1.5 w-1.5 rounded-full bg-white" />
           Updated for 2026
         </span>
 
@@ -255,22 +263,22 @@ function Hero() {
 
 
       <div className="relative mx-auto max-w-5xl">
-        <h1 className="relative text-4xl font-semibold leading-[1.05] tracking-[-0.03em] sm:text-6xl">
+        <h1 className="fade-in-up relative text-4xl font-semibold leading-[1.05] tracking-[-0.03em] sm:text-6xl">
           Master Your Permit and
           <br />
           Ace Your Road Test on the{" "}
-          <span className="italic font-medium [font-family:'Cormorant_Garamond',Georgia,serif] text-[#1e40af]">
+          <span className="text-grad italic font-medium [font-family:'Cormorant_Garamond',Georgia,serif]">
             First Try
           </span>
         </h1>
       </div>
 
-      <p className="relative mx-auto mt-6 max-w-2xl text-base text-[#1f2b4d]/70 sm:text-lg">
+      <p className="fade-in-up relative mx-auto mt-6 max-w-2xl text-base text-[#1f2b4d]/70 sm:text-lg">
         An AI driving coach trained on every official DMV handbook, with
         full-length mock permit exams and targeted section drills. No fluff.
       </p>
 
-      <div className="relative mt-8 flex flex-wrap items-center justify-center gap-3">
+      <div className="fade-in-up relative mt-8 flex flex-wrap items-center justify-center gap-3" style={{ "--reveal-delay": "160ms" } as React.CSSProperties}>
         <Link
           to="/auth"
           className={`${BTN_PRIMARY} px-8 py-4 text-base`}
@@ -365,13 +373,13 @@ function Features() {
     <section id="features" className="px-6 pt-28 pb-20">
       <div className="mx-auto max-w-3xl text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-[#1e40af]/18 bg-[#1e40af]/[0.055] px-4 py-1.5 text-sm text-[#1f2b4d]/80 backdrop-blur-xl">
-          <span className="status-dot h-1.5 w-1.5 rounded-full bg-[#1e40af]" />
+          <span className="status-dot h-1.5 w-1.5 rounded-full bg-[#8b5cf6]" />
           <Sparkles className="h-4 w-4 text-[#1e40af]" />
           State-Specific DMV Prep
         </div>
         <h2 className="mt-8 text-5xl font-semibold tracking-[-0.03em] sm:text-6xl">
           Everything Between You and a{" "}
-          <span className="italic font-medium [font-family:'Cormorant_Garamond',Georgia,serif] bg-linear-to-r from-blue-700 to-cyan-600 bg-clip-text text-transparent">
+          <span className="text-grad italic font-medium [font-family:'Cormorant_Garamond',Georgia,serif]">
             Real License
           </span>
         </h2>
@@ -381,15 +389,17 @@ function Features() {
       </div>
 
       <div ref={grid} className="mx-auto mt-14 grid max-w-6xl gap-6 md:grid-cols-2">
-        {features.map((f) => {
+        {features.map((f, i) => {
           const Icon = f.icon;
+          const tiles = ["grad-violet-cyan", "grad-emerald-blue", "grad-amber-magenta", "grad-violet-cyan"];
           return (
             <div
               key={f.title}
-              className="lift reveal group relative rounded-[28px] border border-[#1e40af]/18 bg-white/75 p-8 backdrop-blur-xl hover:border-[#1e40af]/30"
+              style={{ "--reveal-delay": `${i * 110}ms` } as React.CSSProperties}
+              className="lift reveal group relative rounded-[28px] border border-[#1e40af]/18 bg-white/75 p-8 backdrop-blur-xl"
             >
 
-              <span className="grid h-12 w-12 place-items-center rounded-2xl bg-[#e8eefc] border border-[#1e40af]/18 text-[#1e40af]">
+              <span className={`${tiles[i % tiles.length]} grid h-12 w-12 place-items-center rounded-2xl text-white shadow-[0_10px_24px_-14px_rgba(139,92,246,0.6)]`}>
                 <Icon className="h-5 w-5" />
               </span>
 
@@ -422,12 +432,12 @@ function Pricing() {
     <section id="pricing" className="px-6 py-28">
       <div className="mx-auto mb-14 max-w-3xl text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-[#1e40af]/18 bg-[#1e40af]/[0.055] px-4 py-1.5 text-sm text-[#1f2b4d]/80 backdrop-blur-xl">
-          <span className="status-dot h-1.5 w-1.5 rounded-full bg-[#1e40af]" />
+          <span className="status-dot h-1.5 w-1.5 rounded-full bg-[#10b981]" />
           Two Plans
         </div>
         <h2 className="mt-6 text-5xl font-semibold tracking-[-0.03em] sm:text-6xl">
           Pick Your{" "}
-          <span className="italic font-medium [font-family:'Cormorant_Garamond',Georgia,serif] bg-linear-to-r from-blue-700 to-cyan-600 bg-clip-text text-transparent">
+          <span className="text-grad italic font-medium [font-family:'Cormorant_Garamond',Georgia,serif]">
             Lane
           </span>
         </h2>
@@ -477,7 +487,7 @@ function Pricing() {
 
           {/* Pro Pass */}
           <div className="lift relative flex flex-col rounded-[28px] border border-[#3b82f6]/40 bg-white/85 p-8 backdrop-blur-xl shadow-[0_0_60px_-20px_rgba(30,64,175,0.22)]">
-            <span className="absolute -top-3 left-1/2 z-10 -translate-x-1/2 rounded-full bg-[#e8eefc] border border-[#3b82f6]/60 px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-[#1e40af] whitespace-nowrap">
+            <span className="grad-violet-cyan absolute -top-3 left-1/2 z-10 -translate-x-1/2 rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-white whitespace-nowrap">
               Most Popular
             </span>
 
@@ -521,7 +531,7 @@ function CTA() {
         <h2 className="text-5xl font-semibold tracking-[-0.03em] sm:text-6xl">
           Get Your License.
           <br />
-          <span className="italic font-medium [font-family:'Cormorant_Garamond',Georgia,serif] text-[#1e40af]">
+          <span className="text-grad italic font-medium [font-family:'Cormorant_Garamond',Georgia,serif]">
             First Try.
           </span>
         </h2>
