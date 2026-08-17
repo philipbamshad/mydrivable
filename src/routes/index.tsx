@@ -24,21 +24,21 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Master your permit and ace your road test on the first try. AI coach, full-length mock permit exam simulator, and targeted section quizzes tuned to your state.",
+          "Pass your DMV permit test on the first try. AI coach, full-length mock permit exam simulator, and targeted road signs and traffic law quizzes tuned to your state.",
       },
-      { property: "og:title", content: "Drivable, Master Your Permit & Ace Your Road Test" },
+      { property: "og:title", content: "Drivable, Pass Your DMV Permit Test First Try" },
       {
         property: "og:description",
         content:
-          "Practice with an AI driving coach, a full-length mock permit exam, and state-specific section quizzes. Set your test date and track readiness in one dashboard.",
+          "Study with an AI permit coach, a full-length mock permit exam, and state-specific road signs and traffic law quizzes. Set your test date and track readiness in one dashboard.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://mydrivable.com/" },
-      { name: "twitter:title", content: "Drivable, Master Your Permit & Ace Your Road Test" },
+      { name: "twitter:title", content: "Drivable, Pass Your DMV Permit Test First Try" },
       {
         name: "twitter:description",
         content:
-          "Practice with an AI driving coach, a full-length mock permit exam, and state-specific section quizzes. Set your test date and track readiness in one dashboard.",
+          "Study with an AI permit coach, a full-length mock permit exam, and state-specific road signs and traffic law quizzes. Set your test date and track readiness in one dashboard.",
       },
     ],
     links: [{ rel: "canonical", href: "https://mydrivable.com/" }],
@@ -53,7 +53,7 @@ export const Route = createFileRoute("/")({
           logo: "https://mydrivable.com/favicon.png",
           email: "philip@mydrivable.com",
           description:
-            "Drivable coaches new drivers through the permit test and road test with an AI coach, mock permit exams, and state-specific quizzes.",
+            "Drivable coaches new drivers through the DMV written permit test with an AI coach, mock permit exams, and state-specific knowledge test quizzes.",
         }),
       },
       {
@@ -263,9 +263,9 @@ function Hero() {
 
       <div className="relative mx-auto max-w-5xl">
         <h1 className="fade-in-up relative text-4xl font-semibold leading-[1.05] tracking-[-0.03em] sm:text-6xl">
-          Master Your Permit and
+          Master Your DMV Permit
           <br />
-          Ace Your Road Test on the{" "}
+          Written Exam on the{" "}
           <span className="text-grad italic font-medium [font-family:'Cormorant_Garamond',Georgia,serif]">
             First Try
           </span>
@@ -273,8 +273,8 @@ function Hero() {
       </div>
 
       <p className="fade-in-up relative mx-auto mt-6 max-w-2xl text-base text-[#1f2b4d]/70 sm:text-lg">
-        An AI driving coach trained on every official DMV handbook, with
-        full-length mock permit exams and targeted section drills. No fluff.
+        An AI permit coach trained on every official DMV handbook, with
+        full-length mock permit exams and targeted road signs and traffic law drills. No fluff.
       </p>
 
       <div className="fade-in-up relative mt-8 flex flex-wrap items-center justify-center gap-3" style={{ "--reveal-delay": "160ms" } as React.CSSProperties}>
@@ -350,13 +350,13 @@ function Features() {
     },
     {
       icon: MessageSquare,
-      title: "AI Driving Coach",
+      title: "AI Permit Coach",
       body: "A conversational coach that explains every wrong answer, runs scenario drills, and stays synced with your state's official DMV handbook.",
     },
     {
       icon: ClipboardCheck,
       title: "Targeted Section Quizzes",
-      body: "Drill the topics examiners punish: signs, intersections, substance laws, and speed limits, short rounds with instant scoring and explanations.",
+      body: "Drill the topics the knowledge test punishes: road signs, intersections, substance laws, and speed limits, short rounds with instant scoring and explanations.",
     },
     {
       icon: LayoutDashboard,
