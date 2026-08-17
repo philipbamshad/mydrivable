@@ -11,6 +11,7 @@
 import type { SignSpec } from "@/components/dashboard/SignVisual";
 import { STATE_DRIVING_RULES } from "@/data/states";
 import { shuffleAnswers } from "./question-generator";
+import { buildOfficialPool } from "./official-pool";
 
 export type PracticeQuestion = {
   q: string;
