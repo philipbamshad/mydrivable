@@ -434,26 +434,26 @@
   --accent-cyan: #00f0ff;
   --accent-emerald: #10b981;
   --accent-amber: #f59e0b;
-  --accent-violet: #8b5cf6;
-  --accent-magenta: #e879f9;
+  --accent-orange: #f97316;
+  --accent-coral: #fb923c;
 
-  --gradient-violet-cyan: linear-gradient(90deg, var(--accent-violet) 0%, #3b82f6 55%, var(--accent-cyan) 100%);
+  --gradient-orange-cyan: linear-gradient(90deg, var(--accent-orange) 0%, #3b82f6 55%, var(--accent-cyan) 100%);
   --gradient-emerald-blue: linear-gradient(90deg, var(--accent-emerald) 0%, #2563eb 100%);
-  --gradient-amber-magenta: linear-gradient(90deg, var(--accent-amber) 0%, var(--accent-magenta) 100%);
+  --gradient-amber-orange: linear-gradient(90deg, var(--accent-amber) 0%, var(--accent-orange) 100%);
 }
 
 @theme inline {
   --color-accent-cyan: var(--accent-cyan);
   --color-accent-emerald: var(--accent-emerald);
   --color-accent-amber: var(--accent-amber);
-  --color-accent-violet: var(--accent-violet);
-  --color-accent-magenta: var(--accent-magenta);
+  --color-accent-orange: var(--accent-orange);
+  --color-accent-coral: var(--accent-coral);
 }
 
 /* Gradient fills */
-@utility grad-violet-cyan { background-image: var(--gradient-violet-cyan); }
+@utility grad-orange-cyan { background-image: var(--gradient-orange-cyan); }
 @utility grad-emerald-blue { background-image: var(--gradient-emerald-blue); }
-@utility grad-amber-magenta { background-image: var(--gradient-amber-magenta); }
+@utility grad-amber-orange { background-image: var(--gradient-amber-orange); }
 
 /* Animated gradient text */
 @keyframes grad-shift {
@@ -461,7 +461,7 @@
   50%      { background-position: 100% 50%; }
 }
 @utility text-grad {
-  background-image: var(--gradient-violet-cyan);
+  background-image: var(--gradient-orange-cyan);
   background-size: 220% 220%;
   -webkit-background-clip: text;
   background-clip: text;
@@ -469,7 +469,7 @@
   animation: grad-shift 9s ease-in-out infinite;
 }
 @utility text-grad-warm {
-  background-image: var(--gradient-amber-magenta);
+  background-image: var(--gradient-amber-orange);
   background-size: 220% 220%;
   -webkit-background-clip: text;
   background-clip: text;
@@ -492,7 +492,7 @@
 
 /* Continuous glow pulse for primary CTAs */
 @keyframes cta-glow {
-  0%, 100% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--accent-violet) 40%, transparent), 0 10px 26px -16px rgba(17, 20, 24, 0.7); }
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--accent-orange) 40%, transparent), 0 10px 26px -16px rgba(17, 20, 24, 0.7); }
   50%      { box-shadow: 0 0 0 6px color-mix(in oklab, var(--accent-cyan) 0%, transparent), 0 14px 30px -16px rgba(17, 20, 24, 0.75); }
 }
 @keyframes cta-shimmer {
@@ -522,7 +522,7 @@
     inset: -1px;
     z-index: -1;
     border-radius: 999px;
-    background: var(--gradient-violet-cyan);
+    background: var(--gradient-orange-cyan);
     opacity: 0;
     transition: opacity 0.3s ease;
   }
@@ -553,9 +553,9 @@
   transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease, border-color 0.35s ease;
   &:hover {
     transform: translateY(-0.5rem);
-    border-color: color-mix(in oklab, var(--accent-violet) 45%, transparent);
+    border-color: color-mix(in oklab, var(--accent-orange) 45%, transparent);
     box-shadow:
-      0 26px 60px -28px color-mix(in oklab, var(--accent-violet) 55%, transparent),
+      0 26px 60px -28px color-mix(in oklab, var(--accent-orange) 55%, transparent),
       0 0 0 1px color-mix(in oklab, var(--accent-cyan) 28%, transparent);
   }
 }

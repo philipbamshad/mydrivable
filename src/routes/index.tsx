@@ -216,13 +216,13 @@ function Nav() {
 function Hero() {
   return (
     <section className="relative isolate flex min-h-[calc(100svh-72px)] flex-col items-center justify-center overflow-hidden px-6 pt-10 pb-14 text-center sm:pt-6 sm:pb-10">
-      {/* Ambient hero glow, soft pastel cyan, slate blue and violet, gently drifting */}
+      {/* Ambient hero glow, soft pastel cyan, slate blue and orange, gently drifting */}
       <div
         aria-hidden
         className="ambient-blob absolute inset-x-0 top-[22%] -z-10 mx-auto h-[420px] w-[520px] max-w-[95vw] rounded-full blur-3xl sm:top-[30%] sm:h-[700px] sm:w-[900px] sm:max-w-[110vw]"
         style={{
           background:
-            "radial-gradient(closest-side, rgba(56,189,248,0.20), rgba(99,102,241,0.14) 55%, transparent 78%)",
+            "radial-gradient(closest-side, rgba(56,189,248,0.20), rgba(59,130,246,0.14) 55%, transparent 78%)",
         }}
       />
       <div
@@ -230,7 +230,7 @@ function Hero() {
         className="ambient-blob-slow absolute left-[18%] top-[30%] -z-10 h-[300px] w-[380px] max-w-[80vw] rounded-full blur-3xl sm:h-[460px] sm:w-[600px]"
         style={{
           background:
-            "radial-gradient(closest-side, rgba(167,139,250,0.18), rgba(167,139,250,0.08) 55%, transparent 78%)",
+            "radial-gradient(closest-side, rgba(249,115,22,0.18), rgba(249,115,22,0.08) 55%, transparent 78%)",
         }}
       />
       <div
@@ -238,7 +238,7 @@ function Hero() {
         className="ambient-spin-slow absolute inset-x-0 top-[42%] -z-10 mx-auto h-[320px] w-[320px] max-w-[80vw] rounded-full blur-3xl sm:h-[560px] sm:w-[560px]"
         style={{
           background:
-            "conic-gradient(from 0deg, rgba(56,189,248,0.14), rgba(129,140,248,0.12), rgba(196,181,253,0.14), rgba(56,189,248,0.14))",
+            "conic-gradient(from 0deg, rgba(56,189,248,0.14), rgba(59,130,246,0.12), rgba(249,115,22,0.14), rgba(56,189,248,0.14))",
         }}
       />
       <div
@@ -246,7 +246,7 @@ function Hero() {
         className="aura-orbit absolute inset-x-0 top-[26%] -z-10 mx-auto h-[380px] w-[380px] max-w-[92vw] rounded-full blur-3xl sm:h-[680px] sm:w-[680px]"
         style={{
           background:
-            "conic-gradient(from 90deg, rgba(0,240,255,0.20), rgba(232,121,249,0.16), rgba(139,92,246,0.20), rgba(16,185,129,0.14), rgba(0,240,255,0.20))",
+            "conic-gradient(from 90deg, rgba(0,240,255,0.20), rgba(249,115,22,0.18), rgba(251,146,60,0.16), rgba(16,185,129,0.14), rgba(0,240,255,0.20))",
         }}
       />
 
@@ -372,7 +372,7 @@ function Features() {
     <section id="features" className="px-6 pt-28 pb-20">
       <div className="mx-auto max-w-3xl text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-[#1e40af]/18 bg-[#1e40af]/[0.055] px-4 py-1.5 text-sm text-[#1f2b4d]/80 backdrop-blur-xl">
-          <span className="status-dot h-1.5 w-1.5 rounded-full bg-[#8b5cf6]" />
+          <span className="status-dot h-1.5 w-1.5 rounded-full bg-[#f97316]" />
           <Sparkles className="h-4 w-4 text-[#1e40af]" />
           State-Specific DMV Prep
         </div>
@@ -390,7 +390,7 @@ function Features() {
       <div ref={grid} className="mx-auto mt-14 grid max-w-6xl gap-6 md:grid-cols-2">
         {features.map((f, i) => {
           const Icon = f.icon;
-          const tiles = ["grad-violet-cyan", "grad-emerald-blue", "grad-amber-magenta", "grad-violet-cyan"];
+          const tiles = ["grad-orange-cyan", "grad-emerald-blue", "grad-amber-orange", "grad-orange-cyan"];
           return (
             <div
               key={f.title}
@@ -398,7 +398,7 @@ function Features() {
               className="lift reveal group relative rounded-[28px] border border-[#1e40af]/18 bg-white/75 p-8 backdrop-blur-xl"
             >
 
-              <span className={`${tiles[i % tiles.length]} grid h-12 w-12 place-items-center rounded-2xl text-white shadow-[0_10px_24px_-14px_rgba(139,92,246,0.6)]`}>
+              <span className={`${tiles[i % tiles.length]} grid h-12 w-12 place-items-center rounded-2xl text-white shadow-[0_10px_24px_-14px_rgba(249,115,22,0.6)]`}>
                 <Icon className="h-5 w-5" />
               </span>
 
@@ -486,7 +486,7 @@ function Pricing() {
 
           {/* Pro Pass */}
           <div className="lift relative flex flex-col rounded-[28px] border border-[#3b82f6]/40 bg-white/85 p-8 backdrop-blur-xl shadow-[0_0_60px_-20px_rgba(30,64,175,0.22)]">
-            <span className="grad-violet-cyan absolute -top-3 left-1/2 z-10 -translate-x-1/2 rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-white whitespace-nowrap">
+            <span className="grad-orange-cyan absolute -top-3 left-1/2 z-10 -translate-x-1/2 rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-white whitespace-nowrap">
               Most Popular
             </span>
 
