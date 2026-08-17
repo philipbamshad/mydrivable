@@ -75,11 +75,33 @@ const SHELL =
 const SHELL_BG: React.CSSProperties = {
   background: "linear-gradient(180deg, #ffffff 0%, #f4f7fd 50%, #ffffff 100%)",
 };
-const BTN_PRIMARY =
-  "inline-flex items-center justify-center gap-2 rounded-full bg-[#ffffff] hover:bg-[#eef3ff] border border-[#1e40af] hover:border-[#3b82f6] text-[#1e40af] font-semibold transition active:scale-[0.98]";
+const BTN_PRIMARY = "cta-pill";
 
 const BTN_SECONDARY =
-  "inline-flex items-center justify-center gap-2 rounded-full bg-[#1e40af]/[0.055] hover:bg-[#1e40af]/[0.1] border border-[#1e40af]/25 hover:border-[#1e40af]/40 text-[#0f172a] font-semibold transition active:scale-[0.98]";
+  "inline-flex items-center justify-center gap-2 rounded-full bg-[#1e40af]/[0.055] hover:bg-[#1e40af]/[0.1] border border-[#1e40af]/25 hover:border-[#1e40af]/40 text-[#0f172a] font-semibold transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]";
+
+function useReveal<T extends HTMLElement>() {
+  const ref = useRef<T | null>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            el.setAttribute("data-revealed", "true");
+            io.unobserve(el);
+          }
+        });
+      },
+      { threshold: 0.15 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  return ref;
+}
+
 
 
 
