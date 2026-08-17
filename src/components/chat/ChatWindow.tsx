@@ -113,115 +113,143 @@ export function ChatWindow({
   };
 
   const isBusy = status === "submitted" || status === "streaming";
+  const isEmpty = messages.length === 0;
+
+  const paywall = (
+    <div className="mx-auto max-w-xl rounded-2xl border border-primary/40 bg-primary/10 px-5 py-5 text-center shadow-[0_0_40px_-18px_var(--color-primary)]">
+      <div className="mx-auto mb-3 grid h-10 w-10 place-items-center rounded-full border border-primary/40 bg-primary/15">
+        <Lock className="h-4 w-4 text-primary" />
+      </div>
+      <p className="text-sm font-semibold text-foreground leading-snug">
+        You've used your 5 free lifetime AI questions. Upgrade to Pro Pass to continue chatting, get instant rule explanations, and access full exam simulators! [Get Pro Pass — $9]
+      </p>
+      <Button onClick={() => openCheckout()} className="mt-4 press w-full sm:w-auto" size="sm">
+        <Sparkles className="mr-1.5 h-3.5 w-3.5" />
+        Get Pro Pass — $9
+      </Button>
+    </div>
+  );
+
+  const composer = (
+    <>
+      <PromptInput
+        onSubmit={handleSubmit}
+        className="rounded-[28px] border border-primary/25 bg-card/90 backdrop-blur shadow-[0_18px_50px_-28px_var(--color-primary)] transition-colors focus-within:border-primary/50"
+      >
+        <PromptInputTextarea
+          ref={textareaRef}
+          placeholder="Ask Drivable AI anything about your permit test..."
+          disabled={isBusy}
+          className="px-5 pt-4"
+        />
+        <PromptInputFooter className="items-center justify-between border-0 px-3 pb-3">
+          <button
+            type="button"
+            aria-label="Add attachment"
+            className="grid h-9 w-9 place-items-center rounded-full border border-primary/25 bg-primary/5 text-primary transition-colors hover:bg-primary/10"
+          >
+            <Plus className="h-4 w-4" />
+          </button>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              aria-label="Voice input"
+              className="grid h-9 w-9 place-items-center rounded-full border border-primary/25 bg-primary/5 text-primary transition-colors hover:bg-primary/10"
+            >
+              <Mic className="h-4 w-4" />
+            </button>
+            <PromptInputSubmit status={status} disabled={isBusy} />
+          </div>
+        </PromptInputFooter>
+      </PromptInput>
+      {!isPro && (
+        <p className="text-[10px] text-muted-foreground mt-2 text-center">
+          {`${remaining} of ${FREE_LIFETIME_LIMIT} free lifetime AI questions left. Upgrade for unlimited chat.`}
+        </p>
+      )}
+    </>
+  );
+
+  if (isEmpty) {
+    return (
+      <div className="relative flex h-full flex-col items-center justify-center overflow-hidden bg-background px-4">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute left-1/2 top-1/3 -z-10 h-[420px] w-[560px] max-w-[95vw] -translate-x-1/2 rounded-full opacity-70 blur-3xl"
+          style={{
+            background:
+              "radial-gradient(circle at 30% 40%, color-mix(in oklab, var(--color-primary) 22%, transparent), transparent 65%)",
+          }}
+        />
+        <div className="w-full max-w-2xl text-center">
+          <img src={logo} alt="" width={52} height={52} className="logo-mask mx-auto mb-5 opacity-90" />
+          <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight text-foreground">
+            {greetingName ? `What's the vibe, ${greetingName}?` : "What are we studying today?"}
+          </h1>
+          <p className="mt-3 text-sm text-muted-foreground">
+            {userState
+              ? `Road signs, traffic laws, or specific ${userState} permit rules.`
+              : "Permit prep, traffic laws, or road sign meanings."}
+          </p>
+
+          <div className="mt-7 w-full text-left">
+            {limitReached ? paywall : composer}
+          </div>
+
+          <div className="mt-6 grid gap-2 sm:grid-cols-2">
+            {SUGGESTIONS.map((s) => (
+              <button
+                key={s}
+                onClick={() => handleSuggestion(s)}
+                className="press rounded-xl border border-border bg-card/70 px-4 py-3 text-left text-sm transition-colors hover:border-primary/60 hover:bg-accent"
+              >
+                {s}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col h-full bg-background">
-      <div className="border-b border-border bg-background/60 backdrop-blur px-4 py-2.5">
-        <div className="max-w-3xl mx-auto flex items-center gap-2.5 text-xs">
-          <span className="w-1.5 h-1.5 rounded-full bg-primary  animate-pulse" />
-          <span className="text-foreground/90">
-            AI Assistant Active, {userState
-              ? <>Synced with the official <span className="font-semibold text-primary">{userState}</span> DMV Handbook</>
-              : <span className="text-muted-foreground">No state set. Pick one in Settings for state-specific rules.</span>}
-          </span>
-        </div>
-      </div>
-
       <Conversation className="flex-1">
         <ConversationContent className="max-w-3xl mx-auto w-full px-4 py-6">
-          {messages.length === 0 ? (
-            <ConversationEmptyState
-              icon={<img src={logo} alt="" width={56} height={56} className="opacity-90 logo-mask" />}
-              title="What are we tackling?"
-              description={
-                userState
-                  ? `Road signs, traffic laws, or specific ${userState} permit rules, pick a starter or just ask.`
-                  : "Permit prep, traffic laws, or road sign meanings, pick a starter or just ask."
-              }
-            >
-              <div className="mt-6 grid sm:grid-cols-2 gap-2 w-full max-w-xl">
-                {SUGGESTIONS.map((s) => (
-                  <button
-                    key={s}
-                    onClick={() => handleSuggestion(s)}
-                    className="text-left text-sm rounded-xl border border-border bg-card hover:border-primary/60 hover:bg-accent transition-colors px-4 py-3 press"
-                  >
-                    {s}
-                  </button>
-                ))}
-              </div>
-            </ConversationEmptyState>
-          ) : (
-            <div className="space-y-6">
-              {messages.map((m) => (
-                <Message key={m.id} from={m.role}>
-                  {m.role === "user" ? (
-                    <MessageContent>
-                      {m.parts.map((p, i) =>
-                        p.type === "text" ? <span key={i}>{p.text}</span> : null,
-                      )}
-                    </MessageContent>
-                  ) : (
-                    <MessageContent className="px-0 group-[.is-assistant]:bg-transparent">
-                      {m.parts.map((p, i) =>
-                        p.type === "text" ? <MessageResponse key={i}>{p.text}</MessageResponse> : null,
-                      )}
-                    </MessageContent>
-                  )}
-                </Message>
-              ))}
-              {status === "submitted" && (
-                <Message from="assistant">
-                  <MessageContent className="px-0 group-[.is-assistant]:bg-transparent">
-                    <Shimmer>Thinking...</Shimmer>
+          <div className="space-y-6">
+            {messages.map((m) => (
+              <Message key={m.id} from={m.role}>
+                {m.role === "user" ? (
+                  <MessageContent>
+                    {m.parts.map((p, i) =>
+                      p.type === "text" ? <span key={i}>{p.text}</span> : null,
+                    )}
                   </MessageContent>
-                </Message>
-              )}
-              {error && <p className="text-sm text-destructive">{error.message}</p>}
-            </div>
-          )}
+                ) : (
+                  <MessageContent className="px-0 group-[.is-assistant]:bg-transparent">
+                    {m.parts.map((p, i) =>
+                      p.type === "text" ? <MessageResponse key={i}>{p.text}</MessageResponse> : null,
+                    )}
+                  </MessageContent>
+                )}
+              </Message>
+            ))}
+            {status === "submitted" && (
+              <Message from="assistant">
+                <MessageContent className="px-0 group-[.is-assistant]:bg-transparent">
+                  <Shimmer>Thinking...</Shimmer>
+                </MessageContent>
+              </Message>
+            )}
+            {error && <p className="text-sm text-destructive">{error.message}</p>}
+          </div>
         </ConversationContent>
         <ConversationScrollButton />
       </Conversation>
 
-      <div className="border-t border-border bg-background/80 backdrop-blur">
+      <div className="bg-background/80 backdrop-blur">
         <div className="max-w-3xl mx-auto w-full px-4 py-4">
-          {limitReached ? (
-            <div className="mx-auto max-w-xl rounded-2xl border border-primary/40 bg-primary/10 px-5 py-5 text-center shadow-[0_0_40px_-18px_var(--color-primary)]">
-              <div className="mx-auto mb-3 grid h-10 w-10 place-items-center rounded-full border border-primary/40 bg-primary/15">
-                <Lock className="h-4 w-4 text-primary" />
-              </div>
-              <p className="text-sm font-semibold text-foreground leading-snug">
-                You've used your 5 free lifetime AI questions. Upgrade to Pro Pass to continue chatting, get instant rule explanations, and access full exam simulators! [Get Pro Pass — $9]
-              </p>
-              <Button
-                onClick={() => openCheckout()}
-                className="mt-4 press w-full sm:w-auto"
-                size="sm"
-              >
-                <Sparkles className="mr-1.5 h-3.5 w-3.5" />
-                Get Pro Pass — $9
-              </Button>
-            </div>
-          ) : (
-            <>
-              <PromptInput onSubmit={handleSubmit}>
-                <PromptInputTextarea
-                  ref={textareaRef}
-                  placeholder="Ask Drivable anything, road signs, right-of-way, traffic laws…"
-                  disabled={isBusy}
-                />
-                <PromptInputFooter className="justify-end">
-                  <PromptInputSubmit status={status} disabled={isBusy} />
-                </PromptInputFooter>
-              </PromptInput>
-              {!isPro && (
-                <p className="text-[10px] text-muted-foreground mt-2 text-center">
-                  {`${remaining} of ${FREE_LIFETIME_LIMIT} free lifetime AI questions left. Upgrade for unlimited chat.`}
-                </p>
-              )}
-            </>
-          )}
+          {limitReached ? paywall : composer}
         </div>
       </div>
     </div>
