@@ -109,7 +109,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   errorComponent: ErrorComponent,
 });
 
-const themeBootstrap = `(function(){try{var t=localStorage.getItem('drivable.theme');if(t!=='light'&&t!=='dark')t='light';var r=document.documentElement;r.classList.remove('light','dark');r.classList.add(t);r.style.colorScheme=t;}catch(e){document.documentElement.classList.add('light');}})();`;
+const themeBootstrap = `(function(){try{var t=localStorage.getItem('drivable.theme.v2');if(t!=='light'&&t!=='dark')t='light';var r=document.documentElement;r.classList.remove('light','dark');r.classList.add(t);r.style.colorScheme=t;}catch(e){document.documentElement.classList.add('light');}})();`;
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
