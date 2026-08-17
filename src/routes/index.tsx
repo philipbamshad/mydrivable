@@ -251,8 +251,7 @@ function Hero() {
       />
 
       <div className="mx-auto mb-6 inline-flex max-w-[640px] items-center gap-3 rounded-full border border-[#1e40af]/18 bg-white/80 px-4 py-2 text-sm shadow-[0_10px_30px_-24px_rgba(30,64,175,0.5)] backdrop-blur-xl">
-        <span className="grad-violet-cyan inline-flex items-center gap-2 rounded-full px-3 py-1 font-semibold text-white">
-          <span className="status-dot h-1.5 w-1.5 rounded-full bg-white" />
+        <span className="font-bold text-[#1e40af] animate-pulse">
           Updated for 2026
         </span>
 
