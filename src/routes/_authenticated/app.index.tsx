@@ -79,9 +79,6 @@ function AppDashboard() {
               <h1 className="font-display font-bold text-xl leading-tight truncate">
                 {TABS.find((t) => t.id === tab)?.label}
               </h1>
-              <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground mt-0.5">
-                Drivable control panel
-              </p>
             </div>
             <div className="hidden md:flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] text-muted-foreground glass px-3 py-1.5 rounded-full shrink-0">
               <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
