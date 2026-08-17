@@ -216,27 +216,43 @@ function Nav() {
 function Hero() {
   return (
     <section className="relative isolate flex min-h-[calc(100svh-72px)] flex-col items-center justify-center overflow-hidden px-6 pt-10 pb-14 text-center sm:pt-6 sm:pb-10">
-      {/* Ambient hero glow — sized for both mobile and desktop */}
+      {/* Ambient hero glow, soft pastel cyan, slate blue and violet, gently drifting */}
       <div
         aria-hidden
-        className="pointer-events-none absolute left-1/2 top-[22%] -z-10 h-[420px] w-[520px] max-w-[95vw] -translate-x-1/2 rounded-full bg-blue-500/12 blur-[90px] sm:top-[30%] sm:h-[700px] sm:w-[900px] sm:max-w-[110vw] sm:bg-blue-500/8 sm:blur-[130px]"
+        className="ambient-blob absolute left-1/2 top-[22%] -z-10 h-[420px] w-[520px] max-w-[95vw] -translate-x-1/2 rounded-full blur-3xl sm:top-[30%] sm:h-[700px] sm:w-[900px] sm:max-w-[110vw]"
+        style={{
+          background:
+            "radial-gradient(closest-side, rgba(56,189,248,0.20), rgba(99,102,241,0.14) 55%, transparent 78%)",
+        }}
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute left-1/2 top-[38%] -z-10 h-[260px] w-[340px] max-w-[75vw] -translate-x-1/2 rounded-full bg-blue-400/12 blur-[70px] sm:top-[45%] sm:h-[420px] sm:w-[560px] sm:max-w-[80vw] sm:bg-blue-400/8 sm:blur-[100px]"
+        className="ambient-blob-slow absolute left-[18%] top-[30%] -z-10 h-[300px] w-[380px] max-w-[80vw] rounded-full blur-3xl sm:h-[460px] sm:w-[600px]"
+        style={{
+          background:
+            "radial-gradient(closest-side, rgba(167,139,250,0.18), rgba(167,139,250,0.08) 55%, transparent 78%)",
+        }}
+      />
+      <div
+        aria-hidden
+        className="ambient-spin-slow absolute left-1/2 top-[42%] -z-10 h-[320px] w-[320px] max-w-[80vw] -translate-x-1/2 rounded-full blur-3xl sm:h-[560px] sm:w-[560px]"
+        style={{
+          background:
+            "conic-gradient(from 0deg, rgba(56,189,248,0.14), rgba(129,140,248,0.12), rgba(196,181,253,0.14), rgba(56,189,248,0.14))",
+        }}
       />
 
-
-      <div className="mx-auto mb-6 inline-flex max-w-[640px] items-center gap-3 rounded-full border border-[#1e40af]/18 bg-[#1e40af]/[0.045] px-4 py-2 text-sm backdrop-blur-xl">
-        <span className="inline-flex items-center gap-1.5 text-[#1e40af]">
-          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-blue-400" />
-          New
+      <div className="mx-auto mb-6 inline-flex max-w-[640px] items-center gap-3 rounded-full border border-[#1e40af]/18 bg-white/80 px-4 py-2 text-sm shadow-[0_10px_30px_-24px_rgba(30,64,175,0.5)] backdrop-blur-xl">
+        <span className="inline-flex items-center gap-2 font-semibold text-[#1e40af]">
+          <span className="status-dot h-1.5 w-1.5 rounded-full bg-[#1e40af]" />
+          Updated for 2026
         </span>
 
         <span className="hidden text-[#1f2b4d]/80 sm:inline">
           Full-length state-specific Mock Permit Exam simulator, now live
         </span>
       </div>
+
 
       <div className="relative mx-auto max-w-5xl">
         <h1 className="relative text-4xl font-semibold leading-[1.05] tracking-[-0.03em] sm:text-6xl">
