@@ -467,3 +467,156 @@
   .ambient-blob, .ambient-blob-slow, .ambient-spin-slow, .status-dot { animation: none; }
   .reveal { opacity: 1; transform: none; transition: none; }
 }
+
+/* ===== Expanded palette + energetic motion (Drivable v2) ===== */
+
+:root {
+  --accent-cyan: #00f0ff;
+  --accent-emerald: #10b981;
+  --accent-amber: #f59e0b;
+  --accent-violet: #8b5cf6;
+  --accent-magenta: #e879f9;
+
+  --gradient-violet-cyan: linear-gradient(90deg, var(--accent-violet) 0%, #3b82f6 55%, var(--accent-cyan) 100%);
+  --gradient-emerald-blue: linear-gradient(90deg, var(--accent-emerald) 0%, #2563eb 100%);
+  --gradient-amber-magenta: linear-gradient(90deg, var(--accent-amber) 0%, var(--accent-magenta) 100%);
+}
+
+@theme inline {
+  --color-accent-cyan: var(--accent-cyan);
+  --color-accent-emerald: var(--accent-emerald);
+  --color-accent-amber: var(--accent-amber);
+  --color-accent-violet: var(--accent-violet);
+  --color-accent-magenta: var(--accent-magenta);
+}
+
+/* Gradient fills */
+@utility grad-violet-cyan { background-image: var(--gradient-violet-cyan); }
+@utility grad-emerald-blue { background-image: var(--gradient-emerald-blue); }
+@utility grad-amber-magenta { background-image: var(--gradient-amber-magenta); }
+
+/* Animated gradient text */
+@keyframes grad-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+@utility text-grad {
+  background-image: var(--gradient-violet-cyan);
+  background-size: 220% 220%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: grad-shift 9s ease-in-out infinite;
+}
+@utility text-grad-warm {
+  background-image: var(--gradient-amber-magenta);
+  background-size: 220% 220%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: grad-shift 11s ease-in-out infinite;
+}
+
+/* Multi color aura that floats and rotates behind the hero */
+@keyframes aura-orbit {
+  0%   { transform: rotate(0deg) translate3d(0, 0, 0) scale(1); }
+  33%  { transform: rotate(120deg) translate3d(2%, -2%, 0) scale(1.08); }
+  66%  { transform: rotate(240deg) translate3d(-2%, 2%, 0) scale(0.96); }
+  100% { transform: rotate(360deg) translate3d(0, 0, 0) scale(1); }
+}
+@utility aura-orbit {
+  pointer-events: none;
+  will-change: transform;
+  animation: aura-orbit 26s ease-in-out infinite;
+}
+
+/* Continuous glow pulse for primary CTAs */
+@keyframes cta-glow {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--accent-violet) 40%, transparent), 0 10px 26px -16px rgba(17, 20, 24, 0.7); }
+  50%      { box-shadow: 0 0 0 6px color-mix(in oklab, var(--accent-cyan) 0%, transparent), 0 14px 30px -16px rgba(17, 20, 24, 0.75); }
+}
+@keyframes cta-shimmer {
+  from { transform: translateX(-120%); }
+  to   { transform: translateX(120%); }
+}
+
+/* Upgraded CTA: pulsing ring, shimmer sweep, scale plus slight tilt on hover */
+@utility cta-pill {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  background: #111418;
+  color: #ffffff;
+  font-weight: 600;
+  border: 1px solid #111418;
+  animation: cta-glow 3.2s ease-in-out infinite;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease, background-color 0.3s ease;
+  &::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    z-index: -1;
+    border-radius: 999px;
+    background: var(--gradient-violet-cyan);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 45%;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.32), transparent);
+    transform: translateX(-120%);
+  }
+  &:hover {
+    transform: scale(1.05) rotate(1deg);
+    background: #0b0d10;
+  }
+  &:hover::before { opacity: 0.55; }
+  &:hover::after { animation: cta-shimmer 0.9s ease forwards; }
+  &:active { transform: scale(0.98) rotate(0deg); }
+  & svg { transition: transform 0.3s ease; }
+  &:hover svg { transform: translateX(3px); }
+}
+
+/* Pronounced card lift with colored glow border */
+@utility lift {
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+  &:hover {
+    transform: translateY(-0.5rem);
+    border-color: color-mix(in oklab, var(--accent-violet) 45%, transparent);
+    box-shadow:
+      0 26px 60px -28px color-mix(in oklab, var(--accent-violet) 55%, transparent),
+      0 0 0 1px color-mix(in oklab, var(--accent-cyan) 28%, transparent);
+  }
+}
+
+/* Entrance animation: slide up fade, staggerable via --reveal-delay */
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@utility fade-in-up {
+  animation: fade-in-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--reveal-delay, 0ms);
+}
+@utility reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 0.7s ease var(--reveal-delay, 0ms),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cta-pill, .aura-orbit, .text-grad, .text-grad-warm, .fade-in-up { animation: none; }
+}
