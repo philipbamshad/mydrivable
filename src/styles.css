@@ -434,20 +434,20 @@
   --accent-cyan: #00f0ff;
   --accent-emerald: #10b981;
   --accent-amber: #f59e0b;
-  --accent-violet: #8b5cf6;
-  --accent-magenta: #e879f9;
+  --accent-orange: #f97316;
+  --accent-coral: #fb923c;
 
-  --gradient-violet-cyan: linear-gradient(90deg, var(--accent-violet) 0%, #3b82f6 55%, var(--accent-cyan) 100%);
+  --gradient-orange-cyan: linear-gradient(90deg, var(--accent-orange) 0%, #3b82f6 55%, var(--accent-cyan) 100%);
   --gradient-emerald-blue: linear-gradient(90deg, var(--accent-emerald) 0%, #2563eb 100%);
-  --gradient-amber-magenta: linear-gradient(90deg, var(--accent-amber) 0%, var(--accent-magenta) 100%);
+  --gradient-amber-orange: linear-gradient(90deg, var(--accent-amber) 0%, var(--accent-orange) 100%);
 }
 
 @theme inline {
   --color-accent-cyan: var(--accent-cyan);
   --color-accent-emerald: var(--accent-emerald);
   --color-accent-amber: var(--accent-amber);
-  --color-accent-violet: var(--accent-violet);
-  --color-accent-magenta: var(--accent-magenta);
+  --color-accent-orange: var(--accent-orange);
+  --color-accent-coral: var(--accent-coral);
 }
 
 /* Gradient fills */
