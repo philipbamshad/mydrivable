@@ -274,7 +274,7 @@ function Hero() {
 
       <p className="fade-in-up relative mx-auto mt-6 max-w-2xl text-base text-[#1f2b4d]/70 sm:text-lg">
         An AI permit coach trained on every official DMV handbook, with
-        full-length mock permit exams and targeted road signs and traffic law drills. No fluff.
+        full-length mock permit exams and targeted road signs and traffic law drills.
       </p>
 
       <div className="fade-in-up relative mt-8 flex flex-wrap items-center justify-center gap-3" style={{ "--reveal-delay": "160ms" } as React.CSSProperties}>
