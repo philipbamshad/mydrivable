@@ -146,13 +146,13 @@ export function ChatWindow({
     <>
       <PromptInput
         onSubmit={handleSubmit}
-        className="rounded-[28px] border border-primary/25 bg-card/90 backdrop-blur shadow-[0_18px_50px_-28px_var(--color-primary)] transition-colors focus-within:border-primary/50"
+        className="rounded-[28px] border border-primary/25 bg-card/90 backdrop-blur shadow-[0_18px_50px_-28px_var(--color-primary)] outline-none transition-colors focus-within:border-primary/50 has-[[data-slot=input-group-control]:focus-visible]:ring-0 has-[[data-slot=input-group-control]:focus-visible]:border-primary/50"
       >
         <PromptInputTextarea
           ref={textareaRef}
           placeholder="Ask Drivable AI anything about your permit test..."
           disabled={isBusy}
-          className="px-5 pt-4"
+          className="px-5 pt-4 outline-none ring-0 focus:outline-none focus-visible:ring-0"
         />
         <PromptInputFooter className="items-center justify-between border-0 px-3 pb-3">
           <button
