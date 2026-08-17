@@ -344,25 +344,32 @@ function Features() {
     {
       icon: Timer,
       title: "Full-Length Mock Permit Exam Simulator",
-      body: "Replicates the real state DMV test, exact question count, timing, and passing threshold for your state, from California's 46-question exam to Texas's 30-question test.",
+      body: "Take a timed, state-accurate exam with the real question count, timing, and passing score for your state.",
+      tint: "from-accent-cyan/[0.05] via-white/70 to-accent-emerald/[0.04]",
+      status: { label: "46 Qs • 83% Pass", tone: "emerald" },
     },
     {
       icon: MessageSquare,
       title: "AI Permit Coach",
-      body: "A conversational coach that explains every wrong answer, runs scenario drills, and stays synced with your state's official DMV handbook.",
+      body: "Get instant explanations for wrong answers and run scenario drills grounded in your state's handbook.",
+      tint: "from-accent-emerald/[0.05] via-white/70 to-accent-cyan/[0.04]",
+      chatPreview: true,
     },
     {
       icon: ClipboardCheck,
       title: "Targeted Section Quizzes",
-      body: "Drill the topics the knowledge test punishes: road signs, intersections, substance laws, and speed limits, short rounds with instant scoring and explanations.",
+      body: "Drill the topics that trip test takers up: road signs, intersections, substance laws, and speed limits.",
+      tint: "from-accent-amber/[0.06] via-white/70 to-accent-orange/[0.04]",
+      tags: ["Road Signs", "Speed Limits", "DUI Laws"],
     },
     {
       icon: LayoutDashboard,
       title: "State-Specific & Schedule-Tailored Practice",
-      body: "Set your target test date and select your state to instantly adapt your prep program. Track your overall readiness score and stay on schedule all in one centralized dashboard.",
+      body: "Pick your state and target test date to adapt every question and track readiness in one dashboard.",
+      tint: "from-accent-orange/[0.05] via-white/70 to-accent-cyan/[0.04]",
+      stateBadge: "CA DMV",
     },
   ];
-
 
   const grid = useReveal<HTMLDivElement>();
 
@@ -391,16 +398,68 @@ function Features() {
           return (
             <div
               key={f.title}
-              style={{ "--reveal-delay": `${i * 110}ms` } as React.CSSProperties}
-              className="lift reveal group relative rounded-[28px] border border-[#1e40af]/18 bg-white/75 p-8 backdrop-blur-xl"
+              style={{ transitionDelay: `${i * 110}ms` }}
+              className="reveal group relative overflow-hidden rounded-[28px] border border-[#1e40af]/18 bg-gradient-to-br p-8 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-primary/25 hover:shadow-[0_20px_50px_-24px_rgba(30,64,175,0.18)]"
             >
+              <div className={`absolute inset-0 -z-10 bg-gradient-to-br ${f.tint}`} />
+
+              {f.status && (
+                <div className="absolute top-6 right-6 hidden sm:inline-flex items-center gap-1.5 rounded-full border border-accent-emerald/20 bg-accent-emerald/10 px-2.5 py-1 text-[11px] font-semibold text-accent-emerald backdrop-blur-md">
+                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-accent-emerald" />
+                  {f.status.label}
+                </div>
+              )}
+
+              {f.stateBadge && (
+                <div className="absolute top-6 right-6 hidden sm:inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-white/70 px-2.5 py-1 text-[11px] font-semibold text-[#0f172a] backdrop-blur-md">
+                  <MapPin className="h-3 w-3 text-primary" />
+                  {f.stateBadge}
+                </div>
+              )}
 
               <span className={`${tiles[i % tiles.length]} grid h-12 w-12 place-items-center rounded-2xl text-white shadow-[0_10px_24px_-14px_rgba(249,115,22,0.6)]`}>
                 <Icon className="h-5 w-5" />
               </span>
 
               <h3 className="mt-6 text-xl font-semibold tracking-tight">{f.title}</h3>
+
+              {f.chatPreview && (
+                <div className="mt-4 space-y-2">
+                  <div className="flex items-center gap-2">
+                    <div className="rounded-full border border-border/60 bg-white/70 px-2.5 py-1 text-[11px] text-muted-foreground">
+                      Why did I miss this?
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="grid h-5 w-5 place-items-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
+                      AI
+                    </span>
+                    <div className="rounded-full bg-primary/10 px-2.5 py-1 text-[11px] font-semibold text-primary">
+                      Explains the rule
+                    </div>
+                  </div>
+                </div>
+              )}
+
               <p className="mt-3 text-[15px] leading-relaxed text-[#1f2b4d]/65">{f.body}</p>
+
+              {f.tags && (
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {f.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="rounded-full border border-border/60 bg-white/60 px-2.5 py-1 text-xs font-medium text-muted-foreground transition-colors duration-200 hover:border-accent-amber/40 hover:bg-accent-amber/10 hover:text-accent-amber"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              <div className="mt-6 flex items-center justify-end gap-1.5 text-sm font-semibold text-primary transition-colors duration-300 group-hover:text-[#0f172a]">
+                <span>Explore feature</span>
+                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </div>
             </div>
           );
         })}
