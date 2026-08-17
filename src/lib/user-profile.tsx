@@ -616,16 +616,24 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
     const raw = (data?.free_usage ?? null) as Partial<FreeUsage> | null;
     if (!raw) return;
     const local = readLocalFreeUsage();
-    const merged: FreeUsage = {
-      chat: Math.max(Number(raw.chat ?? 0) || 0, local.chat),
-      exam: Math.max(Number(raw.exam ?? 0) || 0, local.exam),
-      pillars: { ...local.pillars, ...((raw.pillars ?? {}) as Record<string, number>) },
+    // Lifetime counters can only ever go up, so every merge takes the max on
+    // each key. That keeps the free tier lock permanent across devices,
+    // refreshes, and days: it is never reset daily, only lifted by Pro Pass.
+    const remote: FreeUsage = {
+      chat: Number(raw.chat ?? 0) || 0,
+      exam: Number(raw.exam ?? 0) || 0,
+      pillars: (raw.pillars ?? {}) as Record<string, number>,
     };
+    const merged = mergeFreeUsage(local, remote);
     writeLocalFreeUsage(merged);
     setProfile((p) => ({ ...p, freeUsage: merged }));
   }, [userId]);
 
-  const reset = useCallback(() => setProfile(DEFAULT), []);
+  // Error boundary reset must never wipe lifetime free usage counters.
+  const reset = useCallback(
+    () => setProfile({ ...DEFAULT, freeUsage: readLocalFreeUsage() }),
+    [],
+  );
 
   const driveHours = useMemo(
     () => profile.driveSessions.reduce((a, s) => a + s.hours, 0),
