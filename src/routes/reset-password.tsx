@@ -13,7 +13,7 @@ export const Route = createFileRoute("/reset-password")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Reset password, Drivable" },
+      { title: "Drivable" },
       { name: "description", content: "Choose a new password for your Drivable account." },
       { name: "robots", content: "noindex" },
     ],

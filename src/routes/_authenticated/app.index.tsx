@@ -17,7 +17,7 @@ type TabId = "test-hub" | "state-exam" | "chat";
 export const Route = createFileRoute("/_authenticated/app/")({
   head: () => ({
     meta: [
-      { title: "Your Dashboard, Drivable" },
+      { title: "Drivable" },
       {
         name: "description",
         content:

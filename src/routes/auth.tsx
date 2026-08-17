@@ -17,7 +17,7 @@ export const Route = createFileRoute("/auth")({
   },
   head: () => ({
     meta: [
-      { title: "Sign in, Drivable" },
+      { title: "Drivable" },
       { name: "description", content: "Sign in to Drivable to start coaching toward your permit and road test." },
       { property: "og:title", content: "Sign in, Drivable" },
       { property: "og:description", content: "Sign in to Drivable to start coaching toward your permit and road test." },
