@@ -492,7 +492,7 @@
 
 /* Continuous glow pulse for primary CTAs */
 @keyframes cta-glow {
-  0%, 100% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--accent-violet) 40%, transparent), 0 10px 26px -16px rgba(17, 20, 24, 0.7); }
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--accent-orange) 40%, transparent), 0 10px 26px -16px rgba(17, 20, 24, 0.7); }
   50%      { box-shadow: 0 0 0 6px color-mix(in oklab, var(--accent-cyan) 0%, transparent), 0 14px 30px -16px rgba(17, 20, 24, 0.75); }
 }
 @keyframes cta-shimmer {
@@ -522,7 +522,7 @@
     inset: -1px;
     z-index: -1;
     border-radius: 999px;
-    background: var(--gradient-violet-cyan);
+    background: var(--gradient-orange-cyan);
     opacity: 0;
     transition: opacity 0.3s ease;
   }
@@ -553,9 +553,9 @@
   transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease, border-color 0.35s ease;
   &:hover {
     transform: translateY(-0.5rem);
-    border-color: color-mix(in oklab, var(--accent-violet) 45%, transparent);
+    border-color: color-mix(in oklab, var(--accent-orange) 45%, transparent);
     box-shadow:
-      0 26px 60px -28px color-mix(in oklab, var(--accent-violet) 55%, transparent),
+      0 26px 60px -28px color-mix(in oklab, var(--accent-orange) 55%, transparent),
       0 0 0 1px color-mix(in oklab, var(--accent-cyan) 28%, transparent);
   }
 }
