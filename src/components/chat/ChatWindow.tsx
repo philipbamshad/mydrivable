@@ -3,14 +3,13 @@
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, type UIMessage } from "ai";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Sparkles, Lock } from "lucide-react";
+import { Sparkles, Lock, Plus, Mic } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import {
   Conversation,
   ConversationContent,
-  ConversationEmptyState,
   ConversationScrollButton,
 } from "@/components/ai-elements/conversation";
 import {
@@ -111,6 +110,19 @@ export function ChatWindow({
     }
     await sendMessage({ text });
   };
+
+  const [greetingName, setGreetingName] = useState<string | null>(null);
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => {
+      const u = data.user;
+      const raw =
+        (u?.user_metadata?.["full_name"] as string | undefined) ??
+        (u?.user_metadata?.["name"] as string | undefined) ??
+        u?.email?.split("@")[0] ??
+        null;
+      setGreetingName(raw ? raw.split(" ")[0] : null);
+    });
+  }, []);
 
   const isBusy = status === "submitted" || status === "streaming";
   const isEmpty = messages.length === 0;
