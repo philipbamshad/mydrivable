@@ -219,7 +219,7 @@ function Hero() {
       {/* Ambient hero glow, soft pastel cyan, slate blue and violet, gently drifting */}
       <div
         aria-hidden
-        className="ambient-blob absolute left-1/2 top-[22%] -z-10 h-[420px] w-[520px] max-w-[95vw] -translate-x-1/2 rounded-full blur-3xl sm:top-[30%] sm:h-[700px] sm:w-[900px] sm:max-w-[110vw]"
+        className="ambient-blob absolute inset-x-0 top-[22%] -z-10 mx-auto h-[420px] w-[520px] max-w-[95vw] rounded-full blur-3xl sm:top-[30%] sm:h-[700px] sm:w-[900px] sm:max-w-[110vw]"
         style={{
           background:
             "radial-gradient(closest-side, rgba(56,189,248,0.20), rgba(99,102,241,0.14) 55%, transparent 78%)",
@@ -235,7 +235,7 @@ function Hero() {
       />
       <div
         aria-hidden
-        className="ambient-spin-slow absolute left-1/2 top-[42%] -z-10 h-[320px] w-[320px] max-w-[80vw] -translate-x-1/2 rounded-full blur-3xl sm:h-[560px] sm:w-[560px]"
+        className="ambient-spin-slow absolute inset-x-0 top-[42%] -z-10 mx-auto h-[320px] w-[320px] max-w-[80vw] rounded-full blur-3xl sm:h-[560px] sm:w-[560px]"
         style={{
           background:
             "conic-gradient(from 0deg, rgba(56,189,248,0.14), rgba(129,140,248,0.12), rgba(196,181,253,0.14), rgba(56,189,248,0.14))",
@@ -438,7 +438,7 @@ function Pricing() {
         {/* Centered ambient backlight behind the Pro card */}
         <div
           aria-hidden
-          className="ambient-blob-slow absolute right-0 top-1/2 -z-10 h-[520px] w-[520px] -translate-y-1/2 rounded-full blur-3xl"
+          className="ambient-blob-slow absolute right-0 top-[calc(50%-260px)] -z-10 h-[520px] w-[520px] rounded-full blur-3xl"
           style={{
             background:
               "radial-gradient(closest-side, rgba(30,64,175,0.35), rgba(30,64,175,0.10) 55%, transparent 75%)",
