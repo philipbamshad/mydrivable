@@ -82,6 +82,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: "Drivable" },
       { name: "description", content: "Drivable coaches teens through permit, road tests, and car maintenance with practical, expert guidance." },
       { name: "author", content: "Drivable" },
+      { name: "google-site-verification", content: "NUwVkbtxYDBMMYIJckQW9XUdhSufkUu6g1ZoA28bsUw" },
       { property: "og:title", content: "Drivable" },
       { property: "og:description", content: "Drivable coaches teens through permit, road tests, and car maintenance with practical, expert guidance." },
       { property: "og:type", content: "website" },
