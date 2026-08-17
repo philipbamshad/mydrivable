@@ -157,11 +157,11 @@ function UsedCarInspectionGuide() {
   return (
     <MarketingLayout>
       <article className="mx-auto max-w-3xl">
-        <p className="text-xs uppercase tracking-[0.22em] text-blue-300">Buyer guide</p>
+        <p className="text-xs uppercase tracking-[0.22em] text-[#1e40af]">Buyer guide</p>
         <h1 className="mt-3 text-4xl font-semibold tracking-[-0.03em] sm:text-5xl">
           Used car inspection checklist
         </h1>
-        <p className="mt-4 text-white/70">
+        <p className="mt-4 text-[#1f2b4d]/70">
           Your first car is usually a used car, and the walk around is where most new
           drivers lose money. Work through these seven sections in order. Tap any line
           to tick it off as you go, then take the unchecked items to a mechanic before
@@ -169,12 +169,12 @@ function UsedCarInspectionGuide() {
           purchase inspection.
         </p>
 
-        <div className="sticky top-20 z-40 mt-8 flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-[#070b18]/90 px-5 py-3 backdrop-blur-xl">
+        <div className="sticky top-20 z-40 mt-8 flex items-center justify-between gap-4 rounded-2xl border border-[#1e40af]/18 bg-[#f4f7fd]/90 px-5 py-3 backdrop-blur-xl">
           <div>
             <p className="text-sm font-semibold">
               {checked} of {TOTAL} checks complete
             </p>
-            <div className="mt-2 h-1.5 w-40 overflow-hidden rounded-full bg-white/10 sm:w-64">
+            <div className="mt-2 h-1.5 w-40 overflow-hidden rounded-full bg-[#1e40af]/10 sm:w-64">
               <div
                 className="h-full rounded-full bg-[#3b82f6] transition-all"
                 style={{ width: `${(checked / TOTAL) * 100}%` }}
@@ -194,7 +194,7 @@ function UsedCarInspectionGuide() {
         {SECTIONS.map((section) => (
           <section key={section.title} className="mt-12">
             <h2 className="text-2xl font-semibold tracking-[-0.02em]">{section.title}</h2>
-            <p className="mt-2 text-white/65">{section.blurb}</p>
+            <p className="mt-2 text-[#1f2b4d]/65">{section.blurb}</p>
             <ul className="mt-5 space-y-2">
               {section.items.map((item) => {
                 const key = `${section.title}:${item}`;
@@ -207,13 +207,13 @@ function UsedCarInspectionGuide() {
                       aria-pressed={on}
                       className={`flex w-full items-start gap-3 rounded-2xl border p-4 text-left text-[15px] transition ${
                         on
-                          ? "border-[#3b82f6]/40 bg-[#3b82f6]/10 text-white/60 line-through"
-                          : "border-white/10 bg-white/[0.03] text-white/85 hover:bg-white/[0.06]"
+                          ? "border-[#3b82f6]/40 bg-[#3b82f6]/10 text-[#1f2b4d]/70 line-through"
+                          : "border-[#1e40af]/18 bg-[#1e40af]/[0.045] text-[#1f2b4d]/85 hover:bg-[#1e40af]/[0.08]"
                       }`}
                     >
                       <span
                         className={`mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-md border ${
-                          on ? "border-[#3b82f6] bg-[#3b82f6]" : "border-white/25"
+                          on ? "border-[#3b82f6] bg-[#3b82f6]" : "border-[#1e40af]/35"
                         }`}
                       >
                         {on && <Check className="h-3.5 w-3.5 text-white" />}
@@ -229,7 +229,7 @@ function UsedCarInspectionGuide() {
 
         <section className="mt-14">
           <h2 className="text-2xl font-semibold tracking-[-0.02em]">Walk away signals</h2>
-          <ul className="mt-4 space-y-3 text-white/75">
+          <ul className="mt-4 space-y-3 text-[#1f2b4d]/75">
             <li>The seller will not let you take it to an independent mechanic.</li>
             <li>The name on the title is not the person selling the car.</li>
             <li>The check engine light is on and the seller calls it a sensor.</li>
@@ -239,11 +239,11 @@ function UsedCarInspectionGuide() {
           </ul>
         </section>
 
-        <section className="mt-14 rounded-[28px] border border-[#3b82f6]/30 bg-white/[0.02] p-8 text-center">
+        <section className="mt-14 rounded-[28px] border border-[#3b82f6]/30 bg-[#1e40af]/[0.035] p-8 text-center">
           <h2 className="text-2xl font-semibold tracking-[-0.02em]">
             Decode the VIN before the walk around
           </h2>
-          <p className="mx-auto mt-3 max-w-xl text-white/70">
+          <p className="mx-auto mt-3 max-w-xl text-[#1f2b4d]/70">
             Confirm the year, engine, and factory safety equipment in seconds, then get
             your license locked in with an AI coach and a full length mock permit exam.
           </p>
@@ -253,7 +253,7 @@ function UsedCarInspectionGuide() {
             </Link>
             <Link
               to="/auth"
-              className="text-sm font-semibold text-blue-300 underline-offset-4 hover:underline"
+              className="text-sm font-semibold text-[#1e40af] underline-offset-4 hover:underline"
             >
               Start practicing free
             </Link>
