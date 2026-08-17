@@ -95,13 +95,18 @@ export function ChatWindow({
   }, [threadId, status]);
 
   const handleSubmit = async (msg: PromptInputMessage) => {
-    if (!msg.text.trim()) return;
+    const hasFiles = Boolean(msg.files && msg.files.length > 0);
+    if (!msg.text.trim() && !hasFiles) return;
     if (limitReached) {
       openCheckout();
       return;
     }
-    await sendMessage({ text: msg.text });
+    await sendMessage({
+      text: msg.text,
+      ...(hasFiles ? { files: msg.files } : {}),
+    });
   };
+
 
   const handleSuggestion = async (text: string) => {
     if (limitReached) {
