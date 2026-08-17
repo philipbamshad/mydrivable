@@ -372,7 +372,7 @@ function Features() {
     <section id="features" className="px-6 pt-28 pb-20">
       <div className="mx-auto max-w-3xl text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-[#1e40af]/18 bg-[#1e40af]/[0.055] px-4 py-1.5 text-sm text-[#1f2b4d]/80 backdrop-blur-xl">
-          <span className="status-dot h-1.5 w-1.5 rounded-full bg-[#8b5cf6]" />
+          <span className="status-dot h-1.5 w-1.5 rounded-full bg-[#f97316]" />
           <Sparkles className="h-4 w-4 text-[#1e40af]" />
           State-Specific DMV Prep
         </div>
@@ -390,7 +390,7 @@ function Features() {
       <div ref={grid} className="mx-auto mt-14 grid max-w-6xl gap-6 md:grid-cols-2">
         {features.map((f, i) => {
           const Icon = f.icon;
-          const tiles = ["grad-violet-cyan", "grad-emerald-blue", "grad-amber-magenta", "grad-violet-cyan"];
+          const tiles = ["grad-orange-cyan", "grad-emerald-blue", "grad-amber-orange", "grad-orange-cyan"];
           return (
             <div
               key={f.title}
@@ -398,7 +398,7 @@ function Features() {
               className="lift reveal group relative rounded-[28px] border border-[#1e40af]/18 bg-white/75 p-8 backdrop-blur-xl"
             >
 
-              <span className={`${tiles[i % tiles.length]} grid h-12 w-12 place-items-center rounded-2xl text-white shadow-[0_10px_24px_-14px_rgba(139,92,246,0.6)]`}>
+              <span className={`${tiles[i % tiles.length]} grid h-12 w-12 place-items-center rounded-2xl text-white shadow-[0_10px_24px_-14px_rgba(249,115,22,0.6)]`}>
                 <Icon className="h-5 w-5" />
               </span>
 
