@@ -2,6 +2,7 @@ import baseline from "./questions-baseline.json";
 import rulesJson from "./state-rules.json";
 import { buildQuestionBank } from "./question-generator";
 import { buildOfficialPool } from "./official-pool";
+import { expandPool } from "./variation-engine";
 import { DEFAULT_STATE_NAME } from "./state-numerics";
 import type { Question, StateRules, StatePack } from "./types";
 
@@ -149,7 +150,11 @@ export function getStatePack(stateName: string | null | undefined): StatePack {
   const generated = buildQuestionBank(rules);
   return {
     rules,
-    questions: [...official, ...stateFacts, ...generated, ...BASELINE],
+    questions: expandPool(
+      [...official, ...stateFacts, ...generated, ...BASELINE],
+      6,
+      rules.name,
+    ),
   };
 }
 

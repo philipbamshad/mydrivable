@@ -12,6 +12,7 @@ import type { SignSpec } from "@/components/dashboard/SignVisual";
 import { STATE_DRIVING_RULES } from "@/data/states";
 import { shuffleAnswers } from "./question-generator";
 import { buildOfficialPool } from "./official-pool";
+import { expandPool } from "./variation-engine";
 
 export type PracticeQuestion = {
   q: string;
@@ -739,7 +740,7 @@ export function buildPillarBanks(
   // brand new set every attempt, long after the authored items are exhausted.
   for (const id of Object.keys(out) as PillarId[]) {
     out[id] = expandPool(out[id], 6, stateName).map(
-      (q) => shuffleAnswers(q) as PracticeQuestion,
+      (q: PracticeQuestion) => shuffleAnswers(q) as PracticeQuestion,
     );
   }
 
