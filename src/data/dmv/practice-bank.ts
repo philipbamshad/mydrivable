@@ -735,7 +735,16 @@ export function buildPillarBanks(
     out[t.pillar].push(shuffleAnswers(interpolated) as PracticeQuestion);
   }
 
+  // Multiply each pillar with reworded variants so a learner keeps getting a
+  // brand new set every attempt, long after the authored items are exhausted.
+  for (const id of Object.keys(out) as PillarId[]) {
+    out[id] = expandPool(out[id], 6, stateName).map(
+      (q) => shuffleAnswers(q) as PracticeQuestion,
+    );
+  }
+
   return out;
+
 }
 
 export const PILLAR_META: Record<
