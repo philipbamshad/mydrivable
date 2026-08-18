@@ -5,10 +5,6 @@ import logo from "@/assets/drivable-logo.png";
 import {
   ArrowRight,
   Check,
-  MessageSquare,
-  ClipboardCheck,
-  LayoutDashboard,
-  Timer,
   MapPin,
   Menu,
   X,
@@ -342,39 +338,39 @@ function StatesMarquee() {
 function Features() {
   const features = [
     {
-      icon: Timer,
       title: "Full-Length Mock Permit Exam Simulator",
-      body: "Take a timed, state-accurate exam with the real question count, timing, and passing score for your state.",
-      tint: "from-accent-cyan/[0.05] via-white/70 to-accent-emerald/[0.04]",
-      status: { label: "46 Qs • 83% Pass", tone: "emerald" },
+      body: "Take a timed, state-accurate exam with the real question count, timing, and passing score.",
+      gradient: "linear-gradient(135deg, #8b5cf6 0%, #4c1d95 50%, #2e1065 100%)",
+      accent: "#a78bfa",
+      visual: "simulator",
     },
     {
-      icon: MessageSquare,
       title: "AI Permit Coach",
       body: "Get instant explanations for wrong answers and run scenario drills grounded in your state's handbook.",
-      tint: "from-accent-emerald/[0.05] via-white/70 to-accent-cyan/[0.04]",
-      chatPreview: true,
+      gradient: "linear-gradient(135deg, #06b6d4 0%, #047857 100%)",
+      accent: "#10b981",
+      visual: "coach",
     },
     {
-      icon: ClipboardCheck,
       title: "Targeted Section Quizzes",
       body: "Drill the topics that trip test takers up: road signs, intersections, substance laws, and speed limits.",
-      tint: "from-accent-amber/[0.06] via-white/70 to-accent-orange/[0.04]",
-      tags: ["Road Signs", "Speed Limits", "DUI Laws"],
+      gradient: "linear-gradient(135deg, #f97316 0%, #ec4899 50%, #db2777 100%)",
+      accent: "#fbbf24",
+      visual: "quizzes",
     },
     {
-      icon: LayoutDashboard,
       title: "State-Specific & Schedule-Tailored Practice",
       body: "Pick your state and target test date to adapt every question and track readiness in one dashboard.",
-      tint: "from-accent-orange/[0.05] via-white/70 to-accent-cyan/[0.04]",
-      stateBadge: "CA DMV",
+      gradient: "linear-gradient(135deg, #2563eb 0%, #4338ca 50%, #312e81 100%)",
+      accent: "#60a5fa",
+      visual: "state",
     },
   ];
 
   const grid = useReveal<HTMLDivElement>();
 
   return (
-    <section id="features" className="px-6 pt-28 pb-20">
+    <section id="features" className="px-4 sm:px-6 lg:px-8 pt-28 pb-20">
       <div className="mx-auto max-w-3xl text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-[#1e40af]/18 bg-[#1e40af]/[0.055] px-4 py-1.5 text-sm text-[#1f2b4d]/80 backdrop-blur-xl">
           <span className="status-dot h-1.5 w-1.5 rounded-full bg-[#f97316]" />
@@ -391,64 +387,49 @@ function Features() {
         </p>
       </div>
 
-      <div ref={grid} className="mx-auto mt-14 grid max-w-6xl gap-6 md:grid-cols-2">
-        {features.map((f, i) => {
-          const Icon = f.icon;
-          const tiles = ["grad-orange-cyan", "grad-emerald-blue", "grad-amber-orange", "grad-orange-cyan"];
-          return (
+      <div ref={grid} className="mx-auto mt-14 grid w-full max-w-screen-2xl gap-6 md:grid-cols-2">
+        {features.map((f, i) => (
+          <div
+            key={f.title}
+            style={{ transitionDelay: `${i * 120}ms` }}
+            className="reveal feature-card group rounded-[32px]"
+          >
             <div
-              key={f.title}
-              style={{ transitionDelay: `${i * 110}ms` }}
-              className="reveal group relative overflow-hidden rounded-[28px] border border-[#1e40af]/18 bg-gradient-to-br p-8 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-primary/25 hover:shadow-[0_20px_50px_-24px_rgba(30,64,175,0.18)]"
+              className="relative flex h-full min-h-[320px] flex-col overflow-hidden rounded-[30px] p-8 lg:p-10 text-white"
+              style={{ background: f.gradient }}
             >
-              <div className={`absolute inset-0 -z-10 bg-gradient-to-br ${f.tint}`} />
-
-              {f.status && (
-                <div className="absolute top-6 right-6 hidden sm:inline-flex items-center gap-1.5 rounded-full border border-accent-emerald/20 bg-accent-emerald/10 px-2.5 py-1 text-[11px] font-semibold text-accent-emerald backdrop-blur-md">
-                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-accent-emerald" />
-                  {f.status.label}
-                </div>
-              )}
-
-              {f.stateBadge && (
-                <div className="absolute top-6 right-6 hidden sm:inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-white/70 px-2.5 py-1 text-[11px] font-semibold text-[#0f172a] backdrop-blur-md">
-                  <MapPin className="h-3 w-3 text-primary" />
-                  {f.stateBadge}
-                </div>
-              )}
-
-              <span className={`${tiles[i % tiles.length]} grid h-12 w-12 place-items-center rounded-2xl text-white shadow-[0_10px_24px_-14px_rgba(249,115,22,0.6)]`}>
-                <Icon className="h-5 w-5" />
-              </span>
-
-              <h3 className="mt-6 text-xl font-semibold tracking-tight">{f.title}</h3>
-
-              {f.chatPreview && (
-                <div className="mt-4 space-y-2">
-                  <div className="flex items-center gap-2">
-                    <div className="rounded-full border border-border/60 bg-white/70 px-2.5 py-1 text-[11px] text-muted-foreground">
-                      Why did I miss this?
-                    </div>
+              {f.visual === "simulator" && (
+                <div className="absolute top-6 right-6 hidden sm:flex flex-col items-end gap-3 feature-float">
+                  <div className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/15 px-3 py-1.5 text-xs font-bold uppercase tracking-wide backdrop-blur-md">
+                    <span className="h-2 w-2 animate-pulse rounded-full bg-white" />
+                    Live Exam
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className="grid h-5 w-5 place-items-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
-                      AI
-                    </span>
-                    <div className="rounded-full bg-primary/10 px-2.5 py-1 text-[11px] font-semibold text-primary">
-                      Explains the rule
+                  <div className="w-36 space-y-1.5 rounded-xl border border-white/20 bg-white/10 p-3 backdrop-blur-md">
+                    <div className="h-2 w-full rounded-full bg-white/25">
+                      <div className="h-2 rounded-full bg-white feature-progress" />
                     </div>
+                    <p className="text-[10px] font-semibold text-white/90">73% complete</p>
                   </div>
                 </div>
               )}
 
-              <p className="mt-3 text-[15px] leading-relaxed text-[#1f2b4d]/65">{f.body}</p>
+              {f.visual === "coach" && (
+                <div className="absolute top-6 right-6 hidden sm:flex flex-col items-end gap-2">
+                  <div className="feature-float rounded-xl rounded-tr-sm border border-white/20 bg-white/15 px-3 py-2 text-xs font-medium text-white backdrop-blur-md">
+                    Why did I miss this?
+                  </div>
+                  <div className="feature-float-delay rounded-xl rounded-tr-sm border border-white/30 bg-white px-3 py-2 text-xs font-semibold text-[#047857] shadow-lg">
+                    Here is the rule.
+                  </div>
+                </div>
+              )}
 
-              {f.tags && (
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {f.tags.map((tag) => (
+              {f.visual === "quizzes" && (
+                <div className="absolute top-6 right-6 hidden sm:flex flex-col items-end gap-2">
+                  {["Road Signs", "Speed Limits", "DUI Laws"].map((tag, idx) => (
                     <span
                       key={tag}
-                      className="rounded-full border border-border/60 bg-white/60 px-2.5 py-1 text-xs font-medium text-muted-foreground transition-colors duration-200 hover:border-accent-amber/40 hover:bg-accent-amber/10 hover:text-accent-amber"
+                      className={`rounded-full border border-white/30 bg-white/10 px-3 py-1 text-xs font-semibold text-white backdrop-blur-md transition-colors duration-300 group-hover:bg-white/25 ${idx === 1 ? "feature-float-delay" : idx === 2 ? "feature-float-delay-2" : "feature-float"}`}
                     >
                       {tag}
                     </span>
@@ -456,13 +437,35 @@ function Features() {
                 </div>
               )}
 
-              <div className="mt-6 flex items-center justify-end gap-1.5 text-sm font-semibold text-primary transition-colors duration-300 group-hover:text-[#0f172a]">
-                <span>Explore feature</span>
-                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+              {f.visual === "state" && (
+                <div className="absolute top-6 right-6 hidden sm:flex flex-col items-end gap-3 feature-float">
+                  <div className="inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-white/15 px-3 py-1.5 text-xs font-bold backdrop-blur-md">
+                    <MapPin className="h-3 w-3" />
+                    CA DMV
+                  </div>
+                  <div className="h-1.5 w-24 rounded-full bg-white/25">
+                    <div className="h-1.5 rounded-full bg-white feature-progress" />
+                  </div>
+                </div>
+              )}
+
+              <div className="relative z-10 max-w-[75%]">
+                <h3 className="text-2xl lg:text-3xl font-bold tracking-tight drop-shadow-md">
+                  {f.title}
+                </h3>
+                <p className="mt-4 text-base lg:text-lg leading-relaxed text-white/90 drop-shadow-sm">
+                  {f.body}
+                </p>
+              </div>
+
+              <div className="mt-auto flex items-center justify-end pt-8">
+                <span className="grid h-12 w-12 place-items-center rounded-full bg-white shadow-[0_0_20px_-5px_rgba(255,255,255,0.45)] transition-all duration-300 group-hover:translate-x-1 group-hover:shadow-[0_0_30px_-5px_rgba(255,255,255,0.65)]">
+                  <ArrowRight className="h-5 w-5" style={{ color: f.accent }} />
+                </span>
               </div>
             </div>
-          );
-        })}
+          </div>
+        ))}
       </div>
     </section>
   );
