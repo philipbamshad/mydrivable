@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import logo from "@/assets/drivable-logo.png";
 import {
   ArrowRight,
+  Calendar,
   Check,
   MapPin,
   Menu,
@@ -339,7 +340,7 @@ function Features() {
   const features = [
     {
       title: "Full-Length Mock Permit Exam Simulator",
-      body: "Timed, state-accurate exams with the real question count and passing score",
+      body: "State-accurate exams with the real question count and passing score. Study at your own pace, no timer pressure.",
       visual: "simulator",
     },
     {
@@ -353,8 +354,8 @@ function Features() {
       visual: "quizzes",
     },
     {
-      title: "Progress Tracking, Know Exactly What To Study",
-      body: "Readiness scores per topic, tailored to your test date",
+      title: "Tailored To Your Test Date and State",
+      body: "Your study plan adapts to your DMV target date and your state's exact rules.",
       visual: "state",
     },
   ];
@@ -384,24 +385,29 @@ function Features() {
           <div
             key={f.title}
             style={{ transitionDelay: `${i * 120}ms` }}
-            className="reveal group flex h-full flex-col overflow-hidden rounded-[32px] bg-[#f4f5f7] p-4 transition-all duration-500 hover:-translate-y-1 hover:bg-[#eef0f4] hover:shadow-[0_28px_60px_-40px_rgba(15,23,42,0.35)]"
+            className="reveal group feature-accent flex h-full flex-col overflow-hidden rounded-[32px] bg-[#f4f5f7] p-4 transition-all duration-500 hover:-translate-y-1 hover:bg-[#eef0f4] hover:shadow-[0_28px_60px_-40px_rgba(15,23,42,0.35)]"
           >
             <div className="relative h-[260px] overflow-hidden rounded-[24px] px-6 pt-8">
               {f.visual === "simulator" && (
                 <div className="mx-auto w-full max-w-[340px] space-y-3">
                   {[
-                    { label: "Question 12 of 46", tag: "Signs", sub: "Time left 18:04" },
-                    { label: "Question 13 of 46", tag: "Right of way", sub: "Time left 17:22" },
-                  ].map((q) => (
-                    <div key={q.label} className="rounded-xl bg-white p-4 shadow-[0_18px_40px_-30px_rgba(15,23,42,0.5)]">
-                      <div className="flex items-center justify-between">
+                    { label: "Question 12 of 46", tag: "Signs" },
+                    { label: "Question 13 of 46", tag: "Right of way" },
+                  ].map((q, idx) => (
+                    <div
+                      key={q.label}
+                      className={`relative overflow-hidden rounded-xl bg-white p-4 shadow-[0_18px_40px_-30px_rgba(15,23,42,0.5)] transition-transform duration-500 group-hover:scale-[1.02] ${idx === 0 ? "feature-float" : "feature-float-delay"}`}
+                    >
+                      <div className="pointer-events-none absolute inset-0 -translate-x-full overflow-hidden rounded-xl group-hover:animate-[featureShimmer_0.9s_ease_forwards]">
+                        <div className="h-full w-full bg-gradient-to-r from-transparent via-white/35 to-transparent" />
+                      </div>
+                      <div className="relative flex items-center justify-between">
                         <p className="text-sm font-semibold text-[#0f172a]">{q.label}</p>
                         <span className="rounded-md bg-[#1e40af]/10 px-2 py-0.5 text-[10px] font-semibold text-[#1e40af]">
                           {q.tag}
                         </span>
                       </div>
-                      <p className="mt-2 text-[11px] text-[#1f2b4d]/55">{q.sub}</p>
-                      <div className="mt-3 space-y-1.5">
+                      <div className="relative mt-3 space-y-1.5">
                         <div className="h-1.5 w-full rounded-full bg-[#eef0f4]" />
                         <div className="h-1.5 w-2/3 rounded-full bg-[#eef0f4]" />
                       </div>
@@ -412,26 +418,38 @@ function Features() {
 
               {f.visual === "coach" && (
                 <div className="mx-auto w-full max-w-[340px] space-y-3">
-                  <div className="ml-auto w-fit max-w-[80%] rounded-2xl rounded-br-md bg-[#0f172a] px-4 py-2.5 text-sm text-white shadow-[0_18px_40px_-30px_rgba(15,23,42,0.6)]">
-                    Why did I miss this sign question?
+                  <div className="feature-float relative ml-auto w-fit max-w-[80%] overflow-hidden rounded-2xl rounded-br-md bg-[#0f172a] px-4 py-2.5 text-sm text-white shadow-[0_18px_40px_-30px_rgba(15,23,42,0.6)] transition-transform duration-500 group-hover:translate-x-1">
+                    <div className="pointer-events-none absolute inset-0 -translate-x-full overflow-hidden rounded-2xl rounded-br-md group-hover:animate-[featureShimmer_0.9s_ease_forwards]">
+                      <div className="h-full w-full bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+                    </div>
+                    <span className="relative">Why did I miss this sign question?</span>
                   </div>
-                  <div className="w-fit max-w-[85%] rounded-2xl rounded-bl-md bg-white px-4 py-3 shadow-[0_18px_40px_-30px_rgba(15,23,42,0.5)]">
-                    <p className="text-[11px] font-semibold uppercase tracking-wide text-[#10b981]">AI Coach</p>
-                    <p className="mt-1 text-sm leading-relaxed text-[#1f2b4d]/80">
+                  <div className="feature-float-delay relative w-fit max-w-[85%] overflow-hidden rounded-2xl rounded-bl-md bg-white px-4 py-3 shadow-[0_18px_40px_-30px_rgba(15,23,42,0.5)] transition-transform duration-500 group-hover:-translate-x-1">
+                    <div className="pointer-events-none absolute inset-0 -translate-x-full overflow-hidden rounded-2xl rounded-bl-md group-hover:animate-[featureShimmer_0.9s_ease_forwards]">
+                      <div className="h-full w-full bg-gradient-to-r from-transparent via-white/45 to-transparent" />
+                    </div>
+                    <p className="relative text-[11px] font-semibold uppercase tracking-wide text-[#10b981]">AI Coach</p>
+                    <p className="relative mt-1 text-sm leading-relaxed text-[#1f2b4d]/80">
                       A yellow diamond warns of conditions ahead, it never regulates speed.
                     </p>
                   </div>
-                  <div className="ml-auto w-fit rounded-full bg-white px-3 py-1.5 text-[11px] font-semibold text-[#1f2b4d]/60 shadow-sm">
-                    Typing
+                  <div className="feature-float-delay-2 relative ml-auto w-fit overflow-hidden rounded-full bg-white px-3 py-1.5 text-[11px] font-semibold text-[#1f2b4d]/60 shadow-sm transition-transform duration-500 group-hover:scale-105">
+                    <div className="pointer-events-none absolute inset-0 -translate-x-full overflow-hidden rounded-full group-hover:animate-[featureShimmer_0.9s_ease_forwards]">
+                      <div className="h-full w-full bg-gradient-to-r from-transparent via-white/40 to-transparent" />
+                    </div>
+                    <span className="relative">Typing</span>
                   </div>
                 </div>
               )}
 
               {f.visual === "quizzes" && (
-                <div className="mx-auto w-full max-w-[340px] rounded-2xl bg-white p-5 shadow-[0_18px_40px_-30px_rgba(15,23,42,0.5)]">
-                  <p className="text-sm font-semibold text-[#0f172a]">Section Quizzes</p>
-                  <p className="mt-1 text-[11px] text-[#1f2b4d]/55">Pick a pillar and start drilling</p>
-                  <div className="mt-4 space-y-3">
+                <div className="relative mx-auto w-full max-w-[340px] overflow-hidden rounded-2xl bg-white p-5 shadow-[0_18px_40px_-30px_rgba(15,23,42,0.5)] transition-transform duration-500 group-hover:scale-[1.02]">
+                  <div className="pointer-events-none absolute inset-0 -translate-x-full overflow-hidden rounded-2xl group-hover:animate-[featureShimmer_0.9s_ease_forwards]">
+                    <div className="h-full w-full bg-gradient-to-r from-transparent via-white/35 to-transparent" />
+                  </div>
+                  <p className="relative text-sm font-semibold text-[#0f172a]">Section Quizzes</p>
+                  <p className="relative mt-1 text-[11px] text-[#1f2b4d]/55">Pick a pillar and start drilling</p>
+                  <div className="relative mt-4 space-y-3">
                     {[
                       { name: "Road Signs", score: "9.1/10" },
                       { name: "Speed Limits", score: "7.4/10" },
@@ -444,7 +462,7 @@ function Features() {
                         </div>
                         <div className="mt-1.5 h-1.5 w-full rounded-full bg-[#eef0f4]">
                           <div
-                            className="h-1.5 rounded-full bg-[#f97316] transition-all duration-700"
+                            className="feature-progress h-1.5 rounded-full bg-[#f97316]"
                             style={{ width: ["88%", "72%", "58%"][idx] }}
                           />
                         </div>
@@ -455,27 +473,35 @@ function Features() {
               )}
 
               {f.visual === "state" && (
-                <div className="mx-auto w-full max-w-[340px] rounded-2xl bg-white p-5 shadow-[0_18px_40px_-30px_rgba(15,23,42,0.5)]">
-                  <div className="flex items-center justify-between">
+                <div className="relative mx-auto w-full max-w-[340px] overflow-hidden rounded-2xl bg-white p-5 shadow-[0_18px_40px_-30px_rgba(15,23,42,0.5)] transition-transform duration-500 group-hover:scale-[1.02]">
+                  <div className="pointer-events-none absolute inset-0 -translate-x-full overflow-hidden rounded-2xl group-hover:animate-[featureShimmer_0.9s_ease_forwards]">
+                    <div className="h-full w-full bg-gradient-to-r from-transparent via-white/35 to-transparent" />
+                  </div>
+                  <div className="relative flex items-center justify-between">
                     <div>
-                      <p className="text-sm font-semibold text-[#0f172a]">Readiness</p>
-                      <p className="mt-1 text-[11px] text-[#1f2b4d]/55">Tailored to your test date</p>
+                      <p className="text-sm font-semibold text-[#0f172a]">DMV Target Date</p>
+                      <p className="mt-1 text-[11px] text-[#1f2b4d]/55">Personalized to California</p>
                     </div>
-                    <span className="inline-flex items-center gap-1 rounded-md bg-[#0f172a] px-2.5 py-1 text-[10px] font-semibold text-white">
+                    <span className="feature-float inline-flex items-center gap-1 rounded-md bg-[#0f172a] px-2.5 py-1 text-[10px] font-semibold text-white">
                       <MapPin className="h-3 w-3" />
                       CA DMV
                     </span>
                   </div>
-                  <div className="mt-4 flex items-end gap-2">
-                    <span className="text-3xl font-semibold tracking-tight text-[#0f172a]">82%</span>
-                    <span className="mb-1 text-[11px] font-semibold text-[#10b981]">Pass ready</span>
+                  <div className="relative mt-5 flex items-center gap-3 rounded-xl bg-[#f4f5f7] p-3 transition-colors duration-500 group-hover:bg-[#e8eaed]">
+                    <div className="grid h-10 w-10 place-items-center rounded-lg bg-[#1e40af]/10 text-[#1e40af]">
+                      <Calendar className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-semibold text-[#0f172a]">August 30, 2026</p>
+                      <p className="text-[10px] text-[#1f2b4d]/55">Target exam date</p>
+                    </div>
                   </div>
-                  <div className="mt-3 h-2 w-full rounded-full bg-[#eef0f4]">
-                    <div className="h-2 w-[82%] rounded-full bg-[#1e40af]" />
-                  </div>
-                  <div className="mt-4 grid grid-cols-3 gap-2">
+                  <div className="relative mt-4 grid grid-cols-3 gap-2">
                     {["Signs", "Rules", "Safety"].map((t) => (
-                      <div key={t} className="rounded-lg bg-[#f4f5f7] px-2 py-2 text-center text-[10px] font-semibold text-[#1f2b4d]/70">
+                      <div
+                        key={t}
+                        className="rounded-lg bg-[#f4f5f7] px-2 py-2 text-center text-[10px] font-semibold text-[#1f2b4d]/70 transition-colors duration-500 group-hover:bg-[#e8eaed]"
+                      >
                         {t}
                       </div>
                     ))}
