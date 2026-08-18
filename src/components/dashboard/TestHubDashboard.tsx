@@ -87,7 +87,6 @@ export function TestHubDashboard() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {pillars.map((p) => {
           const Icon = p.icon;
-          const count = banks[p.id].length;
           const used = usage[p.id] ?? 0;
           const remaining = Math.max(0, FREE_PILLAR_LIFETIME_LIMIT - used);
           const locked = !isPro && remaining <= 0;
@@ -108,12 +107,6 @@ export function TestHubDashboard() {
                     </Badge>
                   </div>
                 </div>
-                <Badge
-                  variant="outline"
-                  className="text-[10px] uppercase tracking-widest border-primary/30 text-primary"
-                >
-                  {count} qs
-                </Badge>
               </div>
               {!isPro && (
                 <p className="text-[11px] text-muted-foreground">
