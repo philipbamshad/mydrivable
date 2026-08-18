@@ -166,7 +166,7 @@ function AuthPage() {
     }
   };
 
-  const handleOAuth = async (provider: "google" | "apple") => {
+  const handleOAuth = async (provider: "google") => {
     setLoading(true);
     try {
       // Preserve `next` (e.g. the OAuth consent URL) through the provider
@@ -409,18 +409,6 @@ function AuthPage() {
                     <path fill="#34A853" d="M24 47.5c6.2 0 11.5-2 15.3-5.6l-7.6-5.9c-2.1 1.4-4.8 2.3-7.7 2.3-6.4 0-11.7-4-13.6-9.9l-7.8 6.1C6.5 42.2 14.6 47.5 24 47.5z"/>
                   </svg>
                   Continue with Google
-                </Button>
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="w-full border-border/70 bg-background/40 hover:bg-background/70 hover:border-primary/50"
-                  onClick={() => handleOAuth("apple")}
-                  disabled={loading}
-                >
-                  <svg className="w-4 h-4 mr-2 fill-current" viewBox="0 0 384 512" aria-hidden>
-                    <path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-36.8-2.8-77 21.3-91.7 21.3-15.6 0-51.2-20.3-79.2-20.3C56.2 141.6 0 184.9 0 271.5c0 25.6 4.7 52 14.1 79.3 12.6 35.9 40.1 105.2 78.9 104.1 20.3-.5 34.6-14.4 61-14.4 25.6 0 38.9 14.4 61.5 14.4 39.1-.6 64-63.2 76-99.2-52.3-24.6-72.8-75.9-72.8-87zM240 89.6c19.2-23.4 27.6-42.9 25.6-70.6-25.5 2.6-46.9 15.6-61.5 33.6-14.6 18-22.3 39-20.8 65.4 28.4 1.9 47.9-8.9 56.7-28.4z"/>
-                  </svg>
-                  Continue with Apple
                 </Button>
               </div>
             </>
