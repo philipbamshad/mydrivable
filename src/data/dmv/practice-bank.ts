@@ -26,62 +26,24 @@ export type PillarId = "signs" | "intersections" | "substances" | "speed";
 
 type Template = PracticeQuestion & { pillar: PillarId };
 
-/** Numeric tailoring values pulled from the state ruleset (with safe defaults). */
-type StateNumerics = {
-  stateName: string;
-  residential: string;
-  urban: string;
-  highway: string;
-  schoolZone: string;
-  alley: string;
-  nearRailroad: string;
-  accidentThresholdUSD: string;
-  bacAdult: string;
-  bacU21: string;
-};
-
-const DEFAULT_NUMERICS: StateNumerics = {
-  stateName: "your state",
-  residential: "25 mph",
-  urban: "45 mph",
-  highway: "65 mph",
-  schoolZone: "25 mph",
-  alley: "15 mph",
-  nearRailroad: "15 mph",
-  accidentThresholdUSD: "$1,000",
-  bacAdult: "0.08%",
-  bacU21: "0.02%",
-};
-
+/**
+ * Numeric tailoring values come from the single shared state profile in
+ * `state-numerics.ts`, so the Sections tab, the mock exam, and the official
+ * pool all quote the same jurisdiction specific facts (speed limits, school
+ * zone caps, distances, BAC limits, reporting thresholds).
+ */
 function getNumerics(stateName?: string | null): StateNumerics {
-  const rules = stateName ? STATE_DRIVING_RULES[stateName] : undefined;
-  if (!rules) return DEFAULT_NUMERICS;
-  return {
-    stateName: rules.stateName,
-    residential: rules.speedLimits.residential,
-    urban: rules.speedLimits.urban,
-    highway: rules.speedLimits.highway,
-    schoolZone: "25 mph",
-    alley: "15 mph",
-    nearRailroad: "15 mph",
-    accidentThresholdUSD: "$1,000",
-    bacAdult: rules.duiLimits.adult,
-    bacU21: rules.duiLimits.under21,
-  };
+  return getStateNumerics(stateName);
 }
 
+/** Interpolate authored copy, supporting the local {state} alias. */
 function interp(text: string, n: StateNumerics): string {
-  return text
-    .replace(/\{state\}/g, n.stateName)
-    .replace(/\{residential\}/g, n.residential)
-    .replace(/\{urban\}/g, n.urban)
-    .replace(/\{highway\}/g, n.highway)
-    .replace(/\{schoolZone\}/g, n.schoolZone)
-    .replace(/\{alley\}/g, n.alley)
-    .replace(/\{nearRailroad\}/g, n.nearRailroad)
-    .replace(/\{accidentThreshold\}/g, n.accidentThresholdUSD)
-    .replace(/\{bacAdult\}/g, n.bacAdult)
-    .replace(/\{bacU21\}/g, n.bacU21);
+  return interpolate(
+    text
+      .replace(/\{state\}/g, n.stateName)
+      .replace(/\{nearRailroad\}/g, n.railroadSpeed),
+    n,
+  );
 }
 
 // ---------------------------------------------------------------------------
