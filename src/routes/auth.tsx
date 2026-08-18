@@ -216,7 +216,7 @@ function AuthPage() {
 
 
   return (
-    <div className="relative min-h-screen flex flex-col items-center justify-center px-4 bg-background overflow-hidden">
+    <div className="relative min-h-screen grid lg:grid-cols-2 bg-background overflow-hidden">
       {/* Ambient neon glow backdrop */}
       <div
         aria-hidden
