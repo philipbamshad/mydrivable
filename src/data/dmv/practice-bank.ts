@@ -12,6 +12,7 @@ import type { SignSpec } from "@/components/dashboard/SignVisual";
 import { STATE_DRIVING_RULES } from "@/data/states";
 import { shuffleAnswers } from "./question-generator";
 import { buildOfficialPool } from "./official-pool";
+import { expandPool } from "./variation-engine";
 
 export type PracticeQuestion = {
   q: string;
@@ -735,7 +736,16 @@ export function buildPillarBanks(
     out[t.pillar].push(shuffleAnswers(interpolated) as PracticeQuestion);
   }
 
+  // Multiply each pillar with reworded variants so a learner keeps getting a
+  // brand new set every attempt, long after the authored items are exhausted.
+  for (const id of Object.keys(out) as PillarId[]) {
+    out[id] = expandPool(out[id], 6, stateName).map(
+      (q: PracticeQuestion) => shuffleAnswers(q) as PracticeQuestion,
+    );
+  }
+
   return out;
+
 }
 
 export const PILLAR_META: Record<
