@@ -48,10 +48,6 @@ export function TestHubDashboard() {
   const { isPro, unlockPro, state, freeUsage, bumpFreeUsage } = useUserProfile();
   const [active, setActive] = useState<PillarId | null>(null);
 
-  // State-tailored banks: rebuilt when the user's active state changes so
-  // numeric values (speed limits, alley, school zone, accident threshold,
-  // BAC) always match the current jurisdiction.
-  const banks = useMemo(() => buildPillarBanks(state), [state]);
 
   const pillars: Pillar[] = PILLAR_ORDER.map(({ id, icon }) => ({
     id,
