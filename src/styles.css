@@ -580,3 +580,70 @@
 @media (prefers-reduced-motion: reduce) {
   .cta-pill, .aura-orbit, .text-grad, .text-grad-warm, .fade-in-up { animation: none; }
 }
+
+/* ===== Bold homepage feature grid cards ===== */
+
+@utility feature-card {
+  position: relative;
+  isolation: isolate;
+  padding: 2px;
+  transition: opacity 0.7s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease;
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    z-index: -1;
+    background: conic-gradient(from 0deg, transparent 0%, rgba(255, 255, 255, 0.85) 12%, transparent 24%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    animation: featureBorder 3s linear infinite;
+  }
+  &:hover {
+    transform: scale(1.05) perspective(1000px) rotateX(1deg) rotateY(-1deg);
+    box-shadow: 0 30px 70px -30px rgba(0, 0, 0, 0.45), 0 0 40px -12px rgba(255, 255, 255, 0.15);
+  }
+  &:hover::before { opacity: 1; }
+}
+
+@keyframes featureBorder {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@utility feature-float {
+  animation: featureFloat 4s ease-in-out infinite;
+}
+
+@utility feature-float-delay {
+  animation: featureFloat 4s ease-in-out infinite;
+  animation-delay: 1.3s;
+}
+
+@utility feature-float-delay-2 {
+  animation: featureFloat 4s ease-in-out infinite;
+  animation-delay: 2.6s;
+}
+
+@keyframes featureFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@utility feature-progress {
+  animation: featureProgress 2.5s ease-in-out infinite alternate;
+}
+
+@keyframes featureProgress {
+  from { width: 30%; }
+  to { width: 85%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .feature-card::before,
+  .feature-float,
+  .feature-float-delay,
+  .feature-float-delay-2,
+  .feature-progress { animation: none; }
+  .feature-card:hover { transform: scale(1.02); }
+}
