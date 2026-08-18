@@ -166,7 +166,7 @@ function AuthPage() {
     }
   };
 
-  const handleOAuth = async (provider: "google" | "apple") => {
+  const handleOAuth = async (provider: "google") => {
     setLoading(true);
     try {
       // Preserve `next` (e.g. the OAuth consent URL) through the provider
