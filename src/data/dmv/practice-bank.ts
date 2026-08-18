@@ -3,7 +3,7 @@
 // Sources the 50 reference exam items provided by product, groups them into
 // the four pillar quizzes, and interpolates state-specific numeric values
 // (speed limits, alley + school-zone caps, accident-reporting thresholds,
-// BAC limits) using STATE_DRIVING_RULES.
+// BAC limits) using the shared per state numeric profile.
 //
 // Every call to buildPillarBanks() returns freshly shuffled option orders so
 // the correct answer never sits in the same slot twice in a row.
@@ -567,11 +567,11 @@ const TEMPLATES: Template[] = [
   },
   {
     pillar: "speed",
-    q: "Within 500 feet of a school in {state}, the speed limit is typically {schoolZone} unless otherwise posted.",
+    q: "Within {schoolZoneFeet} of a school in {state}, the speed limit is typically {schoolZone} unless otherwise posted.",
     options: ["True", "False"],
     correct: 0,
     explanation:
-      "True. In {state}, school zone limits are commonly {schoolZone} within 500 feet of a school when children are present. Watch for posted signs and flashing beacons.",
+      "True. In {state}, school zone limits are commonly {schoolZone} within {schoolZoneFeet} of a school when children are present. Watch for posted signs and flashing beacons.",
   },
   {
     pillar: "speed",
@@ -588,11 +588,11 @@ const TEMPLATES: Template[] = [
   },
   {
     pillar: "speed",
-    q: "When a railroad crossing is not controlled and you cannot see for 400 feet in both directions, your maximum speed within 100 feet of the crossing is…",
+    q: "When a railroad crossing is not controlled and you cannot see for {railroadViewFeet} in both directions, your maximum speed within {railroadFeet} of the crossing is…",
     options: ["5 mph", "10 mph", "{nearRailroad}", "25 mph"],
     correct: 2,
     explanation:
-      "At an uncontrolled crossing with obstructed sight lines, {nearRailroad} is the standard maximum within 100 feet of the tracks. Slow further if visibility is worse.",
+      "At an uncontrolled crossing with obstructed sight lines, {nearRailroad} is the standard maximum within {railroadFeet} of the tracks. Slow further if visibility is worse.",
   },
   {
     pillar: "speed",
@@ -613,7 +613,7 @@ const TEMPLATES: Template[] = [
     options: ["True", "False"],
     correct: 1,
     explanation:
-      "False. On lit city streets and within roughly 500 feet of oncoming traffic or 300 feet behind another vehicle, use low beams.",
+      "False. On lit city streets and within roughly {highBeamFeet} of oncoming traffic or {followBeamFeet} behind another vehicle, use low beams.",
   },
   {
     pillar: "speed",
