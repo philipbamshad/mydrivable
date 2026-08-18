@@ -339,30 +339,22 @@ function Features() {
   const features = [
     {
       title: "Full-Length Mock Permit Exam Simulator",
-      body: "Take a timed, state-accurate exam with the real question count, timing, and passing score.",
-      gradient: "linear-gradient(135deg, #8b5cf6 0%, #4c1d95 50%, #2e1065 100%)",
-      accent: "#a78bfa",
+      body: "Timed, state-accurate exams with the real question count and passing score",
       visual: "simulator",
     },
     {
-      title: "AI Permit Coach",
-      body: "Get instant explanations for wrong answers and run scenario drills grounded in your state's handbook.",
-      gradient: "linear-gradient(135deg, #06b6d4 0%, #047857 100%)",
-      accent: "#10b981",
+      title: "AI Permit Coach, Answers The Moment You Miss",
+      body: "Instant explanations grounded in your state handbook",
       visual: "coach",
     },
     {
       title: "Targeted Section Quizzes",
-      body: "Drill the topics that trip test takers up: road signs, intersections, substance laws, and speed limits.",
-      gradient: "linear-gradient(135deg, #f97316 0%, #ec4899 50%, #db2777 100%)",
-      accent: "#fbbf24",
+      body: "Drill road signs, intersections, speed limits and substance laws",
       visual: "quizzes",
     },
     {
-      title: "State-Specific & Schedule-Tailored Practice",
-      body: "Pick your state and target test date to adapt every question and track readiness in one dashboard.",
-      gradient: "linear-gradient(135deg, #2563eb 0%, #4338ca 50%, #312e81 100%)",
-      accent: "#60a5fa",
+      title: "Progress Tracking, Know Exactly What To Study",
+      body: "Readiness scores per topic, tailored to your test date",
       visual: "state",
     },
   ];
@@ -387,82 +379,118 @@ function Features() {
         </p>
       </div>
 
-      <div ref={grid} className="mx-auto mt-14 grid w-full max-w-screen-2xl gap-6 md:grid-cols-2">
+      <div ref={grid} className="mx-auto mt-14 grid w-full max-w-6xl gap-6 md:grid-cols-2">
         {features.map((f, i) => (
           <div
             key={f.title}
             style={{ transitionDelay: `${i * 120}ms` }}
-            className="reveal feature-card group rounded-[32px]"
+            className="reveal group flex h-full flex-col overflow-hidden rounded-[32px] bg-[#f4f5f7] p-4 transition-all duration-500 hover:-translate-y-1 hover:bg-[#eef0f4] hover:shadow-[0_28px_60px_-40px_rgba(15,23,42,0.35)]"
           >
-            <div
-              className="relative flex h-full min-h-[320px] flex-col overflow-hidden rounded-[30px] p-8 lg:p-10 text-white"
-              style={{ background: f.gradient }}
-            >
+            <div className="relative h-[260px] overflow-hidden rounded-[24px] px-6 pt-8">
               {f.visual === "simulator" && (
-                <div className="absolute top-6 right-6 hidden sm:flex flex-col items-end gap-3 feature-float">
-                  <div className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/15 px-3 py-1.5 text-xs font-bold uppercase tracking-wide backdrop-blur-md">
-                    <span className="h-2 w-2 animate-pulse rounded-full bg-white" />
-                    Live Exam
-                  </div>
-                  <div className="w-36 space-y-1.5 rounded-xl border border-white/20 bg-white/10 p-3 backdrop-blur-md">
-                    <div className="h-2 w-full rounded-full bg-white/25">
-                      <div className="h-2 rounded-full bg-white feature-progress" />
+                <div className="mx-auto w-full max-w-[340px] space-y-3">
+                  {[
+                    { label: "Question 12 of 46", tag: "Signs", sub: "Time left 18:04" },
+                    { label: "Question 13 of 46", tag: "Right of way", sub: "Time left 17:22" },
+                  ].map((q) => (
+                    <div key={q.label} className="rounded-xl bg-white p-4 shadow-[0_18px_40px_-30px_rgba(15,23,42,0.5)]">
+                      <div className="flex items-center justify-between">
+                        <p className="text-sm font-semibold text-[#0f172a]">{q.label}</p>
+                        <span className="rounded-md bg-[#1e40af]/10 px-2 py-0.5 text-[10px] font-semibold text-[#1e40af]">
+                          {q.tag}
+                        </span>
+                      </div>
+                      <p className="mt-2 text-[11px] text-[#1f2b4d]/55">{q.sub}</p>
+                      <div className="mt-3 space-y-1.5">
+                        <div className="h-1.5 w-full rounded-full bg-[#eef0f4]" />
+                        <div className="h-1.5 w-2/3 rounded-full bg-[#eef0f4]" />
+                      </div>
                     </div>
-                    <p className="text-[10px] font-semibold text-white/90">73% complete</p>
-                  </div>
+                  ))}
                 </div>
               )}
 
               {f.visual === "coach" && (
-                <div className="absolute top-6 right-6 hidden sm:flex flex-col items-end gap-2">
-                  <div className="feature-float rounded-xl rounded-tr-sm border border-white/20 bg-white/15 px-3 py-2 text-xs font-medium text-white backdrop-blur-md">
-                    Why did I miss this?
+                <div className="mx-auto w-full max-w-[340px] space-y-3">
+                  <div className="ml-auto w-fit max-w-[80%] rounded-2xl rounded-br-md bg-[#0f172a] px-4 py-2.5 text-sm text-white shadow-[0_18px_40px_-30px_rgba(15,23,42,0.6)]">
+                    Why did I miss this sign question?
                   </div>
-                  <div className="feature-float-delay rounded-xl rounded-tr-sm border border-white/30 bg-white px-3 py-2 text-xs font-semibold text-[#047857] shadow-lg">
-                    Here is the rule.
+                  <div className="w-fit max-w-[85%] rounded-2xl rounded-bl-md bg-white px-4 py-3 shadow-[0_18px_40px_-30px_rgba(15,23,42,0.5)]">
+                    <p className="text-[11px] font-semibold uppercase tracking-wide text-[#10b981]">AI Coach</p>
+                    <p className="mt-1 text-sm leading-relaxed text-[#1f2b4d]/80">
+                      A yellow diamond warns of conditions ahead, it never regulates speed.
+                    </p>
+                  </div>
+                  <div className="ml-auto w-fit rounded-full bg-white px-3 py-1.5 text-[11px] font-semibold text-[#1f2b4d]/60 shadow-sm">
+                    Typing
                   </div>
                 </div>
               )}
 
               {f.visual === "quizzes" && (
-                <div className="absolute top-6 right-6 hidden sm:flex flex-col items-end gap-2">
-                  {["Road Signs", "Speed Limits", "DUI Laws"].map((tag, idx) => (
-                    <span
-                      key={tag}
-                      className={`rounded-full border border-white/30 bg-white/10 px-3 py-1 text-xs font-semibold text-white backdrop-blur-md transition-colors duration-300 group-hover:bg-white/25 ${idx === 1 ? "feature-float-delay" : idx === 2 ? "feature-float-delay-2" : "feature-float"}`}
-                    >
-                      {tag}
-                    </span>
-                  ))}
+                <div className="mx-auto w-full max-w-[340px] rounded-2xl bg-white p-5 shadow-[0_18px_40px_-30px_rgba(15,23,42,0.5)]">
+                  <p className="text-sm font-semibold text-[#0f172a]">Section Quizzes</p>
+                  <p className="mt-1 text-[11px] text-[#1f2b4d]/55">Pick a pillar and start drilling</p>
+                  <div className="mt-4 space-y-3">
+                    {[
+                      { name: "Road Signs", score: "9.1/10" },
+                      { name: "Speed Limits", score: "7.4/10" },
+                      { name: "DUI Laws", score: "6.2/10" },
+                    ].map((row, idx) => (
+                      <div key={row.name}>
+                        <div className="flex items-center justify-between text-[11px]">
+                          <span className="font-medium text-[#1f2b4d]/80">{row.name}</span>
+                          <span className="font-semibold text-[#0f172a]">{row.score}</span>
+                        </div>
+                        <div className="mt-1.5 h-1.5 w-full rounded-full bg-[#eef0f4]">
+                          <div
+                            className="h-1.5 rounded-full bg-[#f97316] transition-all duration-700"
+                            style={{ width: ["88%", "72%", "58%"][idx] }}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
 
               {f.visual === "state" && (
-                <div className="absolute top-6 right-6 hidden sm:flex flex-col items-end gap-3 feature-float">
-                  <div className="inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-white/15 px-3 py-1.5 text-xs font-bold backdrop-blur-md">
-                    <MapPin className="h-3 w-3" />
-                    CA DMV
+                <div className="mx-auto w-full max-w-[340px] rounded-2xl bg-white p-5 shadow-[0_18px_40px_-30px_rgba(15,23,42,0.5)]">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-semibold text-[#0f172a]">Readiness</p>
+                      <p className="mt-1 text-[11px] text-[#1f2b4d]/55">Tailored to your test date</p>
+                    </div>
+                    <span className="inline-flex items-center gap-1 rounded-md bg-[#0f172a] px-2.5 py-1 text-[10px] font-semibold text-white">
+                      <MapPin className="h-3 w-3" />
+                      CA DMV
+                    </span>
                   </div>
-                  <div className="h-1.5 w-24 rounded-full bg-white/25">
-                    <div className="h-1.5 rounded-full bg-white feature-progress" />
+                  <div className="mt-4 flex items-end gap-2">
+                    <span className="text-3xl font-semibold tracking-tight text-[#0f172a]">82%</span>
+                    <span className="mb-1 text-[11px] font-semibold text-[#10b981]">Pass ready</span>
+                  </div>
+                  <div className="mt-3 h-2 w-full rounded-full bg-[#eef0f4]">
+                    <div className="h-2 w-[82%] rounded-full bg-[#1e40af]" />
+                  </div>
+                  <div className="mt-4 grid grid-cols-3 gap-2">
+                    {["Signs", "Rules", "Safety"].map((t) => (
+                      <div key={t} className="rounded-lg bg-[#f4f5f7] px-2 py-2 text-center text-[10px] font-semibold text-[#1f2b4d]/70">
+                        {t}
+                      </div>
+                    ))}
                   </div>
                 </div>
               )}
 
-              <div className="relative z-10 max-w-[75%]">
-                <h3 className="text-2xl lg:text-3xl font-bold tracking-tight drop-shadow-md">
-                  {f.title}
-                </h3>
-                <p className="mt-4 text-base lg:text-lg leading-relaxed text-white/90 drop-shadow-sm">
-                  {f.body}
-                </p>
-              </div>
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#f4f5f7] to-transparent transition-colors duration-500 group-hover:from-[#eef0f4]" />
+            </div>
 
-              <div className="mt-auto flex items-center justify-end pt-8">
-                <span className="grid h-12 w-12 place-items-center rounded-full bg-white shadow-[0_0_20px_-5px_rgba(255,255,255,0.45)] transition-all duration-300 group-hover:translate-x-1 group-hover:shadow-[0_0_30px_-5px_rgba(255,255,255,0.65)]">
-                  <ArrowRight className="h-5 w-5" style={{ color: f.accent }} />
-                </span>
-              </div>
+            <div className="px-6 pb-6 pt-6">
+              <h3 className="text-2xl font-semibold tracking-[-0.02em] text-[#0f172a] lg:text-[28px]">
+                {f.title}
+              </h3>
+              <p className="mt-4 text-base leading-relaxed text-[#1f2b4d]/55 lg:text-lg">{f.body}</p>
             </div>
           </div>
         ))}
@@ -470,6 +498,7 @@ function Features() {
     </section>
   );
 }
+
 
 function Pricing() {
   const proFeatures = [
