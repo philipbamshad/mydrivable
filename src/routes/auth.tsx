@@ -457,7 +457,7 @@ function AuthPage() {
           {/* AI coach preview */}
           <div className="feature-float rounded-[28px] border border-border/60 bg-card/70 p-5 backdrop-blur-md shadow-lg">
             <div className="flex items-center gap-2 mb-3">
-              <span className="h-2 w-2 rounded-full bg-emerald-500 feature-pulse" />
+              <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
               <span className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
                 AI Coach
               </span>
