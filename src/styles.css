@@ -639,6 +639,33 @@
   to { width: 85%; }
 }
 
+/* Subtle top accent line that reveals on hover */
+@utility feature-accent {
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 28px;
+    right: 28px;
+    height: 2px;
+    background: var(--gradient-orange-cyan);
+    opacity: 0;
+    transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    transform: scaleX(0.6);
+  }
+  &:hover::after {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+/* Shimmer sweep used on feature mockups during card hover */
+@keyframes featureShimmer {
+  from { transform: translateX(-120%); }
+  to   { transform: translateX(120%); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .feature-card::before,
   .feature-float,
@@ -646,4 +673,5 @@
   .feature-float-delay-2,
   .feature-progress { animation: none; }
   .feature-card:hover { transform: scale(1.02); }
+  .feature-accent::after { opacity: 0; }
 }
