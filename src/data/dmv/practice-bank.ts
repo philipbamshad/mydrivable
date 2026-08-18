@@ -9,7 +9,11 @@
 // the correct answer never sits in the same slot twice in a row.
 
 import type { SignSpec } from "@/components/dashboard/SignVisual";
-import { STATE_DRIVING_RULES } from "@/data/states";
+import {
+  getStateNumerics,
+  interpolate,
+  type StateNumerics,
+} from "./state-numerics";
 import { shuffleAnswers } from "./question-generator";
 import { buildOfficialPool } from "./official-pool";
 import { expandPool } from "./variation-engine";
