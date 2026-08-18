@@ -237,6 +237,17 @@ function AuthPage() {
         }}
       />
 
+      {/* Center seam that draws itself as the page splits */}
+      <div
+        aria-hidden
+        className="auth-seam pointer-events-none absolute left-1/2 top-0 bottom-0 hidden w-px -translate-x-1/2 lg:block"
+        style={{
+          background:
+            "linear-gradient(to bottom, transparent, var(--color-primary), transparent)",
+        }}
+      />
+
+      <div className="auth-split-left relative flex flex-col items-center justify-center px-4 py-12">
       <div className="w-full max-w-sm">
         <Link to="/" className="flex flex-col items-center gap-3 mb-8 group">
           <div className="relative">
