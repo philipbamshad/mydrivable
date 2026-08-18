@@ -216,7 +216,7 @@ function AuthPage() {
 
 
   return (
-    <div className="relative min-h-screen flex flex-col items-center justify-center px-4 bg-background overflow-hidden">
+    <div className="relative min-h-screen grid lg:grid-cols-2 bg-background overflow-hidden">
       {/* Ambient neon glow backdrop */}
       <div
         aria-hidden
@@ -237,6 +237,17 @@ function AuthPage() {
         }}
       />
 
+      {/* Center seam that draws itself as the page splits */}
+      <div
+        aria-hidden
+        className="auth-seam pointer-events-none absolute left-1/2 top-0 bottom-0 hidden w-px -translate-x-1/2 lg:block"
+        style={{
+          background:
+            "linear-gradient(to bottom, transparent, var(--color-primary), transparent)",
+        }}
+      />
+
+      <div className="auth-split-left relative flex flex-col items-center justify-center px-4 py-12">
       <div className="w-full max-w-sm">
         <Link to="/" className="flex flex-col items-center gap-3 mb-8 group">
           <div className="relative">
@@ -419,6 +430,88 @@ function AuthPage() {
         <p className="text-center text-[11px] text-muted-foreground mt-6">
           By continuing, you agree to drive safely and legally.
         </p>
+      </div>
+      </div>
+
+      {/* Right side: a live look at the product */}
+      <div className="auth-split-right relative hidden lg:flex items-center justify-center overflow-hidden px-10 py-12">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(70% 60% at 70% 20%, oklch(0.72 0.20 240 / 0.16), transparent 70%), radial-gradient(60% 50% at 25% 85%, oklch(0.78 0.17 40 / 0.14), transparent 70%)",
+          }}
+        />
+
+        <div className="auth-stagger relative w-full max-w-md space-y-4">
+          <div>
+            <p className="text-[10px] uppercase tracking-[0.28em] text-muted-foreground">
+              Inside Drivable
+            </p>
+            <h2 className="font-display text-2xl font-bold tracking-tight mt-2">
+              Everything you need to pass the written permit exam.
+            </h2>
+          </div>
+
+          {/* AI coach preview */}
+          <div className="feature-float rounded-[28px] border border-border/60 bg-card/70 p-5 backdrop-blur-md shadow-lg">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
+                AI Coach
+              </span>
+            </div>
+            <div className="space-y-2 text-sm">
+              <p className="ml-auto w-fit max-w-[80%] rounded-2xl bg-primary/15 px-3 py-2">
+                What is the speed limit in a school zone?
+              </p>
+              <p className="w-fit max-w-[85%] rounded-2xl bg-muted px-3 py-2 text-muted-foreground">
+                In California it is 25 mph when children are present, unless posted otherwise.
+              </p>
+            </div>
+          </div>
+
+          {/* Exam progress preview */}
+          <div className="feature-float-delay rounded-[28px] border border-border/60 bg-card/70 p-5 backdrop-blur-md shadow-lg">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-sm font-semibold">Mock Permit Exam</span>
+              <span className="rounded-full border border-primary/40 bg-primary/10 px-2 py-0.5 text-[10px] font-medium">
+                Question 18 of 46
+              </span>
+            </div>
+            <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
+              <div className="feature-progress h-full rounded-full bg-primary" />
+            </div>
+            <div className="mt-4 grid grid-cols-3 gap-2 text-center">
+              {[
+                { label: "Correct", value: "16" },
+                { label: "Missed", value: "2" },
+                { label: "Score", value: "89%" },
+              ].map((s) => (
+                <div key={s.label} className="rounded-2xl bg-muted/60 px-2 py-3">
+                  <p className="text-lg font-bold leading-none">{s.value}</p>
+                  <p className="mt-1 text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
+                    {s.label}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Tailored preview */}
+          <div className="feature-float-delay-2 flex items-center gap-3 rounded-[28px] border border-border/60 bg-card/70 p-5 backdrop-blur-md shadow-lg">
+            <div className="flex-1">
+              <p className="text-sm font-semibold">Tailored to California</p>
+              <p className="text-xs text-muted-foreground mt-1">
+                Questions match your state handbook and your target DMV date.
+              </p>
+            </div>
+            <span className="rounded-full border border-border/70 bg-background/60 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em]">
+              CA
+            </span>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -675,3 +675,49 @@
   .feature-card:hover { transform: scale(1.02); }
   .feature-accent::after { opacity: 0; }
 }
+
+/* Sign in page split reveal */
+@utility auth-split-left {
+  animation: authSplitLeft 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@utility auth-split-right {
+  animation: authSplitRight 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@utility auth-seam {
+  animation: authSeam 1s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@utility auth-stagger {
+  animation: authRise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: 0.55s;
+}
+
+@keyframes authSplitLeft {
+  from { transform: translateX(-6%); opacity: 0; clip-path: inset(0 0 0 100%); }
+  to   { transform: translateX(0); opacity: 1; clip-path: inset(0 0 0 0); }
+}
+
+@keyframes authSplitRight {
+  from { transform: translateX(6%); opacity: 0; clip-path: inset(0 100% 0 0); }
+  to   { transform: translateX(0); opacity: 1; clip-path: inset(0 0 0 0); }
+}
+
+@keyframes authSeam {
+  0%   { transform: scaleY(0); opacity: 0; }
+  40%  { transform: scaleY(1); opacity: 1; }
+  100% { transform: scaleY(1); opacity: 0.35; }
+}
+
+@keyframes authRise {
+  from { transform: translateY(14px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-split-left,
+  .auth-split-right,
+  .auth-seam,
+  .auth-stagger { animation: none; opacity: 1; clip-path: none; transform: none; }
+}
