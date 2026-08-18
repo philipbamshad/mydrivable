@@ -129,6 +129,118 @@ const OVERRIDES: Record<string, Overrides> = {
     speedingPoints: "3 points",
     duiPoints: "4 points",
   },
+  Illinois: {
+    schoolZone: "20 mph",
+    accidentThreshold: "$1,500",
+    reportForm: "an Illinois motorist report",
+    speedingPoints: "5 points",
+  },
+  Pennsylvania: {
+    schoolZone: "15 mph",
+    accidentThreshold: "$500",
+    reportForm: "a driver accident report",
+    speedingPoints: "2 points",
+  },
+  Ohio: {
+    schoolZone: "20 mph",
+    accidentThreshold: "$1,000",
+    reportForm: "a crash report",
+    speedingPoints: "2 points",
+  },
+  Georgia: {
+    schoolZone: "25 mph",
+    accidentThreshold: "$500",
+    reportForm: "a crash report",
+    speedingPoints: "2 points",
+  },
+  Michigan: {
+    schoolZone: "25 mph",
+    accidentThreshold: "$1,000",
+    reportForm: "a traffic crash report",
+    speedingPoints: "2 points",
+  },
+  "North Carolina": {
+    schoolZone: "25 mph",
+    accidentThreshold: "$1,000",
+    reportForm: "a crash report",
+    speedingPoints: "2 points",
+  },
+  Arizona: {
+    schoolZone: "15 mph",
+    accidentThreshold: "$2,000",
+    reportForm: "a crash report",
+  },
+  Washington: {
+    schoolZone: "20 mph",
+    accidentThreshold: "$1,000",
+    reportForm: "a collision report",
+  },
+  Nevada: {
+    schoolZone: "15 mph",
+    accidentThreshold: "$750",
+    reportForm: "an SR 1 report",
+  },
+  "New Jersey": {
+    schoolZone: "25 mph",
+    accidentThreshold: "$500",
+    reportForm: "an NJTR 1 report",
+  },
+  Massachusetts: {
+    schoolZone: "20 mph",
+    accidentThreshold: "$1,000",
+    reportForm: "a crash operator report",
+  },
+  Virginia: {
+    schoolZone: "25 mph",
+    accidentThreshold: "$1,500",
+    reportForm: "a crash report",
+  },
+  Colorado: {
+    schoolZone: "20 mph",
+    accidentThreshold: "$1,000",
+    reportForm: "an accident report",
+  },
+  Oregon: {
+    schoolZone: "20 mph",
+    accidentThreshold: "$2,500",
+    reportForm: "an Oregon traffic accident and insurance report",
+    reportDays: "72 hours",
+  },
+  Utah: {
+    schoolZone: "20 mph",
+    accidentThreshold: "$2,500",
+    reportForm: "a crash report",
+  },
+  Tennessee: {
+    schoolZone: "15 mph",
+    accidentThreshold: "$1,500",
+    reportForm: "a crash report",
+  },
+  Indiana: {
+    schoolZone: "20 mph",
+    accidentThreshold: "$1,000",
+    reportForm: "a crash report",
+  },
+  Missouri: {
+    schoolZone: "20 mph",
+    accidentThreshold: "$500",
+    reportForm: "an accident report",
+  },
+  Maryland: {
+    schoolZone: "25 mph",
+    accidentThreshold: "$1,000",
+    reportForm: "a crash report",
+  },
+  Wisconsin: {
+    schoolZone: "15 mph",
+    accidentThreshold: "$1,000",
+    reportForm: "an MV 4000 report",
+  },
+  Minnesota: {
+    schoolZone: "20 mph",
+    accidentThreshold: "$1,000",
+    reportForm: "a crash report",
+  },
 };
 
 /** Resolve the full numeric profile for a state name (defaults to California). */
