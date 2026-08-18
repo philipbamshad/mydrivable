@@ -215,8 +215,8 @@ function expandWithVariations(
  */
 export function buildQuestionBank(rules: StateRules): Question[] {
   return [
-    ...expandWithVariations(SIGN_TEMPLATES, rules, 2),
-    ...expandWithVariations(RULE_TEMPLATES, rules, 2),
+    ...expandWithVariations(SIGN_TEMPLATES, rules, 4),
+    ...expandWithVariations(RULE_TEMPLATES, rules, 4),
   ];
 }
 
