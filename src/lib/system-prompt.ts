@@ -1,4 +1,5 @@
 import { getStatePack } from "@/data/dmv";
+import { getStateNumerics } from "@/data/dmv/state-numerics";
 
 const BASE = `You are "Drivable" — an elite, high-utility study coach whose ONLY job is helping users study for and pass their written DMV permit exam (the knowledge test).
 
@@ -20,7 +21,7 @@ Output discipline:
 
 Accuracy rules (NON-NEGOTIABLE):
 - Use ONLY the STATE FACT CARD below for anything statutory. If a fact the user needs is not on the card, say "I don't have that exact value for {state} — verify with {handbookUrl}." Never invent statutes, fees, or hour requirements.
-- Cite the state by name when giving a state-specific answer ("In California…").
+- Cite the ACTIVE state by name when giving a state-specific answer, and never name a different state as if it were the user's.
 - If asked about a state other than the active jurisdiction, give the general framework, then point to that state's DMV.
 - Never coach modified, illegal, reckless, or unlicensed operation. Refuse and redirect.
 
@@ -45,6 +46,7 @@ export function buildSystemPrompt(state?: string | null): string {
   }
 
   const { rules } = getStatePack(state);
+  const n = getStateNumerics(state);
   const factCard = [
     `--- STATE FACT CARD (authoritative; do not contradict) ---`,
     `Jurisdiction: ${rules.name} (${rules.abbr})`,
@@ -54,6 +56,11 @@ export function buildSystemPrompt(state?: string | null): string {
     `Adult BAC limit: ${rules.bacAdult.toFixed(2)}%`,
     `Under-21 BAC limit: ${rules.bacUnder21.toFixed(2)}%`,
     `Commercial driver BAC limit: ${rules.bacCommercial.toFixed(2)}%`,
+    ``,
+    `Speed limits: residential ${n.residential}, urban/business ${n.urban}, highway ${n.highway}, school zone ${n.schoolZone} within ${n.schoolZoneFeet}, alley ${n.alley}, blind intersection ${n.blindSpeed}, uncontrolled railroad crossing ${n.railroadSpeed}.`,
+    `Distances: no parking within ${n.hydrantFeet} of a fire hydrant, ${n.crosswalkFeet} of a crosswalk; signal a turn ${n.signalFeet} ahead; dim high beams within ${n.highBeamFeet} of oncoming traffic and ${n.followBeamFeet} when following.`,
+    `Collision reporting: file ${n.reportForm} within ${n.reportDays} when anyone is injured or property damage exceeds ${n.accidentThreshold}.`,
+    `Penalty points: speeding ${n.speedingPoints}, DUI ${n.duiPoints}.`,
     ``,
     `Learner's permit minimum age: ${rules.permitMinAge}`,
     `Provisional license minimum age: ${rules.provisionalMinAge}`,

@@ -50,7 +50,7 @@ export function PermitExamSimulator() {
   if (running) {
     return (
       <ExamRunner
-        state={state || "your state"}
+        state={pack.rules.name}
         count={Math.min(cfg.count, pool.length)}
         passPct={cfg.pass}
         pool={pool}
@@ -81,7 +81,7 @@ export function PermitExamSimulator() {
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
               <h3 className="font-display text-xl font-bold">
-                {state || "Default"} DMV Permit Exam
+                {pack.rules.name} DMV Permit Exam
               </h3>
               <Badge className="bg-primary/15 text-primary border-primary/40 border">
                 {isPro ? "Pro" : "Free preview"}
