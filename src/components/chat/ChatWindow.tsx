@@ -142,7 +142,6 @@ export function ChatWindow({
         You've used your 5 free lifetime AI questions. Upgrade to Pro Pass to continue chatting, get instant rule explanations, and access full exam simulators! [Get Pro Pass — $9]
       </p>
       <Button onClick={() => openCheckout()} className="mt-4 press w-full sm:w-auto" size="sm">
-        <Sparkles className="mr-1.5 h-3.5 w-3.5" />
         Get Pro Pass — $9
       </Button>
     </div>

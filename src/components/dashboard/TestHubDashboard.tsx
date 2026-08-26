@@ -137,7 +137,6 @@ function PillarPaywall({ onUpgrade }: { onUpgrade: () => void }) {
           You've answered your 3 free lifetime questions for this quiz section. Upgrade to Pro Pass to unlock unlimited questions, practice modes, and get full explanations! [Get Pro Pass — $9]
         </p>
         <Button onClick={onUpgrade} className="press mt-5 rounded-full">
-          <Sparkles className="mr-1.5 h-4 w-4" />
           Get Pro Pass — $9
         </Button>
       </div>
