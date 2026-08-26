@@ -67,7 +67,7 @@ export function PermitExamSimulator() {
 
   return (
     <div className="max-w-3xl mx-auto space-y-5 w-full">
-      <Card className="glass glow-soft p-5 sm:p-7 rounded-[28px] border border-primary/45 ring-1 ring-primary/10 bg-card/90 backdrop-blur">
+      <Card className="glass glow-soft p-5 sm:p-7 rounded-[28px] border border-primary/25 bg-card/90 backdrop-blur">
         <div className="flex items-center gap-4">
           <div className="grid h-12 w-12 sm:h-14 sm:w-14 place-items-center rounded-[18px] border border-primary/45 bg-primary/10 text-primary shrink-0">
             <Timer className="w-6 h-6 sm:w-7 sm:h-7" />
