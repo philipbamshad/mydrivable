@@ -75,7 +75,7 @@ export function TestHubDashboard() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto space-y-6">
+    <div className="max-w-7xl mx-auto space-y-6 w-full">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {pillars.map((p) => {
           const Icon = p.icon;
@@ -83,16 +83,16 @@ export function TestHubDashboard() {
           const remaining = Math.max(0, FREE_PILLAR_LIFETIME_LIMIT - used);
           const locked = !isPro && remaining <= 0;
           return (
-            <Card key={p.id} className="glass glow-soft lift fade-in-up p-6 rounded-[32px] flex flex-col gap-4">
+            <Card key={p.id} className="glass glow-soft lift fade-in-up p-7 sm:p-9 rounded-[36px] flex flex-col gap-5">
               <div className="flex items-center gap-4">
                 <span
-                  className="grid h-14 w-14 place-items-center rounded-2xl bg-primary/15 text-primary shrink-0"
+                  className="grid h-16 w-16 sm:h-18 sm:w-18 place-items-center rounded-[22px] border border-primary/30 bg-primary/10 text-primary shrink-0"
                 >
-                  <Icon className="w-6 h-6" />
+                  <Icon className="w-7 h-7 sm:w-8 sm:h-8" />
                 </span>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <h3 className="font-display text-xl font-bold">{p.title}</h3>
+                    <h3 className="font-display text-xl sm:text-2xl font-bold">{p.title}</h3>
                     <Badge className="bg-primary/15 text-primary border-primary/40 border">
                       {isPro ? "Pro" : "Free preview"}
                     </Badge>
