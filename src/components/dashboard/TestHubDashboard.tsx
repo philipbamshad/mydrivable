@@ -12,7 +12,6 @@ import {
   Gauge,
   RefreshCw,
   Lock,
-  Sparkles,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useUserProfile } from "@/lib/user-profile";

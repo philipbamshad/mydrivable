@@ -7,7 +7,6 @@ import {
   Check,
   X,
   Lock,
-  Sparkles,
   RefreshCw,
   Timer,
   Trophy,
