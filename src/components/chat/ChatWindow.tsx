@@ -210,6 +210,11 @@ export function ChatWindow({
               </button>
             ))}
           </div>
+
+          <p className="mt-6 text-[11px] text-muted-foreground/80">
+            Your coach can slip up. Confirm anything official with your state handbook.
+          </p>
+
         </div>
       </div>
     );
@@ -270,9 +275,13 @@ export function ChatWindow({
       <div className="bg-background/80 backdrop-blur">
         <div className="max-w-3xl mx-auto w-full px-4 py-4">
           {limitReached ? paywall : composer}
+          <p className="mt-2 text-center text-[11px] text-muted-foreground/80">
+            Your coach can slip up. Confirm anything official with your state handbook.
+          </p>
         </div>
       </div>
     </div>
+
   );
 }
 
