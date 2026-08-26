@@ -68,14 +68,14 @@ export function PermitExamSimulator() {
 
   return (
     <div className="max-w-4xl mx-auto space-y-6 w-full">
-      <Card className="glass glow-strong p-8 sm:p-12 rounded-[36px] border border-border/70">
-        <div className="flex items-center gap-5">
-          <div className="grid h-16 w-16 sm:h-20 sm:w-20 place-items-center rounded-[22px] border border-primary/40 bg-primary/10 text-primary shrink-0">
-            <Timer className="w-7 h-7 sm:w-9 sm:h-9" />
+      <Card className="glass glow-soft p-6 sm:p-9 rounded-[28px] border border-primary/25 bg-card/90 backdrop-blur">
+        <div className="flex items-center gap-4">
+          <div className="grid h-14 w-14 sm:h-16 sm:w-16 place-items-center rounded-[20px] border border-primary/40 bg-primary/10 text-primary shrink-0">
+            <Timer className="w-6 h-6 sm:w-8 sm:h-8" />
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
-              <h3 className="font-display text-xl sm:text-3xl font-bold">
+              <h3 className="font-display text-lg sm:text-2xl font-bold">
                 {pack.rules.name} DMV Permit Exam
               </h3>
               <Badge className="bg-primary/15 text-primary border-primary/40 border">
