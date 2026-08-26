@@ -46,9 +46,9 @@ function UnsubscribePage() {
           `/email/unsubscribe?token=${encodeURIComponent(token)}`,
         );
         const body = (await res.json()) as {
+          valid?: boolean;
+          reason?: string;
           email?: string;
-          used?: boolean;
-          used_at?: string | null;
           error?: string;
         };
         if (cancelled) return;
@@ -57,7 +57,7 @@ function UnsubscribePage() {
           return;
         }
         if (body.email) setEmail(body.email);
-        setStatus(body.used || body.used_at ? "already" : "confirm");
+        setStatus(body.valid ? "confirm" : "already");
       } catch {
         if (!cancelled) setStatus("invalid");
       }
