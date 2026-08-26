@@ -210,6 +210,11 @@ export function ChatWindow({
               </button>
             ))}
           </div>
+
+          <p className="mt-6 text-[11px] text-muted-foreground/80">
+            Your coach can slip up. Confirm anything official with your state handbook.
+          </p>
+
         </div>
       </div>
     );
