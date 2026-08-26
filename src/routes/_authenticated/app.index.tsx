@@ -80,7 +80,7 @@ function AppDashboard() {
                 {TABS.find((t) => t.id === tab)?.label}
               </h1>
             </div>
-            <div className="hidden md:flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] text-muted-foreground glass px-3 py-1.5 rounded-full shrink-0">
+            <div className="hidden md:flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] text-muted-foreground bg-secondary/80 border border-border/50 px-3 py-1.5 rounded-full shrink-0">
               <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
               State index · {userState || "Not set"}
             </div>
