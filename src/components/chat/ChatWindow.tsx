@@ -273,8 +273,10 @@ export function ChatWindow({
           <p className="mt-2 text-center text-[11px] text-muted-foreground/80">
             Your coach can slip up. Confirm anything official with your state handbook.
           </p>
-
+        </div>
+      </div>
     </div>
+
   );
 }
 
