@@ -74,24 +74,24 @@ export function TestHubDashboard() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto space-y-6 w-full">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div className="max-w-5xl mx-auto space-y-5 w-full">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
         {pillars.map((p) => {
           const Icon = p.icon;
           const used = usage[p.id] ?? 0;
           const remaining = Math.max(0, FREE_PILLAR_LIFETIME_LIMIT - used);
           const locked = !isPro && remaining <= 0;
           return (
-            <Card key={p.id} className="glass glow-soft lift fade-in-up p-5 sm:p-7 rounded-[28px] border border-primary/25 bg-card/90 backdrop-blur flex flex-col gap-4">
-              <div className="flex items-center gap-4">
+            <Card key={p.id} className="glass glow-soft lift fade-in-up p-4 sm:p-5 rounded-[26px] border border-primary/45 ring-1 ring-primary/10 bg-card/90 backdrop-blur flex flex-col gap-3">
+              <div className="flex items-center gap-3">
                 <span
-                  className="grid h-14 w-14 sm:h-16 sm:w-16 place-items-center rounded-[20px] border border-primary/40 bg-primary/10 text-primary shrink-0"
+                  className="grid h-12 w-12 sm:h-14 sm:w-14 place-items-center rounded-[18px] border border-primary/45 bg-primary/10 text-primary shrink-0"
                 >
-                  <Icon className="w-6 h-6 sm:w-7 sm:h-7" />
+                  <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
                 </span>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <h3 className="font-display text-lg sm:text-xl font-bold">{p.title}</h3>
+                    <h3 className="font-display text-base sm:text-lg font-bold">{p.title}</h3>
                     <Badge className="bg-primary/15 text-primary border-primary/40 border">
                       {isPro ? "Pro" : "Free preview"}
                     </Badge>
@@ -107,7 +107,7 @@ export function TestHubDashboard() {
               )}
               <Button
                 onClick={() => (locked ? unlockPro() : setActive(p.id))}
-                className="press w-full rounded-full h-12 sm:h-14 text-base"
+                className="press w-full rounded-full h-11 sm:h-12 text-sm sm:text-base"
               >
                 {locked ? (
                   <>
