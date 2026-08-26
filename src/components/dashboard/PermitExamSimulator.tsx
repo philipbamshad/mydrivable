@@ -74,7 +74,7 @@ export function PermitExamSimulator() {
 
       <Card className="glass glow-strong p-8 rounded-[32px]">
         <div className="flex items-center gap-4">
-          <div className="grid h-14 w-14 place-items-center rounded-[28px] bg-primary/15 border border-primary/40 text-primary shrink-0"
+          <div className="grid h-14 w-14 place-items-center rounded-2xl bg-primary/15 border border-primary/40 text-primary shrink-0"
             style={{ boxShadow: "0 0 24px -4px var(--color-primary)" }}>
             <Timer className="w-6 h-6" />
           </div>
@@ -98,7 +98,7 @@ export function PermitExamSimulator() {
 
         <Button
           onClick={() => setRunning(true)}
-          className="press w-full mt-6 rounded-[28px]"
+          className="press w-full mt-6 rounded-full"
         >
           Start full-length exam
         </Button>
@@ -378,7 +378,7 @@ function ExamRunner({
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-[28px] border border-border bg-card/40 p-3 text-center">
+    <div className="rounded-2xl border border-transparent bg-secondary/70 p-3 text-center">
       <div className="text-[10px] uppercase tracking-widest text-muted-foreground">{label}</div>
       <div className="font-display text-xl font-bold mt-0.5">{value}</div>
     </div>
