@@ -68,9 +68,9 @@ export function PermitExamSimulator() {
 
   return (
     <div className="max-w-4xl mx-auto space-y-6 w-full">
-      <Card className="glass glow-strong p-8 sm:p-12 rounded-[36px]">
+      <Card className="glass glow-strong p-8 sm:p-12 rounded-[36px] border border-border/70">
         <div className="flex items-center gap-5">
-          <div className="grid h-16 w-16 sm:h-20 sm:w-20 place-items-center rounded-[22px] border border-primary/30 bg-primary/10 text-primary shrink-0">
+          <div className="grid h-16 w-16 sm:h-20 sm:w-20 place-items-center rounded-[22px] border border-primary/40 bg-primary/10 text-primary shrink-0">
             <Timer className="w-7 h-7 sm:w-9 sm:h-9" />
           </div>
           <div className="flex-1 min-w-0">
@@ -374,7 +374,7 @@ function ExamRunner({
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-3xl border border-border/60 bg-background p-5 text-center shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
+    <div className="rounded-3xl border border-border/80 bg-background p-5 text-center shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
       <div className="text-[11px] uppercase tracking-widest text-muted-foreground">{label}</div>
       <div className="font-display text-3xl font-bold mt-1">{value}</div>
 
