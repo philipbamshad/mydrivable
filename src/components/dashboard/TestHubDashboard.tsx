@@ -113,7 +113,7 @@ export function TestHubDashboard() {
               )}
               <Button
                 onClick={() => (locked ? unlockPro() : setActive(p.id))}
-                className="press w-full rounded-2xl"
+                className="press w-full rounded-full"
               >
                 {locked ? (
                   <>
@@ -141,7 +141,7 @@ function PillarPaywall({ onUpgrade }: { onUpgrade: () => void }) {
         <p className="text-sm font-semibold text-foreground leading-snug">
           You've answered your 3 free lifetime questions for this quiz section. Upgrade to Pro Pass to unlock unlimited questions, practice modes, and get full explanations! [Get Pro Pass — $9]
         </p>
-        <Button onClick={onUpgrade} className="press mt-5 rounded-2xl">
+        <Button onClick={onUpgrade} className="press mt-5 rounded-full">
           <Sparkles className="mr-1.5 h-4 w-4" />
           Get Pro Pass — $9
         </Button>

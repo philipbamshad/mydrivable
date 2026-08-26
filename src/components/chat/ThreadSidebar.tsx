@@ -95,7 +95,7 @@ export function ThreadSidebar() {
             aria-haspopup="dialog"
             aria-expanded={activePopover === datePopoverKey}
             style={{ WebkitTapHighlightColor: "transparent", cursor: "pointer", pointerEvents: "auto" }}
-            className="w-full text-left rounded-xl border border-primary/20 bg-primary/5 hover:bg-primary/10 hover:border-primary/40 active:bg-primary/15 transition-colors press px-4 py-3 mx-0 min-h-[56px] touch-manipulation select-none"
+            className="w-full text-left rounded-2xl border border-transparent bg-secondary/70 hover:bg-secondary transition-colors press px-4 py-3 mx-0 min-h-[56px] touch-manipulation select-none"
           >
             <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground flex items-center justify-between pointer-events-none">
               <span>DMV Target Date</span>
@@ -142,7 +142,7 @@ export function ThreadSidebar() {
             aria-haspopup="dialog"
             aria-expanded={activePopover === statePopoverKey}
             style={{ WebkitTapHighlightColor: "transparent", cursor: "pointer", pointerEvents: "auto" }}
-            className="w-full text-left rounded-xl border border-primary/20 bg-primary/5 hover:bg-primary/10 hover:border-primary/40 active:bg-primary/15 transition-colors press px-4 py-3 mx-0 min-h-[56px] touch-manipulation select-none"
+            className="w-full text-left rounded-2xl border border-transparent bg-secondary/70 hover:bg-secondary transition-colors press px-4 py-3 mx-0 min-h-[56px] touch-manipulation select-none"
           >
             <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground flex items-center justify-between pointer-events-none">
               <span>Active state</span>
@@ -324,10 +324,11 @@ export function ThreadSidebar() {
       <div className="relative hidden md:flex shrink-0 h-full">
         <aside
           className={cn(
-            "flex shrink-0 flex-col min-w-0 rounded-2xl glass glow-soft bg-sidebar/85 backdrop-blur-xl text-sidebar-foreground border border-sidebar-border h-full overflow-hidden transition-all duration-300 ease-out",
+            "flex shrink-0 flex-col min-w-0 rounded-[32px] glass glow-soft text-sidebar-foreground h-full overflow-hidden transition-all duration-300 ease-out",
             collapsed ? "w-24" : "w-64 max-w-[256px]",
           )}
         >
+
           {createBody("desktop")}
         </aside>
       </div>

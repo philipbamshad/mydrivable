@@ -253,25 +253,43 @@
 }
 
 
-/* ===== Custom utilities — flattened ===== */
+/* ===== Custom utilities — modern soft surfaces (matches homepage / sign in) ===== */
 
-/* "glass" surfaces are now clean flat cards with hairline borders */
+/* Soft panel tokens shared by every in app surface */
+:root {
+  --panel: #f4f5f7;
+  --panel-hover: #eef0f4;
+  --panel-inset: #ffffff;
+  --panel-shadow: 0 24px 60px -46px rgba(15, 23, 42, 0.45);
+}
+.dark {
+  --panel: #16191c;
+  --panel-hover: #1c2024;
+  --panel-inset: #101215;
+  --panel-shadow: 0 24px 60px -46px rgba(0, 0, 0, 0.9);
+}
+
+/* "glass" surfaces are soft, borderless, generously rounded cards */
 @utility glass {
-  background: var(--color-card);
-  border: 1px solid var(--color-border);
+  background: var(--panel);
+  border: 1px solid transparent;
+  box-shadow: var(--panel-shadow);
+  transition: background-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @utility glass-strong {
-  background: var(--color-card);
-  border: 1px solid var(--color-border);
+  background: var(--panel-inset);
+  border: 1px solid color-mix(in oklab, var(--color-border) 70%, transparent);
+  box-shadow: var(--panel-shadow);
+  transition: background-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* Glow utilities preserved as no-ops to keep structural classes valid */
 @utility glow-soft {
-  box-shadow: none;
+  box-shadow: var(--panel-shadow);
 }
 @utility glow-strong {
-  box-shadow: none;
+  box-shadow: 0 30px 70px -46px rgba(15, 23, 42, 0.5);
 }
 
 /* Premium backlight — a soft, intentional radial halo behind featured cards.
@@ -288,53 +306,51 @@
     pointer-events: none;
     background: radial-gradient(
       60% 70% at 50% 0%,
-      color-mix(in oklab, var(--color-primary) 22%, transparent),
+      color-mix(in oklab, var(--color-primary) 14%, transparent),
       transparent 70%
     );
-    filter: blur(8px);
+    filter: blur(10px);
   }
 }
 
 
-/* Subtle press interaction — no glow */
+/* Subtle press interaction — soft grey wash */
 @utility press {
-  transition: transform 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
-  &:hover { background-color: color-mix(in oklab, var(--color-foreground) 4%, var(--color-card)); }
+  transition: transform 0.15s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  &:hover { background-color: var(--panel-hover); }
   &:active { transform: scale(0.98); }
 }
 
-/* Sidebar nav link */
+/* Sidebar nav link — soft pill */
 @utility nav-link {
   position: relative;
   display: flex;
   align-items: center;
   gap: 0.7rem;
-  padding: 0.55rem 0.9rem;
-  border-radius: 0.5rem;
+  padding: 0.6rem 0.95rem;
+  border-radius: 999px;
   font-size: 0.875rem;
-  color: var(--color-sidebar-foreground);
-  transition: color 0.15s ease, background-color 0.15s ease;
+  color: color-mix(in oklab, var(--color-foreground) 72%, transparent);
+  transition: color 0.2s ease, background-color 0.25s ease, transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
   &:hover {
     color: var(--color-foreground);
-    background-color: var(--color-sidebar-accent);
+    background-color: var(--panel-hover);
+    transform: translateX(2px);
   }
 }
 @utility nav-link-active {
-  color: var(--color-foreground);
+  color: var(--color-background);
   font-weight: 600;
-  background-color: var(--color-sidebar-accent);
-  & svg { color: var(--color-primary); }
-  &::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 18%;
-    bottom: 18%;
-    width: 2px;
-    border-radius: 999px;
-    background: var(--color-primary);
+  background-color: var(--color-foreground);
+  box-shadow: 0 16px 34px -24px rgba(15, 23, 42, 0.7);
+  & svg { color: var(--color-background); }
+  &:hover {
+    color: var(--color-background);
+    background-color: color-mix(in oklab, var(--color-foreground) 92%, var(--color-primary));
+    transform: none;
   }
 }
+
 
 /* Lane divider — neutralized */
 .lane-divider {
