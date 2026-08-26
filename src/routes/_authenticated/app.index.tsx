@@ -6,8 +6,8 @@ import {
   MessageSquare,
   ClipboardCheck,
   Timer,
-  Sparkles,
 } from "lucide-react";
+import logo from "@/assets/drivable-logo.png";
 import { TestHubDashboard } from "@/components/dashboard/TestHubDashboard";
 import { PermitExamSimulator } from "@/components/dashboard/PermitExamSimulator";
 import { ChatTab } from "@/components/chat/ChatTab";
@@ -84,9 +84,9 @@ function AppDashboard() {
             {!isPro && (
               <button
                 onClick={() => openCheckout()}
-                className="hidden md:flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-4 py-2 text-sm font-semibold shadow-[0_4px_14px_-6px_var(--color-primary)] hover:brightness-110 transition-all shrink-0"
+                className="hidden md:flex items-center gap-2 rounded-full bg-primary text-primary-foreground h-10 px-5 text-base font-semibold shadow-[0_4px_14px_-6px_var(--color-primary)] hover:brightness-110 transition-all shrink-0"
               >
-                <Sparkles className="w-4 h-4" />
+                <img src={logo} alt="" className="h-5 w-5 object-contain" />
                 Upgrade
               </button>
             )}
