@@ -75,8 +75,8 @@ export function TestHubDashboard() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto space-y-6 w-full">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+    <div className="max-w-6xl mx-auto space-y-6 w-full">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {pillars.map((p) => {
           const Icon = p.icon;
           const used = usage[p.id] ?? 0;
@@ -92,7 +92,7 @@ export function TestHubDashboard() {
                 </span>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <h3 className="font-display text-xl sm:text-2xl font-bold">{p.title}</h3>
+                    <h3 className="font-display text-lg sm:text-xl font-bold">{p.title}</h3>
                     <Badge className="bg-primary/15 text-primary border-primary/40 border">
                       {isPro ? "Pro" : "Free preview"}
                     </Badge>
