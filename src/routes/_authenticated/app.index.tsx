@@ -86,7 +86,6 @@ function AppDashboard() {
                 onClick={() => openCheckout()}
                 className="hidden md:flex items-center gap-2 rounded-full bg-primary text-primary-foreground h-10 px-5 text-base font-semibold shadow-[0_4px_14px_-6px_var(--color-primary)] hover:brightness-110 transition-all shrink-0"
               >
-                <img src={logo} alt="" className="h-5 w-5 object-contain" />
                 Upgrade
               </button>
             )}
