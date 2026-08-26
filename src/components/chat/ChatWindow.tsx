@@ -156,7 +156,7 @@ export function ChatWindow({
         maxFiles={4}
         maxFileSize={8 * 1024 * 1024}
         onError={(e) => toast.error(e.message)}
-        className="rounded-[28px] border border-primary/25 bg-card/90 backdrop-blur shadow-[0_18px_50px_-28px_var(--color-primary)] outline-none transition-colors focus-within:border-primary/50 overflow-hidden has-[[data-slot=input-group-control]:focus-visible]:ring-0 has-[[data-slot=input-group-control]:focus-visible]:border-primary/50"
+        className="rounded-[28px] border border-primary/25 bg-card/90 backdrop-blur outline-none transition-colors focus-within:border-primary/50 overflow-hidden has-[[data-slot=input-group-control]:focus-visible]:ring-0 has-[[data-slot=input-group-control]:focus-visible]:border-primary/50"
       >
         <AttachmentChips />
         <PromptInputTextarea
