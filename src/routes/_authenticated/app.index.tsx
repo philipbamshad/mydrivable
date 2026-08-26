@@ -7,7 +7,7 @@ import {
   ClipboardCheck,
   Timer,
 } from "lucide-react";
-import logo from "@/assets/drivable-logo.png";
+
 import { TestHubDashboard } from "@/components/dashboard/TestHubDashboard";
 import { PermitExamSimulator } from "@/components/dashboard/PermitExamSimulator";
 import { ChatTab } from "@/components/chat/ChatTab";
