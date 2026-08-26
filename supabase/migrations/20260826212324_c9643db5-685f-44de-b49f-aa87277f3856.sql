@@ -1,0 +1,1 @@
+ALTER TABLE public.user_profiles ALTER COLUMN theme SET DEFAULT 'light';
