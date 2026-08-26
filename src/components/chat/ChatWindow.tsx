@@ -184,14 +184,6 @@ export function ChatWindow({
   if (isEmpty) {
     return (
       <div className="relative flex h-full flex-col items-center justify-center overflow-hidden bg-background px-4">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute left-1/2 top-1/3 -z-10 h-[420px] w-[560px] max-w-[95vw] -translate-x-1/2 rounded-full opacity-70 blur-3xl"
-          style={{
-            background:
-              "radial-gradient(circle at 30% 40%, color-mix(in oklab, var(--color-primary) 22%, transparent), transparent 65%)",
-          }}
-        />
         <div className="w-full max-w-2xl text-center">
           <img src={logo} alt="" width={52} height={52} className="logo-mask mx-auto mb-5 opacity-90" />
           <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight text-foreground">
