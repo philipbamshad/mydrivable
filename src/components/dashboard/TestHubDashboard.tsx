@@ -83,10 +83,10 @@ export function TestHubDashboard() {
           const remaining = Math.max(0, FREE_PILLAR_LIFETIME_LIMIT - used);
           const locked = !isPro && remaining <= 0;
           return (
-            <Card key={p.id} className="glass glow-soft lift fade-in-up p-7 sm:p-9 rounded-[36px] flex flex-col gap-5">
+            <Card key={p.id} className="glass glow-soft lift fade-in-up p-7 sm:p-9 rounded-[36px] border border-border/70 flex flex-col gap-5">
               <div className="flex items-center gap-4">
                 <span
-                  className="grid h-16 w-16 sm:h-20 sm:w-20 place-items-center rounded-[22px] border border-primary/30 bg-primary/10 text-primary shrink-0"
+                  className="grid h-16 w-16 sm:h-20 sm:w-20 place-items-center rounded-[22px] border border-primary/40 bg-primary/10 text-primary shrink-0"
                 >
                   <Icon className="w-7 h-7 sm:w-8 sm:h-8" />
                 </span>
