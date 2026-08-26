@@ -94,11 +94,11 @@ function AppDashboard() {
         </TabsList>
 
         <div className="flex-1 min-h-0 overflow-hidden">
-          <TabsContent value="test-hub" className="h-full overflow-y-auto m-0 p-5 sm:p-7 data-[state=inactive]:hidden">
+          <TabsContent value="test-hub" className="min-h-full overflow-y-auto m-0 p-5 sm:p-7 data-[state=inactive]:hidden flex flex-col justify-center">
             <TestHubDashboard />
           </TabsContent>
 
-          <TabsContent value="state-exam" className="h-full overflow-y-auto m-0 p-5 sm:p-7 data-[state=inactive]:hidden">
+          <TabsContent value="state-exam" className="min-h-full overflow-y-auto m-0 p-5 sm:p-7 data-[state=inactive]:hidden flex flex-col justify-center">
             <PermitExamSimulator />
           </TabsContent>
 
