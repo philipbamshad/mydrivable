@@ -6,6 +6,7 @@ import {
   MessageSquare,
   ClipboardCheck,
   Timer,
+  Sparkles,
 } from "lucide-react";
 import { TestHubDashboard } from "@/components/dashboard/TestHubDashboard";
 import { PermitExamSimulator } from "@/components/dashboard/PermitExamSimulator";
@@ -80,10 +81,15 @@ function AppDashboard() {
                 {TABS.find((t) => t.id === tab)?.label}
               </h1>
             </div>
-            <div className="hidden md:flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] text-muted-foreground bg-secondary/80 border border-border/50 px-3 py-1.5 rounded-full shrink-0">
-              <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-              State index · {userState || "Not set"}
-            </div>
+            {!isPro && (
+              <button
+                onClick={() => openCheckout()}
+                className="hidden md:flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-4 py-2 text-sm font-semibold shadow-[0_4px_14px_-6px_var(--color-primary)] hover:brightness-110 transition-all shrink-0"
+              >
+                <Sparkles className="w-4 h-4" />
+                Upgrade
+              </button>
+            )}
           </div>
         </header>
 
