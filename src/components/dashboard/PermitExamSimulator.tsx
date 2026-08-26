@@ -7,7 +7,6 @@ import {
   Check,
   X,
   Lock,
-  Sparkles,
   RefreshCw,
   Timer,
   Trophy,
@@ -120,7 +119,6 @@ function ExamPaywall({ onUpgrade }: { onUpgrade: () => void }) {
           You've answered your 5 free lifetime exam questions. Upgrade to Pro Pass to continue practicing, get instant rule explanations, and access unlimited exam simulators! [Get Pro Pass — $9]
         </p>
         <Button onClick={onUpgrade} className="press mt-5">
-          <Sparkles className="mr-1.5 h-4 w-4" />
           Get Pro Pass — $9
         </Button>
       </div>
