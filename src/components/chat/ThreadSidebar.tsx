@@ -339,7 +339,7 @@ export function ThreadSidebar() {
             variant="ghost"
             size="icon"
             aria-label="Open menu"
-            className="md:hidden fixed top-3 left-3 z-50 h-10 w-10 rounded-xl glass border border-sidebar-border bg-sidebar/85 backdrop-blur-xl"
+            className="md:hidden absolute top-3 left-3 z-50 h-10 w-10 rounded-xl glass border border-sidebar-border bg-sidebar/85 backdrop-blur-xl"
           >
             <Menu className="w-5 h-5" />
           </Button>
