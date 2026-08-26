@@ -90,7 +90,7 @@ export function TestHubDashboard() {
             <Card key={p.id} className="glass glow-soft lift fade-in-up p-6 rounded-[32px] flex flex-col gap-4">
               <div className="flex items-center gap-4">
                 <span
-                  className="grid h-14 w-14 place-items-center rounded-2xl bg-primary/15 border border-primary/40 text-primary shrink-0"
+                  className="grid h-14 w-14 place-items-center rounded-[28px] bg-primary/15 border border-primary/40 text-primary shrink-0"
                   style={{ boxShadow: "0 0 24px -4px var(--color-primary)" }}
                 >
                   <Icon className="w-6 h-6" />
@@ -113,7 +113,7 @@ export function TestHubDashboard() {
               )}
               <Button
                 onClick={() => (locked ? unlockPro() : setActive(p.id))}
-                className="press w-full rounded-2xl"
+                className="press w-full rounded-[28px]"
               >
                 {locked ? (
                   <>
@@ -141,7 +141,7 @@ function PillarPaywall({ onUpgrade }: { onUpgrade: () => void }) {
         <p className="text-sm font-semibold text-foreground leading-snug">
           You've answered your 3 free lifetime questions for this quiz section. Upgrade to Pro Pass to unlock unlimited questions, practice modes, and get full explanations! [Get Pro Pass — $9]
         </p>
-        <Button onClick={onUpgrade} className="press mt-5 rounded-2xl">
+        <Button onClick={onUpgrade} className="press mt-5 rounded-[28px]">
           <Sparkles className="mr-1.5 h-4 w-4" />
           Get Pro Pass — $9
         </Button>
