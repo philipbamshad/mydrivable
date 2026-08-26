@@ -86,7 +86,7 @@ export function TestHubDashboard() {
             <Card key={p.id} className="glass glow-soft lift fade-in-up p-7 sm:p-9 rounded-[36px] flex flex-col gap-5">
               <div className="flex items-center gap-4">
                 <span
-                  className="grid h-16 w-16 sm:h-18 sm:w-18 place-items-center rounded-[22px] border border-primary/30 bg-primary/10 text-primary shrink-0"
+                  className="grid h-16 w-16 sm:h-20 sm:w-20 place-items-center rounded-[22px] border border-primary/30 bg-primary/10 text-primary shrink-0"
                 >
                   <Icon className="w-7 h-7 sm:w-8 sm:h-8" />
                 </span>
@@ -108,7 +108,7 @@ export function TestHubDashboard() {
               )}
               <Button
                 onClick={() => (locked ? unlockPro() : setActive(p.id))}
-                className="press w-full rounded-full"
+                className="press w-full rounded-full h-12 sm:h-14 text-base"
               >
                 {locked ? (
                   <>
