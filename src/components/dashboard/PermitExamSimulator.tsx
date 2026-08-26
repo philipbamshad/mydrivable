@@ -68,14 +68,9 @@ export function PermitExamSimulator() {
 
   return (
     <div className="max-w-3xl mx-auto space-y-6">
-      <div>
-        <h2 className="font-display text-2xl font-bold">State Permit Exam Simulator</h2>
-      </div>
-
       <Card className="glass glow-strong p-8 rounded-[32px]">
         <div className="flex items-center gap-4">
-          <div className="grid h-14 w-14 place-items-center rounded-2xl bg-primary/15 border border-primary/40 text-primary shrink-0"
-            style={{ boxShadow: "0 0 24px -4px var(--color-primary)" }}>
+          <div className="grid h-14 w-14 place-items-center rounded-2xl bg-primary/15 text-primary shrink-0">
             <Timer className="w-6 h-6" />
           </div>
           <div className="flex-1 min-w-0">
