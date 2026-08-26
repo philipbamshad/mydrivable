@@ -76,7 +76,14 @@ function UnsubscribePage() {
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ token }),
       });
-      setStatus(res.ok ? "done" : "invalid");
+      const body = (await res.json().catch(() => ({}))) as {
+        success?: boolean;
+        reason?: string;
+      };
+      if (!res.ok) setStatus("invalid");
+      else if (body.success === false && body.reason === "already_unsubscribed")
+        setStatus("already");
+      else setStatus("done");
     } catch {
       setStatus("invalid");
     } finally {
