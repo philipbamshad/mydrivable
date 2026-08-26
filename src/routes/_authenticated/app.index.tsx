@@ -84,7 +84,7 @@ function AppDashboard() {
             {!isPro && (
               <button
                 onClick={() => openCheckout()}
-                className="hidden md:flex items-center gap-2 rounded-full bg-primary text-primary-foreground h-10 px-5 text-base font-semibold shadow-[0_4px_14px_-6px_var(--color-primary)] hover:brightness-110 transition-all shrink-0"
+                className="flex items-center gap-2 rounded-full bg-primary text-primary-foreground h-9 px-4 text-sm md:h-10 md:px-5 md:text-base font-semibold shadow-[0_4px_14px_-6px_var(--color-primary)] hover:brightness-110 transition-all shrink-0"
               >
                 Upgrade
               </button>
