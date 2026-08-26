@@ -564,15 +564,12 @@
   &:hover svg { transform: translateX(3px); }
 }
 
-/* Pronounced card lift with colored glow border */
+/* Pronounced card lift with colored outline border */
 @utility lift {
-  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.35s ease;
   &:hover {
     transform: translateY(-0.5rem);
     border-color: color-mix(in oklab, var(--accent-orange) 45%, transparent);
-    box-shadow:
-      0 26px 60px -28px color-mix(in oklab, var(--accent-orange) 55%, transparent),
-      0 0 0 1px color-mix(in oklab, var(--accent-cyan) 28%, transparent);
   }
 }
 
