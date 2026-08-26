@@ -374,9 +374,10 @@ function ExamRunner({
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-2xl border border-transparent bg-secondary/70 p-3 text-center">
-      <div className="text-[10px] uppercase tracking-widest text-muted-foreground">{label}</div>
-      <div className="font-display text-xl font-bold mt-0.5">{value}</div>
+    <div className="rounded-3xl border border-border/60 bg-background p-5 text-center shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
+      <div className="text-[11px] uppercase tracking-widest text-muted-foreground">{label}</div>
+      <div className="font-display text-3xl font-bold mt-1">{value}</div>
+
     </div>
   );
 }
