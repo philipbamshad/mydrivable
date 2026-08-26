@@ -67,15 +67,15 @@ export function PermitExamSimulator() {
 
 
   return (
-    <div className="max-w-3xl mx-auto space-y-6">
-      <Card className="glass glow-strong p-8 rounded-[32px]">
-        <div className="flex items-center gap-4">
-          <div className="grid h-14 w-14 place-items-center rounded-2xl bg-primary/15 text-primary shrink-0">
-            <Timer className="w-6 h-6" />
+    <div className="max-w-4xl mx-auto space-y-6 w-full">
+      <Card className="glass glow-strong p-8 sm:p-12 rounded-[36px]">
+        <div className="flex items-center gap-5">
+          <div className="grid h-16 w-16 sm:h-20 sm:w-20 place-items-center rounded-[22px] border border-primary/30 bg-primary/10 text-primary shrink-0">
+            <Timer className="w-7 h-7 sm:w-9 sm:h-9" />
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
-              <h3 className="font-display text-xl font-bold">
+              <h3 className="font-display text-xl sm:text-3xl font-bold">
                 {pack.rules.name} DMV Permit Exam
               </h3>
               <Badge className="bg-primary/15 text-primary border-primary/40 border">
@@ -85,7 +85,7 @@ export function PermitExamSimulator() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-3 mt-6">
+        <div className="grid grid-cols-2 gap-4 mt-8">
           <Stat label="Questions" value={`${cfg.count}`} />
           <Stat label="Pass score" value={`${cfg.pass}%`} />
         </div>
@@ -93,11 +93,12 @@ export function PermitExamSimulator() {
 
         <Button
           onClick={() => setRunning(true)}
-          className="press w-full mt-6 rounded-full"
+          className="press w-full mt-8 rounded-full h-14 text-base"
         >
           Start full-length exam
         </Button>
       </Card>
+
 
       {!isPro && (
         <p className="text-xs text-center text-muted-foreground">
