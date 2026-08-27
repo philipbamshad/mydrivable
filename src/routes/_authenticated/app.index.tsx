@@ -103,9 +103,12 @@ function AppDashboard() {
             <TestHubDashboard />
           </TabsContent>
 
-          <TabsContent value="state-exam" className="h-full min-h-0 overflow-y-auto overscroll-contain m-0 p-5 sm:p-7 data-[state=inactive]:hidden flex flex-col justify-start">
-            <PermitExamSimulator />
+          <TabsContent value="state-exam" className="h-full min-h-0 overflow-y-auto overscroll-contain m-0 p-5 sm:p-7 data-[state=inactive]:hidden flex flex-col data-[state=active]:flex">
+            <div className="w-full my-auto">
+              <PermitExamSimulator />
+            </div>
           </TabsContent>
+
 
           <TabsContent value="chat" className="h-full m-0 data-[state=inactive]:hidden">
             <ChatTab />
