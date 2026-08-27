@@ -103,7 +103,7 @@ function AppDashboard() {
             <TestHubDashboard />
           </TabsContent>
 
-          <TabsContent value="state-exam" className="min-h-full overflow-y-auto m-0 p-5 sm:p-7 data-[state=inactive]:hidden flex flex-col justify-center">
+          <TabsContent value="state-exam" className="h-full min-h-0 overflow-y-auto overscroll-contain m-0 p-5 sm:p-7 data-[state=inactive]:hidden flex flex-col justify-start">
             <PermitExamSimulator />
           </TabsContent>
 
