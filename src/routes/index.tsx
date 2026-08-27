@@ -28,7 +28,7 @@ export const Route = createFileRoute("/")({
           "Ace Your Permit Test on the First Try. An AI driving coach trained on every official DMV handbook, with full-length mock permit exams and targeted section drills.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://mydrivable.com/" },
+      { property: "og:url", content: "https://www.mydrivable.com/" },
       { name: "twitter:title", content: "Drivable, Master Your Permit" },
       {
         name: "twitter:description",
