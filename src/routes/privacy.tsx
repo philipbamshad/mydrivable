@@ -12,8 +12,9 @@ export const Route = createFileRoute("/privacy")({
       { name: "twitter:card", content: "summary" },
       { name: "twitter:title", content: "Privacy Policy · Drivable" },
       { name: "twitter:description", content: "Drivable privacy policy. Learn how Bedford Global collects, uses, and protects your information." },
+      { property: "og:url", content: "https://www.mydrivable.com/privacy" },
     ],
-    links: [{ rel: "canonical", href: "https://mydrivable.com/privacy" }],
+    links: [{ rel: "canonical", href: "https://www.mydrivable.com/privacy" }],
   }),
   component: PrivacyPage,
 });
