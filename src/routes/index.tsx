@@ -15,25 +15,25 @@ import { US_STATES } from "@/lib/user-profile";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Drivable" },
+      { title: "Drivable, Master Your Permit" },
       {
         name: "description",
         content:
-          "Pass your DMV permit test on the first try. AI coach, full-length mock permit exam simulator, and targeted road signs and traffic law quizzes tuned to your state.",
+          "Ace Your Permit Test on the First Try. An AI driving coach trained on every official DMV handbook, with full-length mock permit exams and targeted section drills.",
       },
-      { property: "og:title", content: "Drivable, Pass Your DMV Permit Test First Try" },
+      { property: "og:title", content: "Drivable, Master Your Permit" },
       {
         property: "og:description",
         content:
-          "Study with an AI permit coach, a full-length mock permit exam, and state-specific road signs and traffic law quizzes. Set your test date and track readiness in one dashboard.",
+          "Ace Your Permit Test on the First Try. An AI driving coach trained on every official DMV handbook, with full-length mock permit exams and targeted section drills.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://mydrivable.com/" },
-      { name: "twitter:title", content: "Drivable, Pass Your DMV Permit Test First Try" },
+      { name: "twitter:title", content: "Drivable, Master Your Permit" },
       {
         name: "twitter:description",
         content:
-          "Study with an AI permit coach, a full-length mock permit exam, and state-specific road signs and traffic law quizzes. Set your test date and track readiness in one dashboard.",
+          "Ace Your Permit Test on the First Try. An AI driving coach trained on every official DMV handbook, with full-length mock permit exams and targeted section drills.",
       },
     ],
     links: [{ rel: "canonical", href: "https://mydrivable.com/" }],
@@ -48,7 +48,7 @@ export const Route = createFileRoute("/")({
           logo: "https://mydrivable.com/favicon.png",
           email: "philip@mydrivable.com",
           description:
-            "Drivable coaches new drivers through the DMV written permit test with an AI coach, mock permit exams, and state-specific knowledge test quizzes.",
+            "Ace Your Permit Test on the First Try. An AI driving coach trained on every official DMV handbook, with full-length mock permit exams and targeted section drills.",
         }),
       },
       {
