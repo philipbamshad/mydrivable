@@ -687,8 +687,14 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
               Unlock Pro Pass
             </DialogTitle>
             <DialogDescription>
-              $9 one-time payment · lifetime access. Test mode is active in preview, use
-              card <span className="font-mono">4242 4242 4242 4242</span>.
+              {getStripeEnvironment() === "sandbox" ? (
+                <>
+                  $9 one-time payment · lifetime access. Test mode is active in preview, use
+                  card <span className="font-mono">4242 4242 4242 4242</span>.
+                </>
+              ) : (
+                "$9 one-time payment · lifetime access."
+              )}
             </DialogDescription>
           </DialogHeader>
           <div className="p-4">
