@@ -258,18 +258,16 @@ function Hero() {
 
       <div className="relative mx-auto max-w-5xl">
         <h1 className="fade-in-up relative text-4xl font-semibold leading-[1.05] tracking-[-0.03em] sm:text-6xl">
-          Master Your DMV Permit
-          <br />
-          Written Exam on the{" "}
+          Drivable,{" "}
           <span className="text-grad italic font-medium [font-family:'Cormorant_Garamond',Georgia,serif]">
-            First Try
+            Master Your Permit
           </span>
         </h1>
       </div>
 
       <p className="fade-in-up relative mx-auto mt-6 max-w-2xl text-base text-[#1f2b4d]/70 sm:text-lg">
-        An AI permit coach trained on every official DMV handbook, with
-        full-length mock permit exams and targeted road signs and traffic law drills.
+        Ace Your Permit Test on the First Try. An AI driving coach trained on every official DMV handbook, with
+        full-length mock permit exams and targeted section drills.
       </p>
 
       <div className="fade-in-up relative mt-8 flex flex-wrap items-center justify-center gap-3" style={{ "--reveal-delay": "160ms" } as React.CSSProperties}>
