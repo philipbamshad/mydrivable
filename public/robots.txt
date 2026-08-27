@@ -8,4 +8,4 @@ Disallow: /checkout/
 Disallow: /api/
 Disallow: /lovable/
 
-Sitemap: https://mydrivable.com/sitemap.xml
+Sitemap: https://www.mydrivable.com/sitemap.xml
