@@ -17,6 +17,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { StripeEmbeddedCheckout } from "@/components/payments/StripeEmbeddedCheckout";
+import { getStripeEnvironment } from "@/lib/stripe";
 
 export type DriveEnvironment = "city" | "highway" | "rural";
 export type DriveConditions = "day" | "night";
@@ -686,8 +687,14 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
               Unlock Pro Pass
             </DialogTitle>
             <DialogDescription>
-              $9 one-time payment · lifetime access. Test mode is active in preview, use
-              card <span className="font-mono">4242 4242 4242 4242</span>.
+              {getStripeEnvironment() === "sandbox" ? (
+                <>
+                  $9 one-time payment · lifetime access. Test mode is active in preview, use
+                  card <span className="font-mono">4242 4242 4242 4242</span>.
+                </>
+              ) : (
+                "$9 one-time payment · lifetime access."
+              )}
             </DialogDescription>
           </DialogHeader>
           <div className="p-4">
