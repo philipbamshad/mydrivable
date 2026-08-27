@@ -17,6 +17,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { StripeEmbeddedCheckout } from "@/components/payments/StripeEmbeddedCheckout";
+import { getStripeEnvironment } from "@/lib/stripe";
 
 export type DriveEnvironment = "city" | "highway" | "rural";
 export type DriveConditions = "day" | "night";
