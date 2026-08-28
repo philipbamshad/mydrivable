@@ -99,7 +99,7 @@ export function TestHubDashboard() {
                 </div>
               </div>
               {!isPro && (
-                <p className="text-[11px] text-muted-foreground">
+                <p className="text-[11px] text-muted-foreground bg-muted rounded-xl px-3 py-2">
                   {locked
                     ? "Free limit reached for this section."
                     : `${remaining} of ${FREE_PILLAR_LIFETIME_LIMIT} free lifetime questions left`}
