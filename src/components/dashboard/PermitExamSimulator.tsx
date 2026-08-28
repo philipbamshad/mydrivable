@@ -240,7 +240,7 @@ function ExamRunner({
         <button onClick={onExit} className="flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground">
           <ArrowLeft className="w-3.5 h-3.5" /> Back to exam
         </button>
-        <Card className="glass glow-strong p-10 rounded-[28px] text-center">
+        <Card className="relative bg-card border border-border/60 shadow-lg p-10 rounded-[28px] text-center">
           <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
             {state} DMV Mock Exam
           </p>
