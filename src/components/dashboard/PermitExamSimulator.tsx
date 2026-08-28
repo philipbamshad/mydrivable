@@ -335,7 +335,7 @@ function ExamRunner({
                 className={cn(
                   "p-3.5 rounded-xl border text-sm font-medium text-left transition-all duration-200 flex items-center justify-between gap-2",
                   !reveal &&
-                    "border-border bg-card/40 hover:scale-[1.02] hover:border-primary/50  active:scale-[0.97]",
+                    "border-border bg-muted hover:scale-[1.02] hover:border-accent-orange/60 active:scale-[0.97]",
                   reveal && isCorrect &&
                     "border-emerald-400 bg-emerald-500/25 text-emerald-100 ",
                   reveal && isPicked && !isCorrect &&
