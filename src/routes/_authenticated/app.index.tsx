@@ -56,10 +56,10 @@ function AmbientGlow() {
   return (
     <div
       aria-hidden
-      className="pointer-events-none absolute inset-0 -z-10 opacity-70"
+      className="pointer-events-none absolute inset-0 -z-10"
       style={{
         background:
-          "radial-gradient(70% 60% at 15% 20%, oklch(0.72 0.20 240 / 0.16), transparent 70%), radial-gradient(60% 50% at 85% 85%, oklch(0.78 0.17 40 / 0.12), transparent 70%)",
+          "radial-gradient(80% 70% at 12% 15%, color-mix(in oklch, var(--color-primary) 22%, transparent), transparent 70%), radial-gradient(80% 70% at 88% 85%, color-mix(in oklch, var(--color-accent-orange) 18%, transparent), transparent 70%)",
       }}
     />
   );
