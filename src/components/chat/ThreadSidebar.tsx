@@ -95,7 +95,7 @@ export function ThreadSidebar() {
             aria-haspopup="dialog"
             aria-expanded={activePopover === datePopoverKey}
             style={{ WebkitTapHighlightColor: "transparent", cursor: "pointer", pointerEvents: "auto" }}
-            className="w-full text-left rounded-2xl border border-transparent bg-secondary/70 hover:bg-secondary transition-colors press px-4 py-3 mx-0 min-h-[56px] touch-manipulation select-none"
+            className="w-full text-left rounded-2xl border border-transparent bg-muted hover:bg-secondary transition-colors press px-4 py-3 mx-0 min-h-[56px] touch-manipulation select-none"
           >
             <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground flex items-center justify-between pointer-events-none">
               <span>DMV Target Date</span>
@@ -142,7 +142,7 @@ export function ThreadSidebar() {
             aria-haspopup="dialog"
             aria-expanded={activePopover === statePopoverKey}
             style={{ WebkitTapHighlightColor: "transparent", cursor: "pointer", pointerEvents: "auto" }}
-            className="w-full text-left rounded-2xl border border-transparent bg-secondary/70 hover:bg-secondary transition-colors press px-4 py-3 mx-0 min-h-[56px] touch-manipulation select-none"
+            className="w-full text-left rounded-2xl border border-transparent bg-muted hover:bg-secondary transition-colors press px-4 py-3 mx-0 min-h-[56px] touch-manipulation select-none"
           >
             <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground flex items-center justify-between pointer-events-none">
               <span>Active state</span>
