@@ -110,15 +110,15 @@ export function PermitExamSimulator() {
 
 function ExamPaywall({ onUpgrade }: { onUpgrade: () => void }) {
   return (
-    <div className="max-w-xl mx-auto p-5">
-      <div className="rounded-[28px] border border-primary/30 bg-card px-6 py-8 text-center shadow-lg">
-        <div className="mx-auto mb-4 grid h-12 w-12 place-items-center rounded-full border border-primary/40 bg-primary/15">
-          <Lock className="h-5 w-5 text-primary" />
+    <div className="max-w-2xl mx-auto p-5">
+      <div className="rounded-[28px] border border-primary/30 bg-card px-8 py-10 text-center shadow-lg">
+        <div className="mx-auto mb-5 grid h-14 w-14 place-items-center rounded-full border border-primary/40 bg-primary/15">
+          <Lock className="h-6 w-6 text-primary" />
         </div>
-        <p className="text-sm font-semibold text-foreground leading-snug">
+        <p className="text-base sm:text-lg font-semibold text-foreground leading-snug">
           You've answered your 5 free lifetime exam questions. Upgrade to Pro Pass to continue practicing, get instant rule explanations, and access unlimited exam simulators! [Get Pro Pass — $9]
         </p>
-        <Button onClick={onUpgrade} className="press mt-5">
+        <Button onClick={onUpgrade} className="press mt-6 rounded-2xl px-8 py-6 text-base font-semibold">
           Get Pro Pass — $9
         </Button>
       </div>
