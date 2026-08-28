@@ -321,7 +321,7 @@ function ExamRunner({
         />
       </div>
 
-      <Card className="glass glow-soft p-6 rounded-[28px]">
+      <Card className="relative bg-card rounded-[28px] border border-border/60 p-6 shadow-lg">
         <h3 className="font-display text-lg font-semibold mb-4">{q.q}</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {q.options.map((opt, i) => {
