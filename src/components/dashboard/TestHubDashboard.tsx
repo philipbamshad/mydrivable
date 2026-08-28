@@ -85,7 +85,7 @@ export function TestHubDashboard() {
             <Card key={p.id} className="relative bg-card rounded-[28px] border border-border/60 p-4 sm:p-5 shadow-md hover:shadow-lg transition-shadow flex flex-col gap-4">
               <div className="flex items-center gap-3">
                 <span
-                  className="grid h-12 w-12 sm:h-14 sm:w-14 place-items-center rounded-[18px] border border-primary/45 bg-primary/10 text-primary shrink-0"
+                  className="grid h-12 w-12 sm:h-14 sm:w-14 place-items-center rounded-[18px] border border-primary/30 bg-primary/5 text-primary shrink-0"
                 >
                   <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
                 </span>
