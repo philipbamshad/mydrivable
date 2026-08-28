@@ -134,16 +134,16 @@ export function ChatWindow({
   const isEmpty = messages.length === 0;
 
   const paywall = (
-    <div className="mx-auto max-w-xl rounded-[24px] border border-primary/25 bg-card px-5 py-6 text-center shadow-[0_14px_35px_-18px_rgba(15,23,42,0.22)]">
-      <div className="mx-auto mb-4 grid h-12 w-12 place-items-center rounded-full border border-primary/30 bg-primary/10">
-        <Lock className="h-5 w-5 text-primary" />
+    <div className="mx-auto max-w-lg rounded-[20px] border border-primary/25 bg-card px-4 py-5 text-center shadow-[0_12px_30px_-16px_rgba(15,23,42,0.22)]">
+      <div className="mx-auto mb-3 grid h-10 w-10 place-items-center rounded-full border border-primary/30 bg-primary/10">
+        <Lock className="h-4 w-4 text-primary" />
       </div>
-      <p className="mx-auto max-w-md text-sm sm:text-base font-semibold text-foreground leading-snug">
+      <p className="mx-auto max-w-sm text-sm font-semibold text-foreground leading-snug">
         You've used your 5 free lifetime AI questions. Upgrade to Pro Pass to continue chatting, get instant rule explanations, and access full exam simulators!
       </p>
       <Button
         onClick={() => openCheckout()}
-        className="mt-5 press rounded-2xl px-7 py-5 text-sm font-semibold"
+        className="mt-4 press rounded-2xl px-6 py-4 text-sm font-semibold"
       >
         Get Pro Pass — $9
       </Button>
@@ -193,33 +193,33 @@ export function ChatWindow({
         }}
       >
         <div className="w-full max-w-2xl text-center">
-          <img src={logo} alt="" width={52} height={52} className="logo-mask mx-auto mb-5 opacity-90" />
-          <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight text-foreground">
+          <img src={logo} alt="" width={48} height={48} className="logo-mask mx-auto mb-4 opacity-90" />
+          <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground">
             {greetingName ? `What's the vibe, ${greetingName}?` : "What are we studying today?"}
           </h1>
-          <p className="mt-3 text-sm text-muted-foreground">
+          <p className="mt-2 text-sm text-muted-foreground">
             {userState
               ? `Road signs, traffic laws, or specific ${userState} permit rules.`
               : "Permit prep, traffic laws, or road sign meanings."}
           </p>
 
-          <div className="mt-5 w-full text-left">
+          <div className="mt-4 w-full text-left">
             {limitReached ? paywall : composer}
           </div>
 
-          <div className="mt-5 grid gap-2 sm:grid-cols-2">
+          <div className="mt-4 grid gap-2 sm:grid-cols-2">
             {SUGGESTIONS.map((s) => (
               <button
                 key={s}
                 onClick={() => handleSuggestion(s)}
-                className="press rounded-2xl border border-border bg-card px-4 py-3 text-left text-sm shadow-[0_10px_30px_-18px_rgba(15,23,42,0.25)] transition-colors hover:border-primary/50 hover:bg-accent"
+                className="press rounded-2xl border border-border bg-card px-4 py-2.5 text-left text-sm shadow-[0_10px_30px_-18px_rgba(15,23,42,0.25)] transition-colors hover:border-primary/50 hover:bg-accent"
               >
                 {s}
               </button>
             ))}
           </div>
 
-          <p className="mt-6 text-[11px] text-muted-foreground/80">
+          <p className="mt-4 text-[11px] text-muted-foreground/80">
             Your coach can slip up. Confirm anything official with your state handbook.
           </p>
 
