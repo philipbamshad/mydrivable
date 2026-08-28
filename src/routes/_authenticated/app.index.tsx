@@ -59,7 +59,7 @@ function AmbientGlow() {
       className="pointer-events-none absolute inset-0 -z-10"
       style={{
         background:
-          "radial-gradient(90% 80% at 15% 15%, color-mix(in oklch, var(--primary) 30%, transparent), transparent 60%), radial-gradient(90% 80% at 85% 85%, color-mix(in oklch, var(--accent-orange) 24%, transparent), transparent 60%)",
+          "radial-gradient(90% 80% at 15% 15%, color-mix(in oklch, var(--primary) 45%, transparent), transparent 55%), radial-gradient(90% 80% at 85% 85%, color-mix(in oklch, var(--accent-orange) 38%, transparent), transparent 55%)",
       }}
     />
   );
