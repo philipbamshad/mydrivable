@@ -413,7 +413,7 @@ function ReviewScreen({
         </span>
       </div>
 
-      <Card className="glass glow-soft p-5 rounded-[28px]">
+      <Card className="relative bg-card border border-border/60 shadow-lg p-5 rounded-[28px]">
         <div className="grid grid-cols-3 gap-3">
           <Stat label="Correct" value={`${correctCount}`} />
           <Stat label="Incorrect" value={`${questions.length - correctCount - skippedCount}`} />
