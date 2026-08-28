@@ -212,7 +212,7 @@ export function ChatWindow({
               <button
                 key={s}
                 onClick={() => handleSuggestion(s)}
-                className="press rounded-xl border border-border bg-card/70 px-4 py-3 text-left text-sm transition-colors hover:border-primary/60 hover:bg-accent"
+                className="press rounded-2xl border border-border bg-card px-4 py-3.5 text-left text-sm shadow-[0_10px_30px_-18px_rgba(15,23,42,0.25)] transition-colors hover:border-primary/50 hover:bg-accent"
               >
                 {s}
               </button>
