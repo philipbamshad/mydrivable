@@ -128,7 +128,7 @@ export function TestHubDashboard() {
 function PillarPaywall({ onUpgrade }: { onUpgrade: () => void }) {
   return (
     <div className="max-w-xl mx-auto p-5">
-      <div className="rounded-[32px] border border-primary/40 bg-primary/10 px-6 py-8 text-center shadow-[0_0_40px_-18px_var(--color-primary)]">
+      <div className="rounded-[28px] border border-primary/30 bg-card px-6 py-8 text-center shadow-lg">
         <div className="mx-auto mb-4 grid h-12 w-12 place-items-center rounded-full border border-primary/40 bg-primary/15">
           <Lock className="h-5 w-5 text-primary" />
         </div>
