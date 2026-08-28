@@ -134,16 +134,16 @@ export function ChatWindow({
   const isEmpty = messages.length === 0;
 
   const paywall = (
-    <div className="mx-auto max-w-xl rounded-[24px] border border-primary/25 bg-card px-5 py-6 text-center shadow-[0_14px_35px_-18px_rgba(15,23,42,0.22)]">
-      <div className="mx-auto mb-4 grid h-12 w-12 place-items-center rounded-full border border-primary/30 bg-primary/10">
-        <Lock className="h-5 w-5 text-primary" />
+    <div className="mx-auto max-w-lg rounded-[20px] border border-primary/25 bg-card px-4 py-5 text-center shadow-[0_12px_30px_-16px_rgba(15,23,42,0.22)]">
+      <div className="mx-auto mb-3 grid h-10 w-10 place-items-center rounded-full border border-primary/30 bg-primary/10">
+        <Lock className="h-4 w-4 text-primary" />
       </div>
-      <p className="mx-auto max-w-md text-sm sm:text-base font-semibold text-foreground leading-snug">
+      <p className="mx-auto max-w-sm text-sm font-semibold text-foreground leading-snug">
         You've used your 5 free lifetime AI questions. Upgrade to Pro Pass to continue chatting, get instant rule explanations, and access full exam simulators!
       </p>
       <Button
         onClick={() => openCheckout()}
-        className="mt-5 press rounded-2xl px-7 py-5 text-sm font-semibold"
+        className="mt-4 press rounded-2xl px-6 py-4 text-sm font-semibold"
       >
         Get Pro Pass — $9
       </Button>
