@@ -52,6 +52,19 @@ const TABS = [
   { id: "chat", label: "Chat AI Assistant", icon: MessageSquare },
 ] as const;
 
+function AmbientGlow() {
+  return (
+    <div
+      aria-hidden
+      className="pointer-events-none absolute inset-0 -z-10 opacity-70"
+      style={{
+        background:
+          "radial-gradient(70% 60% at 15% 20%, oklch(0.72 0.20 240 / 0.16), transparent 70%), radial-gradient(60% 50% at 85% 85%, oklch(0.78 0.17 40 / 0.12), transparent 70%)",
+      }}
+    />
+  );
+}
+
 function AppDashboard() {
   const search = Route.useSearch();
   const navigate = Route.useNavigate();
