@@ -92,7 +92,7 @@ export function PermitExamSimulator() {
 
         <Button
           onClick={() => setRunning(true)}
-          className="press w-full mt-6 rounded-full h-12 sm:h-13 text-sm sm:text-base"
+          className="press w-full mt-6 rounded-full h-12 sm:h-13 text-sm sm:text-base font-semibold"
         >
           Start full-length exam
         </Button>
