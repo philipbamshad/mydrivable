@@ -203,11 +203,11 @@ export function ChatWindow({
               : "Permit prep, traffic laws, or road sign meanings."}
           </p>
 
-          <div className="mt-7 w-full text-left">
+          <div className="mt-5 w-full text-left">
             {limitReached ? paywall : composer}
           </div>
 
-          <div className="mt-6 grid gap-2 sm:grid-cols-2">
+          <div className="mt-5 grid gap-2 sm:grid-cols-2">
             {SUGGESTIONS.map((s) => (
               <button
                 key={s}
