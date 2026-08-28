@@ -333,11 +333,11 @@ function QuizRunner({
                   "p-3.5 rounded-xl border text-sm font-medium text-left transition-all duration-200 flex items-center justify-between gap-2 fade-in-up",
                   !reveal &&
                     "border-border bg-muted hover:-translate-y-1 hover:scale-[1.02] hover:border-accent-orange/60 active:scale-[0.98]",
-                  reveal && isCorrect && "border-emerald-400 bg-emerald-500/25 text-emerald-100 ",
+                  reveal && isCorrect && "border-emerald-400 bg-emerald-500/25 text-emerald-800 ",
                   reveal &&
                     isPicked &&
                     !isCorrect &&
-                    "border-red-400 bg-red-500/25 text-red-100  animate-pulse",
+                    "border-red-400 bg-red-500/25 text-red-800  animate-pulse",
                   reveal && !isPicked && !isCorrect && "opacity-40 border-border",
                 )}
               >
