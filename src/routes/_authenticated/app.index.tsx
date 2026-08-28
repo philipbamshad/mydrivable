@@ -52,6 +52,19 @@ const TABS = [
   { id: "chat", label: "Chat AI Assistant", icon: MessageSquare },
 ] as const;
 
+function AmbientGlow() {
+  return (
+    <div
+      aria-hidden
+      className="pointer-events-none absolute inset-0 -z-10"
+      style={{
+        background:
+          "radial-gradient(80% 70% at 18% 38%, color-mix(in oklch, var(--rose-soft) 80%, transparent), transparent 30%), radial-gradient(80% 70% at 82% 62%, color-mix(in oklch, var(--accent-coral) 70%, transparent), transparent 30%)",
+      }}
+    />
+  );
+}
+
 function AppDashboard() {
   const search = Route.useSearch();
   const navigate = Route.useNavigate();
@@ -99,16 +112,19 @@ function AppDashboard() {
         </TabsList>
 
         <div className="flex-1 min-h-0 overflow-hidden">
-          <TabsContent value="test-hub" className="min-h-full overflow-y-auto m-0 p-5 sm:p-7 data-[state=inactive]:hidden flex flex-col justify-center">
-            <TestHubDashboard />
-          </TabsContent>
-
-          <TabsContent value="state-exam" className="h-full min-h-0 overflow-y-auto overscroll-contain m-0 p-5 sm:p-7 data-[state=inactive]:hidden flex flex-col data-[state=active]:flex">
-            <div className="w-full my-auto">
-              <PermitExamSimulator />
+          <TabsContent value="test-hub" className="relative h-full min-h-0 overflow-y-auto m-0 p-0 data-[state=inactive]:hidden">
+            <div className="relative min-h-full w-full p-5 sm:p-7 flex flex-col justify-center">
+              <AmbientGlow />
+              <TestHubDashboard />
             </div>
           </TabsContent>
 
+          <TabsContent value="state-exam" className="relative h-full min-h-0 overflow-y-auto overscroll-contain m-0 p-0 data-[state=inactive]:hidden">
+            <div className="relative min-h-full w-full p-5 sm:p-7 flex flex-col justify-center">
+              <AmbientGlow />
+              <PermitExamSimulator />
+            </div>
+          </TabsContent>
 
           <TabsContent value="chat" className="h-full m-0 data-[state=inactive]:hidden">
             <ChatTab />

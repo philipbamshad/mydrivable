@@ -67,9 +67,9 @@ export function PermitExamSimulator() {
 
   return (
     <div className="max-w-3xl mx-auto space-y-5 w-full">
-      <Card className="glass glow-soft p-5 sm:p-7 rounded-[28px] border border-primary/25 bg-card/90 backdrop-blur">
+      <Card className="relative bg-card rounded-[28px] border border-border/60 p-5 sm:p-7 shadow-lg">
         <div className="flex items-center gap-4">
-          <div className="grid h-12 w-12 sm:h-14 sm:w-14 place-items-center rounded-[18px] border border-primary/45 bg-primary/10 text-primary shrink-0">
+          <div className="grid h-12 w-12 sm:h-14 sm:w-14 place-items-center rounded-[18px] border border-primary/30 bg-primary/5 text-primary shrink-0">
             <Timer className="w-6 h-6 sm:w-7 sm:h-7" />
           </div>
           <div className="flex-1 min-w-0">
@@ -92,7 +92,7 @@ export function PermitExamSimulator() {
 
         <Button
           onClick={() => setRunning(true)}
-          className="press w-full mt-6 rounded-full h-12 sm:h-13 text-sm sm:text-base"
+          className="press w-full mt-6 rounded-full h-12 sm:h-13 text-sm sm:text-base font-semibold"
         >
           Start full-length exam
         </Button>
@@ -111,7 +111,7 @@ export function PermitExamSimulator() {
 function ExamPaywall({ onUpgrade }: { onUpgrade: () => void }) {
   return (
     <div className="max-w-xl mx-auto p-5">
-      <div className="rounded-[28px] border border-primary/40 bg-primary/10 px-6 py-8 text-center shadow-[0_0_40px_-18px_var(--color-primary)]">
+      <div className="rounded-[28px] border border-primary/30 bg-card px-6 py-8 text-center shadow-lg">
         <div className="mx-auto mb-4 grid h-12 w-12 place-items-center rounded-full border border-primary/40 bg-primary/15">
           <Lock className="h-5 w-5 text-primary" />
         </div>
@@ -240,7 +240,7 @@ function ExamRunner({
         <button onClick={onExit} className="flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground">
           <ArrowLeft className="w-3.5 h-3.5" /> Back to exam
         </button>
-        <Card className="glass glow-strong p-10 rounded-[28px] text-center">
+        <Card className="relative bg-card border border-border/60 shadow-lg p-10 rounded-[28px] text-center">
           <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
             {state} DMV Mock Exam
           </p>
@@ -321,7 +321,7 @@ function ExamRunner({
         />
       </div>
 
-      <Card className="glass glow-soft p-6 rounded-[28px]">
+      <Card className="relative bg-card rounded-[28px] border border-border/60 p-6 shadow-lg">
         <h3 className="font-display text-lg font-semibold mb-4">{q.q}</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {q.options.map((opt, i) => {
@@ -335,7 +335,7 @@ function ExamRunner({
                 className={cn(
                   "p-3.5 rounded-xl border text-sm font-medium text-left transition-all duration-200 flex items-center justify-between gap-2",
                   !reveal &&
-                    "border-border bg-card/40 hover:scale-[1.02] hover:border-primary/50  active:scale-[0.97]",
+                    "border-border bg-muted hover:scale-[1.02] hover:border-accent-orange/60 active:scale-[0.97]",
                   reveal && isCorrect &&
                     "border-emerald-400 bg-emerald-500/25 text-emerald-100 ",
                   reveal && isPicked && !isCorrect &&
@@ -372,7 +372,7 @@ function ExamRunner({
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-3xl border border-border/80 bg-background p-5 text-center shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
+    <div className="rounded-3xl bg-muted p-5 text-center">
       <div className="text-[11px] uppercase tracking-widest text-muted-foreground">{label}</div>
       <div className="font-display text-3xl font-bold mt-1">{value}</div>
 
@@ -413,7 +413,7 @@ function ReviewScreen({
         </span>
       </div>
 
-      <Card className="glass glow-soft p-5 rounded-[28px]">
+      <Card className="relative bg-card border border-border/60 shadow-lg p-5 rounded-[28px]">
         <div className="grid grid-cols-3 gap-3">
           <Stat label="Correct" value={`${correctCount}`} />
           <Stat label="Incorrect" value={`${questions.length - correctCount - skippedCount}`} />
@@ -430,7 +430,7 @@ function ReviewScreen({
             <Card
               key={i}
               className={cn(
-                "glass p-5 rounded-[28px] border transition-all duration-200",
+                "relative bg-card p-5 rounded-[28px] border shadow-sm transition-all duration-200",
                 isSkipped
                   ? "border-muted-foreground/30"
                   : isCorrect

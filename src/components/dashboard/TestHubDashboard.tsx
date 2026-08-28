@@ -82,10 +82,10 @@ export function TestHubDashboard() {
           const remaining = Math.max(0, FREE_PILLAR_LIFETIME_LIMIT - used);
           const locked = !isPro && remaining <= 0;
           return (
-            <Card key={p.id} className="glass glow-soft lift fade-in-up p-4 sm:p-5 rounded-[26px] border border-primary/25 bg-card/90 backdrop-blur flex flex-col gap-3">
+            <Card key={p.id} className="relative bg-card rounded-[28px] border border-border/60 p-4 sm:p-5 shadow-md hover:shadow-lg transition-shadow flex flex-col gap-4">
               <div className="flex items-center gap-3">
                 <span
-                  className="grid h-12 w-12 sm:h-14 sm:w-14 place-items-center rounded-[18px] border border-primary/45 bg-primary/10 text-primary shrink-0"
+                  className="grid h-12 w-12 sm:h-14 sm:w-14 place-items-center rounded-[18px] border border-primary/30 bg-primary/5 text-primary shrink-0"
                 >
                   <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
                 </span>
@@ -99,7 +99,7 @@ export function TestHubDashboard() {
                 </div>
               </div>
               {!isPro && (
-                <p className="text-[11px] text-muted-foreground">
+                <p className="text-[11px] text-muted-foreground bg-muted rounded-xl px-3 py-2">
                   {locked
                     ? "Free limit reached for this section."
                     : `${remaining} of ${FREE_PILLAR_LIFETIME_LIMIT} free lifetime questions left`}
@@ -107,7 +107,7 @@ export function TestHubDashboard() {
               )}
               <Button
                 onClick={() => (locked ? unlockPro() : setActive(p.id))}
-                className="press w-full rounded-full h-11 sm:h-12 text-sm sm:text-base"
+                className="press w-full rounded-full h-11 sm:h-12 text-sm sm:text-base font-semibold"
               >
                 {locked ? (
                   <>
@@ -128,7 +128,7 @@ export function TestHubDashboard() {
 function PillarPaywall({ onUpgrade }: { onUpgrade: () => void }) {
   return (
     <div className="max-w-xl mx-auto p-5">
-      <div className="rounded-[32px] border border-primary/40 bg-primary/10 px-6 py-8 text-center shadow-[0_0_40px_-18px_var(--color-primary)]">
+      <div className="rounded-[28px] border border-primary/30 bg-card px-6 py-8 text-center shadow-lg">
         <div className="mx-auto mb-4 grid h-12 w-12 place-items-center rounded-full border border-primary/40 bg-primary/15">
           <Lock className="h-5 w-5 text-primary" />
         </div>
@@ -262,7 +262,7 @@ function QuizRunner({
         >
           <ArrowLeft className="w-3.5 h-3.5" /> Back to pillars
         </button>
-        <Card className="glass glow-strong p-10 rounded-[32px] text-center">
+        <Card className="bg-card border border-border/60 shadow-lg p-10 rounded-[28px] text-center">
           <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
             {pillar.title}
           </p>
@@ -332,7 +332,7 @@ function QuizRunner({
                 className={cn(
                   "p-3.5 rounded-xl border text-sm font-medium text-left transition-all duration-200 flex items-center justify-between gap-2 fade-in-up",
                   !reveal &&
-                    "border-border bg-card/40 hover:-translate-y-1 hover:scale-[1.02] hover:border-accent-orange/60 active:scale-[0.98]",
+                    "border-border bg-muted hover:-translate-y-1 hover:scale-[1.02] hover:border-accent-orange/60 active:scale-[0.98]",
                   reveal && isCorrect && "border-emerald-400 bg-emerald-500/25 text-emerald-100 ",
                   reveal &&
                     isPicked &&
