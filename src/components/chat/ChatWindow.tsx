@@ -193,33 +193,33 @@ export function ChatWindow({
         }}
       >
         <div className="w-full max-w-2xl text-center">
-          <img src={logo} alt="" width={52} height={52} className="logo-mask mx-auto mb-5 opacity-90" />
-          <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight text-foreground">
+          <img src={logo} alt="" width={48} height={48} className="logo-mask mx-auto mb-4 opacity-90" />
+          <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground">
             {greetingName ? `What's the vibe, ${greetingName}?` : "What are we studying today?"}
           </h1>
-          <p className="mt-3 text-sm text-muted-foreground">
+          <p className="mt-2 text-sm text-muted-foreground">
             {userState
               ? `Road signs, traffic laws, or specific ${userState} permit rules.`
               : "Permit prep, traffic laws, or road sign meanings."}
           </p>
 
-          <div className="mt-5 w-full text-left">
+          <div className="mt-4 w-full text-left">
             {limitReached ? paywall : composer}
           </div>
 
-          <div className="mt-5 grid gap-2 sm:grid-cols-2">
+          <div className="mt-4 grid gap-2 sm:grid-cols-2">
             {SUGGESTIONS.map((s) => (
               <button
                 key={s}
                 onClick={() => handleSuggestion(s)}
-                className="press rounded-2xl border border-border bg-card px-4 py-3 text-left text-sm shadow-[0_10px_30px_-18px_rgba(15,23,42,0.25)] transition-colors hover:border-primary/50 hover:bg-accent"
+                className="press rounded-2xl border border-border bg-card px-4 py-2.5 text-left text-sm shadow-[0_10px_30px_-18px_rgba(15,23,42,0.25)] transition-colors hover:border-primary/50 hover:bg-accent"
               >
                 {s}
               </button>
             ))}
           </div>
 
-          <p className="mt-6 text-[11px] text-muted-foreground/80">
+          <p className="mt-4 text-[11px] text-muted-foreground/80">
             Your coach can slip up. Confirm anything official with your state handbook.
           </p>
 
