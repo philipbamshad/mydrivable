@@ -260,8 +260,8 @@ function ExamRunner({
             className={cn(
               "mt-4 border",
               passed
-                ? "bg-emerald-500/15 text-emerald-300 border-emerald-500/40"
-                : "bg-amber-500/15 text-amber-300 border-amber-500/40",
+                ? "bg-emerald-500/15 text-emerald-700 border-emerald-500/40"
+                : "bg-amber-500/15 text-amber-700 border-amber-500/40",
             )}
           >
             {passed ? <><Trophy className="w-3 h-3 mr-1" /> Exam Ready</> : <><AlertTriangle className="w-3 h-3 mr-1" /> Not Ready</>}
@@ -337,9 +337,9 @@ function ExamRunner({
                   !reveal &&
                     "border-border bg-muted hover:scale-[1.02] hover:border-accent-orange/60 active:scale-[0.97]",
                   reveal && isCorrect &&
-                    "border-emerald-400 bg-emerald-500/25 text-emerald-100 ",
+                    "border-emerald-400 bg-emerald-500/25 text-emerald-800 ",
                   reveal && isPicked && !isCorrect &&
-                    "border-red-400 bg-red-500/25 text-red-100 ",
+                    "border-red-400 bg-red-500/25 text-red-800 ",
                   reveal && !isPicked && !isCorrect && "opacity-40 border-border",
                 )}
               >
@@ -453,8 +453,8 @@ function ReviewScreen({
                     isSkipped
                       ? "bg-muted/30 text-muted-foreground border-muted-foreground/30"
                       : isCorrect
-                      ? "bg-emerald-500/15 text-emerald-300 border-emerald-500/40"
-                      : "bg-red-500/15 text-red-300 border-red-500/40",
+                      ? "bg-emerald-500/15 text-emerald-700 border-emerald-500/40"
+                      : "bg-red-500/15 text-red-700 border-red-500/40",
                   )}
                 >
                   {isSkipped ? (
@@ -477,9 +477,9 @@ function ReviewScreen({
                       className={cn(
                         "p-3 rounded-xl border text-sm flex items-center justify-between gap-2 transition-all duration-200",
                         optCorrect &&
-                          "border-emerald-400 bg-emerald-500/20 text-emerald-100",
+                          "border-emerald-400 bg-emerald-500/20 text-emerald-800",
                         optPicked && !optCorrect &&
-                          "border-red-400 bg-red-500/20 text-red-100",
+                          "border-red-400 bg-red-500/20 text-red-800",
                         !optCorrect && !optPicked && "border-border bg-card/40 opacity-60",
                       )}
                     >
