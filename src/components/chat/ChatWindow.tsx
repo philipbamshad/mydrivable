@@ -185,7 +185,13 @@ export function ChatWindow({
 
   if (isEmpty) {
     return (
-      <div className="relative flex h-full flex-col items-center justify-center overflow-hidden bg-background px-4">
+      <div
+        className="relative flex h-full flex-col items-center justify-center overflow-hidden bg-background px-4"
+        style={{
+          background:
+            "radial-gradient(420px 420px at 18% 30%, color-mix(in oklch, var(--rose-soft) 16%, transparent), transparent 70%), radial-gradient(420px 420px at 82% 70%, color-mix(in oklch, var(--accent-coral) 13%, transparent), transparent 70%)",
+        }}
+      >
         <div className="w-full max-w-2xl text-center">
           <img src={logo} alt="" width={52} height={52} className="logo-mask mx-auto mb-5 opacity-90" />
           <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight text-foreground">
@@ -206,7 +212,7 @@ export function ChatWindow({
               <button
                 key={s}
                 onClick={() => handleSuggestion(s)}
-                className="press rounded-xl border border-border bg-card/70 px-4 py-3 text-left text-sm transition-colors hover:border-primary/60 hover:bg-accent"
+                className="press rounded-2xl border border-border bg-card px-4 py-3.5 text-left text-sm shadow-[0_10px_30px_-18px_rgba(15,23,42,0.25)] transition-colors hover:border-primary/50 hover:bg-accent"
               >
                 {s}
               </button>
