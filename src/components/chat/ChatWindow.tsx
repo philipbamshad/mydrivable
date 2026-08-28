@@ -134,14 +134,17 @@ export function ChatWindow({
   const isEmpty = messages.length === 0;
 
   const paywall = (
-    <div className="mx-auto max-w-xl rounded-2xl border border-primary/40 bg-primary/10 px-5 py-5 text-center shadow-[0_0_40px_-18px_var(--color-primary)]">
-      <div className="mx-auto mb-3 grid h-10 w-10 place-items-center rounded-full border border-primary/40 bg-primary/15">
-        <Lock className="h-4 w-4 text-primary" />
+    <div className="mx-auto max-w-2xl rounded-[28px] border border-primary/25 bg-card px-6 py-10 text-center shadow-[0_18px_45px_-20px_rgba(15,23,42,0.25)]">
+      <div className="mx-auto mb-5 grid h-14 w-14 place-items-center rounded-full border border-primary/30 bg-primary/10">
+        <Lock className="h-5 w-5 text-primary" />
       </div>
-      <p className="text-sm font-semibold text-foreground leading-snug">
-        You've used your 5 free lifetime AI questions. Upgrade to Pro Pass to continue chatting, get instant rule explanations, and access full exam simulators! [Get Pro Pass — $9]
+      <p className="mx-auto max-w-lg text-base sm:text-lg font-semibold text-foreground leading-snug">
+        You've used your 5 free lifetime AI questions. Upgrade to Pro Pass to continue chatting, get instant rule explanations, and access full exam simulators!
       </p>
-      <Button onClick={() => openCheckout()} className="mt-4 press w-full sm:w-auto" size="sm">
+      <Button
+        onClick={() => openCheckout()}
+        className="mt-6 press rounded-2xl px-8 py-6 text-base font-semibold"
+      >
         Get Pro Pass — $9
       </Button>
     </div>
