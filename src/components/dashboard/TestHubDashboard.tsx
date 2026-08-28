@@ -107,7 +107,7 @@ export function TestHubDashboard() {
               )}
               <Button
                 onClick={() => (locked ? unlockPro() : setActive(p.id))}
-                className="press w-full rounded-full h-11 sm:h-12 text-sm sm:text-base"
+                className="press w-full rounded-full h-11 sm:h-12 text-sm sm:text-base font-semibold"
               >
                 {locked ? (
                   <>
