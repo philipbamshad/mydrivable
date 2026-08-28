@@ -262,7 +262,7 @@ function QuizRunner({
         >
           <ArrowLeft className="w-3.5 h-3.5" /> Back to pillars
         </button>
-        <Card className="glass glow-strong p-10 rounded-[32px] text-center">
+        <Card className="bg-card border border-border/60 shadow-lg p-10 rounded-[28px] text-center">
           <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
             {pillar.title}
           </p>
