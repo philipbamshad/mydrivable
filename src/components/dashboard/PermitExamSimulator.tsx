@@ -430,7 +430,7 @@ function ReviewScreen({
             <Card
               key={i}
               className={cn(
-                "glass p-5 rounded-[28px] border transition-all duration-200",
+                "relative bg-card p-5 rounded-[28px] border shadow-sm transition-all duration-200",
                 isSkipped
                   ? "border-muted-foreground/30"
                   : isCorrect
