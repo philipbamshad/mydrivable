@@ -332,7 +332,7 @@ function QuizRunner({
                 className={cn(
                   "p-3.5 rounded-xl border text-sm font-medium text-left transition-all duration-200 flex items-center justify-between gap-2 fade-in-up",
                   !reveal &&
-                    "border-border bg-card/40 hover:-translate-y-1 hover:scale-[1.02] hover:border-accent-orange/60 active:scale-[0.98]",
+                    "border-border bg-muted hover:-translate-y-1 hover:scale-[1.02] hover:border-accent-orange/60 active:scale-[0.98]",
                   reveal && isCorrect && "border-emerald-400 bg-emerald-500/25 text-emerald-100 ",
                   reveal &&
                     isPicked &&
