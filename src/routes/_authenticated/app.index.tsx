@@ -54,7 +54,7 @@ const TABS = [
 
 const tabGlowStyle: React.CSSProperties = {
   background:
-    "radial-gradient(110% 110% at 20% 35%, color-mix(in oklch, var(--rose-soft) 16%, transparent), transparent 68%), radial-gradient(110% 110% at 80% 65%, color-mix(in oklch, var(--accent-coral) 12%, transparent), transparent 68%)",
+    "radial-gradient(380px 380px at 32% 45%, color-mix(in oklch, var(--rose-soft) 18%, transparent), transparent 70%), radial-gradient(380px 380px at 68% 52%, color-mix(in oklch, var(--accent-coral) 14%, transparent), transparent 70%)",
 };
 
 function AppDashboard() {
