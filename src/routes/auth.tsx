@@ -327,7 +327,7 @@ function AuthPage() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     aria-invalid={!!fieldErrors.email}
-                    className={`h-11 bg-secondary focus-visible:ring-primary/40 ${
+                    className={`h-11 bg-card shadow-none focus-visible:ring-primary/40 ${
                       fieldErrors.email ? "border-destructive/70" : "border-transparent"
                     }`}
                   />
@@ -349,7 +349,7 @@ function AuthPage() {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       aria-invalid={!!fieldErrors.password}
-                      className={`h-11 bg-secondary focus-visible:ring-primary/40 pr-14 ${
+                      className={`h-11 bg-card shadow-none focus-visible:ring-primary/40 pr-14 ${
                         fieldErrors.password ? "border-destructive/70" : "border-transparent"
                       }`}
                     />
