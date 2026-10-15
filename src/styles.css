@@ -738,18 +738,21 @@
 /* Accessible control contrast and restrained action surfaces. */
 :root {
   --input-strong: oklch(0.72 0.015 255);
+  --success: oklch(0.43 0.10 160);
   --action: oklch(0.23 0.04 265);
   --action-hover: oklch(0.29 0.055 265);
   --action-foreground: oklch(0.98 0.005 255);
 }
 .dark {
   --input-strong: oklch(0.48 0.015 255);
+  --success: oklch(0.78 0.14 160);
   --action: oklch(0.60 0.19 260);
   --action-hover: oklch(0.65 0.18 260);
   --action-foreground: oklch(0.99 0 0);
 }
 @theme inline {
   --color-input-strong: var(--input-strong);
+  --color-success: var(--success);
   --color-action: var(--action);
   --color-action-hover: var(--action-hover);
   --color-action-foreground: var(--action-foreground);
