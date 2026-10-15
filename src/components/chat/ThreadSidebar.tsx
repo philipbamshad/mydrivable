@@ -281,7 +281,31 @@ export function ThreadSidebar() {
     };
 
     return (
-      <>
+      <div className={cn("flex items-center gap-2 border-t border-sidebar-border mt-auto", isCollapsed ? "flex-col p-2" : "p-3")}>
+        <button
+          type="button"
+          onClick={openAccountPanel}
+          aria-label="Open account settings"
+          aria-haspopup="dialog"
+          style={{ WebkitTapHighlightColor: "transparent" }}
+          className={cn(
+            "flex items-center min-w-0 rounded-2xl hover:bg-muted transition-colors press touch-manipulation",
+            isCollapsed ? "justify-center p-1" : "flex-1 gap-2.5 px-2 py-2 min-h-11 text-left",
+          )}
+          title={isCollapsed ? displayName : undefined}
+        >
+          <span className="grid h-9 w-9 place-items-center rounded-full bg-primary text-primary-foreground text-sm font-semibold shrink-0">
+            {initial}
+          </span>
+          {!isCollapsed && (
+            <span className="flex flex-col min-w-0">
+              <span className="text-sm font-semibold truncate leading-tight">{displayName}</span>
+              <span className="text-xs text-muted-foreground truncate leading-tight">
+                {userMeta.email ?? "View account"}
+              </span>
+            </span>
+          )}
+        </button>
         <Popover open={accountOpen} onOpenChange={setAccountOpen} modal>
           <PopoverTrigger asChild>
             <Button
@@ -302,7 +326,7 @@ export function ThreadSidebar() {
           </PopoverTrigger>
           <PopoverContent
             side="top"
-            align={isCollapsed ? "center" : "start"}
+            align={isCollapsed ? "center" : "end"}
             sideOffset={12}
             className="w-72 p-2 glass z-[70]"
           >
@@ -371,35 +395,7 @@ export function ThreadSidebar() {
             </div>
           </PopoverContent>
         </Popover>
-
-        <div className={cn("flex items-center gap-2 border-t border-sidebar-border mt-auto", isCollapsed ? "flex-col p-2" : "p-3")}>
-          <button
-            type="button"
-            onClick={openAccountPanel}
-            aria-label="Open account settings"
-            aria-haspopup="dialog"
-            style={{ WebkitTapHighlightColor: "transparent" }}
-            className={cn(
-              "flex items-center min-w-0 rounded-2xl hover:bg-muted transition-colors press touch-manipulation",
-              isCollapsed ? "justify-center p-1" : "flex-1 gap-2.5 px-2 py-2 min-h-11 text-left",
-            )}
-            title={isCollapsed ? displayName : undefined}
-          >
-            <span className="grid h-9 w-9 place-items-center rounded-full bg-primary text-primary-foreground text-sm font-semibold shrink-0">
-              {initial}
-            </span>
-            {!isCollapsed && (
-              <span className="flex flex-col min-w-0">
-                <span className="text-sm font-semibold truncate leading-tight">{displayName}</span>
-                <span className="text-xs text-muted-foreground truncate leading-tight">
-                  {userMeta.email ?? "View account"}
-                </span>
-              </span>
-            )}
-          </button>
-          <GearSlot isCollapsed={isCollapsed} footer={createUserFooter} surface={surface} />
-        </div>
-      </>
+      </div>
     );
   };
 
