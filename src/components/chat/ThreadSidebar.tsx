@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import {
@@ -8,7 +8,6 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
-  SheetTrigger,
 } from "@/components/ui/sheet";
 import {
   LogOut,
@@ -18,19 +17,10 @@ import {
   Video,
   Settings,
   Menu,
-  Settings2,
   Check,
   CalendarDays,
   ChevronLeft,
   ChevronRight,
-  UserRound,
-  Crown,
-  Sparkles,
-  Sun,
-  Moon,
-  Shield,
-  Trash2,
-  type LucideIcon,
 } from "lucide-react";
 import {
   Popover,
@@ -44,53 +34,13 @@ import { format } from "date-fns";
 import logo from "@/assets/drivable-logo.png";
 import { cn } from "@/lib/utils";
 import { AccountPanel, type AccountSection } from "@/components/dashboard/AccountPanel";
-import { lovable } from "@/integrations/lovable/index";
 import { useUserProfile, US_STATES } from "@/lib/user-profile";
-import { useTheme } from "@/lib/theme";
 
 const PRIMARY_NAV = [
   { id: "chat", label: "AI Coach", icon: MessageSquare },
   { id: "state-exam", label: "Mock Permit Exam", icon: Timer },
   { id: "test-hub", label: "Permit Test Hub", icon: ClipboardCheck },
 ] as const;
-
-function MenuRow({
-  icon: Icon,
-  label,
-  onClick,
-  trailing,
-  tone = "default",
-}: {
-  icon: LucideIcon;
-  label: string;
-  onClick: () => void;
-  trailing?: ReactNode;
-  tone?: "default" | "danger";
-}) {
-  return (
-    <Button
-      variant="ghost"
-      type="button"
-      onClick={onClick}
-      className={cn(
-        "w-full h-auto min-h-11 justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-normal hover:bg-muted press touch-manipulation",
-        tone === "danger" ? "text-destructive" : "text-foreground",
-      )}
-    >
-      <Icon className={cn("w-4 h-4 shrink-0", tone === "danger" ? "text-destructive" : "text-muted-foreground")} />
-      <span className="flex-1 truncate text-left">{label}</span>
-      {trailing}
-    </Button>
-  );
-}
-
-function MenuSectionLabel({ children }: { children: ReactNode }) {
-  return (
-    <p className="px-3 pt-3 pb-1 text-xs font-medium tracking-normal text-muted-foreground">
-      {children}
-    </p>
-  );
-}
 
 export function ThreadSidebar() {
   const navigate = useNavigate();
