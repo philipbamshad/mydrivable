@@ -193,7 +193,7 @@ function QuizRunner({
   const q = questions[idx];
   const reveal = picked !== null;
   // Strict per-section lifetime gate: only lock once the user has actually
-  // used all 3 free questions in THIS section. Other sections stay unlocked.
+  // used all 10 free questions in THIS section. Other sections stay unlocked.
   const freeLocked = !isPro && pillarUsed >= lifetimeLimit;
 
   // Guard against `recordQuizScore` being called twice from a single render
