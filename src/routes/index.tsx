@@ -643,14 +643,15 @@ function Footer() {
 
             <span className="font-semibold text-[#0f172a]">Drivable</span>
           </div>
-          <div className="flex items-center gap-6">
-            <Link
-              to="/privacy"
-              className="transition hover:text-[#0f172a]"
-            >
-              Privacy Policy
-            </Link>
-            <span>© {new Date().getFullYear()} Drivable · Drive safe. Drive legal.</span>
+          <nav aria-label="Legal" className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
+            <Link to="/privacy" className="transition hover:text-[#0f172a]">Privacy</Link>
+            <Link to="/terms" className="transition hover:text-[#0f172a]">Terms</Link>
+            <Link to="/refunds" className="transition hover:text-[#0f172a]">Refunds</Link>
+            <Link to="/cookies" className="transition hover:text-[#0f172a]">Cookies</Link>
+          </nav>
+          <div className="flex flex-col items-center gap-1 text-center sm:items-end sm:text-right">
+            <span>© {new Date().getFullYear()} Bedford Global. Drivable is operated by Bedford Global.</span>
+            <span className="text-xs">Not affiliated with any state DMV.</span>
           </div>
         </div>
       </div>
