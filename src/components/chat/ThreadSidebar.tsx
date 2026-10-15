@@ -278,12 +278,10 @@ export function ThreadSidebar() {
     const isCollapsed = surface === "desktop" && collapsed;
     const displayName = userMeta.name ?? "Account";
     const initial = (displayName[0] ?? "D").toUpperCase();
-    const openSection = (sec: AccountSection) => {
-      setAccountOpen(false);
-      setPanelSection(sec);
+    const openSettings = () => {
+      setPanelSection(undefined);
       setSettingsOpen(true);
     };
-    const openSettings = () => openSection("all");
 
     return (
       <div className={cn("flex items-center gap-2 border-t border-sidebar-border mt-auto", isCollapsed ? "flex-col p-2" : "p-3")}>
