@@ -157,10 +157,10 @@ export function ChatWindow({
         maxFiles={4}
         maxFileSize={8 * 1024 * 1024}
         onError={(e) => toast.error(e.message)}
-        className="rounded-full border border-primary/25 bg-card/90 backdrop-blur outline-none transition-colors focus-within:border-primary/50 overflow-hidden has-[[data-slot=input-group-control]:focus-visible]:ring-0 has-[[data-slot=input-group-control]:focus-visible]:border-primary/50"
+        className="rounded-full border border-primary/25 bg-card/90 backdrop-blur outline-none transition-colors focus-within:border-primary/50 overflow-hidden [&>div]:h-auto [&>div]:flex-wrap [&>div]:border-0 [&>div]:shadow-none [&>div]:bg-transparent has-[[data-slot=input-group-control]:focus-visible]:ring-0 has-[[data-slot=input-group-control]:focus-visible]:border-primary/50"
       >
         <AttachmentChips />
-        <div className="flex items-center gap-2 py-2 pl-2 pr-2">
+        <div className="flex w-full items-center gap-2 py-2 pl-2 pr-2">
           <AttachButton />
           <PromptInputTextarea
             ref={textareaRef}
@@ -299,7 +299,7 @@ function AttachmentChips() {
   const attachments = usePromptInputAttachments();
   if (attachments.files.length === 0) return null;
   return (
-    <div className="flex flex-wrap gap-2 px-4 pt-3">
+    <div className="flex w-full flex-wrap gap-2 px-4 pt-3">
       {attachments.files.map((f) => {
         const isImage = Boolean(f.mediaType?.startsWith("image/") && f.url);
         return (
