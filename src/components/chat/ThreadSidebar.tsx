@@ -17,6 +17,7 @@ import {
   Timer,
   Video,
   Settings,
+  Settings2,
   Menu,
   Check,
   CalendarDays,
