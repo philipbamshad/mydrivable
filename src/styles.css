@@ -451,7 +451,7 @@
   --accent-emerald: #10b981;
   --accent-amber: #9ca3af;
   --accent-orange: #6b7280;
-  --accent-coral: #9ca3af;
+  --accent-coral: #6b7280;
 
   --gradient-orange-cyan: linear-gradient(90deg, var(--accent-orange) 0%, #3b82f6 55%, var(--accent-cyan) 100%);
   --gradient-emerald-blue: linear-gradient(90deg, var(--accent-emerald) 0%, #2563eb 100%);
