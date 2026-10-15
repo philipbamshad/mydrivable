@@ -476,7 +476,7 @@ function AuthPage() {
                 What is the speed limit in a school zone?
               </p>
               <p className="w-fit max-w-[85%] rounded-2xl bg-muted px-3 py-2 text-muted-foreground">
-                In California it is 25 mph when children are present, unless posted otherwise.
+                In most states it is 15 to 25 mph when children are present. I will use your state's exact limit.
               </p>
             </div>
           </div>
@@ -511,7 +511,7 @@ function AuthPage() {
           {/* Tailored preview */}
           <div className="flex items-center gap-3 rounded-[28px] border border-border/60 bg-card/70 p-5 backdrop-blur-md shadow-lg">
             <div className="flex-1">
-              <p className="text-sm font-semibold">Tailored to California</p>
+              <p className="text-sm font-semibold">Tailored to your state</p>
               <p className="text-xs text-muted-foreground mt-1">
                 Questions match your state handbook and your target DMV date.
               </p>
