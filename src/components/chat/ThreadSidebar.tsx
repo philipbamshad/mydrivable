@@ -483,7 +483,7 @@ export function ThreadSidebar() {
         {createUserFooter(surface)}
         <SheetContent side="right" className="w-full sm:max-w-lg overflow-y-auto">
           <SheetHeader>
-            <SheetTitle>Settings</SheetTitle>
+            <SheetTitle>{panelSection === "state" ? "Driving state" : panelSection === "date" ? "DMV target date" : panelSection === "membership" ? "Pro Pass" : "Settings"}</SheetTitle>
           </SheetHeader>
           <div className="mt-4">
             <AccountPanel section={panelSection} />
