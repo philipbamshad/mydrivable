@@ -367,6 +367,18 @@ export function ThreadSidebar() {
           <div className="mt-4">
             <AccountPanel section={panelSection} />
           </div>
+          {!panelSection && (
+            <Button
+              variant="outline"
+              onClick={() => {
+                setSettingsOpen(false);
+                void signOut();
+              }}
+              className="mt-6 w-full min-h-11 border-destructive/40 text-destructive hover:bg-destructive/10 press"
+            >
+              <LogOut className="w-4 h-4" /> Sign out
+            </Button>
+          )}
         </SheetContent>
       </Sheet>
     </>
