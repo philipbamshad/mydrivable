@@ -129,25 +129,28 @@ function Nav() {
   return (
     <header className="sticky top-4 z-50 px-4">
       <div
-        className={`nav-float mx-auto flex max-w-5xl items-center justify-between rounded-full border bg-white/85 px-3 py-2 backdrop-blur-xl ${
+        className={`nav-float mx-auto flex max-w-5xl items-center justify-between rounded-full border bg-white/85 px-3 py-2 backdrop-blur-xl dark:bg-[#1c1f22]/90 ${
           scrolled
-            ? "border-[#1e40af]/20 shadow-[0_18px_44px_-24px_rgba(30,64,175,0.42)]"
-            : "border-[#1e40af]/10 shadow-[0_8px_24px_-20px_rgba(30,64,175,0.28)]"
+            ? "border-[#1e40af]/20 shadow-[0_18px_44px_-24px_rgba(30,64,175,0.42)] dark:border-white/10 dark:shadow-[0_18px_44px_-24px_rgba(0,0,0,0.8)]"
+            : "border-[#1e40af]/10 shadow-[0_8px_24px_-20px_rgba(30,64,175,0.28)] dark:border-white/10 dark:shadow-[0_8px_24px_-20px_rgba(0,0,0,0.7)]"
         }`}
       >
 
+
         <Link to="/" className="flex items-center gap-2 pl-2">
           <img src={logo} alt="Drivable logo" className="h-9 w-9 logo-mask" />
-          <span className="hidden text-[15px] font-semibold tracking-normal text-[#0f172a] sm:inline">
+          <span className="hidden text-[15px] font-semibold tracking-normal text-[#0f172a] sm:inline dark:text-[#f3f4f6]">
             Drivable
           </span>
+
         </Link>
 
-        <nav className="hidden items-center gap-7 text-[15px] font-medium text-[#1f2b4d]/70 sm:flex">
-          <a href="#features" className="transition hover:text-[#0f172a]">Features</a>
-          <a href="#states" className="transition hover:text-[#0f172a]">States</a>
-          <a href="#pricing" className="transition hover:text-[#0f172a]">Pricing</a>
+        <nav className="hidden items-center gap-7 text-[15px] font-medium text-[#1f2b4d]/70 sm:flex dark:text-[#d1d5db]/80">
+          <a href="#features" className="transition hover:text-[#0f172a] dark:hover:text-white">Features</a>
+          <a href="#states" className="transition hover:text-[#0f172a] dark:hover:text-white">States</a>
+          <a href="#pricing" className="transition hover:text-[#0f172a] dark:hover:text-white">Pricing</a>
         </nav>
+
 
         <div className="flex items-center gap-2">
           <Link
@@ -165,8 +168,9 @@ function Nav() {
             type="button"
             aria-label={open ? "Close menu" : "Open menu"}
             onClick={() => setOpen((v) => !v)}
-            className="sm:hidden h-11 w-11 rounded-full border border-border bg-card text-foreground"
+            className="sm:hidden h-11 w-11 rounded-full border border-border bg-card text-foreground dark:bg-[#2a2e33] dark:text-[#f3f4f6]"
           >
+
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </Button>
         </div>
@@ -174,8 +178,9 @@ function Nav() {
 
 
       {open && (
-        <div className="sm:hidden mx-auto mt-2 max-w-5xl rounded-2xl border border-[#1e40af]/18 bg-[#f4f7fd]/95 p-4 backdrop-blur-xl shadow-[0_20px_50px_-20px_rgba(30,64,175,0.14)]">
-          <nav className="flex flex-col text-base font-medium text-[#1f2b4d]/85">
+        <div className="sm:hidden mx-auto mt-2 max-w-5xl rounded-2xl border border-[#1e40af]/18 bg-[#f4f7fd]/95 p-4 backdrop-blur-xl shadow-[0_20px_50px_-20px_rgba(30,64,175,0.14)] dark:border-white/10 dark:bg-[#1c1f22]/95 dark:shadow-[0_20px_50px_-20px_rgba(0,0,0,0.8)]">
+          <nav className="flex flex-col text-base font-medium text-[#1f2b4d]/85 dark:text-[#e5e7eb]">
+
             {[
               ["Features", "#features"],
               ["States", "#states"],
@@ -186,8 +191,9 @@ function Nav() {
                 key={href}
                 href={href}
                 onClick={() => setOpen(false)}
-                className="rounded-lg px-3 py-3 hover:bg-[#1e40af]/8"
+                className="rounded-lg px-3 py-3 hover:bg-[#1e40af]/8 dark:hover:bg-white/10"
               >
+
                 {label}
               </a>
             ))}
