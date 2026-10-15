@@ -227,6 +227,7 @@ export function ThreadSidebar() {
   );
 
   const openSettingsSection = (section: AccountSection | undefined) => {
+    setSettingsMenuOpen(false);
     setPanelSection(section);
     setSettingsOpen(true);
   };
@@ -270,7 +271,7 @@ export function ThreadSidebar() {
             </span>
           )}
         </button>
-        <Popover>
+        <Popover open={settingsMenuOpen} onOpenChange={setSettingsMenuOpen}>
           <PopoverTrigger asChild>
             <Button
               variant="ghost"
