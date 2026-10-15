@@ -144,7 +144,7 @@ function UnsubscribePage() {
         {status === "invalid" && (
           <p className="mt-4 text-sm text-muted-foreground">
             This link is no longer valid. Please use the link from your most
-            recent Drivable email, or write to philip@mydrivable.com and we will
+            recent Drivable email, or write to support@mydrivable.com and we will
             take care of it.
           </p>
         )}
