@@ -325,7 +325,7 @@ function Features() {
     <section id="features" className="px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
       <div className="mx-auto max-w-3xl text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-[#1e40af]/18 bg-[#1e40af]/[0.055] px-4 py-1.5 text-sm text-[#1f2b4d]/80 backdrop-blur-xl">
-          <span className="status-dot h-1.5 w-1.5 rounded-full bg-[#f97316]" />
+          <span className="status-dot h-1.5 w-1.5 rounded-full bg-accent-orange" />
           State-Specific DMV Prep
         </div>
         <h2 className="mt-8 text-3xl font-semibold sm:text-5xl">
@@ -421,7 +421,7 @@ function Features() {
                         </div>
                         <div className="mt-1.5 h-1.5 w-full rounded-full bg-[#eef0f4]">
                           <div
-                            className="feature-progress h-1.5 rounded-full bg-[#f97316]"
+                            className="feature-progress h-1.5 rounded-full bg-accent-orange"
                             style={{ width: ["88%", "72%", "58%"][idx] }}
                           />
                         </div>
@@ -559,7 +559,7 @@ function Pricing() {
 
           {/* Pro Pass */}
           <div className="lift relative flex flex-col rounded-[28px] border border-[#3b82f6]/40 bg-white/85 p-8 backdrop-blur-xl shadow-[0_0_60px_-20px_rgba(30,64,175,0.22)]">
-            <span className="grad-orange-cyan absolute -top-3 left-1/2 z-10 -translate-x-1/2 rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-white whitespace-nowrap">
+            <span className="bg-accent-orange absolute -top-3 left-1/2 z-10 -translate-x-1/2 rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-white whitespace-nowrap">
               Most Popular
             </span>
 
