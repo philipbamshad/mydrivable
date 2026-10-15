@@ -118,7 +118,7 @@ export function ThreadSidebar() {
               <CalendarDays className="w-3.5 h-3.5 text-muted-foreground" />
             </p>
             <p className="text-sm font-semibold mt-0.5 flex items-center gap-2 pointer-events-none">
-              <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+              <span className="w-1.5 h-1.5 rounded-full bg-foreground" />
               <span className="truncate">{targetLabel}</span>
             </p>
           </Button>
@@ -165,7 +165,7 @@ export function ThreadSidebar() {
               <Settings2 className="w-3.5 h-3.5 text-muted-foreground" />
             </p>
             <p className="text-sm font-semibold mt-0.5 flex items-center gap-2 pointer-events-none">
-              <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+              <span className="w-1.5 h-1.5 rounded-full bg-foreground" />
               <span className="truncate">{userState || "Not set"}</span>
             </p>
           </Button>
@@ -198,12 +198,12 @@ export function ThreadSidebar() {
                     }}
                     style={{ WebkitTapHighlightColor: "transparent" }}
                     className={cn(
-                      "h-auto w-full flex items-center justify-between gap-2 px-3 py-3 min-h-11 text-sm text-left hover:bg-primary/10 active:bg-primary/15 transition-colors touch-manipulation",
-                      active && "bg-primary/15 text-foreground font-medium",
+                      "h-auto w-full flex items-center justify-between gap-2 px-3 py-3 min-h-11 text-sm text-left hover:bg-muted active:bg-secondary transition-colors touch-manipulation",
+                      active && "bg-secondary text-foreground font-medium",
                     )}
                   >
                     <span className="truncate">{s}</span>
-                    {active && <Check className="w-4 h-4 text-primary shrink-0" />}
+                    {active && <Check className="w-4 h-4 text-foreground shrink-0" />}
                   </Button>
                 );
               })}
