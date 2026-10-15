@@ -262,9 +262,9 @@ function Hero() {
 function StatesMarquee() {
   const loop = [...US_STATES, ...US_STATES];
   return (
-    <section id="states" className="border-y border-[#1e40af]/12 bg-[#1e40af]/[0.035] py-16 backdrop-blur-sm">
+    <section id="states" className="border-y border-[#1e40af]/12 dark:border-white/[0.08] bg-[#1e40af]/[0.035] dark:bg-white/[0.03] py-16 backdrop-blur-sm">
       <div className="mx-auto max-w-6xl px-6 text-center">
-        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#1e40af]/80">
+        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#1e40af] dark:text-[#7ea6ff]/80 dark:text-[#7ea6ff]">
           All 50 States · Grounded in Official DMV Handbooks
         </p>
         <h2 className="mb-10 text-3xl font-semibold tracking-normal sm:text-4xl">
@@ -286,9 +286,9 @@ function StatesMarquee() {
           {loop.map((s, i) => (
             <span
               key={`${s}-${i}`}
-              className="inline-flex items-center gap-1.5 rounded-full border border-[#1e40af]/18 bg-white/75 px-3.5 py-1.5 text-[13px] font-medium text-[#1f2b4d]/85 backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5 hover:border-[#1e40af]/35 hover:bg-white hover:text-[#0f172a]"
+              className="inline-flex items-center gap-1.5 rounded-full border border-[#1e40af]/18 dark:border-white/10 bg-white/75 dark:bg-[#1c1f22]/75 px-3.5 py-1.5 text-[13px] font-medium text-[#1f2b4d]/85 dark:text-[#d1d5db]/80 backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5 hover:border-[#1e40af]/35 hover:bg-white dark:hover:bg-[#2a2e33] hover:text-[#0f172a] dark:text-[#f3f4f6] dark:hover:text-white"
             >
-              <MapPin className="h-3 w-3 text-[#1e40af]" />
+              <MapPin className="h-3 w-3 text-[#1e40af] dark:text-[#7ea6ff]" />
               {s}
             </span>
           ))}
@@ -330,7 +330,7 @@ function Features() {
   return (
     <section id="features" className="px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
       <div className="mx-auto max-w-3xl text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-[#1e40af]/18 bg-[#1e40af]/[0.055] px-4 py-1.5 text-sm text-[#1f2b4d]/80 backdrop-blur-xl">
+        <div className="inline-flex items-center gap-2 rounded-full border border-[#1e40af]/18 dark:border-white/10 bg-[#1e40af]/[0.055] dark:bg-white/[0.05] px-4 py-1.5 text-sm text-[#1f2b4d]/80 dark:text-[#d1d5db]/80 backdrop-blur-xl">
           <span className="status-dot h-1.5 w-1.5 rounded-full bg-accent-orange" />
           State-Specific DMV Prep
         </div>
@@ -340,7 +340,7 @@ function Features() {
             Real License
           </span>
         </h2>
-        <p className="mx-auto mt-6 max-w-xl text-lg text-[#1f2b4d]/70">
+        <p className="mx-auto mt-6 max-w-xl text-lg text-[#1f2b4d]/70 dark:text-[#d1d5db]/80">
           Four focused tools, one outcome, pass on the first try.
         </p>
       </div>
@@ -350,7 +350,7 @@ function Features() {
           <div
             key={f.title}
             style={{ transitionDelay: `${i * 120}ms` }}
-            className="reveal group feature-accent flex h-full flex-col overflow-hidden rounded-[32px] bg-[#f4f5f7] p-4 transition-all duration-500 hover:-translate-y-1 hover:bg-[#eef0f4] hover:shadow-[0_28px_60px_-40px_rgba(15,23,42,0.35)]"
+            className="reveal group feature-accent flex h-full flex-col overflow-hidden rounded-[32px] bg-[#f4f5f7] dark:bg-[#1c1f22] p-4 transition-all duration-500 hover:-translate-y-1 hover:bg-[#eef0f4] dark:bg-[#2a2e33] dark:hover:bg-[#22262a] hover:shadow-[0_28px_60px_-40px_rgba(15,23,42,0.35)]"
           >
             <div className="relative h-[260px] overflow-hidden rounded-[24px] px-6 pt-8">
               {f.visual === "simulator" && (
@@ -361,20 +361,20 @@ function Features() {
                   ].map((q, idx) => (
                     <div
                       key={q.label}
-                      className={`relative overflow-hidden rounded-xl bg-white p-4 shadow-[0_18px_40px_-30px_rgba(15,23,42,0.5)] transition-transform duration-500 group-hover:scale-[1.02] ${idx === 0 ? "feature-float" : "feature-float-delay"}`}
+                      className={`relative overflow-hidden rounded-xl bg-white dark:bg-[#22262a] p-4 shadow-[0_18px_40px_-30px_rgba(15,23,42,0.5)] transition-transform duration-500 group-hover:scale-[1.02] ${idx === 0 ? "feature-float" : "feature-float-delay"}`}
                     >
                       <div className="pointer-events-none absolute inset-0 -translate-x-full overflow-hidden rounded-xl group-hover:animate-[featureShimmer_0.9s_ease_forwards]">
                         <div className="h-full w-full bg-gradient-to-r from-transparent via-white/35 to-transparent" />
                       </div>
                       <div className="relative flex items-center justify-between">
-                        <p className="text-sm font-semibold text-[#0f172a]">{q.label}</p>
-                        <span className="rounded-md bg-[#1e40af]/10 px-2 py-0.5 text-[10px] font-semibold text-[#1e40af]">
+                        <p className="text-sm font-semibold text-[#0f172a] dark:text-[#f3f4f6]">{q.label}</p>
+                        <span className="rounded-md bg-[#1e40af]/10 px-2 py-0.5 text-[10px] font-semibold text-[#1e40af] dark:text-[#7ea6ff]">
                           {q.tag}
                         </span>
                       </div>
                       <div className="relative mt-3 space-y-1.5">
-                        <div className="h-1.5 w-full rounded-full bg-[#eef0f4]" />
-                        <div className="h-1.5 w-2/3 rounded-full bg-[#eef0f4]" />
+                        <div className="h-1.5 w-full rounded-full bg-[#eef0f4] dark:bg-[#2a2e33]" />
+                        <div className="h-1.5 w-2/3 rounded-full bg-[#eef0f4] dark:bg-[#2a2e33]" />
                       </div>
                     </div>
                   ))}
@@ -389,16 +389,16 @@ function Features() {
                     </div>
                     <span className="relative">Why did I miss this sign question?</span>
                   </div>
-                  <div className="feature-float-delay relative w-fit max-w-[85%] overflow-hidden rounded-2xl rounded-bl-md bg-white px-4 py-3 shadow-[0_18px_40px_-30px_rgba(15,23,42,0.5)] transition-transform duration-500 group-hover:-translate-x-1">
+                  <div className="feature-float-delay relative w-fit max-w-[85%] overflow-hidden rounded-2xl rounded-bl-md bg-white dark:bg-[#22262a] px-4 py-3 shadow-[0_18px_40px_-30px_rgba(15,23,42,0.5)] transition-transform duration-500 group-hover:-translate-x-1">
                     <div className="pointer-events-none absolute inset-0 -translate-x-full overflow-hidden rounded-2xl rounded-bl-md group-hover:animate-[featureShimmer_0.9s_ease_forwards]">
                       <div className="h-full w-full bg-gradient-to-r from-transparent via-white/45 to-transparent" />
                     </div>
                     <p className="relative text-[11px] font-semibold uppercase tracking-wide text-[#10b981]">AI Coach</p>
-                    <p className="relative mt-1 text-sm leading-relaxed text-[#1f2b4d]/80">
+                    <p className="relative mt-1 text-sm leading-relaxed text-[#1f2b4d]/80 dark:text-[#d1d5db]/80">
                       A yellow diamond warns of conditions ahead, it never regulates speed.
                     </p>
                   </div>
-                  <div className="feature-float-delay-2 relative ml-auto w-fit overflow-hidden rounded-full bg-white px-3 py-1.5 text-[11px] font-semibold text-[#1f2b4d]/60 shadow-sm transition-transform duration-500 group-hover:scale-105">
+                  <div className="feature-float-delay-2 relative ml-auto w-fit overflow-hidden rounded-full bg-white dark:bg-[#22262a] px-3 py-1.5 text-[11px] font-semibold text-[#1f2b4d]/60 dark:text-[#9ca3af]/75 shadow-sm transition-transform duration-500 group-hover:scale-105">
                     <div className="pointer-events-none absolute inset-0 -translate-x-full overflow-hidden rounded-full group-hover:animate-[featureShimmer_0.9s_ease_forwards]">
                       <div className="h-full w-full bg-gradient-to-r from-transparent via-white/40 to-transparent" />
                     </div>
@@ -408,12 +408,12 @@ function Features() {
               )}
 
               {f.visual === "quizzes" && (
-                <div className="relative mx-auto w-full max-w-[340px] overflow-hidden rounded-2xl bg-white p-5 shadow-[0_18px_40px_-30px_rgba(15,23,42,0.5)] transition-transform duration-500 group-hover:scale-[1.02]">
+                <div className="relative mx-auto w-full max-w-[340px] overflow-hidden rounded-2xl bg-white dark:bg-[#22262a] p-5 shadow-[0_18px_40px_-30px_rgba(15,23,42,0.5)] transition-transform duration-500 group-hover:scale-[1.02]">
                   <div className="pointer-events-none absolute inset-0 -translate-x-full overflow-hidden rounded-2xl group-hover:animate-[featureShimmer_0.9s_ease_forwards]">
                     <div className="h-full w-full bg-gradient-to-r from-transparent via-white/35 to-transparent" />
                   </div>
-                  <p className="relative text-sm font-semibold text-[#0f172a]">Section Quizzes</p>
-                  <p className="relative mt-1 text-[11px] text-[#1f2b4d]/55">Pick a pillar and start drilling</p>
+                  <p className="relative text-sm font-semibold text-[#0f172a] dark:text-[#f3f4f6]">Section Quizzes</p>
+                  <p className="relative mt-1 text-[11px] text-[#1f2b4d]/55 dark:text-[#9ca3af]/75">Pick a pillar and start drilling</p>
                   <div className="relative mt-4 space-y-3">
                     {[
                       { name: "Road Signs", score: "9.1/10" },
@@ -422,10 +422,10 @@ function Features() {
                     ].map((row, idx) => (
                       <div key={row.name}>
                         <div className="flex items-center justify-between text-[11px]">
-                          <span className="font-medium text-[#1f2b4d]/80">{row.name}</span>
-                          <span className="font-semibold text-[#0f172a]">{row.score}</span>
+                          <span className="font-medium text-[#1f2b4d]/80 dark:text-[#d1d5db]/80">{row.name}</span>
+                          <span className="font-semibold text-[#0f172a] dark:text-[#f3f4f6]">{row.score}</span>
                         </div>
-                        <div className="mt-1.5 h-1.5 w-full rounded-full bg-[#eef0f4]">
+                        <div className="mt-1.5 h-1.5 w-full rounded-full bg-[#eef0f4] dark:bg-[#2a2e33]">
                           <div
                             className="feature-progress h-1.5 rounded-full bg-accent-orange"
                             style={{ width: ["88%", "72%", "58%"][idx] }}
@@ -438,34 +438,34 @@ function Features() {
               )}
 
               {f.visual === "state" && (
-                <div className="relative mx-auto w-full max-w-[340px] overflow-hidden rounded-2xl bg-white p-5 shadow-[0_18px_40px_-30px_rgba(15,23,42,0.5)] transition-transform duration-500 group-hover:scale-[1.02]">
+                <div className="relative mx-auto w-full max-w-[340px] overflow-hidden rounded-2xl bg-white dark:bg-[#22262a] p-5 shadow-[0_18px_40px_-30px_rgba(15,23,42,0.5)] transition-transform duration-500 group-hover:scale-[1.02]">
                   <div className="pointer-events-none absolute inset-0 -translate-x-full overflow-hidden rounded-2xl group-hover:animate-[featureShimmer_0.9s_ease_forwards]">
                     <div className="h-full w-full bg-gradient-to-r from-transparent via-white/35 to-transparent" />
                   </div>
                   <div className="relative flex items-center justify-between">
                     <div>
-                      <p className="text-sm font-semibold text-[#0f172a]">DMV Target Date</p>
-                      <p className="mt-1 text-[11px] text-[#1f2b4d]/55">Personalized to California</p>
+                      <p className="text-sm font-semibold text-[#0f172a] dark:text-[#f3f4f6]">DMV Target Date</p>
+                      <p className="mt-1 text-[11px] text-[#1f2b4d]/55 dark:text-[#9ca3af]/75">Personalized to California</p>
                     </div>
                     <span className="feature-float inline-flex items-center gap-1 rounded-md bg-[#0f172a] px-2.5 py-1 text-[10px] font-semibold text-white">
                       <MapPin className="h-3 w-3" />
                       CA DMV
                     </span>
                   </div>
-                  <div className="relative mt-5 flex items-center gap-3 rounded-xl bg-[#f4f5f7] p-3 transition-colors duration-500 group-hover:bg-[#e8eaed]">
-                    <div className="grid h-10 w-10 place-items-center rounded-lg bg-[#1e40af]/10 text-[#1e40af]">
+                  <div className="relative mt-5 flex items-center gap-3 rounded-xl bg-[#f4f5f7] dark:bg-[#1c1f22] p-3 transition-colors duration-500 group-hover:bg-[#e8eaed] dark:group-hover:bg-[#2a2e33]">
+                    <div className="grid h-10 w-10 place-items-center rounded-lg bg-[#1e40af]/10 text-[#1e40af] dark:text-[#7ea6ff]">
                       <Calendar className="h-5 w-5" />
                     </div>
                     <div>
-                      <p className="text-xs font-semibold text-[#0f172a]">August 30, 2026</p>
-                      <p className="text-[10px] text-[#1f2b4d]/55">Target exam date</p>
+                      <p className="text-xs font-semibold text-[#0f172a] dark:text-[#f3f4f6]">August 30, 2026</p>
+                      <p className="text-[10px] text-[#1f2b4d]/55 dark:text-[#9ca3af]/75">Target exam date</p>
                     </div>
                   </div>
                   <div className="relative mt-4 grid grid-cols-3 gap-2">
                     {["Signs", "Rules", "Safety"].map((t) => (
                       <div
                         key={t}
-                        className="rounded-lg bg-[#f4f5f7] px-2 py-2 text-center text-[10px] font-semibold text-[#1f2b4d]/70 transition-colors duration-500 group-hover:bg-[#e8eaed]"
+                        className="rounded-lg bg-[#f4f5f7] dark:bg-[#1c1f22] px-2 py-2 text-center text-[10px] font-semibold text-[#1f2b4d]/70 dark:text-[#d1d5db]/80 transition-colors duration-500 group-hover:bg-[#e8eaed] dark:group-hover:bg-[#2a2e33]"
                       >
                         {t}
                       </div>
@@ -474,11 +474,11 @@ function Features() {
                 </div>
               )}
 
-              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#f4f5f7] to-transparent transition-colors duration-500 group-hover:from-[#eef0f4]" />
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#f4f5f7] dark:from-[#1c1f22] to-transparent transition-colors duration-500 group-hover:from-[#eef0f4] dark:group-hover:from-[#22262a]" />
             </div>
 
             <div className="px-6 pb-6 pt-6">
-              <h3 className="text-2xl font-semibold tracking-normal text-[#0f172a] lg:text-[28px]">
+              <h3 className="text-2xl font-semibold tracking-normal text-[#0f172a] dark:text-[#f3f4f6] lg:text-[28px]">
                 {f.title}
               </h3>
               <p className="mt-4 text-base leading-relaxed text-muted-foreground lg:text-lg">{f.body}</p>
@@ -509,7 +509,7 @@ function Pricing() {
   return (
     <section id="pricing" className="px-6 py-28">
       <div className="mx-auto mb-14 max-w-3xl text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-[#1e40af]/18 bg-[#1e40af]/[0.055] px-4 py-1.5 text-sm text-[#1f2b4d]/80 backdrop-blur-xl">
+        <div className="inline-flex items-center gap-2 rounded-full border border-[#1e40af]/18 dark:border-white/10 bg-[#1e40af]/[0.055] dark:bg-white/[0.05] px-4 py-1.5 text-sm text-[#1f2b4d]/80 dark:text-[#d1d5db]/80 backdrop-blur-xl">
           <span className="status-dot h-1.5 w-1.5 rounded-full bg-[#10b981]" />
           Two Plans
         </div>
@@ -519,7 +519,7 @@ function Pricing() {
             Lane
           </span>
         </h2>
-        <p className="mt-4 text-[#1f2b4d]/70">Start free, or unlock the full test simulator with one payment.</p>
+        <p className="mt-4 text-[#1f2b4d]/70 dark:text-[#d1d5db]/80">Start free, or unlock the full test simulator with one payment.</p>
       </div>
 
       <div className="relative mx-auto max-w-5xl">
@@ -535,14 +535,14 @@ function Pricing() {
 
         <div className="grid gap-6 md:grid-cols-2 md:items-stretch">
           {/* Free Pass */}
-          <div className="lift relative flex flex-col rounded-[28px] border border-[#1e40af]/18 bg-white/80 p-8 backdrop-blur-xl">
-            <div className="rounded-2xl border border-[#1e40af]/18 bg-[#1e40af]/[0.045] p-7">
-              <div className="text-lg font-medium text-[#1f2b4d]/90">Free Pass</div>
-              <div className="mt-8 flex items-end gap-2 text-[#0f172a]">
+          <div className="lift relative flex flex-col rounded-[28px] border border-[#1e40af]/18 dark:border-white/10 bg-white/80 dark:bg-[#16191c]/85 p-8 backdrop-blur-xl">
+            <div className="rounded-2xl border border-[#1e40af]/18 dark:border-white/10 bg-[#1e40af]/[0.045] dark:bg-white/[0.04] p-7">
+              <div className="text-lg font-medium text-[#1f2b4d]/90 dark:text-[#d1d5db]/80">Free Pass</div>
+              <div className="mt-8 flex items-end gap-2 text-[#0f172a] dark:text-[#f3f4f6]">
                 <span className="text-6xl font-semibold tracking-normal">$0</span>
-                <span className="mb-2 text-sm text-[#1f2b4d]/85">forever free</span>
+                <span className="mb-2 text-sm text-[#1f2b4d]/85 dark:text-[#d1d5db]/80">forever free</span>
               </div>
-              <p className="mt-2 text-sm text-[#1f2b4d]/75">Kick the tires and study the basics, no card required.</p>
+              <p className="mt-2 text-sm text-[#1f2b4d]/75 dark:text-[#d1d5db]/80">Kick the tires and study the basics, no card required.</p>
             </div>
 
             <Link
@@ -555,8 +555,8 @@ function Pricing() {
 
             <ul className="mt-7 space-y-3 text-[15px]">
               {freeFeatures.map((f) => (
-                <li key={f} className="flex items-center gap-3 rounded-lg text-[#1f2b4d]/85 transition-transform duration-200 hover:-translate-y-1">
-                  <Check className="h-4 w-4 shrink-0 text-[#1f2b4d]/70" />
+                <li key={f} className="flex items-center gap-3 rounded-lg text-[#1f2b4d]/85 dark:text-[#d1d5db]/80 transition-transform duration-200 hover:-translate-y-1">
+                  <Check className="h-4 w-4 shrink-0 text-[#1f2b4d]/70 dark:text-[#d1d5db]/80" />
                   {f}
                 </li>
               ))}
@@ -564,18 +564,18 @@ function Pricing() {
           </div>
 
           {/* Pro Pass */}
-          <div className="lift relative flex flex-col rounded-[28px] border border-[#3b82f6]/40 bg-white/85 p-8 backdrop-blur-xl shadow-[0_0_60px_-20px_rgba(30,64,175,0.22)]">
+          <div className="lift relative flex flex-col rounded-[28px] border border-[#3b82f6]/40 bg-white/85 dark:bg-[#16191c]/90 p-8 backdrop-blur-xl shadow-[0_0_60px_-20px_rgba(30,64,175,0.22)]">
             <span className="bg-accent-orange absolute -top-3 left-1/2 z-10 -translate-x-1/2 rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-white whitespace-nowrap">
               Most Popular
             </span>
 
-            <div className="rounded-2xl border border-[#1e40af]/18 bg-[#1e40af]/[0.045] p-7">
-              <div className="text-lg font-medium text-[#1f2b4d]/90">Pro Pass</div>
-              <div className="mt-8 flex items-end gap-2 text-[#0f172a]">
+            <div className="rounded-2xl border border-[#1e40af]/18 dark:border-white/10 bg-[#1e40af]/[0.045] dark:bg-white/[0.04] p-7">
+              <div className="text-lg font-medium text-[#1f2b4d]/90 dark:text-[#d1d5db]/80">Pro Pass</div>
+              <div className="mt-8 flex items-end gap-2 text-[#0f172a] dark:text-[#f3f4f6]">
                 <span className="text-6xl font-semibold tracking-normal">$9</span>
-                <span className="mb-2 text-sm text-[#1f2b4d]/85">one-time</span>
+                <span className="mb-2 text-sm text-[#1f2b4d]/85 dark:text-[#d1d5db]/80">one-time</span>
               </div>
-              <p className="mt-2 text-sm text-[#1f2b4d]/75">Pay once. Lifetime access to everything Drivable builds.</p>
+              <p className="mt-2 text-sm text-[#1f2b4d]/75 dark:text-[#d1d5db]/80">Pay once. Lifetime access to everything Drivable builds.</p>
             </div>
 
             <Link
@@ -588,8 +588,8 @@ function Pricing() {
 
             <ul className="mt-7 space-y-3 text-[15px]">
               {proFeatures.map((f) => (
-                <li key={f} className="flex items-center gap-3 rounded-lg text-[#1f2b4d]/85 transition-transform duration-200 hover:-translate-y-1">
-                  <Check className="h-4 w-4 shrink-0 text-[#1e40af]" />
+                <li key={f} className="flex items-center gap-3 rounded-lg text-[#1f2b4d]/85 dark:text-[#d1d5db]/80 transition-transform duration-200 hover:-translate-y-1">
+                  <Check className="h-4 w-4 shrink-0 text-[#1e40af] dark:text-[#7ea6ff]" />
                   {f}
                 </li>
               ))}
@@ -605,7 +605,7 @@ function Pricing() {
 function CTA() {
   return (
     <section className="px-6 pb-24">
-      <div className="relative mx-auto max-w-5xl overflow-hidden rounded-[36px] border border-[#1e40af]/18 bg-[#1e40af]/[0.035] p-16 text-center text-[#0f172a] backdrop-blur-xl">
+      <div className="relative mx-auto max-w-5xl overflow-hidden rounded-[36px] border border-[#1e40af]/18 dark:border-white/10 bg-[#1e40af]/[0.035] dark:bg-white/[0.03] p-16 text-center text-[#0f172a] dark:text-[#f3f4f6] backdrop-blur-xl">
         <h2 className="text-3xl font-semibold sm:text-5xl">
           Get Your License.
           <br />
@@ -613,7 +613,7 @@ function CTA() {
             First Try.
           </span>
         </h2>
-        <p className="mx-auto mt-6 max-w-xl text-[#1f2b4d]/70">
+        <p className="mx-auto mt-6 max-w-xl text-[#1f2b4d]/70 dark:text-[#d1d5db]/80">
           Sign up, pick your state, and start your first mock exam in under a minute.
         </p>
         <Link
@@ -631,28 +631,28 @@ function CTA() {
 
 function Footer() {
   return (
-    <footer className="border-t border-[#1e40af]/12 px-6 py-10 pb-24 text-sm text-[#1f2b4d]/65 sm:pb-10">
+    <footer className="border-t border-[#1e40af]/12 dark:border-white/[0.08] px-6 py-10 pb-24 text-sm text-[#1f2b4d]/65 dark:text-[#9ca3af]/75 sm:pb-10">
       <div className="mx-auto flex max-w-6xl flex-col items-center gap-6">
         <div className="flex flex-col items-center gap-2 text-center">
-          <span className="text-xs uppercase tracking-wider text-[#1f2b4d]/70">Need help?</span>
+          <span className="text-xs uppercase tracking-wider text-[#1f2b4d]/70 dark:text-[#d1d5db]/80">Need help?</span>
           <a
             href="mailto:support@mydrivable.com"
-            className="inline-flex min-h-11 items-center rounded-md px-3 py-2 text-[#1f2b4d]/80 transition hover:text-[#0f172a]"
+            className="inline-flex min-h-11 items-center rounded-md px-3 py-2 text-[#1f2b4d]/80 dark:text-[#d1d5db]/80 transition hover:text-[#0f172a] dark:text-[#f3f4f6] dark:hover:text-white"
           >
             Contact Support: support@mydrivable.com
           </a>
         </div>
-        <div className="flex w-full flex-col items-center justify-between gap-4 border-t border-[#1e40af]/12 pt-6 sm:flex-row">
+        <div className="flex w-full flex-col items-center justify-between gap-4 border-t border-[#1e40af]/12 dark:border-white/[0.08] pt-6 sm:flex-row">
           <div className="flex items-center gap-2">
             <img src={logo} alt="" className="h-7 w-7 logo-mask" />
 
-            <span className="font-semibold text-[#0f172a]">Drivable</span>
+            <span className="font-semibold text-[#0f172a] dark:text-[#f3f4f6]">Drivable</span>
           </div>
           <nav aria-label="Legal" className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
-            <Link to="/privacy" className="transition hover:text-[#0f172a]">Privacy</Link>
-            <Link to="/terms" className="transition hover:text-[#0f172a]">Terms</Link>
-            <Link to="/refunds" className="transition hover:text-[#0f172a]">Refunds</Link>
-            <Link to="/cookies" className="transition hover:text-[#0f172a]">Cookies</Link>
+            <Link to="/privacy" className="transition hover:text-[#0f172a] dark:text-[#f3f4f6] dark:hover:text-white">Privacy</Link>
+            <Link to="/terms" className="transition hover:text-[#0f172a] dark:text-[#f3f4f6] dark:hover:text-white">Terms</Link>
+            <Link to="/refunds" className="transition hover:text-[#0f172a] dark:text-[#f3f4f6] dark:hover:text-white">Refunds</Link>
+            <Link to="/cookies" className="transition hover:text-[#0f172a] dark:text-[#f3f4f6] dark:hover:text-white">Cookies</Link>
           </nav>
           <div className="flex flex-col items-center gap-1 text-center sm:items-end sm:text-right">
             <span>© {new Date().getFullYear()} Bedford Global. Drivable is operated by Bedford Global.</span>
