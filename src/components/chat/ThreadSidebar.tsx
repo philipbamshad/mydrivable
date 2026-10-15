@@ -261,7 +261,7 @@ export function ThreadSidebar() {
           )}
           title={isCollapsed ? `${displayName} · ${planLabel}` : undefined}
         >
-          <span className="grid h-9 w-9 place-items-center rounded-full bg-primary text-primary-foreground text-sm font-semibold shrink-0">
+          <span className="grid h-9 w-9 place-items-center rounded-full bg-foreground text-background text-sm font-semibold shrink-0">
             {initial}
           </span>
           {!isCollapsed && (
