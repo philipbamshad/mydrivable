@@ -6,6 +6,7 @@ import { lovable } from "@/integrations/lovable";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
 import { Loader2, Eye, EyeOff } from "lucide-react";
 import logo from "@/assets/drivable-logo.png";
@@ -93,6 +94,7 @@ function AuthPage() {
   const [signupSuccess, setSignupSuccess] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<{ email?: string; password?: string }>({});
   const [forgotSent, setForgotSent] = useState(false);
+  const [agreed, setAgreed] = useState(false);
 
 
 
@@ -107,6 +109,10 @@ function AuthPage() {
     e.preventDefault();
     setFieldErrors({});
 
+    if (mode === "sign-up" && !agreed) {
+      toast.error("Please confirm you are 13 or older and agree to the Terms and Privacy Policy.");
+      return;
+    }
     const parsed = credentialsSchema.safeParse({ email, password });
     if (!parsed.success) {
       const errs: { email?: string; password?: string } = {};
@@ -365,6 +371,16 @@ function AuthPage() {
                     <p className="text-xs text-muted-foreground">Use at least 8 characters.</p>
                   ) : null}
                 </div>
+                {mode === "sign-up" && (
+                  <label htmlFor="agree" className="flex items-start gap-2 text-xs leading-relaxed text-muted-foreground">
+                    <Checkbox id="agree" checked={agreed} onCheckedChange={(v) => setAgreed(v === true)} className="mt-0.5" />
+                    <span>
+                      I am 13 or older (under 18 with a parent's permission) and agree to the{" "}
+                      <Link to="/terms" className="text-primary underline">Terms</Link> and{" "}
+                      <Link to="/privacy" className="text-primary underline">Privacy Policy</Link>.
+                    </span>
+                  </label>
+                )}
                 {mode === "sign-in" && (
                   <div className="flex justify-end">
                     {forgotSent ? (

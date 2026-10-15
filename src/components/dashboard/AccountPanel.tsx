@@ -125,6 +125,18 @@ export function AccountPanel() {
 
         </div>
       </Card>
+
+      <Card className="p-5">
+        <h3 className="font-semibold">Delete my account</h3>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Request permanent deletion of your account, chat history, and study progress. We process requests within 30 days.
+        </p>
+        <Button asChild variant="outline" className="mt-3 border-destructive/40 text-destructive hover:bg-destructive/10">
+          <a href="mailto:philip@mydrivable.com?subject=Account%20deletion%20request&body=Please%20delete%20my%20Drivable%20account%20and%20all%20associated%20data.%20My%20account%20email%20is%3A%20">
+            Request account deletion
+          </a>
+        </Button>
+      </Card>
     </div>
   );
 }
