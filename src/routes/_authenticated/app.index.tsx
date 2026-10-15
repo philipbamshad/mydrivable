@@ -13,6 +13,7 @@ import { TestHubDashboard } from "@/components/dashboard/TestHubDashboard";
 import { PermitExamSimulator } from "@/components/dashboard/PermitExamSimulator";
 import { ChatTab } from "@/components/chat/ChatTab";
 import { useUserProfile } from "@/lib/user-profile";
+import { StateOnboardingDialog } from "@/components/dashboard/StateOnboardingDialog";
 
 type TabId = "test-hub" | "state-exam" | "chat";
 
@@ -126,6 +127,7 @@ function AppDashboard() {
           </TabsContent>
         </div>
       </Tabs>
+      <StateOnboardingDialog />
     </div>
   );
 }
