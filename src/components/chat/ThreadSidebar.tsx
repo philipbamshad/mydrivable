@@ -1,14 +1,13 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { useNavigate, useRouterState } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
-  SheetTrigger,
 } from "@/components/ui/sheet";
 import {
   LogOut,
@@ -23,6 +22,14 @@ import {
   CalendarDays,
   ChevronLeft,
   ChevronRight,
+  UserRound,
+  Crown,
+  Sparkles,
+  Sun,
+  Moon,
+  Shield,
+  Trash2,
+  type LucideIcon,
 } from "lucide-react";
 import {
   Popover,
@@ -37,6 +44,7 @@ import logo from "@/assets/drivable-logo.png";
 import { cn } from "@/lib/utils";
 import { AccountPanel } from "@/components/dashboard/AccountPanel";
 import { useUserProfile, US_STATES } from "@/lib/user-profile";
+import { useTheme } from "@/lib/theme";
 
 const PRIMARY_NAV = [
   { id: "chat", label: "AI Coach", icon: MessageSquare },
