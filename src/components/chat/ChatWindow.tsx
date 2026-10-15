@@ -299,7 +299,7 @@ function AttachmentChips() {
   const attachments = usePromptInputAttachments();
   if (attachments.files.length === 0) return null;
   return (
-    <div className="flex w-full flex-wrap gap-2 px-4 pt-3">
+    <div className="flex w-full flex-wrap gap-2 px-4 pt-4 pb-1">
       {attachments.files.map((f) => {
         const isImage = Boolean(f.mediaType?.startsWith("image/") && f.url);
         return (
