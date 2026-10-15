@@ -55,10 +55,25 @@ const PRIMARY_NAV = [
 export function ThreadSidebar() {
   const navigate = useNavigate();
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [accountOpen, setAccountOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
-  const { state: userState, setState: setUserState, targetDate, setTargetDate } = useUserProfile();
+  const { state: userState, setState: setUserState, targetDate, setTargetDate, isPro, openCheckout } = useUserProfile();
+  const { theme, setTheme } = useTheme();
+  const [userMeta, setUserMeta] = useState<{ name: string | null; email: string | null }>({ name: null, email: null });
   const [activePopover, setActivePopover] = useState<"desktop-date" | "desktop-state" | "mobile-date" | "mobile-state" | null>(null);
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => {
+      const u = data.user;
+      const name =
+        (u?.user_metadata?.["full_name"] as string | undefined) ??
+        (u?.user_metadata?.["name"] as string | undefined) ??
+        u?.email?.split("@")[0] ??
+        null;
+      setUserMeta({ name, email: u?.email ?? null });
+    });
+  }, []);
 
   const { pathname, search } = useRouterState({
     select: (s) => ({ pathname: s.location.pathname, search: s.location.search }),
