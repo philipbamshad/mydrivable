@@ -746,8 +746,8 @@
 .dark {
   --input-strong: oklch(0.48 0.015 255);
   --success: oklch(0.78 0.14 160);
-  --action: oklch(0.60 0.19 260);
-  --action-hover: oklch(0.65 0.18 260);
+  --action: oklch(0.32 0.008 255);
+  --action-hover: oklch(0.38 0.008 255);
   --action-foreground: oklch(0.99 0 0);
 }
 @theme inline {
