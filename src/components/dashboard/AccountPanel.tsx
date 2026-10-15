@@ -37,13 +37,13 @@ export function AccountPanel({ section }: { section?: AccountSection } = {}) {
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div className="flex items-center gap-3 min-w-0">
             <span
-              className="grid h-12 w-12 place-items-center rounded-xl bg-primary/15 border border-primary/40 shrink-0"
+              className="grid h-12 w-12 place-items-center rounded-xl bg-muted border border-border shrink-0"
               style={{ boxShadow: "0 0 18px -4px var(--color-primary)" }}
             >
               {theme === "dark" ? (
-                <Moon className="w-5 h-5 text-primary" />
+                <Moon className="w-5 h-5 text-foreground" />
               ) : (
-                <Sun className="w-5 h-5 text-primary" />
+                <Sun className="w-5 h-5 text-foreground" />
               )}
             </span>
             <div className="min-w-0">
@@ -93,10 +93,10 @@ export function AccountPanel({ section }: { section?: AccountSection } = {}) {
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div className="flex items-center gap-3 min-w-0">
             <span
-              className="grid h-12 w-12 place-items-center rounded-xl bg-primary/20 border border-primary/40 shrink-0"
+              className="grid h-12 w-12 place-items-center rounded-xl bg-muted border border-border shrink-0"
               style={{ boxShadow: "0 0 18px -4px var(--color-primary)" }}
             >
-              {isPro ? <Crown className="w-5 h-5 text-primary" /> : <Lock className="w-5 h-5 text-primary" />}
+              {isPro ? <Crown className="w-5 h-5 text-foreground" /> : <Lock className="w-5 h-5 text-foreground" />}
             </span>
             <div className="min-w-0">
               <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground">Membership</p>
@@ -121,7 +121,7 @@ export function AccountPanel({ section }: { section?: AccountSection } = {}) {
           </div>
 
           {isPro ? (
-            <Badge className="bg-primary/15 text-primary border border-primary/30 px-3 py-1">
+            <Badge className="bg-muted text-foreground border border-border px-3 py-1">
               Lifetime access
             </Badge>
           ) : (

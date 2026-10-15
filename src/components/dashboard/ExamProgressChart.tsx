@@ -30,7 +30,7 @@ export function ExamProgressChart() {
         </div>
         {isPro ? (
           attempts.length === 0 ? (
-            <Badge variant="outline" className="text-xs bg-primary/15 text-primary border-primary/30 shrink-0">
+            <Badge variant="outline" className="text-xs bg-muted text-foreground border-border shrink-0">
               No attempts yet
             </Badge>
           ) : ready ? (
@@ -43,7 +43,7 @@ export function ExamProgressChart() {
             </Badge>
           )
         ) : (
-          <Badge variant="outline" className="text-xs bg-primary/15 text-primary border-primary/30 shrink-0">
+          <Badge variant="outline" className="text-xs bg-muted text-foreground border-border shrink-0">
             <Lock className="w-3 h-3 mr-1" /> Pro
           </Badge>
         )}
@@ -51,8 +51,8 @@ export function ExamProgressChart() {
 
       {attempts.length === 0 ? (
         <div className="flex-1 min-h-[220px] flex flex-col items-center justify-center text-center px-4">
-          <div className="w-14 h-14 rounded-full border-2 border-dashed border-primary/40 bg-primary/10 grid place-items-center mb-4">
-            <Trophy className="w-6 h-6 text-primary/80" />
+          <div className="w-14 h-14 rounded-full border-2 border-dashed border-border bg-muted grid place-items-center mb-4">
+            <Trophy className="w-6 h-6 text-foreground/80" />
           </div>
           <p className="font-display text-base font-semibold leading-snug max-w-[280px]">
             Take your first full-length Mock Permit Exam to unlock your progress tracking!
@@ -84,9 +84,9 @@ export function ExamProgressChart() {
         }`}
         aria-hidden={isPro}
       >
-        <div className="glass glow-soft rounded-2xl px-6 py-5 max-w-xs text-center border border-primary/30 ">
-          <div className="mx-auto mb-3 w-10 h-10 rounded-full bg-primary/15 border border-primary/40 flex items-center justify-center ">
-            <Lock className="w-4 h-4 text-primary" />
+        <div className="glass glow-soft rounded-2xl px-6 py-5 max-w-xs text-center border border-border ">
+          <div className="mx-auto mb-3 w-10 h-10 rounded-full bg-muted border border-border flex items-center justify-center ">
+            <Lock className="w-4 h-4 text-foreground" />
           </div>
           <h4 className="font-display text-sm font-bold leading-snug mb-1">
             Unlock Mock Simulator Progress

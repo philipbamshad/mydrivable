@@ -141,7 +141,7 @@ export function DailyChecklist() {
         <span className="text-xs text-muted-foreground">{completed}/{DAILY_COUNT}</span>
       </div>
       <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground mb-3 flex items-center gap-1.5">
-        <RefreshCw className="w-3 h-3 text-primary" />
+        <RefreshCw className="w-3 h-3 text-foreground" />
         <span>Refreshes daily · {stateLabel}</span>
       </p>
 
@@ -154,13 +154,13 @@ export function DailyChecklist() {
                 onClick={() => setDoneToggle(it.id)}
                 className={cn(
                   "w-full flex items-center gap-3 p-3 rounded-xl border text-left transition-all duration-200 press min-h-11",
-                  isDone ? "border-primary/40 bg-primary/10" : "border-border bg-card/40 hover:border-primary/30",
+                  isDone ? "border-foreground/40 bg-muted" : "border-border bg-card/40 hover:border-foreground/30",
                 )}
               >
                 <span
                   className={cn(
                     "grid place-items-center h-6 w-6 shrink-0 rounded-md border transition-all duration-200",
-                    isDone ? "border-primary bg-primary text-primary-foreground scale-110" : "border-border bg-background/50",
+                    isDone ? "border-primary bg-primary text-foreground-foreground scale-110" : "border-border bg-background/50",
                   )}
                   style={isDone ? { boxShadow: "0 0 14px var(--color-primary)" } : undefined}
                 >
