@@ -241,15 +241,11 @@ function ExamRunner({
           <ArrowLeft className="w-3.5 h-3.5" /> Back to exam
         </button>
         <Card className="relative bg-card border border-border/60 shadow-lg p-10 rounded-[28px] text-center">
-          <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
+          <p className="text-xs uppercase tracking-normal text-muted-foreground">
             {state} DMV Mock Exam
           </p>
           <div
-            className="font-display text-7xl font-bold mt-3"
-            style={{
-              color: passed ? "rgb(74,222,128)" : "rgb(248,113,113)",
-              textShadow: `0 0 28px ${passed ? "rgb(74,222,128)" : "rgb(248,113,113)"}`,
-            }}
+            className="font-display text-7xl font-bold mt-3 text-foreground"
           >
             {pct}%
           </div>
@@ -260,8 +256,8 @@ function ExamRunner({
             className={cn(
               "mt-4 border",
               passed
-                ? "bg-emerald-500/15 text-emerald-700 border-emerald-500/40"
-                : "bg-amber-500/15 text-amber-700 border-amber-500/40",
+                ? "bg-success/10 text-success border-success/40"
+                : "bg-muted text-foreground border-border",
             )}
           >
             {passed ? <><Trophy className="w-3 h-3 mr-1" /> Exam Ready</> : <><AlertTriangle className="w-3 h-3 mr-1" /> Not Ready</>}
@@ -306,7 +302,7 @@ function ExamRunner({
         <button onClick={onExit} className="flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground">
           <ArrowLeft className="w-3.5 h-3.5" /> Exit exam
         </button>
-        <span className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
+        <span className="text-xs uppercase tracking-normal text-muted-foreground">
           {state} · {idx + 1} / {questions.length}
         </span>
       </div>
@@ -332,14 +328,15 @@ function ExamRunner({
                 key={i}
                 onClick={() => choose(i)}
                 disabled={reveal}
+                aria-label={reveal ? `${opt}. ${isCorrect ? "Correct answer" : isPicked ? "Your answer, incorrect" : "Not selected"}` : opt}
                 className={cn(
                   "p-3.5 rounded-xl border text-sm font-medium text-left transition-all duration-200 flex items-center justify-between gap-2",
                   !reveal &&
                     "border-border bg-muted hover:scale-[1.02] hover:border-accent-orange/60 active:scale-[0.97]",
                   reveal && isCorrect &&
-                    "border-emerald-400 bg-emerald-500/25 text-emerald-800 ",
+                    "border-success/40 bg-success/10 text-success ",
                   reveal && isPicked && !isCorrect &&
-                    "border-red-400 bg-red-500/25 text-red-800 ",
+                    "border-destructive/40 bg-destructive/10 text-destructive ",
                   reveal && !isPicked && !isCorrect && "opacity-40 border-border",
                 )}
               >
@@ -353,7 +350,7 @@ function ExamRunner({
 
         {reveal && (
           <div className="mt-5 rounded-xl border border-primary/30 bg-primary/10 p-4 animate-in fade-in slide-in-from-top-2 duration-200">
-            <p className="text-[10px] uppercase tracking-[0.22em] text-primary font-bold mb-2">
+            <p className="text-xs uppercase tracking-normal text-primary font-bold mb-2">
               Explanation
             </p>
             <p className="text-sm text-foreground/90 leading-relaxed">{q.explanation}</p>
@@ -373,7 +370,7 @@ function ExamRunner({
 function Stat({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-3xl bg-muted p-5 text-center">
-      <div className="text-[11px] uppercase tracking-widest text-muted-foreground">{label}</div>
+      <div className="text-xs uppercase tracking-normal text-muted-foreground">{label}</div>
       <div className="font-display text-3xl font-bold mt-1">{value}</div>
 
     </div>
@@ -408,7 +405,7 @@ function ReviewScreen({
         >
           <ArrowLeft className="w-3.5 h-3.5" /> Back to results
         </button>
-        <span className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
+        <span className="text-xs uppercase tracking-normal text-muted-foreground">
           {state} · Answer Review
         </span>
       </div>
@@ -440,7 +437,7 @@ function ReviewScreen({
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-start gap-3 min-w-0">
-                  <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-bold mt-1 shrink-0">
+                  <span className="text-xs uppercase tracking-normal text-muted-foreground font-bold mt-1 shrink-0">
                     Q{i + 1}
                   </span>
                   <h3 className="font-display text-base font-semibold leading-snug">
@@ -453,8 +450,8 @@ function ReviewScreen({
                     isSkipped
                       ? "bg-muted/30 text-muted-foreground border-muted-foreground/30"
                       : isCorrect
-                      ? "bg-emerald-500/15 text-emerald-700 border-emerald-500/40"
-                      : "bg-red-500/15 text-red-700 border-red-500/40",
+                      ? "bg-success/10 text-success border-success/40"
+                      : "bg-destructive/10 text-destructive border-destructive/40",
                   )}
                 >
                   {isSkipped ? (
@@ -477,9 +474,9 @@ function ReviewScreen({
                       className={cn(
                         "p-3 rounded-xl border text-sm flex items-center justify-between gap-2 transition-all duration-200",
                         optCorrect &&
-                          "border-emerald-400 bg-emerald-500/20 text-emerald-800",
+                          "border-success/40 bg-success/10 text-success",
                         optPicked && !optCorrect &&
-                          "border-red-400 bg-red-500/20 text-red-800",
+                          "border-destructive/40 bg-destructive/10 text-destructive",
                         !optCorrect && !optPicked && "border-border bg-card/40 opacity-60",
                       )}
                     >
@@ -492,7 +489,7 @@ function ReviewScreen({
               </div>
 
               <div className="mt-4 rounded-xl border border-primary/30 bg-primary/10 p-4">
-                <p className="text-[10px] uppercase tracking-[0.22em] text-primary font-bold mb-2">
+                <p className="text-xs uppercase tracking-normal text-primary font-bold mb-2">
                   Step-by-step explanation
                 </p>
                 <p className="text-sm text-foreground/90 leading-relaxed">

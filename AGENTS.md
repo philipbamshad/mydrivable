@@ -8,3 +8,6 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Use the shared Button component and semantic action/status tokens for changed controls so contrast and states remain consistent across themes.
+- Keep study navigation and page-heading labels identical, with active-page emphasis rather than permanent promotional marks.

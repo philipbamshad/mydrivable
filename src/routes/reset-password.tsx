@@ -13,8 +13,12 @@ export const Route = createFileRoute("/reset-password")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Drivable" },
+      { title: "Reset Password | Drivable" },
       { name: "description", content: "Choose a new password for your Drivable account." },
+      { property: "og:title", content: "Reset Password | Drivable" },
+      { property: "og:description", content: "Choose a new password for your Drivable account." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
       { name: "robots", content: "noindex" },
     ],
   }),
