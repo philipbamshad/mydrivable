@@ -216,7 +216,7 @@ function Hero() {
 
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
         <div className="ambient-blob absolute left-[8%] top-[30%] h-[520px] w-[520px] rounded-full bg-accent-coral/25 blur-3xl" />
-        <div className="ambient-blob-slow absolute right-[6%] top-[40%] h-[560px] w-[560px] rounded-full bg-hero-cyan/30 blur-3xl" />
+        <div className="ambient-blob-slow absolute right-[6%] top-[40%] h-[560px] w-[560px] rounded-full bg-accent-cyan/20 blur-3xl" />
       </div>
 
       <div className="relative mx-auto max-w-5xl">
