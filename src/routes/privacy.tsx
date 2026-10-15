@@ -135,10 +135,10 @@ function PrivacyPage() {
             <p className="mt-3">
               If you have questions about this Privacy Policy, please contact us at{" "}
               <a
-                href="mailto:philip@mydrivable.com"
+                href="mailto:support@mydrivable.com"
                 className="font-medium text-[#1e40af] hover:underline"
               >
-                philip@mydrivable.com
+                support@mydrivable.com
               </a>
               .
             </p>

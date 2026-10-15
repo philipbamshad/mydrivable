@@ -49,8 +49,8 @@ export function MarketingLayout({ children }: { children: ReactNode }) {
             <Link to="/privacy" className="text-[#1f2b4d]/70 hover:text-[#0f172a]">
               Privacy Policy
             </Link>
-            <a href="mailto:philip@mydrivable.com" className="text-[#1f2b4d]/70 hover:text-[#0f172a]">
-              philip@mydrivable.com
+            <a href="mailto:support@mydrivable.com" className="text-[#1f2b4d]/70 hover:text-[#0f172a]">
+              support@mydrivable.com
             </a>
           </div>
           <span>© {new Date().getFullYear()} Drivable · Drive safe. Drive legal.</span>

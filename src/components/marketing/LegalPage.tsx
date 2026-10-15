@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { MarketingLayout } from "@/components/marketing/MarketingLayout";
 
 export const BUSINESS_NAME = "Bedford Global";
-export const SUPPORT_EMAIL = "philip@mydrivable.com";
+export const SUPPORT_EMAIL = "support@mydrivable.com";
 
 export function legalHead(path: string, title: string, description: string) {
   const url = `https://www.mydrivable.com${path}`;

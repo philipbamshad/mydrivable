@@ -48,7 +48,7 @@ export const Route = createFileRoute("/")({
           name: "Drivable",
           url: "https://mydrivable.com/",
           logo: "https://mydrivable.com/favicon.png",
-          email: "philip@mydrivable.com",
+          email: "support@mydrivable.com",
           description:
             "Ace Your Permit Test on the First Try. An AI driving coach trained on every official DMV handbook, with full-length mock permit exams and targeted section drills.",
         }),
@@ -630,10 +630,10 @@ function Footer() {
         <div className="flex flex-col items-center gap-2 text-center">
           <span className="text-xs uppercase tracking-wider text-[#1f2b4d]/70">Need help?</span>
           <a
-            href="mailto:philip@mydrivable.com"
+            href="mailto:support@mydrivable.com"
             className="inline-flex min-h-11 items-center rounded-md px-3 py-2 text-[#1f2b4d]/80 transition hover:text-[#0f172a]"
           >
-            Contact Support: philip@mydrivable.com
+            Contact Support: support@mydrivable.com
           </a>
         </div>
         <div className="flex w-full flex-col items-center justify-between gap-4 border-t border-[#1e40af]/12 pt-6 sm:flex-row">
