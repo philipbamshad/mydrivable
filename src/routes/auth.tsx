@@ -517,7 +517,7 @@ function AuthPage() {
               </p>
             </div>
             <span className="rounded-full border border-border/70 bg-background/60 px-3 py-1 text-xs font-semibold uppercase tracking-normal">
-              CA
+              US
             </span>
           </div>
         </div>
