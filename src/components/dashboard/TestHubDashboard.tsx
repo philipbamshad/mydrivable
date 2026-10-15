@@ -85,14 +85,14 @@ export function TestHubDashboard() {
             <Card key={p.id} className="relative bg-card rounded-[28px] border border-border/60 p-4 sm:p-5 shadow-md hover:shadow-lg transition-shadow flex flex-col gap-4">
               <div className="flex items-center gap-3">
                 <span
-                  className="grid h-12 w-12 sm:h-14 sm:w-14 place-items-center rounded-[18px] border border-primary/30 bg-primary/5 text-primary shrink-0"
+                  className="grid h-12 w-12 sm:h-14 sm:w-14 place-items-center rounded-[18px] border border-border bg-muted text-foreground shrink-0"
                 >
                   <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
                 </span>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
                     <h3 className="font-display text-base sm:text-lg font-bold">{p.title}</h3>
-                    <Badge className="bg-primary/15 text-primary border-primary/40 border">
+                    <Badge className="bg-muted text-foreground border-border border">
                       {isPro ? "Pro" : "Free preview"}
                     </Badge>
                   </div>
@@ -128,9 +128,9 @@ export function TestHubDashboard() {
 function PillarPaywall({ onUpgrade }: { onUpgrade: () => void }) {
   return (
     <div className="max-w-xl mx-auto p-5">
-      <div className="rounded-[28px] border border-primary/30 bg-card px-6 py-8 text-center shadow-lg">
-        <div className="mx-auto mb-4 grid h-12 w-12 place-items-center rounded-full border border-primary/40 bg-primary/15">
-          <Lock className="h-5 w-5 text-primary" />
+      <div className="rounded-[28px] border border-border bg-card px-6 py-8 text-center shadow-lg">
+        <div className="mx-auto mb-4 grid h-12 w-12 place-items-center rounded-full border border-border bg-muted">
+          <Lock className="h-5 w-5 text-foreground" />
         </div>
         <p className="text-sm font-semibold text-foreground leading-snug">
           You've answered your 10 free lifetime questions for this quiz section. Upgrade to Pro Pass to unlock unlimited questions, practice modes, and get full explanations! [Get Pro Pass — $9]
@@ -267,7 +267,7 @@ function QuizRunner({
             {pillar.title}
           </p>
           <div
-            className="font-display text-7xl font-bold text-primary mt-3"
+            className="font-display text-7xl font-bold text-foreground mt-3"
             
           >
             {pct}%
@@ -351,7 +351,7 @@ function QuizRunner({
         </div>
 
         {reveal && (
-          <div className="mt-5 rounded-xl border border-primary/30 bg-primary/10 p-4 animate-in fade-in slide-in-from-top-2 duration-300">
+          <div className="mt-5 rounded-xl border border-border bg-muted p-4 animate-in fade-in slide-in-from-top-2 duration-300">
             <p className="text-xs uppercase tracking-normal text-primary font-bold mb-2">
               Explanation
             </p>

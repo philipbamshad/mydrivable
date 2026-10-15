@@ -69,7 +69,7 @@ export function PermitExamSimulator() {
     <div className="max-w-3xl mx-auto space-y-5 w-full">
       <Card className="relative bg-card rounded-[28px] border border-border/60 p-5 sm:p-7 shadow-lg">
         <div className="flex items-center gap-4">
-          <div className="grid h-12 w-12 sm:h-14 sm:w-14 place-items-center rounded-[18px] border border-primary/30 bg-primary/5 text-primary shrink-0">
+          <div className="grid h-12 w-12 sm:h-14 sm:w-14 place-items-center rounded-[18px] border border-border bg-muted text-foreground shrink-0">
             <Timer className="w-6 h-6 sm:w-7 sm:h-7" />
           </div>
           <div className="flex-1 min-w-0">
@@ -77,7 +77,7 @@ export function PermitExamSimulator() {
               <h3 className="font-display text-lg sm:text-xl font-bold">
                 {pack.rules.name} DMV Permit Exam
               </h3>
-              <Badge className="bg-primary/15 text-primary border-primary/40 border">
+              <Badge className="bg-muted text-foreground border-border border">
                 {isPro ? "Pro" : "Free preview"}
               </Badge>
             </div>
@@ -111,9 +111,9 @@ export function PermitExamSimulator() {
 function ExamPaywall({ onUpgrade }: { onUpgrade: () => void }) {
   return (
     <div className="max-w-2xl mx-auto p-5">
-      <div className="rounded-[28px] border border-primary/30 bg-card px-8 py-10 text-center shadow-lg">
-        <div className="mx-auto mb-5 grid h-14 w-14 place-items-center rounded-full border border-primary/40 bg-primary/15">
-          <Lock className="h-6 w-6 text-primary" />
+      <div className="rounded-[28px] border border-border bg-card px-8 py-10 text-center shadow-lg">
+        <div className="mx-auto mb-5 grid h-14 w-14 place-items-center rounded-full border border-border bg-muted">
+          <Lock className="h-6 w-6 text-foreground" />
         </div>
         <p className="text-base sm:text-lg font-semibold text-foreground leading-snug">
           You've answered your 20 free lifetime exam questions. Upgrade to Pro Pass to continue practicing, get instant rule explanations, and access unlimited exam simulators! [Get Pro Pass — $9]
@@ -349,8 +349,8 @@ function ExamRunner({
         </div>
 
         {reveal && (
-          <div className="mt-5 rounded-xl border border-primary/30 bg-primary/10 p-4 animate-in fade-in slide-in-from-top-2 duration-200">
-            <p className="text-xs uppercase tracking-normal text-primary font-bold mb-2">
+          <div className="mt-5 rounded-xl border border-border bg-muted p-4 animate-in fade-in slide-in-from-top-2 duration-200">
+            <p className="text-xs uppercase tracking-normal text-foreground font-bold mb-2">
               Explanation
             </p>
             <p className="text-sm text-foreground/90 leading-relaxed">{q.explanation}</p>
@@ -488,8 +488,8 @@ function ReviewScreen({
                 })}
               </div>
 
-              <div className="mt-4 rounded-xl border border-primary/30 bg-primary/10 p-4">
-                <p className="text-xs uppercase tracking-normal text-primary font-bold mb-2">
+              <div className="mt-4 rounded-xl border border-border bg-muted p-4">
+                <p className="text-xs uppercase tracking-normal text-foreground font-bold mb-2">
                   Step-by-step explanation
                 </p>
                 <p className="text-sm text-foreground/90 leading-relaxed">

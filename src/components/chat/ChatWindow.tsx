@@ -133,9 +133,9 @@ export function ChatWindow({
   const isEmpty = messages.length === 0;
 
   const paywall = (
-    <div className="mx-auto max-w-lg rounded-[20px] border border-primary/25 bg-card px-4 py-5 text-center shadow-[0_12px_30px_-16px_rgba(15,23,42,0.22)]">
-      <div className="mx-auto mb-3 grid h-10 w-10 place-items-center rounded-full border border-primary/30 bg-primary/10">
-        <Lock className="h-4 w-4 text-primary" />
+    <div className="mx-auto max-w-lg rounded-[20px] border border-border bg-card px-4 py-5 text-center shadow-[0_12px_30px_-16px_rgba(15,23,42,0.22)]">
+      <div className="mx-auto mb-3 grid h-10 w-10 place-items-center rounded-full border border-border bg-muted">
+        <Lock className="h-4 w-4 text-foreground" />
       </div>
       <p className="mx-auto max-w-sm text-sm font-semibold text-foreground leading-snug">
         You've used your 10 free lifetime AI questions. Upgrade to Pro Pass to continue chatting, get instant rule explanations, and access full exam simulators!
@@ -157,7 +157,7 @@ export function ChatWindow({
         maxFiles={4}
         maxFileSize={8 * 1024 * 1024}
         onError={(e) => toast.error(e.message)}
-        className="rounded-[32px] border border-primary/25 bg-card/90 backdrop-blur outline-none transition-colors focus-within:border-primary/50 overflow-hidden [&>div]:h-auto [&>div]:flex-wrap [&>div]:border-0 [&>div]:shadow-none [&>div]:bg-transparent has-[[data-slot=input-group-control]:focus-visible]:ring-0 has-[[data-slot=input-group-control]:focus-visible]:border-primary/50"
+        className="rounded-[32px] border border-border bg-card/90 backdrop-blur outline-none transition-colors focus-within:border-foreground/40 overflow-hidden [&>div]:h-auto [&>div]:flex-wrap [&>div]:border-0 [&>div]:shadow-none [&>div]:bg-transparent has-[[data-slot=input-group-control]:focus-visible]:ring-0 has-[[data-slot=input-group-control]:focus-visible]:border-foreground/40"
       >
         <AttachmentChips />
         <div className="flex w-full items-center gap-2 py-2 pl-2 pr-2">
@@ -220,7 +220,7 @@ export function ChatWindow({
               <button
                 key={s}
                 onClick={() => handleSuggestion(s)}
-                className="press rounded-2xl border border-border bg-card px-4 py-2.5 text-left text-sm shadow-[0_10px_30px_-18px_rgba(15,23,42,0.25)] transition-colors hover:border-primary/50 hover:bg-accent"
+                className="press rounded-2xl border border-border bg-card px-4 py-2.5 text-left text-sm shadow-[0_10px_30px_-18px_rgba(15,23,42,0.25)] transition-colors hover:border-foreground/40 hover:bg-accent"
               >
                 {s}
               </button>
@@ -311,7 +311,7 @@ function AttachmentChips() {
         return (
           <div
             key={f.id}
-            className="relative rounded-2xl border border-primary/25 bg-primary/5 text-xs text-foreground"
+            className="relative rounded-2xl border border-border bg-muted text-xs text-foreground"
           >
             {isImage ? (
               <img
@@ -321,7 +321,7 @@ function AttachmentChips() {
               />
             ) : (
               <span className="flex items-center gap-1.5 py-2 pl-2.5 pr-6">
-                <Paperclip className="h-3 w-3 text-primary" />
+                <Paperclip className="h-3 w-3 text-foreground" />
                 <span className="max-w-[140px] truncate">{f.filename ?? "attachment"}</span>
               </span>
             )}
