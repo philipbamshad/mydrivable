@@ -14,6 +14,7 @@ import { PermitExamSimulator } from "@/components/dashboard/PermitExamSimulator"
 import { ChatTab } from "@/components/chat/ChatTab";
 import { useUserProfile } from "@/lib/user-profile";
 import { StateOnboardingDialog } from "@/components/dashboard/StateOnboardingDialog";
+import { tabGlowStyle } from "@/lib/tab-glow";
 
 type TabId = "test-hub" | "state-exam" | "chat";
 
@@ -58,10 +59,6 @@ const TABS = [
   { id: "chat", label: "AI Coach", icon: MessageSquare },
 ] as const;
 
-const tabGlowStyle: React.CSSProperties = {
-  background:
-    "radial-gradient(380px 380px at 32% 45%, color-mix(in oklch, var(--rose-soft) 18%, transparent), transparent 70%), radial-gradient(380px 380px at 68% 52%, color-mix(in oklch, var(--accent-coral) 14%, transparent), transparent 70%)",
-};
 
 function AppDashboard() {
   const search = Route.useSearch();
