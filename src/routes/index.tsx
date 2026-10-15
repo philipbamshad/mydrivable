@@ -214,16 +214,15 @@ function Hero() {
         <span className="hidden text-muted-foreground sm:inline">Full-length state-specific Mock Permit Exam simulator, now live</span>
       </div>
 
+      <div aria-hidden className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+        <div className="ambient-blob absolute left-[8%] top-[30%] h-[520px] w-[520px] rounded-full bg-accent-coral/30 blur-[120px]" />
+        <div className="ambient-blob-slow absolute right-[6%] top-[40%] h-[560px] w-[560px] rounded-full bg-accent-cyan/25 blur-[120px]" />
+      </div>
+
       <div className="relative mx-auto max-w-5xl">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-1/2 -z-10 mx-auto h-40 max-w-3xl -translate-y-1/2 rounded-full bg-primary/20 blur-3xl sm:h-56"
-        />
-        <h1 className="fade-in-up relative font-sans text-4xl font-semibold leading-tight tracking-tight sm:text-6xl">
+        <h1 className="fade-in-up relative font-display text-5xl font-bold leading-tight tracking-tight sm:text-7xl">
           Drivable,{" "}
-          <span className="text-primary font-medium">
-            Master Your Permit
-          </span>
+          <span className="hero-serif-gradient">Master Your Permit</span>
         </h1>
       </div>
 
