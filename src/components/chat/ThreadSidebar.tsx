@@ -43,7 +43,8 @@ import { toast } from "sonner";
 import { format } from "date-fns";
 import logo from "@/assets/drivable-logo.png";
 import { cn } from "@/lib/utils";
-import { AccountPanel } from "@/components/dashboard/AccountPanel";
+import { AccountPanel, type AccountSection } from "@/components/dashboard/AccountPanel";
+import { lovable } from "@/integrations/lovable/index";
 import { useUserProfile, US_STATES } from "@/lib/user-profile";
 import { useTheme } from "@/lib/theme";
 
@@ -95,6 +96,7 @@ export function ThreadSidebar() {
   const navigate = useNavigate();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
+  const [panelSection, setPanelSection] = useState<AccountSection | undefined>(undefined);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
   const { state: userState, setState: setUserState, targetDate, setTargetDate, isPro, openCheckout } = useUserProfile();
@@ -276,18 +278,25 @@ export function ThreadSidebar() {
     const isCollapsed = surface === "desktop" && collapsed;
     const displayName = userMeta.name ?? "Account";
     const initial = (displayName[0] ?? "D").toUpperCase();
-    const openAccountPanel = () => {
+    const openSection = (sec: AccountSection) => {
       setAccountOpen(false);
+      setPanelSection(sec);
       setSettingsOpen(true);
+    };
+    const switchGoogleAccount = async () => {
+      const result = await lovable.auth.signInWithOAuth("google", {
+        redirect_uri: window.location.origin,
+        extraParams: { prompt: "select_account" },
+      });
+      if (result.error) toast.error("Could not open your Google accounts. Try again.");
     };
 
     return (
       <div className={cn("flex items-center gap-2 border-t border-sidebar-border mt-auto", isCollapsed ? "flex-col p-2" : "p-3")}>
         <button
           type="button"
-          onClick={openAccountPanel}
-          aria-label="Open account settings"
-          aria-haspopup="dialog"
+          onClick={() => void switchGoogleAccount()}
+          aria-label="Switch Google account"
           style={{ WebkitTapHighlightColor: "transparent" }}
           className={cn(
             "flex items-center min-w-0 rounded-2xl hover:bg-muted transition-colors press touch-manipulation",
@@ -333,12 +342,11 @@ export function ThreadSidebar() {
           >
             <div className="max-h-[70vh] overflow-y-auto">
               <MenuSectionLabel>Account</MenuSectionLabel>
-              <MenuRow icon={UserRound} label="Manage account" onClick={openAccountPanel} />
               {isPro ? (
                 <MenuRow
                   icon={Crown}
                   label="Pro Pass — Lifetime"
-                  onClick={openAccountPanel}
+                  onClick={() => openSection("membership")}
                   trailing={<span className="text-xs text-muted-foreground">Active</span>}
                 />
               ) : (
@@ -362,25 +370,12 @@ export function ThreadSidebar() {
               <MenuRow
                 icon={Settings2}
                 label={userState ? `Driving state · ${userState}` : "Driving state"}
-                onClick={openAccountPanel}
-              />
-
-              <MenuSectionLabel>Data &amp; privacy</MenuSectionLabel>
-              <MenuRow
-                icon={Shield}
-                label="Privacy policy"
-                onClick={() => {
-                  setAccountOpen(false);
-                  navigate({ to: "/privacy" });
-                }}
+                onClick={() => openSection("state")}
               />
               <MenuRow
-                icon={Trash2}
-                label="Delete account"
-                onClick={() => {
-                  window.location.href =
-                    "mailto:support@mydrivable.com?subject=Account%20deletion%20request&body=Please%20delete%20my%20Drivable%20account%20and%20all%20associated%20data.%20My%20account%20email%20is%3A%20";
-                }}
+                icon={CalendarDays}
+                label={`DMV target date · ${targetLabel}`}
+                onClick={() => openSection("date")}
               />
 
               <div className="my-2 border-t border-border/60" />
@@ -488,10 +483,10 @@ export function ThreadSidebar() {
         {createUserFooter(surface)}
         <SheetContent side="right" className="w-full sm:max-w-lg overflow-y-auto">
           <SheetHeader>
-            <SheetTitle>Settings</SheetTitle>
+            <SheetTitle>{panelSection === "state" ? "Driving state" : panelSection === "date" ? "DMV target date" : panelSection === "membership" ? "Pro Pass" : "Settings"}</SheetTitle>
           </SheetHeader>
           <div className="mt-4">
-            <AccountPanel />
+            <AccountPanel section={panelSection} />
           </div>
         </SheetContent>
       </Sheet>

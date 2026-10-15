@@ -15,7 +15,10 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { TargetDatePicker } from "@/components/dashboard/TargetDatePicker";
 import { useTheme } from "@/lib/theme";
 
-export function AccountPanel() {
+export type AccountSection = "theme" | "state" | "date" | "membership" | "delete";
+
+export function AccountPanel({ section }: { section?: AccountSection } = {}) {
+  const show = (k: AccountSection) => !section || section === k;
   const { state, setState, isPro, openCheckout, targetDate, setTargetDate } = useUserProfile();
   const { theme } = useTheme();
 
@@ -29,7 +32,8 @@ export function AccountPanel() {
 
   return (
     <div className="space-y-6">
-      <Card className="glass glow-soft p-6 rounded-2xl">
+      {show("theme") && (
+<Card className="glass glow-soft p-6 rounded-2xl">
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div className="flex items-center gap-3 min-w-0">
             <span
@@ -52,9 +56,11 @@ export function AccountPanel() {
           <ThemeToggle />
         </div>
       </Card>
+      )}
 
 
-      <Card className="glass glow-soft p-6 rounded-2xl">
+      {show("state") && (
+<Card className="glass glow-soft p-6 rounded-2xl">
         <h2 className="font-display text-lg font-bold mb-5">Local Rules Engine</h2>
 
         <div className="grid sm:grid-cols-[260px_1fr] gap-4 items-start">
@@ -71,15 +77,19 @@ export function AccountPanel() {
         </div>
 
       </Card>
+      )}
 
-      <Card className="glass glow-soft p-6 rounded-2xl">
+      {show("date") && (
+<Card className="glass glow-soft p-6 rounded-2xl">
         <h2 className="font-display text-lg font-bold">DMV Target Date</h2>
         <div className="mt-4">
           <TargetDatePicker value={targetDate} onChange={setTargetDate} />
         </div>
       </Card>
+      )}
 
-      <Card className="glass glow-soft p-6 rounded-2xl">
+      {show("membership") && (
+<Card className="glass glow-soft p-6 rounded-2xl">
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div className="flex items-center gap-3 min-w-0">
             <span
@@ -125,8 +135,10 @@ export function AccountPanel() {
 
         </div>
       </Card>
+      )}
 
-      <Card className="p-5">
+      {show("delete") && (
+<Card className="p-5">
         <h3 className="font-semibold">Delete my account</h3>
         <p className="mt-1 text-sm text-muted-foreground">
           Request permanent deletion of your account, chat history, and study progress. We process requests within 30 days.
@@ -137,6 +149,7 @@ export function AccountPanel() {
           </a>
         </Button>
       </Card>
+      )}
     </div>
   );
 }
