@@ -20,7 +20,6 @@ import {
 import {
   PromptInput,
   PromptInputTextarea,
-  PromptInputFooter,
   PromptInputSubmit,
   usePromptInputAttachments,
   type PromptInputMessage,
@@ -158,21 +157,19 @@ export function ChatWindow({
         maxFiles={4}
         maxFileSize={8 * 1024 * 1024}
         onError={(e) => toast.error(e.message)}
-        className="rounded-[28px] border border-primary/25 bg-card/90 backdrop-blur outline-none transition-colors focus-within:border-primary/50 overflow-hidden has-[[data-slot=input-group-control]:focus-visible]:ring-0 has-[[data-slot=input-group-control]:focus-visible]:border-primary/50"
+        className="rounded-full border border-primary/25 bg-card/90 backdrop-blur outline-none transition-colors focus-within:border-primary/50 overflow-hidden has-[[data-slot=input-group-control]:focus-visible]:ring-0 has-[[data-slot=input-group-control]:focus-visible]:border-primary/50"
       >
         <AttachmentChips />
-        <PromptInputTextarea
-          ref={textareaRef}
-          placeholder="Ask Drivable AI anything about your permit test..."
-          disabled={isBusy}
-          className="px-5 pt-4 outline-none ring-0 focus:outline-none focus-visible:ring-0 rounded-[28px]"
-        />
-        <PromptInputFooter className="items-center justify-between border-0 px-3 pb-3">
+        <div className="flex items-center gap-1.5 py-1.5 pl-1.5 pr-2">
           <AttachButton />
-          <div className="flex items-center gap-2">
-            <PromptInputSubmit status={status} disabled={isBusy} />
-          </div>
-        </PromptInputFooter>
+          <PromptInputTextarea
+            ref={textareaRef}
+            placeholder="Ask Drivable AI anything about your permit test..."
+            disabled={isBusy}
+            className="max-h-32 min-h-10 flex-1 resize-none border-0 bg-transparent px-2 py-2 shadow-none outline-none ring-0 focus:outline-none focus-visible:ring-0"
+          />
+          <PromptInputSubmit status={status} disabled={isBusy} className="shrink-0 rounded-full" />
+        </div>
       </PromptInput>
       {!isPro && (
         <p className="text-xs text-muted-foreground mt-2 text-center">
@@ -340,9 +337,9 @@ function AttachButton() {
       type="button"
       aria-label="Add attachment"
       onClick={() => attachments.openFileDialog()}
-      className="grid h-9 w-9 place-items-center rounded-full border border-primary/25 bg-primary/5 text-primary transition-colors hover:bg-primary/10"
+      className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
     >
-      <Plus className="h-4 w-4" />
+      <Plus className="h-5 w-5" />
     </button>
   );
 }
