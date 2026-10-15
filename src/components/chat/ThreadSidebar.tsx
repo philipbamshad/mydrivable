@@ -52,6 +52,44 @@ const PRIMARY_NAV = [
   { id: "test-hub", label: "Permit Test Hub", icon: ClipboardCheck },
 ] as const;
 
+function MenuRow({
+  icon: Icon,
+  label,
+  onClick,
+  trailing,
+  tone = "default",
+}: {
+  icon: LucideIcon;
+  label: string;
+  onClick: () => void;
+  trailing?: ReactNode;
+  tone?: "default" | "danger";
+}) {
+  return (
+    <Button
+      variant="ghost"
+      type="button"
+      onClick={onClick}
+      className={cn(
+        "w-full h-auto min-h-11 justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-normal hover:bg-muted press touch-manipulation",
+        tone === "danger" ? "text-destructive" : "text-foreground",
+      )}
+    >
+      <Icon className={cn("w-4 h-4 shrink-0", tone === "danger" ? "text-destructive" : "text-muted-foreground")} />
+      <span className="flex-1 truncate text-left">{label}</span>
+      {trailing}
+    </Button>
+  );
+}
+
+function MenuSectionLabel({ children }: { children: ReactNode }) {
+  return (
+    <p className="px-3 pt-3 pb-1 text-xs font-medium tracking-normal text-muted-foreground">
+      {children}
+    </p>
+  );
+}
+
 export function ThreadSidebar() {
   const navigate = useNavigate();
   const [settingsOpen, setSettingsOpen] = useState(false);
