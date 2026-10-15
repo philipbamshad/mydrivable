@@ -18,6 +18,7 @@ import {
   Video,
   Settings,
   Settings2,
+  Sun,
   Menu,
   Check,
   CalendarDays,
@@ -48,6 +49,7 @@ export function ThreadSidebar() {
   const navigate = useNavigate();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [panelSection, setPanelSection] = useState<AccountSection | undefined>(undefined);
+  const [settingsMenuOpen, setSettingsMenuOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
   const { state: userState, setState: setUserState, targetDate, setTargetDate, isPro } = useUserProfile();
@@ -224,27 +226,38 @@ export function ThreadSidebar() {
     </Button>
   );
 
+  const openSettingsSection = (section: AccountSection | undefined) => {
+    setSettingsMenuOpen(false);
+    setPanelSection(section);
+    setSettingsOpen(true);
+  };
+
+  const settingsMenu: { label: string; icon: typeof Settings; section: AccountSection }[] = [
+    { label: "Appearance", icon: Sun, section: "theme" },
+    { label: "Driving state", icon: Settings2, section: "state" },
+    { label: "DMV target date", icon: CalendarDays, section: "date" },
+    { label: "Pro Pass", icon: Check, section: "membership" },
+  ];
+
   const createUserFooter = (surface: "desktop" | "mobile") => {
     const isCollapsed = surface === "desktop" && collapsed;
-    const displayName = userMeta.name ?? "Account";
+    const fullName = userMeta.name ?? "Account";
+    const displayName = fullName.trim().split(/\s+/)[0] || "Account";
     const initial = (displayName[0] ?? "D").toUpperCase();
-    const openSettings = () => {
-      setPanelSection(undefined);
-      setSettingsOpen(true);
-    };
+    const planLabel = isPro ? "Pro" : "Free";
 
     return (
       <div className={cn("flex items-center gap-2 border-t border-sidebar-border mt-auto", isCollapsed ? "flex-col p-2" : "p-3")}>
         <button
           type="button"
-          onClick={openSettings}
+          onClick={() => openSettingsSection(undefined)}
           aria-label="Open settings"
           style={{ WebkitTapHighlightColor: "transparent" }}
           className={cn(
             "flex items-center min-w-0 rounded-2xl hover:bg-muted transition-colors press touch-manipulation",
             isCollapsed ? "justify-center p-1" : "flex-1 gap-2.5 px-2 py-2 min-h-11 text-left",
           )}
-          title={isCollapsed ? displayName : undefined}
+          title={isCollapsed ? `${displayName} · ${planLabel}` : undefined}
         >
           <span className="grid h-9 w-9 place-items-center rounded-full bg-primary text-primary-foreground text-sm font-semibold shrink-0">
             {initial}
@@ -253,25 +266,59 @@ export function ThreadSidebar() {
             <span className="flex items-baseline gap-1.5 min-w-0">
               <span className="text-sm font-semibold truncate leading-tight">{displayName}</span>
               <span className="text-xs text-muted-foreground truncate leading-tight">
-                · {isPro ? "Pro" : "Free"}
+                · {planLabel}
               </span>
             </span>
           )}
         </button>
-        <Button
-          variant="ghost"
-          size="icon"
-          type="button"
-          onClick={openSettings}
-          aria-label="Open settings"
-          className={cn(
-            "shrink-0 rounded-full text-muted-foreground hover:text-foreground press",
-            isCollapsed ? "h-10 w-10" : "h-9 w-9",
-          )}
-          title="Settings"
-        >
-          <Settings className={isCollapsed ? "w-5 h-5" : "w-[18px] h-[18px]"} />
-        </Button>
+        <Popover open={settingsMenuOpen} onOpenChange={setSettingsMenuOpen}>
+          <PopoverTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              type="button"
+              aria-label="Open settings menu"
+              className={cn(
+                "shrink-0 rounded-full text-muted-foreground hover:text-foreground press",
+                isCollapsed ? "h-10 w-10" : "h-9 w-9",
+              )}
+              title="Settings"
+            >
+              <Settings className={isCollapsed ? "w-5 h-5" : "w-[18px] h-[18px]"} />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent
+            side="top"
+            align="end"
+            className="w-56 p-1.5 rounded-2xl"
+          >
+            <div className="px-2.5 py-2">
+              <p className="text-sm font-semibold truncate">{displayName}</p>
+              <p className="text-xs text-muted-foreground">{planLabel} plan</p>
+            </div>
+            <div className="h-px bg-border my-1" />
+            {settingsMenu.map((item) => (
+              <button
+                key={item.section}
+                type="button"
+                onClick={() => openSettingsSection(item.section)}
+                className="flex w-full items-center gap-2.5 rounded-xl px-2.5 py-2 text-sm hover:bg-muted transition-colors press text-left"
+              >
+                <item.icon className="w-4 h-4 text-muted-foreground" />
+                {item.label}
+              </button>
+            ))}
+            <div className="h-px bg-border my-1" />
+            <button
+              type="button"
+              onClick={() => void signOut()}
+              className="flex w-full items-center gap-2.5 rounded-xl px-2.5 py-2 text-sm text-destructive hover:bg-destructive/10 transition-colors press text-left"
+            >
+              <LogOut className="w-4 h-4" />
+              Sign out
+            </button>
+          </PopoverContent>
+        </Popover>
       </div>
     );
   };
