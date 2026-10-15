@@ -38,7 +38,7 @@ export function AccountPanel({ section }: { section?: AccountSection } = {}) {
           <div className="flex items-center gap-3 min-w-0">
             <span
               className="grid h-12 w-12 place-items-center rounded-xl bg-muted border border-border shrink-0"
-              style={{ boxShadow: "0 0 18px -4px var(--color-primary)" }}
+              style={{ boxShadow: "0 0 18px -6px color-mix(in oklab, var(--color-foreground) 35%, transparent)" }}
             >
               {theme === "dark" ? (
                 <Moon className="w-5 h-5 text-foreground" />
@@ -94,7 +94,7 @@ export function AccountPanel({ section }: { section?: AccountSection } = {}) {
           <div className="flex items-center gap-3 min-w-0">
             <span
               className="grid h-12 w-12 place-items-center rounded-xl bg-muted border border-border shrink-0"
-              style={{ boxShadow: "0 0 18px -4px var(--color-primary)" }}
+              style={{ boxShadow: "0 0 18px -6px color-mix(in oklab, var(--color-foreground) 35%, transparent)" }}
             >
               {isPro ? <Crown className="w-5 h-5 text-foreground" /> : <Lock className="w-5 h-5 text-foreground" />}
             </span>
