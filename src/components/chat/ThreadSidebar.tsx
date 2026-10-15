@@ -483,47 +483,17 @@ export function ThreadSidebar() {
 
       {createInfoCards(surface)}
 
-      <div className={cn("border-t border-sidebar-border space-y-1 mt-auto", isCollapsed ? "p-2" : "p-3")}>
-        <Sheet open={settingsOpen} onOpenChange={setSettingsOpen}>
-          <SheetTrigger asChild>
-            <Button
-              variant="ghost"
-              size="sm"
-              className={cn(
-                "w-full justify-start text-muted-foreground hover:text-foreground press min-h-11",
-                isCollapsed && "justify-center px-0",
-              )}
-              title={isCollapsed ? "Settings" : undefined}
-            >
-              <Settings className="w-4 h-4" />
-              <span className={cn("transition-all duration-300", isCollapsed && "w-0 opacity-0")}>
-                Settings
-              </span>
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="right" className="w-full sm:max-w-lg overflow-y-auto">
-            <SheetHeader>
-              <SheetTitle>Settings</SheetTitle>
-            </SheetHeader>
-            <div className="mt-4">
-              <AccountPanel />
-            </div>
-          </SheetContent>
-        </Sheet>
-
-        {!isCollapsed && (
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={signOut}
-            className="w-full justify-start text-muted-foreground hover:text-foreground press min-h-11"
-            title="Sign out"
-          >
-            <LogOut className="w-4 h-4" />
-            <span className="transition-all duration-300">Sign out</span>
-          </Button>
-        )}
-      </div>
+      <Sheet open={settingsOpen} onOpenChange={setSettingsOpen}>
+        {createUserFooter(surface)}
+        <SheetContent side="right" className="w-full sm:max-w-lg overflow-y-auto">
+          <SheetHeader>
+            <SheetTitle>Settings</SheetTitle>
+          </SheetHeader>
+          <div className="mt-4">
+            <AccountPanel />
+          </div>
+        </SheetContent>
+      </Sheet>
     </>
   );
   };
