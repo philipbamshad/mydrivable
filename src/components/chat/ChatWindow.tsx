@@ -175,7 +175,7 @@ export function ChatWindow({
         </PromptInputFooter>
       </PromptInput>
       {!isPro && (
-        <p className="text-[10px] text-muted-foreground mt-2 text-center">
+        <p className="text-xs text-muted-foreground mt-2 text-center">
           {`${remaining} of ${FREE_LIFETIME_LIMIT} free lifetime AI questions left. Upgrade for unlimited chat.`}
         </p>
       )}
@@ -186,13 +186,13 @@ export function ChatWindow({
   if (isEmpty) {
     return (
       <div
-        className="relative flex h-full flex-col items-center justify-center overflow-hidden bg-background px-4"
+        className="relative flex h-full flex-col items-center justify-start overflow-y-auto bg-background px-4 py-5"
         style={{
           background:
             "radial-gradient(420px 420px at 18% 30%, color-mix(in oklch, var(--rose-soft) 16%, transparent), transparent 70%), radial-gradient(420px 420px at 82% 70%, color-mix(in oklch, var(--accent-coral) 13%, transparent), transparent 70%)",
         }}
       >
-        <div className="w-full max-w-2xl text-center">
+        <div className="w-full max-w-2xl text-center my-auto shrink-0">
           <img src={logo} alt="" width={48} height={48} className="logo-mask mx-auto mb-4 opacity-90" />
           <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground">
             {greetingName ? `What's the vibe, ${greetingName}?` : "What are we studying today?"}
@@ -219,7 +219,7 @@ export function ChatWindow({
             ))}
           </div>
 
-          <p className="mt-4 text-[11px] text-muted-foreground/80">
+          <p className="mt-4 text-xs leading-relaxed text-muted-foreground">
             Your coach can slip up. Confirm anything official with your state handbook.
           </p>
 
@@ -283,7 +283,7 @@ export function ChatWindow({
       <div className="bg-background/80 backdrop-blur">
         <div className="max-w-3xl mx-auto w-full px-4 py-4">
           {limitReached ? paywall : composer}
-          <p className="mt-2 text-center text-[11px] text-muted-foreground/80">
+          <p className="mt-2 text-center text-xs leading-relaxed text-muted-foreground">
             Your coach can slip up. Confirm anything official with your state handbook.
           </p>
         </div>

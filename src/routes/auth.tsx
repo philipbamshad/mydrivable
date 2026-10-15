@@ -17,11 +17,12 @@ export const Route = createFileRoute("/auth")({
   },
   head: () => ({
     meta: [
-      { title: "Drivable" },
+      { title: "Sign In | Drivable" },
       { name: "description", content: "Sign in to Drivable to start studying for your DMV permit written exam." },
       { property: "og:title", content: "Sign in, Drivable" },
       { property: "og:description", content: "Sign in to Drivable to start studying for your DMV permit written exam." },
       { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
       { property: "og:url", content: "https://mydrivable.com/auth" },
       { name: "robots", content: "noindex" },
     ],
@@ -256,7 +257,7 @@ function AuthPage() {
           </div>
           <div className="text-center">
             <h1 className="font-display text-2xl font-bold tracking-tight">Drivable, Sign In</h1>
-            <p className="text-[10px] text-muted-foreground mt-1 uppercase tracking-[0.28em]">
+            <p className="text-xs text-muted-foreground mt-1 uppercase tracking-normal">
               Permit
             </p>
           </div>
@@ -265,7 +266,8 @@ function AuthPage() {
         <div className="glass glow-soft rounded-2xl border border-primary/20 p-6 ">
           <div className="flex gap-1 mb-5 p-1 bg-background/40 border border-border/60 rounded-lg backdrop-blur-sm">
             {(["sign-in", "sign-up"] as const).map((m) => (
-              <button
+              <Button
+                variant="ghost"
                 key={m}
                 type="button"
                 onClick={() => {
@@ -280,7 +282,7 @@ function AuthPage() {
                 }`}
               >
                 {m === "sign-in" ? "Sign in" : "Create account"}
-              </button>
+              </Button>
             ))}
           </div>
 
@@ -291,7 +293,7 @@ function AuthPage() {
               </p>
               <Button
                 type="button"
-                className="w-full"
+                className="w-full h-11"
                 onClick={() => {
                   setMode("sign-in");
                   setEmail("");
@@ -308,7 +310,7 @@ function AuthPage() {
             <>
               <form onSubmit={handleEmail} className="space-y-3" noValidate>
                 <div className="space-y-1.5">
-                  <Label htmlFor="email" className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                  <Label htmlFor="email" className="text-sm font-medium text-foreground">
                     Email
                   </Label>
                   <Input
@@ -319,16 +321,16 @@ function AuthPage() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     aria-invalid={!!fieldErrors.email}
-                    className={`bg-background/40 border-border/60 focus-visible:ring-primary/40 ${
+                    className={`h-11 bg-card border-input-strong focus-visible:ring-primary/40 ${
                       fieldErrors.email ? "border-destructive/70" : ""
                     }`}
                   />
                   {fieldErrors.email && (
-                    <p className="text-[11px] text-destructive">{fieldErrors.email}</p>
+                    <p className="text-xs text-destructive">{fieldErrors.email}</p>
                   )}
                 </div>
                 <div className="space-y-1.5">
-                  <Label htmlFor="password" className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                  <Label htmlFor="password" className="text-sm font-medium text-foreground">
                     Password
                   </Label>
                   <div className="relative">
@@ -341,45 +343,48 @@ function AuthPage() {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       aria-invalid={!!fieldErrors.password}
-                      className={`bg-background/40 border-border/60 focus-visible:ring-primary/40 pr-10 ${
+                      className={`h-11 bg-card border-input-strong focus-visible:ring-primary/40 pr-14 ${
                         fieldErrors.password ? "border-destructive/70" : ""
                       }`}
                     />
-                    <button
+                    <Button
+                      variant="ghost"
+                      size="icon"
                       type="button"
                       onClick={() => setShowPassword((s) => !s)}
                       aria-label={showPassword ? "Hide password" : "Show password"}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-muted-foreground hover:text-foreground transition-colors"
-                      tabIndex={-1}
+                      aria-pressed={showPassword}
+                      className="absolute right-0 top-1/2 -translate-y-1/2 h-11 w-11 text-muted-foreground hover:text-foreground"
                     >
                       {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                    </button>
+                    </Button>
                   </div>
                   {fieldErrors.password ? (
-                    <p className="text-[11px] text-destructive">{fieldErrors.password}</p>
+                    <p className="text-xs text-destructive">{fieldErrors.password}</p>
                   ) : mode === "sign-up" ? (
-                    <p className="text-[11px] text-muted-foreground">Use at least 8 characters.</p>
+                    <p className="text-xs text-muted-foreground">Use at least 8 characters.</p>
                   ) : null}
                 </div>
                 {mode === "sign-in" && (
                   <div className="flex justify-end">
                     {forgotSent ? (
-                      <span className="text-[11px] text-muted-foreground">Reset link sent. Check your inbox.</span>
+                      <span className="text-xs text-muted-foreground">Reset link sent. Check your inbox.</span>
                     ) : (
-                      <button
+                      <Button
+                        variant="link"
                         type="button"
                         onClick={handleForgot}
                         disabled={loading}
-                        className="text-[11px] text-muted-foreground hover:text-foreground underline underline-offset-2"
+                        className="text-xs text-muted-foreground hover:text-foreground underline underline-offset-2"
                       >
                         Forgot your password?
-                      </button>
+                      </Button>
                     )}
                   </div>
                 )}
                 <Button
                   type="submit"
-                  className="w-full"
+                  className="w-full h-11"
                   disabled={loading}
                 >
                   {loading && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
@@ -388,7 +393,7 @@ function AuthPage() {
               </form>
 
 
-              <div className="my-4 flex items-center gap-3 text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
+              <div className="my-4 flex items-center gap-3 text-xs uppercase tracking-normal text-muted-foreground">
                 <div className="h-px flex-1 bg-border/70" />
                 <span>OR</span>
                 <div className="h-px flex-1 bg-border/70" />
@@ -398,7 +403,7 @@ function AuthPage() {
                 <Button
                   type="button"
                   variant="outline"
-                  className="w-full border-border/70 bg-background/40 hover:bg-background/70 hover:border-primary/50"
+                  className="w-full h-11 border-input-strong bg-card hover:bg-accent"
                   onClick={() => handleOAuth("google")}
                   disabled={loading}
                 >
@@ -415,7 +420,7 @@ function AuthPage() {
           )}
         </div>
 
-        <p className="text-center text-[11px] text-muted-foreground mt-6">
+        <p className="text-center text-xs text-muted-foreground mt-6">
           By continuing, you agree to drive safely and legally.
         </p>
       </div>
@@ -434,7 +439,7 @@ function AuthPage() {
 
         <div className="auth-stagger relative w-full max-w-md space-y-4">
           <div>
-            <p className="text-[10px] uppercase tracking-[0.28em] text-muted-foreground">
+            <p className="text-sm font-medium text-foreground">
               Inside Drivable
             </p>
             <h2 className="font-display text-2xl font-bold tracking-tight mt-2">
@@ -443,10 +448,10 @@ function AuthPage() {
           </div>
 
           {/* AI coach preview */}
-          <div className="feature-float rounded-[28px] border border-border/60 bg-card/70 p-5 backdrop-blur-md shadow-lg">
+          <div className="rounded-[28px] border border-border/60 bg-card/70 p-5 backdrop-blur-md shadow-lg">
             <div className="flex items-center gap-2 mb-3">
               <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
+              <span className="text-sm font-medium text-foreground">
                 AI Coach
               </span>
             </div>
@@ -461,15 +466,15 @@ function AuthPage() {
           </div>
 
           {/* Exam progress preview */}
-          <div className="feature-float-delay rounded-[28px] border border-border/60 bg-card/70 p-5 backdrop-blur-md shadow-lg">
+          <div className="rounded-[28px] border border-border/60 bg-card/70 p-5 backdrop-blur-md shadow-lg">
             <div className="flex items-center justify-between mb-3">
               <span className="text-sm font-semibold">Mock Permit Exam</span>
-              <span className="rounded-full border border-primary/40 bg-primary/10 px-2 py-0.5 text-[10px] font-medium">
+              <span className="rounded-full border border-primary/40 bg-primary/10 px-2 py-0.5 text-xs font-medium">
                 Question 18 of 46
               </span>
             </div>
             <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
-              <div className="feature-progress h-full rounded-full bg-primary" />
+              <div className="h-full rounded-full bg-primary" />
             </div>
             <div className="mt-4 grid grid-cols-3 gap-2 text-center">
               {[
@@ -479,7 +484,7 @@ function AuthPage() {
               ].map((s) => (
                 <div key={s.label} className="rounded-2xl bg-muted/60 px-2 py-3">
                   <p className="text-lg font-bold leading-none">{s.value}</p>
-                  <p className="mt-1 text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
+                  <p className="mt-1 text-xs uppercase tracking-normal text-muted-foreground">
                     {s.label}
                   </p>
                 </div>
@@ -488,14 +493,14 @@ function AuthPage() {
           </div>
 
           {/* Tailored preview */}
-          <div className="feature-float-delay-2 flex items-center gap-3 rounded-[28px] border border-border/60 bg-card/70 p-5 backdrop-blur-md shadow-lg">
+          <div className="flex items-center gap-3 rounded-[28px] border border-border/60 bg-card/70 p-5 backdrop-blur-md shadow-lg">
             <div className="flex-1">
               <p className="text-sm font-semibold">Tailored to California</p>
               <p className="text-xs text-muted-foreground mt-1">
                 Questions match your state handbook and your target DMV date.
               </p>
             </div>
-            <span className="rounded-full border border-border/70 bg-background/60 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em]">
+            <span className="rounded-full border border-border/70 bg-background/60 px-3 py-1 text-xs font-semibold uppercase tracking-normal">
               CA
             </span>
           </div>

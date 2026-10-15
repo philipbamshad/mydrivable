@@ -7,13 +7,13 @@ type Status = "loading" | "confirm" | "done" | "already" | "invalid";
 export const Route = createFileRoute("/unsubscribe")({
   head: () => ({
     meta: [
-      { title: "Drivable" },
+      { title: "Email Preferences | Drivable" },
       {
         name: "description",
         content: "Manage the emails Drivable sends you about your permit prep.",
       },
       { name: "robots", content: "noindex" },
-      { property: "og:title", content: "Email preferences" },
+      { property: "og:title", content: "Email Preferences | Drivable" },
       {
         property: "og:description",
         content: "Unsubscribe from Drivable app emails.",

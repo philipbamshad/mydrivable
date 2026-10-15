@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
@@ -18,12 +19,16 @@ type TabId = "test-hub" | "state-exam" | "chat";
 export const Route = createFileRoute("/_authenticated/app/")({
   head: () => ({
     meta: [
-      { title: "Drivable" },
+      { title: "Permit Practice | Drivable" },
       {
         name: "description",
         content:
           "Track permit readiness, run mock written exams, and chat with your AI permit coach.",
       },
+      { property: "og:title", content: "Permit Practice | Drivable" },
+      { property: "og:description", content: "Practice mock permit exams, section quizzes, and study with your AI permit coach." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
       { name: "robots", content: "noindex" },
     ],
   }),
@@ -48,8 +53,8 @@ export const Route = createFileRoute("/_authenticated/app/")({
 
 const TABS = [
   { id: "test-hub", label: "Test Hub", icon: ClipboardCheck },
-  { id: "state-exam", label: "State Permit Exam", icon: Timer },
-  { id: "chat", label: "Chat AI Assistant", icon: MessageSquare },
+  { id: "state-exam", label: "Mock Permit Exam", icon: Timer },
+  { id: "chat", label: "AI Permit Coach", icon: MessageSquare },
 ] as const;
 
 const tabGlowStyle: React.CSSProperties = {
@@ -87,17 +92,17 @@ function AppDashboard() {
               </h1>
             </div>
             {!isPro && (
-              <button
+              <Button
                 onClick={() => openCheckout()}
                 className="flex items-center gap-2 rounded-full bg-primary text-primary-foreground h-9 px-4 text-sm md:h-10 md:px-5 md:text-base font-semibold shadow-[0_4px_14px_-6px_var(--color-primary)] hover:brightness-110 transition-all shrink-0"
               >
                 Upgrade
-              </button>
+              </Button>
             )}
           </div>
         </header>
 
-        <TabsList className="sr-only">
+        <TabsList className="hidden">
           {TABS.map(({ id, label }) => (
             <TabsTrigger key={id} value={id}>{label}</TabsTrigger>
           ))}

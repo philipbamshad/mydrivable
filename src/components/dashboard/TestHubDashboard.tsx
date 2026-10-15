@@ -99,7 +99,7 @@ export function TestHubDashboard() {
                 </div>
               </div>
               {!isPro && (
-                <p className="text-[11px] text-muted-foreground bg-muted rounded-xl px-3 py-2">
+                <p className="text-xs text-muted-foreground bg-muted rounded-xl px-3 py-2">
                   {locked
                     ? "Free limit reached for this section."
                     : `${remaining} of ${FREE_PILLAR_LIFETIME_LIMIT} free lifetime questions left`}
@@ -243,7 +243,7 @@ function QuizRunner({
           >
             <ArrowLeft className="w-3.5 h-3.5" /> Back to pillars
           </button>
-          <span className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
+          <span className="text-xs uppercase tracking-normal text-muted-foreground">
             {pillar.title}
           </span>
         </div>
@@ -263,12 +263,12 @@ function QuizRunner({
           <ArrowLeft className="w-3.5 h-3.5" /> Back to pillars
         </button>
         <Card className="bg-card border border-border/60 shadow-lg p-10 rounded-[28px] text-center">
-          <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
+          <p className="text-xs uppercase tracking-normal text-muted-foreground">
             {pillar.title}
           </p>
           <div
             className="font-display text-7xl font-bold text-primary mt-3"
-            style={{ textShadow: "0 0 28px var(--color-primary)" }}
+            
           >
             {pct}%
           </div>
@@ -297,7 +297,7 @@ function QuizRunner({
         >
           <ArrowLeft className="w-3.5 h-3.5" /> Exit
         </button>
-        <span className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
+        <span className="text-xs uppercase tracking-normal text-muted-foreground">
           {pillar.title} · {idx + 1} / {questions.length}
         </span>
       </div>
@@ -329,15 +329,16 @@ function QuizRunner({
                 style={{ "--reveal-delay": `${i * 70}ms` } as React.CSSProperties}
                 onClick={() => choose(i)}
                 disabled={reveal}
+                aria-label={reveal ? `${opt}. ${isCorrect ? "Correct answer" : isPicked ? "Your answer, incorrect" : "Not selected"}` : opt}
                 className={cn(
                   "p-3.5 rounded-xl border text-sm font-medium text-left transition-all duration-200 flex items-center justify-between gap-2 fade-in-up",
                   !reveal &&
                     "border-border bg-muted hover:-translate-y-1 hover:scale-[1.02] hover:border-accent-orange/60 active:scale-[0.98]",
-                  reveal && isCorrect && "border-emerald-400 bg-emerald-500/25 text-emerald-800 ",
+                  reveal && isCorrect && "border-success/40 bg-success/10 text-success ",
                   reveal &&
                     isPicked &&
                     !isCorrect &&
-                    "border-red-400 bg-red-500/25 text-red-800  animate-pulse",
+                    "border-destructive/40 bg-destructive/10 text-destructive",
                   reveal && !isPicked && !isCorrect && "opacity-40 border-border",
                 )}
               >
@@ -351,7 +352,7 @@ function QuizRunner({
 
         {reveal && (
           <div className="mt-5 rounded-xl border border-primary/30 bg-primary/10 p-4 animate-in fade-in slide-in-from-top-2 duration-300">
-            <p className="text-[10px] uppercase tracking-[0.22em] text-primary font-bold mb-2">
+            <p className="text-xs uppercase tracking-normal text-primary font-bold mb-2">
               Explanation
             </p>
             <p className="text-sm text-foreground/90 leading-relaxed">{q.explanation}</p>
