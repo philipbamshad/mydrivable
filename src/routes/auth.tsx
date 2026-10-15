@@ -419,7 +419,7 @@ function AuthPage() {
                 <Button
                   type="button"
                   variant="outline"
-                  className="w-full h-11 border-input-strong bg-card hover:bg-accent"
+                  className="w-full h-11 border-transparent bg-card shadow-none hover:bg-accent"
                   onClick={() => handleOAuth("google")}
                   disabled={loading}
                 >
