@@ -310,81 +310,20 @@ export function ThreadSidebar() {
             </span>
           )}
         </button>
-        <Popover open={accountOpen} onOpenChange={setAccountOpen} modal>
-          <PopoverTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              type="button"
-              aria-label="Open settings menu"
-              aria-haspopup="menu"
-              aria-expanded={accountOpen}
-              className={cn(
-                "shrink-0 rounded-full text-muted-foreground hover:text-foreground press",
-                isCollapsed ? "h-10 w-10" : "h-9 w-9",
-              )}
-              title="Settings"
-            >
-              <Settings className={isCollapsed ? "w-5 h-5" : "w-[18px] h-[18px]"} />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent
-            side="top"
-            align={isCollapsed ? "center" : "end"}
-            sideOffset={12}
-            className="w-72 p-2 glass z-[70]"
-          >
-            <div className="max-h-[70vh] overflow-y-auto">
-              <MenuSectionLabel>Account</MenuSectionLabel>
-              {isPro ? (
-                <MenuRow
-                  icon={Crown}
-                  label="Pro Pass — Lifetime"
-                  onClick={() => openSection("membership")}
-                  trailing={<span className="text-xs text-muted-foreground">Active</span>}
-                />
-              ) : (
-                <MenuRow
-                  icon={Sparkles}
-                  label="Get Pro Pass — $9"
-                  onClick={() => {
-                    setAccountOpen(false);
-                    openCheckout();
-                  }}
-                />
-              )}
-
-              <MenuSectionLabel>Preferences</MenuSectionLabel>
-              <MenuRow
-                icon={theme === "dark" ? Moon : Sun}
-                label="Theme"
-                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                trailing={<span className="text-xs text-muted-foreground">{theme === "dark" ? "Dark" : "Light"}</span>}
-              />
-              <MenuRow
-                icon={Settings2}
-                label={userState ? `Driving state · ${userState}` : "Driving state"}
-                onClick={() => openSection("state")}
-              />
-              <MenuRow
-                icon={CalendarDays}
-                label={`DMV target date · ${targetLabel}`}
-                onClick={() => openSection("date")}
-              />
-
-              <div className="my-2 border-t border-border/60" />
-              <MenuRow
-                icon={LogOut}
-                label="Sign out"
-                tone="danger"
-                onClick={() => {
-                  setAccountOpen(false);
-                  void signOut();
-                }}
-              />
-            </div>
-          </PopoverContent>
-        </Popover>
+        <Button
+          variant="ghost"
+          size="icon"
+          type="button"
+          onClick={openSettings}
+          aria-label="Open settings"
+          className={cn(
+            "shrink-0 rounded-full text-muted-foreground hover:text-foreground press",
+            isCollapsed ? "h-10 w-10" : "h-9 w-9",
+          )}
+          title="Settings"
+        >
+          <Settings className={isCollapsed ? "w-5 h-5" : "w-[18px] h-[18px]"} />
+        </Button>
       </div>
     );
   };
