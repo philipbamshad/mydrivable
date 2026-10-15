@@ -20,7 +20,6 @@ import {
 import {
   PromptInput,
   PromptInputTextarea,
-  PromptInputFooter,
   PromptInputSubmit,
   usePromptInputAttachments,
   type PromptInputMessage,
