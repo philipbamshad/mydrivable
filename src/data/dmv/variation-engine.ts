@@ -9,21 +9,32 @@
 
 type Anyish = { q: string } & Record<string, unknown>;
 
-/** Wrappers applied to the question text to create fresh phrasings. */
-const FRAMES: ((q: string, state: string) => string)[] = [
+/**
+ * Natural rephrasings of the question text. None of them add a header,
+ * tag, or "Label:" prefix. Frames that mention a state are only used when
+ * the learner has actually selected one; otherwise the neutral frame runs.
+ */
+const FRAMES: ((q: string, state: string | null) => string)[] = [
   (q) => q,
-  (q, s) => `${s} permit exam: ${lower(q)}`,
-  (q) => `Study check: ${lower(q)}`,
-  (q, s) => `You are driving in ${s}. ${cap(q)}`,
-  (q) => `Quick review: ${lower(q)}`,
-  (q, s) => `On a ${s} road, ${lower(q)}`,
-  (q) => `Knowledge test item: ${lower(q)}`,
+  (q, s) => (s ? `You are driving in ${s}. ${cap(q)}` : `You are driving on a public road. ${cap(q)}`),
   (q) => `During your morning drive, ${lower(q)}`,
-  (q) => `Test yourself: ${lower(q)}`,
-  (q, s) => `A ${s} DMV examiner asks: ${lower(q)}`,
-  (q) => `Practice item: ${lower(q)}`,
+  (q, s) => (s ? `On a ${s} road, ${lower(q)}` : `On a typical road, ${lower(q)}`),
   (q) => `While preparing for your written test, ${lower(q)}`,
+  (q) => `Imagine you are behind the wheel. ${cap(q)}`,
 ];
+
+/**
+ * Remove conversational headers such as "Quick review:", "Note:",
+ * "Question:", or "California permit exam:" from the start of a question.
+ * Only short leading labels (up to 6 words) ending in a colon are stripped,
+ * so real content like times ("3:00") is left alone.
+ */
+export function sanitizeQuestion(text: string): string {
+  let out = (text ?? "").trim();
+  const header = /^(?:[A-Za-z][\w'’-]*\s+){0,5}[A-Za-z][\w'’-]*\s*:\s+/;
+  for (let i = 0; i < 3 && header.test(out); i++) out = out.replace(header, "");
+  return out ? cap(out) : out;
+}
 
 function lower(s: string): string {
   if (!s) return s;
@@ -46,13 +57,13 @@ export function expandPool<T extends Anyish>(
   factor: number,
   stateName?: string | null,
 ): T[] {
-  const state = stateName || "your state";
+  const state = stateName && stateName !== "Default" ? stateName : null;
   const rounds = Math.max(1, Math.min(factor, FRAMES.length));
   const seen = new Set<string>();
   const out: T[] = [];
   for (let r = 0; r < rounds; r++) {
     for (const item of pool) {
-      const text = FRAMES[r % FRAMES.length](item.q, state);
+      const text = sanitizeQuestion(FRAMES[r % FRAMES.length](sanitizeQuestion(item.q), state));
       if (seen.has(text)) continue;
       seen.add(text);
       out.push({ ...item, q: text });
