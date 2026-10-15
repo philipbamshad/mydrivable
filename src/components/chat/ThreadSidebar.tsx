@@ -250,8 +250,10 @@ export function ThreadSidebar() {
       <div className={cn("flex items-center gap-2 border-t border-sidebar-border mt-auto", isCollapsed ? "flex-col p-2" : "p-3")}>
         <button
           type="button"
-          onClick={() => openSettingsSection(undefined)}
-          aria-label="Open settings"
+          onClick={() => setSettingsMenuOpen(true)}
+          aria-label="Open account menu"
+          aria-haspopup="menu"
+          aria-expanded={settingsMenuOpen}
           style={{ WebkitTapHighlightColor: "transparent" }}
           className={cn(
             "flex items-center min-w-0 rounded-2xl hover:bg-muted transition-colors press touch-manipulation",
@@ -292,10 +294,14 @@ export function ThreadSidebar() {
             align="end"
             className="w-56 p-1.5 rounded-2xl"
           >
-            <div className="px-2.5 py-2">
+            <button
+              type="button"
+              onClick={() => openSettingsSection(undefined)}
+              className="w-full rounded-xl px-2.5 py-2 text-left hover:bg-muted transition-colors press"
+            >
               <p className="text-sm font-semibold truncate">{displayName}</p>
               <p className="text-xs text-muted-foreground">{planLabel} plan</p>
-            </div>
+            </button>
             <div className="h-px bg-border my-1" />
             {settingsMenu.map((item) => (
               <button
