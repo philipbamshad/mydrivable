@@ -271,6 +271,138 @@ export function ThreadSidebar() {
     </Button>
   );
 
+  const createUserFooter = (surface: "desktop" | "mobile") => {
+    const isCollapsed = surface === "desktop" && collapsed;
+    const displayName = userMeta.name ?? "Account";
+    const initial = (displayName[0] ?? "D").toUpperCase();
+    const openAccountPanel = () => {
+      setAccountOpen(false);
+      setSettingsOpen(true);
+    };
+
+    return (
+      <>
+        <Popover open={accountOpen} onOpenChange={setAccountOpen} modal>
+          <PopoverTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              type="button"
+              aria-label="Open settings menu"
+              aria-haspopup="menu"
+              aria-expanded={accountOpen}
+              className={cn(
+                "shrink-0 rounded-full text-muted-foreground hover:text-foreground press",
+                isCollapsed ? "h-10 w-10" : "h-9 w-9",
+              )}
+              title="Settings"
+            >
+              <Settings className={isCollapsed ? "w-5 h-5" : "w-[18px] h-[18px]"} />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent
+            side="top"
+            align={isCollapsed ? "center" : "start"}
+            sideOffset={12}
+            className="w-72 p-2 glass z-[70]"
+          >
+            <div className="max-h-[70vh] overflow-y-auto">
+              <MenuSectionLabel>Account</MenuSectionLabel>
+              <MenuRow icon={UserRound} label="Manage account" onClick={openAccountPanel} />
+              {isPro ? (
+                <MenuRow
+                  icon={Crown}
+                  label="Pro Pass — Lifetime"
+                  onClick={openAccountPanel}
+                  trailing={<span className="text-xs text-muted-foreground">Active</span>}
+                />
+              ) : (
+                <MenuRow
+                  icon={Sparkles}
+                  label="Get Pro Pass — $9"
+                  onClick={() => {
+                    setAccountOpen(false);
+                    openCheckout();
+                  }}
+                />
+              )}
+
+              <MenuSectionLabel>Preferences</MenuSectionLabel>
+              <MenuRow
+                icon={theme === "dark" ? Moon : Sun}
+                label="Theme"
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                trailing={<span className="text-xs text-muted-foreground">{theme === "dark" ? "Dark" : "Light"}</span>}
+              />
+              <MenuRow
+                icon={Settings2}
+                label={userState ? `Driving state · ${userState}` : "Driving state"}
+                onClick={openAccountPanel}
+              />
+
+              <MenuSectionLabel>Data &amp; privacy</MenuSectionLabel>
+              <MenuRow
+                icon={Shield}
+                label="Privacy policy"
+                onClick={() => {
+                  setAccountOpen(false);
+                  navigate({ to: "/privacy" });
+                }}
+              />
+              <MenuRow
+                icon={Trash2}
+                label="Delete account"
+                onClick={() => {
+                  window.location.href =
+                    "mailto:support@mydrivable.com?subject=Account%20deletion%20request&body=Please%20delete%20my%20Drivable%20account%20and%20all%20associated%20data.%20My%20account%20email%20is%3A%20";
+                }}
+              />
+
+              <div className="my-2 border-t border-border/60" />
+              <MenuRow
+                icon={LogOut}
+                label="Sign out"
+                tone="danger"
+                onClick={() => {
+                  setAccountOpen(false);
+                  void signOut();
+                }}
+              />
+            </div>
+          </PopoverContent>
+        </Popover>
+
+        <div className={cn("flex items-center gap-2 border-t border-sidebar-border mt-auto", isCollapsed ? "flex-col p-2" : "p-3")}>
+          <button
+            type="button"
+            onClick={openAccountPanel}
+            aria-label="Open account settings"
+            aria-haspopup="dialog"
+            style={{ WebkitTapHighlightColor: "transparent" }}
+            className={cn(
+              "flex items-center min-w-0 rounded-2xl hover:bg-muted transition-colors press touch-manipulation",
+              isCollapsed ? "justify-center p-1" : "flex-1 gap-2.5 px-2 py-2 min-h-11 text-left",
+            )}
+            title={isCollapsed ? displayName : undefined}
+          >
+            <span className="grid h-9 w-9 place-items-center rounded-full bg-primary text-primary-foreground text-sm font-semibold shrink-0">
+              {initial}
+            </span>
+            {!isCollapsed && (
+              <span className="flex flex-col min-w-0">
+                <span className="text-sm font-semibold truncate leading-tight">{displayName}</span>
+                <span className="text-xs text-muted-foreground truncate leading-tight">
+                  {userMeta.email ?? "View account"}
+                </span>
+              </span>
+            )}
+          </button>
+          <GearSlot isCollapsed={isCollapsed} footer={createUserFooter} surface={surface} />
+        </div>
+      </>
+    );
+  };
+
   const createBody = (surface: "desktop" | "mobile") => {
     const isCollapsed = surface === "desktop" && collapsed;
     return (
