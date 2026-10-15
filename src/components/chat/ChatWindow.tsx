@@ -3,7 +3,7 @@
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, type UIMessage } from "ai";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Lock, Plus, Paperclip, X } from "lucide-react";
+import { ArrowUp, Lock, Plus, Paperclip, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -173,7 +173,13 @@ export function ChatWindow({
             disabled={isBusy}
             size="icon-sm"
             className="shrink-0 size-11 rounded-full"
-          />
+          >
+            {status === "submitted" || status === "streaming" || status === "error" ? (
+              undefined
+            ) : (
+              <ArrowUp className="size-5" strokeWidth={2.2} />
+            )}
+          </PromptInputSubmit>
         </div>
       </PromptInput>
       {!isPro && (
