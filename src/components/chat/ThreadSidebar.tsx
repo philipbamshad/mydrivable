@@ -18,6 +18,7 @@ import {
   Video,
   Settings,
   Settings2,
+  Sun,
   Menu,
   Check,
   CalendarDays,
@@ -48,6 +49,7 @@ export function ThreadSidebar() {
   const navigate = useNavigate();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [panelSection, setPanelSection] = useState<AccountSection | undefined>(undefined);
+  const [settingsMenuOpen, setSettingsMenuOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
   const { state: userState, setState: setUserState, targetDate, setTargetDate, isPro } = useUserProfile();
