@@ -4,6 +4,7 @@ import { Check, X, RotateCcw, Video, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { GlowShell } from "@/lib/tab-glow";
 import { SIMULATION_CLIPS } from "@/data/simulation-clips";
 
 export const Route = createFileRoute("/_authenticated/app/simulation")({
@@ -61,43 +62,33 @@ function SimulationPage() {
 
   if (!started) {
     return (
-      <div className="h-full overflow-y-auto p-5 sm:p-7">
-        <div className="mx-auto max-w-3xl w-full">
-          <Card className="relative bg-card rounded-[28px] border border-border/60 p-5 sm:p-7 shadow-lg">
-            <div className="flex items-center gap-4">
-              <div className="grid h-12 w-12 sm:h-14 sm:w-14 place-items-center rounded-[18px] border border-primary/30 bg-primary/5 text-primary shrink-0">
-                <Video className="w-6 h-6 sm:w-7 sm:h-7" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <h3 className="font-display text-lg sm:text-xl font-bold">
-                  Driving Test Simulation
-                </h3>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  Watch each clip, then choose what the driver should do next.
-                </p>
-              </div>
+      <GlowShell>
+        <Card className="relative bg-card rounded-[28px] border border-border/60 p-5 sm:p-7 shadow-lg">
+          <div className="flex items-center gap-4">
+            <div className="grid h-12 w-12 sm:h-14 sm:w-14 place-items-center rounded-[18px] border border-primary/30 bg-primary/5 text-primary shrink-0">
+              <Video className="w-6 h-6 sm:w-7 sm:h-7" />
             </div>
-
-            <div className="grid grid-cols-2 gap-3 mt-6">
-              <Stat label="Clips" value={`${SIMULATION_CLIPS.length}`} />
-              <Stat label="Format" value="Clip then question" />
+            <div className="flex-1 min-w-0">
+              <h3 className="font-display text-lg sm:text-xl font-bold">
+                Driving Test Simulation
+              </h3>
             </div>
+          </div>
 
-            <Button
-              onClick={() => setStarted(true)}
-              className="press w-full mt-6 rounded-full h-12 sm:h-13 text-sm sm:text-base font-semibold"
-            >
-              <Play className="h-4 w-4" /> Start simulation
-            </Button>
-          </Card>
-        </div>
-      </div>
+          <Button
+            onClick={() => setStarted(true)}
+            className="press w-full mt-6 rounded-full h-12 sm:h-13 text-sm sm:text-base font-semibold"
+          >
+            <Play className="h-4 w-4" /> Start simulation
+          </Button>
+        </Card>
+      </GlowShell>
     );
   }
 
   return (
-    <div className="h-full overflow-y-auto p-5 sm:p-7">
-      <div className="mx-auto max-w-3xl space-y-5">
+    <GlowShell>
+      <div className="space-y-5">
         <div className="flex items-center justify-between">
           <h1 className="font-display text-xl font-bold">Driving Test Simulation</h1>
           <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
@@ -164,15 +155,6 @@ function SimulationPage() {
           </div>
         )}
       </div>
-    </div>
-  );
-}
-
-function Stat({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="rounded-3xl bg-muted p-5 text-center">
-      <div className="text-xs uppercase tracking-normal text-muted-foreground">{label}</div>
-      <div className="font-display text-3xl font-bold mt-1">{value}</div>
-    </div>
+    </GlowShell>
   );
 }
