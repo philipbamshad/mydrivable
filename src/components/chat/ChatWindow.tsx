@@ -52,7 +52,7 @@ export function ChatWindow({
   // Free tier lifetime usage tracker. Bypassed entirely for Pro Pass.
   // Counter persists via the profile provider (localStorage + user_profiles
   // row) so the limit is permanent across refresh, logout, and devices.
-  const FREE_LIFETIME_LIMIT = 5;
+  const FREE_LIFETIME_LIMIT = 10;
   // The counter itself is incremented by the /api/chat handler, which is the
   // authoritative gate; the client only reads it back for display.
   const freeUsed = freeUsage.chat;
@@ -138,7 +138,7 @@ export function ChatWindow({
         <Lock className="h-4 w-4 text-primary" />
       </div>
       <p className="mx-auto max-w-sm text-sm font-semibold text-foreground leading-snug">
-        You've used your 5 free lifetime AI questions. Upgrade to Pro Pass to continue chatting, get instant rule explanations, and access full exam simulators!
+        You've used your 10 free lifetime AI questions. Upgrade to Pro Pass to continue chatting, get instant rule explanations, and access full exam simulators!
       </p>
       <Button
         onClick={() => openCheckout()}
