@@ -157,7 +157,7 @@ export function ChatWindow({
         maxFiles={4}
         maxFileSize={8 * 1024 * 1024}
         onError={(e) => toast.error(e.message)}
-        className="rounded-full border border-primary/25 bg-card/90 backdrop-blur outline-none transition-colors focus-within:border-primary/50 overflow-hidden [&>div]:h-auto [&>div]:flex-wrap [&>div]:border-0 [&>div]:shadow-none [&>div]:bg-transparent has-[[data-slot=input-group-control]:focus-visible]:ring-0 has-[[data-slot=input-group-control]:focus-visible]:border-primary/50"
+        className="rounded-[32px] border border-primary/25 bg-card/90 backdrop-blur outline-none transition-colors focus-within:border-primary/50 overflow-hidden [&>div]:h-auto [&>div]:flex-wrap [&>div]:border-0 [&>div]:shadow-none [&>div]:bg-transparent has-[[data-slot=input-group-control]:focus-visible]:ring-0 has-[[data-slot=input-group-control]:focus-visible]:border-primary/50"
       >
         <AttachmentChips />
         <div className="flex w-full items-center gap-2 py-2 pl-2 pr-2">
