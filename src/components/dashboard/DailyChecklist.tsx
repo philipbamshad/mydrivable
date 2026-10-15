@@ -160,7 +160,7 @@ export function DailyChecklist() {
                 <span
                   className={cn(
                     "grid place-items-center h-6 w-6 shrink-0 rounded-md border transition-all duration-200",
-                    isDone ? "border-primary bg-primary text-foreground-foreground scale-110" : "border-border bg-background/50",
+                    isDone ? "border-foreground bg-foreground text-background scale-110" : "border-border bg-background/50",
                   )}
                   style={isDone ? { boxShadow: "0 0 14px var(--color-primary)" } : undefined}
                 >

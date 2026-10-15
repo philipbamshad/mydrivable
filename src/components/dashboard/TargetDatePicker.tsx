@@ -53,7 +53,7 @@ export function TargetDatePicker({
         <PopoverContent
           align="start"
           sideOffset={8}
-          className="w-auto p-0 glass glow-soft border-primary/30"
+          className="w-auto p-0 glass glow-soft border-border"
         >
           <Calendar
             mode="single"
