@@ -53,9 +53,9 @@ export const Route = createFileRoute("/_authenticated/app/")({
 });
 
 const TABS = [
-  { id: "test-hub", label: "Test Hub", icon: ClipboardCheck },
+  { id: "test-hub", label: "Permit Test Hub", icon: ClipboardCheck },
   { id: "state-exam", label: "Mock Permit Exam", icon: Timer },
-  { id: "chat", label: "AI Permit Coach", icon: MessageSquare },
+  { id: "chat", label: "AI Coach", icon: MessageSquare },
 ] as const;
 
 const tabGlowStyle: React.CSSProperties = {
