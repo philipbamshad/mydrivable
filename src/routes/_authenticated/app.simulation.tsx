@@ -128,7 +128,7 @@ function SimulationPage() {
                       !reveal && "border-border bg-muted hover:border-primary/50",
                       reveal && isCorrect && "border-emerald-400 bg-emerald-500/20 text-emerald-800",
                       reveal && picked === i && !isCorrect && "border-red-400 bg-red-500/20 text-red-800",
-                      reveal && picked === i && !isCorrect && "opacity-40",
+                      reveal && picked !== i && !isCorrect && "opacity-40",
                     )}
                   >
                     <span>{opt}</span>
