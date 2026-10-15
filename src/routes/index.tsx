@@ -496,8 +496,8 @@ function Pricing() {
   ];
 
   const freeFeatures = [
-    "Limited AI coach chat (5 lifetime questions max)",
-    "Limited practice tests (5 exam questions & 3 questions per quiz section max)",
+"Limited AI coach chat (10 lifetime questions max)",
+    "Limited practice tests (20 exam questions & 10 questions per quiz section max)",
   ];
 
   return (
