@@ -437,7 +437,7 @@ function AuthPage() {
         </div>
 
         <p className="text-center text-xs text-muted-foreground mt-6">
-          By continuing, you agree to drive safely and legally.
+          By continuing, you confirm you are 13 or older and agree to the <Link to="/terms" className="underline">Terms</Link> and <Link to="/privacy" className="underline">Privacy Policy</Link>.
         </p>
       </div>
       </div>
