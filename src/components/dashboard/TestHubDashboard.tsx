@@ -352,7 +352,7 @@ function QuizRunner({
 
         {reveal && (
           <div className="mt-5 rounded-xl border border-border bg-muted p-4 animate-in fade-in slide-in-from-top-2 duration-300">
-            <p className="text-xs uppercase tracking-normal text-primary font-bold mb-2">
+            <p className="text-xs uppercase tracking-normal text-foreground font-bold mb-2">
               Explanation
             </p>
             <p className="text-sm text-foreground/90 leading-relaxed">{q.explanation}</p>
