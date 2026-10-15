@@ -15,6 +15,7 @@ import {
   MessageSquare,
   ClipboardCheck,
   Timer,
+  Video,
   Settings,
   Menu,
   Settings2,
@@ -238,7 +239,7 @@ export function ThreadSidebar() {
         <nav className={cn("space-y-1 w-full", isCollapsed ? "py-3" : "px-4 py-3")}>
           {PRIMARY_NAV.map((item) => {
             const { id, label, icon: Icon } = item;
-            const isActive = activeTab === id;
+            const isActive = pathname === "/app" && activeTab === id;
             return (
               <Link
                 key={id}
@@ -266,6 +267,28 @@ export function ThreadSidebar() {
               </Link>
             );
           })}
+          <Link
+            to="/app/simulation"
+            onClick={() => setMobileOpen(false)}
+            className={cn(
+              "nav-link min-h-11 w-full",
+              pathname === "/app/simulation" && "nav-link-active",
+              isCollapsed && "justify-center px-0",
+            )}
+            aria-label="Driving Simulation"
+            aria-current={pathname === "/app/simulation" ? "page" : undefined}
+            title={isCollapsed ? "Driving Simulation" : undefined}
+          >
+            <Video className="w-4 h-4 shrink-0" />
+            <span
+              className={cn(
+                "truncate transition-all duration-300",
+                isCollapsed ? "w-0 opacity-0" : "flex-1",
+              )}
+            >
+              Driving Simulation
+            </span>
+          </Link>
         </nav>
       </div>
 
