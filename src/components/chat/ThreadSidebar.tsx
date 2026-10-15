@@ -45,12 +45,10 @@ const PRIMARY_NAV = [
 export function ThreadSidebar() {
   const navigate = useNavigate();
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const [accountOpen, setAccountOpen] = useState(false);
   const [panelSection, setPanelSection] = useState<AccountSection | undefined>(undefined);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
-  const { state: userState, setState: setUserState, targetDate, setTargetDate, isPro, openCheckout } = useUserProfile();
-  const { theme, setTheme } = useTheme();
+  const { state: userState, setState: setUserState, targetDate, setTargetDate, isPro } = useUserProfile();
   const [userMeta, setUserMeta] = useState<{ name: string | null; email: string | null }>({ name: null, email: null });
   const [activePopover, setActivePopover] = useState<"desktop-date" | "desktop-state" | "mobile-date" | "mobile-state" | null>(null);
 
