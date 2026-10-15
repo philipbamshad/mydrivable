@@ -206,7 +206,7 @@
 
   h1, h2, h3, h4 {
     font-family: var(--font-display);
-    letter-spacing: -0.01em;
+    letter-spacing: 0;
     /* Prevent long words from overflowing on narrow screens */
     overflow-wrap: break-word;
     word-wrap: break-word;
@@ -733,4 +733,41 @@
   .auth-split-right,
   .auth-seam,
   .auth-stagger { animation: none; opacity: 1; clip-path: none; transform: none; }
+}
+
+/* Accessible control contrast and restrained action surfaces. */
+:root {
+  --input-strong: oklch(0.72 0.015 255);
+  --action: oklch(0.23 0.04 265);
+  --action-hover: oklch(0.29 0.055 265);
+  --action-foreground: oklch(0.98 0.005 255);
+}
+.dark {
+  --input-strong: oklch(0.48 0.015 255);
+  --action: oklch(0.60 0.19 260);
+  --action-hover: oklch(0.65 0.18 260);
+  --action-foreground: oklch(0.99 0 0);
+}
+@theme inline {
+  --color-input-strong: var(--input-strong);
+  --color-action: var(--action);
+  --color-action-hover: var(--action-hover);
+  --color-action-foreground: var(--action-foreground);
+}
+.cta-pill {
+  background: var(--action);
+  color: var(--action-foreground);
+  border-color: var(--action);
+  animation: none;
+  box-shadow: var(--shadow-glow-soft);
+}
+.cta-pill::before, .cta-pill::after { display: none; }
+.cta-pill:hover { background: var(--action-hover); transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

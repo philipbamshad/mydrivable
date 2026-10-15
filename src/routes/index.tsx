@@ -10,6 +10,7 @@ import {
   Menu,
   X,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { US_STATES } from "@/lib/user-profile";
 
 export const Route = createFileRoute("/")({
@@ -28,6 +29,7 @@ export const Route = createFileRoute("/")({
           "Ace Your Permit Test on the First Try. An AI driving coach trained on every official DMV handbook, with full-length mock permit exams and targeted section drills.",
       },
       { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { property: "og:url", content: "https://www.mydrivable.com/" },
       { name: "twitter:title", content: "Drivable, Master Your Permit" },
       {
@@ -65,15 +67,9 @@ export const Route = createFileRoute("/")({
   component: Landing,
 });
 
-const SHELL =
-  "relative min-h-screen overflow-hidden text-[#0f172a] [color-scheme:light] [font-family:'Inter',ui-sans-serif,system-ui]";
-const SHELL_BG: React.CSSProperties = {
-  background: "linear-gradient(180deg, #ffffff 0%, #f4f7fd 50%, #ffffff 100%)",
-};
+const SHELL = "relative min-h-screen overflow-hidden bg-background text-foreground font-sans";
 const BTN_PRIMARY = "cta-pill";
-
-const BTN_SECONDARY =
-  "inline-flex items-center justify-center gap-2 rounded-full bg-[#1e40af]/[0.055] hover:bg-[#1e40af]/[0.1] border border-[#1e40af]/25 hover:border-[#1e40af]/40 text-[#0f172a] font-semibold transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]";
+const BTN_SECONDARY = "inline-flex items-center justify-center gap-2 rounded-full bg-primary/5 hover:bg-primary/10 border border-primary/25 text-foreground font-semibold transition-colors";
 
 function useReveal<T extends HTMLElement>() {
   const ref = useRef<T | null>(null);
@@ -109,7 +105,7 @@ function Landing() {
   }, [navigate]);
 
   return (
-    <div className={SHELL} style={SHELL_BG}>
+    <div className={SHELL}>
       <Nav />
       <Hero />
       <StatesMarquee />
@@ -142,7 +138,7 @@ function Nav() {
 
         <Link to="/" className="flex items-center gap-2 pl-2">
           <img src={logo} alt="Drivable logo" className="h-9 w-9 logo-mask" />
-          <span className="hidden text-[15px] font-semibold tracking-tight text-[#0f172a] sm:inline">
+          <span className="hidden text-[15px] font-semibold tracking-normal text-[#0f172a] sm:inline">
             Drivable
           </span>
         </Link>
@@ -163,14 +159,16 @@ function Nav() {
               <ArrowRight className="h-3.5 w-3.5" />
             </span>
           </Link>
-          <button
+          <Button
+            variant="ghost"
+            size="icon"
             type="button"
             aria-label={open ? "Close menu" : "Open menu"}
             onClick={() => setOpen((v) => !v)}
-            className="sm:hidden grid h-10 w-10 place-items-center rounded-full border border-[#1e40af]/18 bg-[#1e40af]/8 text-[#0f172a]"
+            className="sm:hidden h-11 w-11 rounded-full border border-border bg-card text-foreground"
           >
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -210,62 +208,22 @@ function Nav() {
 
 function Hero() {
   return (
-    <section className="relative isolate flex min-h-[calc(100svh-72px)] flex-col items-center justify-center overflow-hidden px-6 pt-10 pb-14 text-center sm:pt-6 sm:pb-10">
-      {/* Ambient hero glow, soft pastel cyan, slate blue and orange, gently drifting */}
-      <div
-        aria-hidden
-        className="ambient-blob absolute inset-x-0 top-[22%] -z-10 mx-auto h-[420px] w-[520px] max-w-[95vw] rounded-full blur-3xl sm:top-[30%] sm:h-[700px] sm:w-[900px] sm:max-w-[110vw]"
-        style={{
-          background:
-            "radial-gradient(closest-side, rgba(56,189,248,0.20), rgba(59,130,246,0.14) 55%, transparent 78%)",
-        }}
-      />
-      <div
-        aria-hidden
-        className="ambient-blob-slow absolute left-[18%] top-[30%] -z-10 h-[300px] w-[380px] max-w-[80vw] rounded-full blur-3xl sm:h-[460px] sm:w-[600px]"
-        style={{
-          background:
-            "radial-gradient(closest-side, rgba(249,115,22,0.18), rgba(249,115,22,0.08) 55%, transparent 78%)",
-        }}
-      />
-      <div
-        aria-hidden
-        className="ambient-spin-slow absolute inset-x-0 top-[42%] -z-10 mx-auto h-[320px] w-[320px] max-w-[80vw] rounded-full blur-3xl sm:h-[560px] sm:w-[560px]"
-        style={{
-          background:
-            "conic-gradient(from 0deg, rgba(56,189,248,0.14), rgba(59,130,246,0.12), rgba(249,115,22,0.14), rgba(56,189,248,0.14))",
-        }}
-      />
-      <div
-        aria-hidden
-        className="aura-orbit absolute inset-x-0 top-[26%] -z-10 mx-auto h-[380px] w-[380px] max-w-[92vw] rounded-full blur-3xl sm:h-[680px] sm:w-[680px]"
-        style={{
-          background:
-            "conic-gradient(from 90deg, rgba(0,240,255,0.20), rgba(249,115,22,0.18), rgba(251,146,60,0.16), rgba(16,185,129,0.14), rgba(0,240,255,0.20))",
-        }}
-      />
-
-      <div className="mx-auto mb-6 inline-flex max-w-[640px] items-center gap-3 rounded-full border border-[#1e40af]/18 bg-white/80 px-4 py-2 text-sm shadow-[0_10px_30px_-24px_rgba(30,64,175,0.5)] backdrop-blur-xl">
-        <span className="font-bold text-[#1e40af] animate-pulse">
-          Updated for 2026
-        </span>
-
-        <span className="hidden text-[#1f2b4d]/80 sm:inline">
-          Full-length state-specific Mock Permit Exam simulator, now live
-        </span>
+    <section className="relative flex min-h-[min(680px,76svh)] flex-col items-center justify-center px-6 py-16 text-center sm:py-20">
+      <div className="mx-auto mb-6 flex max-w-2xl flex-wrap items-center justify-center gap-x-3 gap-y-1 text-sm">
+        <span className="font-bold text-primary">Updated for 2026</span>
+        <span className="hidden text-muted-foreground sm:inline">Full-length state-specific Mock Permit Exam simulator, now live</span>
       </div>
 
-
       <div className="relative mx-auto max-w-5xl">
-        <h1 className="fade-in-up relative text-4xl font-semibold leading-[1.05] tracking-[-0.03em] sm:text-6xl">
+        <h1 className="fade-in-up relative text-4xl font-semibold leading-tight sm:text-6xl">
           Drivable,{" "}
-          <span className="text-grad italic font-medium [font-family:'Cormorant_Garamond',Georgia,serif]">
+          <span className="text-primary font-medium">
             Master Your Permit
           </span>
         </h1>
       </div>
 
-      <p className="fade-in-up relative mx-auto mt-6 max-w-2xl text-base text-[#1f2b4d]/70 sm:text-lg">
+      <p className="fade-in-up relative mx-auto mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
         Ace Your Permit Test on the First Try. An AI driving coach trained on every official DMV handbook, with
         full-length mock permit exams and targeted section drills.
       </p>
@@ -281,7 +239,7 @@ function Hero() {
 
         <a
           href="#features"
-          className="rounded-full border border-[#1e40af]/25 bg-white/70 px-7 py-4 text-base font-medium text-[#1f2b4d]/90 backdrop-blur-xl transition-all duration-300 hover:bg-white hover:scale-[1.02] active:scale-[0.97]"
+          className={`${BTN_SECONDARY} px-7 py-4 text-base`}
         >
 
           See how it works
@@ -300,7 +258,7 @@ function StatesMarquee() {
         <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#1e40af]/80">
           All 50 States · Grounded in Official DMV Handbooks
         </p>
-        <h2 className="mb-10 text-3xl font-semibold tracking-[-0.02em] sm:text-4xl">
+        <h2 className="mb-10 text-3xl font-semibold tracking-normal sm:text-4xl">
           Wherever You Take the Test, We've Got You
         </h2>
       </div>
@@ -361,15 +319,15 @@ function Features() {
   const grid = useReveal<HTMLDivElement>();
 
   return (
-    <section id="features" className="px-4 sm:px-6 lg:px-8 pt-28 pb-20">
+    <section id="features" className="px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
       <div className="mx-auto max-w-3xl text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-[#1e40af]/18 bg-[#1e40af]/[0.055] px-4 py-1.5 text-sm text-[#1f2b4d]/80 backdrop-blur-xl">
           <span className="status-dot h-1.5 w-1.5 rounded-full bg-[#f97316]" />
           State-Specific DMV Prep
         </div>
-        <h2 className="mt-8 text-5xl font-semibold tracking-[-0.03em] sm:text-6xl">
+        <h2 className="mt-8 text-3xl font-semibold sm:text-5xl">
           Everything Between You and a{" "}
-          <span className="text-grad italic font-medium [font-family:'Cormorant_Garamond',Georgia,serif]">
+          <span className="text-primary font-medium">
             Real License
           </span>
         </h2>
@@ -511,10 +469,10 @@ function Features() {
             </div>
 
             <div className="px-6 pb-6 pt-6">
-              <h3 className="text-2xl font-semibold tracking-[-0.02em] text-[#0f172a] lg:text-[28px]">
+              <h3 className="text-2xl font-semibold tracking-normal text-[#0f172a] lg:text-[28px]">
                 {f.title}
               </h3>
-              <p className="mt-4 text-base leading-relaxed text-[#1f2b4d]/55 lg:text-lg">{f.body}</p>
+              <p className="mt-4 text-base leading-relaxed text-muted-foreground lg:text-lg">{f.body}</p>
             </div>
           </div>
         ))}
@@ -546,9 +504,9 @@ function Pricing() {
           <span className="status-dot h-1.5 w-1.5 rounded-full bg-[#10b981]" />
           Two Plans
         </div>
-        <h2 className="mt-6 text-5xl font-semibold tracking-[-0.03em] sm:text-6xl">
+        <h2 className="mt-6 text-3xl font-semibold sm:text-5xl">
           Pick Your{" "}
-          <span className="text-grad italic font-medium [font-family:'Cormorant_Garamond',Georgia,serif]">
+          <span className="text-primary font-medium">
             Lane
           </span>
         </h2>
@@ -572,7 +530,7 @@ function Pricing() {
             <div className="rounded-2xl border border-[#1e40af]/18 bg-[#1e40af]/[0.045] p-7">
               <div className="text-lg font-medium text-[#1f2b4d]/90">Free Pass</div>
               <div className="mt-8 flex items-end gap-2 text-[#0f172a]">
-                <span className="text-6xl font-semibold tracking-[-0.03em]">$0</span>
+                <span className="text-6xl font-semibold tracking-normal">$0</span>
                 <span className="mb-2 text-sm text-[#1f2b4d]/85">forever free</span>
               </div>
               <p className="mt-2 text-sm text-[#1f2b4d]/75">Kick the tires and study the basics, no card required.</p>
@@ -605,7 +563,7 @@ function Pricing() {
             <div className="rounded-2xl border border-[#1e40af]/18 bg-[#1e40af]/[0.045] p-7">
               <div className="text-lg font-medium text-[#1f2b4d]/90">Pro Pass</div>
               <div className="mt-8 flex items-end gap-2 text-[#0f172a]">
-                <span className="text-6xl font-semibold tracking-[-0.03em]">$9</span>
+                <span className="text-6xl font-semibold tracking-normal">$9</span>
                 <span className="mb-2 text-sm text-[#1f2b4d]/85">one-time</span>
               </div>
               <p className="mt-2 text-sm text-[#1f2b4d]/75">Pay once. Lifetime access to everything Drivable builds.</p>
@@ -639,10 +597,10 @@ function CTA() {
   return (
     <section className="px-6 pb-24">
       <div className="relative mx-auto max-w-5xl overflow-hidden rounded-[36px] border border-[#1e40af]/18 bg-[#1e40af]/[0.035] p-16 text-center text-[#0f172a] backdrop-blur-xl">
-        <h2 className="text-5xl font-semibold tracking-[-0.03em] sm:text-6xl">
+        <h2 className="text-3xl font-semibold sm:text-5xl">
           Get Your License.
           <br />
-          <span className="text-grad italic font-medium [font-family:'Cormorant_Garamond',Georgia,serif]">
+          <span className="text-primary font-medium">
             First Try.
           </span>
         </h2>

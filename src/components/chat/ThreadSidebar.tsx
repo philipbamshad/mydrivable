@@ -22,7 +22,6 @@ import {
   CalendarDays,
   ChevronLeft,
   ChevronRight,
-  Star,
 } from "lucide-react";
 import {
   Popover,
@@ -39,7 +38,7 @@ import { AccountPanel } from "@/components/dashboard/AccountPanel";
 import { useUserProfile, US_STATES } from "@/lib/user-profile";
 
 const PRIMARY_NAV = [
-  { id: "chat", label: "AI Coach Chatbox", icon: MessageSquare },
+  { id: "chat", label: "AI Permit Coach", icon: MessageSquare },
   { id: "state-exam", label: "Mock Permit Exam", icon: Timer },
   { id: "test-hub", label: "Test Hub", icon: ClipboardCheck },
 ] as const;
@@ -89,15 +88,15 @@ export function ThreadSidebar() {
         modal
       >
         <PopoverTrigger asChild>
-          <button
+          <Button variant="ghost"
             type="button"
             aria-label="DMV target date"
             aria-haspopup="dialog"
             aria-expanded={activePopover === datePopoverKey}
             style={{ WebkitTapHighlightColor: "transparent", cursor: "pointer", pointerEvents: "auto" }}
-            className="w-full text-left rounded-2xl border border-transparent bg-secondary hover:bg-muted transition-colors press px-4 py-3 mx-0 min-h-[56px] touch-manipulation select-none"
+            className="w-full h-auto block whitespace-normal text-left rounded-2xl border border-transparent bg-secondary hover:bg-muted transition-colors press px-3 py-3 mx-0 min-h-[56px] touch-manipulation select-none"
           >
-            <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground flex items-center justify-between pointer-events-none">
+            <p className="text-xs font-medium tracking-normal text-muted-foreground flex items-center justify-between pointer-events-none">
               <span>DMV Target Date</span>
               <CalendarDays className="w-3.5 h-3.5 text-muted-foreground" />
             </p>
@@ -105,7 +104,7 @@ export function ThreadSidebar() {
               <span className="w-1.5 h-1.5 rounded-full bg-primary" />
               <span className="truncate">{targetLabel}</span>
             </p>
-          </button>
+          </Button>
         </PopoverTrigger>
         {activePopover === datePopoverKey && (
           <PopoverContent
@@ -136,15 +135,15 @@ export function ThreadSidebar() {
         modal
       >
         <PopoverTrigger asChild>
-          <button
+          <Button variant="ghost"
             type="button"
             aria-label="Change active state"
             aria-haspopup="dialog"
             aria-expanded={activePopover === statePopoverKey}
             style={{ WebkitTapHighlightColor: "transparent", cursor: "pointer", pointerEvents: "auto" }}
-            className="w-full text-left rounded-2xl border border-transparent bg-secondary hover:bg-muted transition-colors press px-4 py-3 mx-0 min-h-[56px] touch-manipulation select-none"
+            className="w-full h-auto block whitespace-normal text-left rounded-2xl border border-transparent bg-secondary hover:bg-muted transition-colors press px-3 py-3 mx-0 min-h-[56px] touch-manipulation select-none"
           >
-            <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground flex items-center justify-between pointer-events-none">
+            <p className="text-xs font-medium tracking-normal text-muted-foreground flex items-center justify-between pointer-events-none">
               <span>Active state</span>
               <Settings2 className="w-3.5 h-3.5 text-muted-foreground" />
             </p>
@@ -152,7 +151,7 @@ export function ThreadSidebar() {
               <span className="w-1.5 h-1.5 rounded-full bg-primary" />
               <span className="truncate">{userState || "Not set"}</span>
             </p>
-          </button>
+          </Button>
         </PopoverTrigger>
         {activePopover === statePopoverKey && (
           <PopoverContent
@@ -161,10 +160,10 @@ export function ThreadSidebar() {
             className="w-64 p-0 glass glow-soft border-primary/30 z-[70] pointer-events-auto"
           >
             <div className="px-3 py-2 border-b border-border/60">
-              <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+              <p className="text-xs font-medium tracking-normal text-muted-foreground">
                 Select your state
               </p>
-              <p className="text-[11px] text-muted-foreground/80">
+              <p className="text-xs text-muted-foreground">
                 Recalibrates rules, quizzes, and AI answers.
               </p>
             </div>
@@ -172,7 +171,7 @@ export function ThreadSidebar() {
               {US_STATES.map((s) => {
                 const active = s === userState;
                 return (
-                  <button
+                  <Button variant="ghost"
                     key={s}
                     type="button"
                     onClick={() => {
@@ -182,13 +181,13 @@ export function ThreadSidebar() {
                     }}
                     style={{ WebkitTapHighlightColor: "transparent" }}
                     className={cn(
-                      "w-full flex items-center justify-between gap-2 px-3 py-3 min-h-11 text-sm text-left hover:bg-primary/10 active:bg-primary/15 transition-colors touch-manipulation",
+                      "h-auto w-full flex items-center justify-between gap-2 px-3 py-3 min-h-11 text-sm text-left hover:bg-primary/10 active:bg-primary/15 transition-colors touch-manipulation",
                       active && "bg-primary/15 text-foreground font-medium",
                     )}
                   >
                     <span className="truncate">{s}</span>
                     {active && <Check className="w-4 h-4 text-primary shrink-0" />}
-                  </button>
+                  </Button>
                 );
               })}
             </div>
@@ -200,14 +199,14 @@ export function ThreadSidebar() {
   };
 
   const toggleButton = (
-    <button
+    <Button variant="ghost"
       type="button"
       onClick={() => setCollapsed((c) => !c)}
       aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
       className="flex items-center justify-center w-8 h-8 rounded-lg text-muted-foreground hover:text-foreground hover:bg-sidebar-accent transition-colors pointer-events-auto shrink-0"
     >
       {collapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
-    </button>
+    </Button>
   );
 
   const createBody = (surface: "desktop" | "mobile") => {
@@ -240,7 +239,6 @@ export function ThreadSidebar() {
           {PRIMARY_NAV.map((item) => {
             const { id, label, icon: Icon } = item;
             const isActive = activeTab === id;
-            const showStar = id === "state-exam";
             return (
               <Link
                 key={id}
@@ -252,6 +250,8 @@ export function ThreadSidebar() {
                   isActive && "nav-link-active",
                   isCollapsed && "justify-center px-0",
                 )}
+                aria-label={label}
+                aria-current={isActive && pathname === "/app" ? "page" : undefined}
                 title={isCollapsed ? label : undefined}
               >
                 <Icon className="w-4 h-4 shrink-0" />
@@ -263,9 +263,6 @@ export function ThreadSidebar() {
                 >
                   {label}
                 </span>
-                {showStar && (
-                  <Star className={cn("w-3.5 h-3.5 shrink-0 fill-primary text-primary", isCollapsed && "hidden")} />
-                )}
               </Link>
             );
           })}
