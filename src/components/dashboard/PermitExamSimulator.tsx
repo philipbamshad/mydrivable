@@ -20,7 +20,7 @@ import { getStatePack, type Question as Q } from "@/data/dmv";
 import { shuffleAnswers } from "@/data/dmv/question-generator";
 import { pickUnseenQuestions } from "@/lib/seen-questions";
 
-const FREE_EXAM_LIFETIME_LIMIT = 5;
+const FREE_EXAM_LIFETIME_LIMIT = 20;
 
 export function PermitExamSimulator() {
   const {
@@ -116,7 +116,7 @@ function ExamPaywall({ onUpgrade }: { onUpgrade: () => void }) {
           <Lock className="h-6 w-6 text-primary" />
         </div>
         <p className="text-base sm:text-lg font-semibold text-foreground leading-snug">
-          You've answered your 5 free lifetime exam questions. Upgrade to Pro Pass to continue practicing, get instant rule explanations, and access unlimited exam simulators! [Get Pro Pass — $9]
+          You've answered your 20 free lifetime exam questions. Upgrade to Pro Pass to continue practicing, get instant rule explanations, and access unlimited exam simulators! [Get Pro Pass — $9]
         </p>
         <Button onClick={onUpgrade} className="press mt-6 rounded-2xl px-8 py-6 text-base font-semibold">
           Get Pro Pass — $9

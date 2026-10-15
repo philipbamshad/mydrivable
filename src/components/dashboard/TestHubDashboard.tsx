@@ -41,7 +41,7 @@ const PILLAR_ORDER: { id: PillarId; icon: typeof TrafficCone }[] = [
   { id: "speed", icon: Gauge },
 ];
 
-const FREE_PILLAR_LIFETIME_LIMIT = 3;
+const FREE_PILLAR_LIFETIME_LIMIT = 10;
 
 export function TestHubDashboard() {
   const { isPro, unlockPro, state, freeUsage, bumpFreeUsage } = useUserProfile();
@@ -133,7 +133,7 @@ function PillarPaywall({ onUpgrade }: { onUpgrade: () => void }) {
           <Lock className="h-5 w-5 text-primary" />
         </div>
         <p className="text-sm font-semibold text-foreground leading-snug">
-          You've answered your 3 free lifetime questions for this quiz section. Upgrade to Pro Pass to unlock unlimited questions, practice modes, and get full explanations! [Get Pro Pass — $9]
+          You've answered your 10 free lifetime questions for this quiz section. Upgrade to Pro Pass to unlock unlimited questions, practice modes, and get full explanations! [Get Pro Pass — $9]
         </p>
         <Button onClick={onUpgrade} className="press mt-5 rounded-full">
           Get Pro Pass — $9
@@ -193,7 +193,7 @@ function QuizRunner({
   const q = questions[idx];
   const reveal = picked !== null;
   // Strict per-section lifetime gate: only lock once the user has actually
-  // used all 3 free questions in THIS section. Other sections stay unlocked.
+  // used all 10 free questions in THIS section. Other sections stay unlocked.
   const freeLocked = !isPro && pillarUsed >= lifetimeLimit;
 
   // Guard against `recordQuizScore` being called twice from a single render
