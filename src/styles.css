@@ -449,9 +449,9 @@
 :root {
   --accent-cyan: #00f0ff;
   --accent-emerald: #10b981;
-  --accent-amber: #f59e0b;
-  --accent-orange: #f97316;
-  --accent-coral: #fb923c;
+  --accent-amber: #9ca3af;
+  --accent-orange: #6b7280;
+  --accent-coral: #9ca3af;
 
   --gradient-orange-cyan: linear-gradient(90deg, var(--accent-orange) 0%, #3b82f6 55%, var(--accent-cyan) 100%);
   --gradient-emerald-blue: linear-gradient(90deg, var(--accent-emerald) 0%, #2563eb 100%);
@@ -780,7 +780,7 @@
   font-family: "Instrument Serif", ui-serif, Georgia, serif;
   font-style: italic;
   font-weight: 400;
-  background-image: linear-gradient(90deg, #3b82f6 0%, #22d3ee 100%);
+  background-image: linear-gradient(90deg, #2563eb 0%, #0284c7 100%);
   background-clip: text;
   color: transparent;
   padding-right: 0.08em;
