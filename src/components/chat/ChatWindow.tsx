@@ -157,18 +157,23 @@ export function ChatWindow({
         maxFiles={4}
         maxFileSize={8 * 1024 * 1024}
         onError={(e) => toast.error(e.message)}
-        className="rounded-full border border-primary/25 bg-card/90 backdrop-blur outline-none transition-colors focus-within:border-primary/50 overflow-hidden has-[[data-slot=input-group-control]:focus-visible]:ring-0 has-[[data-slot=input-group-control]:focus-visible]:border-primary/50"
+        className="rounded-[32px] border border-primary/25 bg-card/90 backdrop-blur outline-none transition-colors focus-within:border-primary/50 overflow-hidden [&>div]:h-auto [&>div]:flex-wrap [&>div]:border-0 [&>div]:shadow-none [&>div]:bg-transparent has-[[data-slot=input-group-control]:focus-visible]:ring-0 has-[[data-slot=input-group-control]:focus-visible]:border-primary/50"
       >
         <AttachmentChips />
-        <div className="flex items-center gap-1.5 py-1.5 pl-1.5 pr-2">
+        <div className="flex w-full items-center gap-2 py-2 pl-2 pr-2">
           <AttachButton />
           <PromptInputTextarea
             ref={textareaRef}
             placeholder="Ask Drivable AI anything about your permit test..."
             disabled={isBusy}
-            className="max-h-32 min-h-10 flex-1 resize-none border-0 bg-transparent px-2 py-2 shadow-none outline-none ring-0 focus:outline-none focus-visible:ring-0"
+            className="max-h-36 min-h-12 flex-1 resize-none border-0 bg-transparent px-2 py-2.5 text-base shadow-none outline-none ring-0 focus:outline-none focus-visible:ring-0"
           />
-          <PromptInputSubmit status={status} disabled={isBusy} className="shrink-0 rounded-full" />
+          <PromptInputSubmit
+            status={status}
+            disabled={isBusy}
+            size="icon-sm"
+            className="shrink-0 size-11 rounded-full"
+          />
         </div>
       </PromptInput>
       {!isPro && (
@@ -294,7 +299,7 @@ function AttachmentChips() {
   const attachments = usePromptInputAttachments();
   if (attachments.files.length === 0) return null;
   return (
-    <div className="flex flex-wrap gap-2 px-4 pt-3">
+    <div className="flex w-full flex-wrap gap-2 px-4 pt-4 pb-1">
       {attachments.files.map((f) => {
         const isImage = Boolean(f.mediaType?.startsWith("image/") && f.url);
         return (
@@ -337,7 +342,7 @@ function AttachButton() {
       type="button"
       aria-label="Add attachment"
       onClick={() => attachments.openFileDialog()}
-      className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+      className="grid h-11 w-11 shrink-0 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
     >
       <Plus className="h-5 w-5" />
     </button>
