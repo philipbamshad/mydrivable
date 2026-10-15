@@ -449,7 +449,7 @@ function AuthPage() {
           className="pointer-events-none absolute inset-0"
           style={{
             background:
-              "radial-gradient(70% 60% at 70% 20%, oklch(0.72 0.20 240 / 0.16), transparent 70%), radial-gradient(60% 50% at 25% 85%, oklch(0.78 0.17 40 / 0.14), transparent 70%)",
+              "radial-gradient(70% 60% at 70% 20%, oklch(0.72 0.20 240 / 0.16), transparent 70%), radial-gradient(60% 50% at 25% 85%, color-mix(in oklab, var(--accent-coral) 26%, transparent), transparent 70%)",
           }}
         />
 
