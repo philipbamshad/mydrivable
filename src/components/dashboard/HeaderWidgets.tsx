@@ -79,8 +79,8 @@ export function HeaderWidgets() {
           </>
         ) : (
           <>
-            <div className="relative h-[120px] w-[120px] grid place-items-center rounded-2xl bg-primary/10 border border-primary/30">
-              <CalendarDays className="w-8 h-8 text-primary" />
+            <div className="relative h-[120px] w-[120px] grid place-items-center rounded-2xl bg-muted border border-border">
+              <CalendarDays className="w-8 h-8 text-foreground" />
               <div className="absolute inset-0 rounded-2xl pointer-events-none"
                 style={{ boxShadow: "inset 0 0 28px var(--color-primary)" }} />
             </div>
@@ -90,7 +90,7 @@ export function HeaderWidgets() {
               </p>
               <h3 className="font-display text-3xl font-bold mt-1">{targetLabel}</h3>
               <div className="flex flex-wrap items-center gap-2 mt-2">
-                <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-semibold bg-primary/15 text-primary border border-primary/30">
+                <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-semibold bg-muted text-foreground border border-border">
                   {daysLeft !== null && daysLeft >= 0 ? `${daysLeft} days left` : "Past due"}
                 </span>
                 <TargetDatePicker

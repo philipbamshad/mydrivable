@@ -65,7 +65,7 @@ function SimulationPage() {
       <GlowShell>
         <Card className="relative bg-card rounded-[28px] border border-border/60 p-5 sm:p-7 shadow-lg">
           <div className="flex items-center gap-4">
-            <div className="grid h-12 w-12 sm:h-14 sm:w-14 place-items-center rounded-[18px] border border-primary/30 bg-primary/5 text-primary shrink-0">
+            <div className="grid h-12 w-12 sm:h-14 sm:w-14 place-items-center rounded-[18px] border border-border bg-muted text-foreground shrink-0">
               <Video className="w-6 h-6 sm:w-7 sm:h-7" />
             </div>
             <div className="flex-1 min-w-0">
@@ -125,7 +125,7 @@ function SimulationPage() {
                     onClick={() => setPicked(i)}
                     className={cn(
                       "flex items-center justify-between gap-2 rounded-xl border p-3.5 text-left text-sm font-medium transition-all",
-                      !reveal && "border-border bg-muted hover:border-primary/50",
+                      !reveal && "border-border bg-muted hover:border-foreground/40",
                       reveal && isCorrect && "border-emerald-400 bg-emerald-500/20 text-emerald-800",
                       reveal && picked === i && !isCorrect && "border-red-400 bg-red-500/20 text-red-800",
                       reveal && picked !== i && !isCorrect && "opacity-40",
@@ -139,8 +139,8 @@ function SimulationPage() {
               })}
             </div>
             {picked !== null && (
-              <div className="mt-5 rounded-xl border border-primary/30 bg-primary/10 p-4">
-                <p className="mb-1 text-sm font-bold text-primary">
+              <div className="mt-5 rounded-xl border border-border bg-muted p-4">
+                <p className="mb-1 text-sm font-bold text-foreground">
                   {picked === clip.correct ? "Correct!" : "Not quite."}
                 </p>
                 <p className="text-sm text-foreground/90">{clip.explanation}</p>

@@ -82,7 +82,7 @@ function AppDashboard() {
   return (
     <div className="flex flex-col h-full">
       <Tabs value={tab} onValueChange={(v) => setTab(v as TabId)} className="flex flex-col h-full">
-        <header className="pl-16 pr-5 sm:px-7 pt-5 pb-4 border-b border-primary/10 md:pl-7">
+        <header className="pl-16 pr-5 sm:px-7 pt-5 pb-4 border-b border-border md:pl-7">
           <div className="flex items-center justify-between gap-3">
             <div className="min-w-0">
               <h1 className="font-display font-bold text-xl leading-tight truncate">
