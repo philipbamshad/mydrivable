@@ -215,7 +215,11 @@ function Hero() {
       </div>
 
       <div className="relative mx-auto max-w-5xl">
-        <h1 className="fade-in-up relative text-4xl font-semibold leading-tight sm:text-6xl">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-1/2 -z-10 mx-auto h-40 max-w-3xl -translate-y-1/2 rounded-full bg-primary/20 blur-3xl sm:h-56"
+        />
+        <h1 className="fade-in-up relative font-sans text-4xl font-semibold leading-tight tracking-tight sm:text-6xl">
           Drivable,{" "}
           <span className="text-primary font-medium">
             Master Your Permit
