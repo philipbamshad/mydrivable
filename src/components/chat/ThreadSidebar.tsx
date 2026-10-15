@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,20 +17,12 @@ import {
   Timer,
   Video,
   Settings,
-  Menu,
   Settings2,
+  Menu,
   Check,
   CalendarDays,
   ChevronLeft,
   ChevronRight,
-  UserRound,
-  Crown,
-  Sparkles,
-  Sun,
-  Moon,
-  Shield,
-  Trash2,
-  type LucideIcon,
 } from "lucide-react";
 import {
   Popover,
@@ -44,9 +36,7 @@ import { format } from "date-fns";
 import logo from "@/assets/drivable-logo.png";
 import { cn } from "@/lib/utils";
 import { AccountPanel, type AccountSection } from "@/components/dashboard/AccountPanel";
-import { lovable } from "@/integrations/lovable/index";
 import { useUserProfile, US_STATES } from "@/lib/user-profile";
-import { useTheme } from "@/lib/theme";
 
 const PRIMARY_NAV = [
   { id: "chat", label: "AI Coach", icon: MessageSquare },
@@ -54,53 +44,13 @@ const PRIMARY_NAV = [
   { id: "test-hub", label: "Permit Test Hub", icon: ClipboardCheck },
 ] as const;
 
-function MenuRow({
-  icon: Icon,
-  label,
-  onClick,
-  trailing,
-  tone = "default",
-}: {
-  icon: LucideIcon;
-  label: string;
-  onClick: () => void;
-  trailing?: ReactNode;
-  tone?: "default" | "danger";
-}) {
-  return (
-    <Button
-      variant="ghost"
-      type="button"
-      onClick={onClick}
-      className={cn(
-        "w-full h-auto min-h-11 justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-normal hover:bg-muted press touch-manipulation",
-        tone === "danger" ? "text-destructive" : "text-foreground",
-      )}
-    >
-      <Icon className={cn("w-4 h-4 shrink-0", tone === "danger" ? "text-destructive" : "text-muted-foreground")} />
-      <span className="flex-1 truncate text-left">{label}</span>
-      {trailing}
-    </Button>
-  );
-}
-
-function MenuSectionLabel({ children }: { children: ReactNode }) {
-  return (
-    <p className="px-3 pt-3 pb-1 text-xs font-medium tracking-normal text-muted-foreground">
-      {children}
-    </p>
-  );
-}
-
 export function ThreadSidebar() {
   const navigate = useNavigate();
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const [accountOpen, setAccountOpen] = useState(false);
   const [panelSection, setPanelSection] = useState<AccountSection | undefined>(undefined);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
-  const { state: userState, setState: setUserState, targetDate, setTargetDate, isPro, openCheckout } = useUserProfile();
-  const { theme, setTheme } = useTheme();
+  const { state: userState, setState: setUserState, targetDate, setTargetDate, isPro } = useUserProfile();
   const [userMeta, setUserMeta] = useState<{ name: string | null; email: string | null }>({ name: null, email: null });
   const [activePopover, setActivePopover] = useState<"desktop-date" | "desktop-state" | "mobile-date" | "mobile-state" | null>(null);
 
@@ -278,25 +228,17 @@ export function ThreadSidebar() {
     const isCollapsed = surface === "desktop" && collapsed;
     const displayName = userMeta.name ?? "Account";
     const initial = (displayName[0] ?? "D").toUpperCase();
-    const openSection = (sec: AccountSection) => {
-      setAccountOpen(false);
-      setPanelSection(sec);
+    const openSettings = () => {
+      setPanelSection(undefined);
       setSettingsOpen(true);
-    };
-    const switchGoogleAccount = async () => {
-      const result = await lovable.auth.signInWithOAuth("google", {
-        redirect_uri: window.location.origin,
-        extraParams: { prompt: "select_account" },
-      });
-      if (result.error) toast.error("Could not open your Google accounts. Try again.");
     };
 
     return (
       <div className={cn("flex items-center gap-2 border-t border-sidebar-border mt-auto", isCollapsed ? "flex-col p-2" : "p-3")}>
         <button
           type="button"
-          onClick={() => void switchGoogleAccount()}
-          aria-label="Switch Google account"
+          onClick={openSettings}
+          aria-label="Open settings"
           style={{ WebkitTapHighlightColor: "transparent" }}
           className={cn(
             "flex items-center min-w-0 rounded-2xl hover:bg-muted transition-colors press touch-manipulation",
@@ -308,89 +250,28 @@ export function ThreadSidebar() {
             {initial}
           </span>
           {!isCollapsed && (
-            <span className="flex flex-col min-w-0">
+            <span className="flex items-baseline gap-1.5 min-w-0">
               <span className="text-sm font-semibold truncate leading-tight">{displayName}</span>
               <span className="text-xs text-muted-foreground truncate leading-tight">
-                {userMeta.email ?? "View account"}
+                · {isPro ? "Pro" : "Free"}
               </span>
             </span>
           )}
         </button>
-        <Popover open={accountOpen} onOpenChange={setAccountOpen} modal>
-          <PopoverTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              type="button"
-              aria-label="Open settings menu"
-              aria-haspopup="menu"
-              aria-expanded={accountOpen}
-              className={cn(
-                "shrink-0 rounded-full text-muted-foreground hover:text-foreground press",
-                isCollapsed ? "h-10 w-10" : "h-9 w-9",
-              )}
-              title="Settings"
-            >
-              <Settings className={isCollapsed ? "w-5 h-5" : "w-[18px] h-[18px]"} />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent
-            side="top"
-            align={isCollapsed ? "center" : "end"}
-            sideOffset={12}
-            className="w-72 p-2 glass z-[70]"
-          >
-            <div className="max-h-[70vh] overflow-y-auto">
-              <MenuSectionLabel>Account</MenuSectionLabel>
-              {isPro ? (
-                <MenuRow
-                  icon={Crown}
-                  label="Pro Pass — Lifetime"
-                  onClick={() => openSection("membership")}
-                  trailing={<span className="text-xs text-muted-foreground">Active</span>}
-                />
-              ) : (
-                <MenuRow
-                  icon={Sparkles}
-                  label="Get Pro Pass — $9"
-                  onClick={() => {
-                    setAccountOpen(false);
-                    openCheckout();
-                  }}
-                />
-              )}
-
-              <MenuSectionLabel>Preferences</MenuSectionLabel>
-              <MenuRow
-                icon={theme === "dark" ? Moon : Sun}
-                label="Theme"
-                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                trailing={<span className="text-xs text-muted-foreground">{theme === "dark" ? "Dark" : "Light"}</span>}
-              />
-              <MenuRow
-                icon={Settings2}
-                label={userState ? `Driving state · ${userState}` : "Driving state"}
-                onClick={() => openSection("state")}
-              />
-              <MenuRow
-                icon={CalendarDays}
-                label={`DMV target date · ${targetLabel}`}
-                onClick={() => openSection("date")}
-              />
-
-              <div className="my-2 border-t border-border/60" />
-              <MenuRow
-                icon={LogOut}
-                label="Sign out"
-                tone="danger"
-                onClick={() => {
-                  setAccountOpen(false);
-                  void signOut();
-                }}
-              />
-            </div>
-          </PopoverContent>
-        </Popover>
+        <Button
+          variant="ghost"
+          size="icon"
+          type="button"
+          onClick={openSettings}
+          aria-label="Open settings"
+          className={cn(
+            "shrink-0 rounded-full text-muted-foreground hover:text-foreground press",
+            isCollapsed ? "h-10 w-10" : "h-9 w-9",
+          )}
+          title="Settings"
+        >
+          <Settings className={isCollapsed ? "w-5 h-5" : "w-[18px] h-[18px]"} />
+        </Button>
       </div>
     );
   };
@@ -488,6 +369,18 @@ export function ThreadSidebar() {
           <div className="mt-4">
             <AccountPanel section={panelSection} />
           </div>
+          {!panelSection && (
+            <Button
+              variant="outline"
+              onClick={() => {
+                setSettingsOpen(false);
+                void signOut();
+              }}
+              className="mt-6 w-full min-h-11 border-destructive/40 text-destructive hover:bg-destructive/10 press"
+            >
+              <LogOut className="w-4 h-4" /> Sign out
+            </Button>
+          )}
         </SheetContent>
       </Sheet>
     </>
