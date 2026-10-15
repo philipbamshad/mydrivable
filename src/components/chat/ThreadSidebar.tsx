@@ -283,20 +283,14 @@ export function ThreadSidebar() {
       setPanelSection(sec);
       setSettingsOpen(true);
     };
-    const switchGoogleAccount = async () => {
-      const result = await lovable.auth.signInWithOAuth("google", {
-        redirect_uri: window.location.origin,
-        extraParams: { prompt: "select_account" },
-      });
-      if (result.error) toast.error("Could not open your Google accounts. Try again.");
-    };
+    const openSettings = () => openSection("all");
 
     return (
       <div className={cn("flex items-center gap-2 border-t border-sidebar-border mt-auto", isCollapsed ? "flex-col p-2" : "p-3")}>
         <button
           type="button"
-          onClick={() => void switchGoogleAccount()}
-          aria-label="Switch Google account"
+          onClick={openSettings}
+          aria-label="Open settings"
           style={{ WebkitTapHighlightColor: "transparent" }}
           className={cn(
             "flex items-center min-w-0 rounded-2xl hover:bg-muted transition-colors press touch-manipulation",
@@ -308,10 +302,10 @@ export function ThreadSidebar() {
             {initial}
           </span>
           {!isCollapsed && (
-            <span className="flex flex-col min-w-0">
+            <span className="flex items-baseline gap-1.5 min-w-0">
               <span className="text-sm font-semibold truncate leading-tight">{displayName}</span>
               <span className="text-xs text-muted-foreground truncate leading-tight">
-                {userMeta.email ?? "View account"}
+                · {isPro ? "Pro" : "Free"}
               </span>
             </span>
           )}
