@@ -210,7 +210,7 @@ function Hero() {
   return (
     <section className="relative flex min-h-[min(680px,76svh)] flex-col items-center justify-center px-6 py-16 text-center sm:py-20">
       <div className="mx-auto mb-6 flex max-w-2xl flex-wrap items-center justify-center gap-x-3 gap-y-1 text-sm">
-        <span className="font-bold text-primary">Updated for 2026</span>
+        <span className="animate-pulse font-bold text-primary motion-reduce:animate-none">Updated for 2026</span>
         <span className="hidden text-muted-foreground sm:inline">Full-length state-specific Mock Permit Exam simulator, now live</span>
       </div>
 
