@@ -197,7 +197,7 @@ export function ChatWindow({
         className="relative flex h-full flex-col items-center justify-start overflow-y-auto bg-background px-4 py-5"
         style={{
           background:
-            "radial-gradient(420px 420px at 18% 30%, color-mix(in oklch, var(--rose-soft) 16%, transparent), transparent 70%), radial-gradient(420px 420px at 82% 70%, color-mix(in oklch, var(--accent-coral) 13%, transparent), transparent 70%)",
+            "radial-gradient(420px 420px at 18% 30%, color-mix(in oklch, var(--rose-soft) 16%, transparent), transparent 70%), radial-gradient(420px 420px at 82% 70%, color-mix(in oklch, var(--accent-coral) 20%, transparent), transparent 70%)",
         }}
       >
         <div className="w-full max-w-2xl text-center my-auto shrink-0">

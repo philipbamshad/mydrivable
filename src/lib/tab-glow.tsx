@@ -4,7 +4,7 @@ import type { CSSProperties } from "react";
 // test hub, and driving simulation all sit on the same backdrop.
 export const tabGlowStyle: CSSProperties = {
   background:
-    "radial-gradient(380px 380px at 32% 45%, color-mix(in oklch, var(--rose-soft) 18%, transparent), transparent 70%), radial-gradient(380px 380px at 68% 52%, color-mix(in oklch, var(--accent-coral) 14%, transparent), transparent 70%)",
+    "radial-gradient(380px 380px at 32% 45%, color-mix(in oklch, var(--rose-soft) 18%, transparent), transparent 70%), radial-gradient(380px 380px at 68% 52%, color-mix(in oklch, var(--accent-coral) 22%, transparent), transparent 70%)",
 };
 
 export function GlowShell({ children }: { children: React.ReactNode }) {
