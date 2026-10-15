@@ -39,9 +39,9 @@ import { AccountPanel } from "@/components/dashboard/AccountPanel";
 import { useUserProfile, US_STATES } from "@/lib/user-profile";
 
 const PRIMARY_NAV = [
-  { id: "chat", label: "AI Permit Coach", icon: MessageSquare },
+  { id: "chat", label: "AI Coach", icon: MessageSquare },
   { id: "state-exam", label: "Mock Permit Exam", icon: Timer },
-  { id: "test-hub", label: "Test Hub", icon: ClipboardCheck },
+  { id: "test-hub", label: "Permit Test Hub", icon: ClipboardCheck },
 ] as const;
 
 export function ThreadSidebar() {
@@ -275,9 +275,9 @@ export function ThreadSidebar() {
               pathname === "/app/simulation" && "nav-link-active",
               isCollapsed && "justify-center px-0",
             )}
-            aria-label="Driving Simulation"
+            aria-label="Driving Test Simulation"
             aria-current={pathname === "/app/simulation" ? "page" : undefined}
-            title={isCollapsed ? "Driving Simulation" : undefined}
+            title={isCollapsed ? "Driving Test Simulation" : undefined}
           >
             <Video className="w-4 h-4 shrink-0" />
             <span
@@ -286,7 +286,7 @@ export function ThreadSidebar() {
                 isCollapsed ? "w-0 opacity-0" : "flex-1",
               )}
             >
-              Driving Simulation
+              Driving Test Simulation
             </span>
           </Link>
         </nav>

@@ -8,9 +8,9 @@ import { SIMULATION_CLIPS } from "@/data/simulation-clips";
 export const Route = createFileRoute("/_authenticated/app/simulation")({
   head: () => ({
     meta: [
-      { title: "Driving Simulation | Drivable" },
+      { title: "Driving Test Simulation | Drivable" },
       { name: "description", content: "Watch real driving clips and choose what the driver should do next." },
-      { property: "og:title", content: "Driving Simulation | Drivable" },
+      { property: "og:title", content: "Driving Test Simulation | Drivable" },
       { property: "og:description", content: "Watch real driving clips and choose what the driver should do next." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
@@ -51,7 +51,7 @@ function SimulationPage() {
     <div className="h-full overflow-y-auto p-5 sm:p-7">
       <div className="mx-auto max-w-3xl space-y-5">
         <div className="flex items-center justify-between">
-          <h1 className="font-display text-xl font-bold">Driving Simulation</h1>
+          <h1 className="font-display text-xl font-bold">Driving Test Simulation</h1>
           <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
             Clip {idx + 1} / {SIMULATION_CLIPS.length}
           </span>
