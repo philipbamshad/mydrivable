@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { Check, X, RotateCcw, Video, Play } from "lucide-react";
+import { ArrowLeft, Check, X, RotateCcw, Video, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
@@ -71,6 +71,14 @@ function SimulationPage() {
     }
   };
 
+  const exitSimulation = () => {
+    setStarted(false);
+    setSession([]);
+    setIdx(0);
+    setEnded(false);
+    setPicked(null);
+  };
+
   if (!started || !clip) {
     return (
       <GlowShell>
@@ -100,6 +108,13 @@ function SimulationPage() {
   return (
     <GlowShell>
       <div className="space-y-5">
+        <button
+          onClick={exitSimulation}
+          className="flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground transition-colors"
+        >
+          <ArrowLeft className="w-3.5 h-3.5" /> Exit simulation
+        </button>
+
         <div className="flex items-center justify-between">
           <h1 className="font-display text-xl font-bold">Driving Test Simulation</h1>
           <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
@@ -163,6 +178,9 @@ function SimulationPage() {
                   </Button>
                   <Button variant="outline" className="press rounded-full" onClick={replay}>
                     <RotateCcw className="h-4 w-4" /> Replay
+                  </Button>
+                  <Button variant="ghost" className="press rounded-full" onClick={exitSimulation}>
+                    Exit
                   </Button>
                 </div>
               </div>

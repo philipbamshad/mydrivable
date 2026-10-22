@@ -9,3 +9,4 @@
 - [x] Trim the lane-change video before the maneuver.
 - [x] Randomize clip and answer order on each start, preserving correct-answer scoring.
 - [x] Test the rules and verify the signed-in simulation flow.
+- [x] Add an exit control to the simulation matching the other study tabs.
