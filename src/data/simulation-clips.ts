@@ -1,6 +1,7 @@
 import stopSign from "@/assets/stop-sign-approach.webm.asset.json";
 import rightOfWay from "@/assets/stop-sign-right-of-way.webm.asset.json";
 import laneChange from "@/assets/lane-change.webm.asset.json";
+import leftTurnArrow from "@/assets/left-turn-green-arrow.webm.asset.json";
 import type { SimulationClip } from "./simulation-session";
 
 export type { SimulationClip } from "./simulation-session";
@@ -44,5 +45,18 @@ export const SIMULATION_CLIPS: SimulationClip[] = [
     ],
     correct: 1,
     explanation: "Before changing lanes, signal your intention, check your mirrors, and look over your shoulder to check the blind spot. Yield to traffic already in the lane and move over smoothly only when there is enough space.",
+  },
+  {
+    id: "left-turn-green-arrow",
+    videoUrl: leftTurnArrow.url,
+    question: "You are approaching this intersection and the green left-turn arrow is on. What should you do?",
+    options: [
+      "Wait for the light to turn fully green before turning",
+      "Turn left now — the green arrow is a protected turn",
+      "Turn left, but yield to oncoming traffic first",
+      "Stop and wait for the intersection to fully clear",
+    ],
+    correct: 1,
+    explanation: "A green left-turn arrow is a protected turn: oncoming traffic is held by a red light, so you may turn left without yielding to it. Still check for pedestrians and cross traffic before completing the turn.",
   },
 ];
