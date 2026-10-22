@@ -1,11 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Check, X, RotateCcw, Video, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { GlowShell } from "@/lib/tab-glow";
 import { SIMULATION_CLIPS } from "@/data/simulation-clips";
+import { createSimulationSession, type SimulationClip } from "@/data/simulation-session";
 
 export const Route = createFileRoute("/_authenticated/app/simulation")({
   head: () => ({
@@ -24,15 +25,17 @@ export const Route = createFileRoute("/_authenticated/app/simulation")({
 
 function SimulationPage() {
   const [started, setStarted] = useState(false);
+  const [session, setSession] = useState<SimulationClip[]>([]);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [idx, setIdx] = useState(0);
   const [ended, setEnded] = useState(false);
   const [picked, setPicked] = useState<number | null>(null);
-  const clip = SIMULATION_CLIPS[idx];
-  const next = SIMULATION_CLIPS[(idx + 1) % SIMULATION_CLIPS.length];
+  const clip = session[idx];
+  const next = session[(idx + 1) % session.length];
 
   // Preload the next clip in the background.
   useEffect(() => {
-    if (!next || next.id === clip.id) return;
+    if (!started || !clip || !next || next.id === clip.id) return;
     const v = document.createElement("video");
     v.preload = "auto";
     v.muted = true;
@@ -42,10 +45,18 @@ function SimulationPage() {
       v.removeAttribute("src");
       v.load();
     };
-  }, [next, clip.id]);
+  }, [started, next, clip]);
+
+  const startSimulation = () => {
+    setSession(createSimulationSession(SIMULATION_CLIPS));
+    setIdx(0);
+    setEnded(false);
+    setPicked(null);
+    setStarted(true);
+  };
 
   const goNext = () => {
-    setIdx((i) => (i + 1) % SIMULATION_CLIPS.length);
+    setIdx((i) => (i + 1) % session.length);
     setEnded(false);
     setPicked(null);
   };
@@ -53,14 +64,14 @@ function SimulationPage() {
   const replay = () => {
     setEnded(false);
     setPicked(null);
-    const v = document.querySelector("video");
+    const v = videoRef.current;
     if (v) {
       v.currentTime = 0;
       void v.play();
     }
   };
 
-  if (!started) {
+  if (!started || !clip) {
     return (
       <GlowShell>
         <Card className="relative bg-card rounded-[28px] border border-border/60 p-5 sm:p-7 shadow-lg">
@@ -76,7 +87,7 @@ function SimulationPage() {
           </div>
 
           <Button
-            onClick={() => setStarted(true)}
+            onClick={startSimulation}
             className="press w-full mt-6 rounded-full h-12 sm:h-13 text-sm sm:text-base font-semibold"
           >
             <Play className="h-4 w-4" /> Start simulation
@@ -92,12 +103,13 @@ function SimulationPage() {
         <div className="flex items-center justify-between">
           <h1 className="font-display text-xl font-bold">Driving Test Simulation</h1>
           <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-            Clip {idx + 1} / {SIMULATION_CLIPS.length}
+            Clip {idx + 1} / {session.length}
           </span>
         </div>
 
         <div className="overflow-hidden rounded-[28px] border border-border/60 bg-card p-2 shadow-md">
           <video
+            ref={videoRef}
             key={clip.id}
             src={clip.videoUrl}
             autoPlay
@@ -119,22 +131,23 @@ function SimulationPage() {
                 const reveal = picked !== null;
                 const isCorrect = i === clip.correct;
                 return (
-                  <button
+                  <Button
                     key={i}
+                    variant="outline"
                     disabled={reveal}
                     onClick={() => setPicked(i)}
                     className={cn(
-                      "flex items-center justify-between gap-2 rounded-xl border p-3.5 text-left text-sm font-medium transition-all",
+                      "h-auto min-h-12 w-full whitespace-normal flex items-center justify-between gap-2 rounded-xl border p-3.5 text-left text-sm font-medium transition-all disabled:opacity-100",
                       !reveal && "border-border bg-muted hover:border-foreground/40",
-                      reveal && isCorrect && "border-emerald-400 bg-emerald-500/20 text-emerald-800",
-                      reveal && picked === i && !isCorrect && "border-red-400 bg-red-500/20 text-red-800",
-                      reveal && picked !== i && !isCorrect && "opacity-40",
+                      reveal && isCorrect && "border-success bg-success/10 text-success",
+                      reveal && picked === i && !isCorrect && "border-destructive bg-destructive/10 text-destructive",
+                      reveal && picked !== i && !isCorrect && "disabled:opacity-40",
                     )}
                   >
                     <span>{opt}</span>
                     {reveal && isCorrect && <Check className="h-4 w-4" />}
                     {reveal && picked === i && !isCorrect && <X className="h-4 w-4" />}
-                  </button>
+                  </Button>
                 );
               })}
             </div>
@@ -145,7 +158,9 @@ function SimulationPage() {
                 </p>
                 <p className="text-sm text-foreground/90">{clip.explanation}</p>
                 <div className="mt-4 flex gap-2">
-                  <Button onClick={goNext} className="press rounded-full">Next</Button>
+                  <Button onClick={idx === session.length - 1 ? startSimulation : goNext} className="press rounded-full">
+                    {idx === session.length - 1 ? "Start again" : "Next"}
+                  </Button>
                   <Button variant="outline" className="press rounded-full" onClick={replay}>
                     <RotateCcw className="h-4 w-4" /> Replay
                   </Button>
