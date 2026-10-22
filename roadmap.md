@@ -10,3 +10,4 @@
 - [x] Randomize clip and answer order on each start, preserving correct-answer scoring.
 - [x] Test the rules and verify the signed-in simulation flow.
 - [x] Add an exit control to the simulation matching the other study tabs.
+- [x] Add the uploaded left-turn green-arrow clip (starts after the first road arrow, cut at the stop line) with a protected-turn question.

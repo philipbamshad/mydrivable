@@ -3,9 +3,9 @@ import { createSimulationSession } from "./simulation-session";
 import { SIMULATION_CLIPS } from "./simulation-clips";
 
 describe("simulation session rules", () => {
-  it("contains only the three requested scenarios", () => {
+  it("contains only the requested scenarios", () => {
     expect(SIMULATION_CLIPS.map((clip) => clip.id)).toEqual([
-      "stop-sign-approach", "stop-sign-right-of-way", "lane-change",
+      "stop-sign-approach", "stop-sign-right-of-way", "lane-change", "left-turn-green-arrow",
     ]);
   });
 
