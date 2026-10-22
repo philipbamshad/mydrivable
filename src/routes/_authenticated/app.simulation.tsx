@@ -179,6 +179,9 @@ function SimulationPage() {
                   <Button variant="outline" className="press rounded-full" onClick={replay}>
                     <RotateCcw className="h-4 w-4" /> Replay
                   </Button>
+                  <Button variant="ghost" className="press rounded-full" onClick={exitSimulation}>
+                    Exit
+                  </Button>
                 </div>
               </div>
             )}
