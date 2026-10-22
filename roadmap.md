@@ -5,7 +5,7 @@
 - [x] Verify signed-in screens and compact layouts.
 
 # Simulation videos
-- [ ] Replace the simulation with the three supplied videos and scenario-specific questions.
-- [ ] Trim the lane-change video before the maneuver.
-- [ ] Randomize clip and answer order on each start, preserving correct-answer scoring.
-- [ ] Test the rules and verify the signed-in simulation flow.
+- [x] Replace the simulation with the three supplied videos and scenario-specific questions.
+- [x] Trim the lane-change video before the maneuver.
+- [x] Randomize clip and answer order on each start, preserving correct-answer scoring.
+- [x] Test the rules and verify the signed-in simulation flow.
