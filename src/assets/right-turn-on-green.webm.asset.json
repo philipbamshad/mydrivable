@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "asset_id": "eee5d13c-88e3-4f2b-b362-2485bd02eca7",
+  "asset_id": "e4a24d90-7309-4133-b409-ea6fb2b6cf8c",
   "project_id": "3749a1e7-87d1-4a89-b24a-639e8b1f2b05",
-  "url": "/__l5e/assets-v1/eee5d13c-88e3-4f2b-b362-2485bd02eca7/right-turn-on-green.webm",
-  "r2_key": "a/v1/3749a1e7-87d1-4a89-b24a-639e8b1f2b05/eee5d13c-88e3-4f2b-b362-2485bd02eca7/right-turn-on-green.webm",
+  "url": "/__l5e/assets-v1/e4a24d90-7309-4133-b409-ea6fb2b6cf8c/right-turn-on-green.webm",
+  "r2_key": "a/v1/3749a1e7-87d1-4a89-b24a-639e8b1f2b05/e4a24d90-7309-4133-b409-ea6fb2b6cf8c/right-turn-on-green.webm",
   "original_filename": "right-turn-on-green.webm",
-  "size": 805746,
+  "size": 480108,
   "content_type": "video/webm",
-  "created_at": "2026-10-22T02:33:17Z"
+  "created_at": "2026-10-22T02:36:16Z"
 }
