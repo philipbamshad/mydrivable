@@ -6,7 +6,7 @@ describe("simulation session rules", () => {
   it("contains only the requested scenarios", () => {
     expect(SIMULATION_CLIPS.map((clip) => clip.id)).toEqual([
       "stop-sign-approach", "stop-sign-right-of-way", "lane-change",
-      "left-turn-green-arrow", "right-turn-on-green",
+      "left-turn-green-arrow", "right-turn-on-green", "right-turn-on-red",
     ]);
   });
 

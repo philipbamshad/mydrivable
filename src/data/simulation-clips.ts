@@ -3,6 +3,7 @@ import rightOfWay from "@/assets/stop-sign-right-of-way.webm.asset.json";
 import laneChange from "@/assets/lane-change.webm.asset.json";
 import leftTurnArrow from "@/assets/left-turn-green-arrow.webm.asset.json";
 import rightTurnGreen from "@/assets/right-turn-on-green.webm.asset.json";
+import rightTurnRed from "@/assets/right-turn-on-red.webm.asset.json";
 import type { SimulationClip } from "./simulation-session";
 
 export type { SimulationClip } from "./simulation-session";
@@ -72,5 +73,18 @@ export const SIMULATION_CLIPS: SimulationClip[] = [
     ],
     correct: 1,
     explanation: "On a green light you may turn right, but pedestrians crossing the crosswalk have the right of way — check for them (and for bikes) before and during the turn, and complete the turn only when it is safe.",
+  },
+  {
+    id: "right-turn-on-red",
+    videoUrl: rightTurnRed.url,
+    question: "You want to make a right turn on red here. What should you check before turning?",
+    options: [
+      "Turn without stopping if no cars are directly in front of you",
+      "Stop completely before the line, confirm right turns on red are allowed and there is no prohibiting sign, and yield until traffic, pedestrians, and cyclists are clear",
+      "Check only for oncoming cars; pedestrians must wait for you",
+      "Turn as soon as the car behind you honks, even if cross traffic is approaching",
+    ],
+    correct: 1,
+    explanation: "First come to a complete stop before the stop line or crosswalk. Check that local rules allow a right turn on red and that there is no No Turn on Red sign. Yield to all conflicting traffic, including oncoming vehicles turning left, and to pedestrians and cyclists. Turn only when the path is clear and safe; a red light does not give you the right of way.",
   },
 ];
