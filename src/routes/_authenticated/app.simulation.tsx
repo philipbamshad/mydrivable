@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { Check, X, RotateCcw, Video, Play } from "lucide-react";
+import { ArrowLeft, Check, X, RotateCcw, Video, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
@@ -69,6 +69,14 @@ function SimulationPage() {
       v.currentTime = 0;
       void v.play();
     }
+  };
+
+  const exitSimulation = () => {
+    setStarted(false);
+    setSession([]);
+    setIdx(0);
+    setEnded(false);
+    setPicked(null);
   };
 
   if (!started || !clip) {
