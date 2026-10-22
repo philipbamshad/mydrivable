@@ -2,6 +2,7 @@ import stopSign from "@/assets/stop-sign-approach.webm.asset.json";
 import rightOfWay from "@/assets/stop-sign-right-of-way.webm.asset.json";
 import laneChange from "@/assets/lane-change.webm.asset.json";
 import leftTurnArrow from "@/assets/left-turn-green-arrow.webm.asset.json";
+import rightTurnGreen from "@/assets/right-turn-on-green.webm.asset.json";
 import type { SimulationClip } from "./simulation-session";
 
 export type { SimulationClip } from "./simulation-session";
@@ -58,5 +59,18 @@ export const SIMULATION_CLIPS: SimulationClip[] = [
     ],
     correct: 1,
     explanation: "A green left-turn arrow is a protected turn: oncoming traffic is held by a red light, so you may turn left without yielding to it. Still check for pedestrians and cross traffic before completing the turn.",
+  },
+  {
+    id: "right-turn-on-green",
+    videoUrl: rightTurnGreen.url,
+    question: "You are approaching this intersection to make a right turn and the light is green. What should you do?",
+    options: [
+      "Speed up to finish the turn before pedestrians step into the crosswalk",
+      "Turn right, but yield to pedestrians in the crosswalk as you make the turn",
+      "Wait for the light to turn red before turning right",
+      "Come to a full stop and wait for the intersection to completely clear",
+    ],
+    correct: 1,
+    explanation: "On a green light you may turn right, but pedestrians crossing the crosswalk have the right of way — check for them (and for bikes) before and during the turn, and complete the turn only when it is safe.",
   },
 ];
