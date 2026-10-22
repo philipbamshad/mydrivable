@@ -108,6 +108,13 @@ function SimulationPage() {
   return (
     <GlowShell>
       <div className="space-y-5">
+        <button
+          onClick={exitSimulation}
+          className="flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground transition-colors"
+        >
+          <ArrowLeft className="w-3.5 h-3.5" /> Exit simulation
+        </button>
+
         <div className="flex items-center justify-between">
           <h1 className="font-display text-xl font-bold">Driving Test Simulation</h1>
           <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
