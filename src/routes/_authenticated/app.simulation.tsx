@@ -117,9 +117,6 @@ function SimulationPage() {
 
         <div className="flex items-center justify-between">
           <h1 className="font-display text-xl font-bold">Driving Test Simulation</h1>
-          <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-            Clip {idx + 1} / {session.length}
-          </span>
         </div>
 
         <div className="overflow-hidden rounded-[28px] border border-border/60 bg-card p-2 shadow-md">
