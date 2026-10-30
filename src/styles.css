@@ -834,3 +834,32 @@
   .simulation-game .drive-actions, .simulation-game .drive-flash { animation: none; }
   .simulation-game .drive-flash { display: none; }
 }
+
+/* Scoped simulation turn signal; ambient and sibling-tab colors stay unchanged. */
+.simulation-signal-video {
+  --signal-amber: #FFA500;
+  --signal-edge-left: linear-gradient(to right, var(--signal-amber), transparent 15%);
+  --signal-edge-right: linear-gradient(to left, var(--signal-amber), transparent 15%);
+}
+.simulation-signal-glow { opacity: 0; }
+.simulation-signal-glow[data-direction="left"] { background: var(--signal-edge-left); }
+.simulation-signal-glow[data-direction="right"] { background: var(--signal-edge-right); }
+.simulation-signal-arrow { color: var(--signal-amber); }
+.simulation-signal-video[data-signal-active="true"] .simulation-signal-glow {
+  animation: simulation-signal-edge 0.8s ease-in-out infinite;
+}
+.simulation-signal-video[data-signal-active="true"] .simulation-signal-arrow {
+  animation: simulation-signal-arrow 0.8s ease-in-out infinite;
+}
+@keyframes simulation-signal-edge {
+  0%, 50%, 100% { opacity: 0; }
+  25% { opacity: 0.4; }
+}
+@keyframes simulation-signal-arrow {
+  0%, 50%, 100% { opacity: 0; }
+  25% { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .simulation-signal-video[data-signal-active="true"] .simulation-signal-glow { animation: none; opacity: 0.4; }
+  .simulation-signal-video[data-signal-active="true"] .simulation-signal-arrow { animation: none; opacity: 1; }
+}
