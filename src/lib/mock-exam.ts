@@ -10,11 +10,12 @@ export type ExamHistoryRow = { id: string; score_pct: number; state: string | nu
 export function directQuestion(text: string): string {
   let out = text.trim();
   const frames = [
-    /^During your morning drive,\s*/i,
+    /^During your morning (?:drive|commute),\s*/i,
     /^While (?:preparing for your written test|driving home from school),\s*/i,
     /^Imagine you are behind the wheel\.\s*/i,
     /^You are driving (?:in [^.]+|on a public road)\.\s*/i,
     /^On (?:a [^,]+ road|a typical road),\s*/i,
+    /^On a clear afternoon in [^,]+,\s*/i,
   ];
   for (let i = 0; i < 4; i++) for (const frame of frames) out = out.replace(frame, "");
   return out.charAt(0).toUpperCase() + out.slice(1);
