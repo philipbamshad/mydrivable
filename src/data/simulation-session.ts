@@ -1,9 +1,19 @@
+export type ActionIcon = "go" | "stop" | "yield" | "left" | "right" | "wait" | "check";
+
+export type SimulationAction = {
+  id: string;
+  label: string;
+  icon: ActionIcon;
+  originalIndex?: number;
+};
+
 export type SimulationClip = {
   id: string;
   videoUrl: string;
-  question: string;
-  options: string[];
-  correct: number;
+  pauseAt: number;
+  cue: string;
+  actions: SimulationAction[];
+  correctAction: string;
   explanation: string;
 };
 
@@ -21,11 +31,10 @@ export function createSimulationSession(
   random: () => number = Math.random,
 ): SimulationClip[] {
   return shuffle(clips, random).map((clip) => {
-    const answers = shuffle(clip.options.map((text, index) => ({ text, index })), random);
+    const actions = shuffle(clip.actions.map((action, index) => ({ ...action, originalIndex: index })), random);
     return {
       ...clip,
-      options: answers.map((answer) => answer.text),
-      correct: answers.findIndex((answer) => answer.index === clip.correct),
+      actions,
     };
   });
 }
