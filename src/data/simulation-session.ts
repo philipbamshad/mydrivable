@@ -12,6 +12,9 @@ export type SimulationClip = {
   videoUrl: string;
   pauseAt: number;
   title: string;
+  intent: string;
+  intentIcon: "go" | "left" | "right";
+  subtitle: string;
   actions: SimulationAction[];
   correctAction: string;
   explanation: string;
@@ -31,7 +34,7 @@ export function createSimulationSession(
   random: () => number = Math.random,
 ): SimulationClip[] {
   return shuffle(clips, random).map((clip) => {
-    const actions = shuffle(clip.actions.map((action, index) => ({ ...action, originalIndex: index })), random);
+    const actions = clip.actions.map((action, index) => ({ ...action, originalIndex: index }));
     return {
       ...clip,
       actions,

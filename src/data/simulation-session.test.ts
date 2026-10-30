@@ -5,8 +5,8 @@ import { SIMULATION_CLIPS } from "./simulation-clips";
 describe("simulation session rules", () => {
   it("contains only the requested scenarios", () => {
     expect(SIMULATION_CLIPS.map((clip) => clip.id)).toEqual([
+      "right-turn-on-green", "left-turn-green-arrow", "right-turn-on-red",
       "stop-sign-approach", "stop-sign-right-of-way", "lane-change",
-      "left-turn-green-arrow", "right-turn-on-green", "right-turn-on-red",
     ]);
   });
 
@@ -17,17 +17,14 @@ describe("simulation session rules", () => {
     expect(first.map((clip) => clip.id).sort()).toEqual(SIMULATION_CLIPS.map((clip) => clip.id).sort());
   });
 
-  it("shuffles answers without fixing the correct answer to option two", () => {
-    const first = createSimulationSession(SIMULATION_CLIPS, () => 0);
-    const second = createSimulationSession(SIMULATION_CLIPS, () => 0.999);
-    for (const clip of first) {
+  it("keeps the specified action order and original indices across starts", () => {
+    for (const clip of createSimulationSession(SIMULATION_CLIPS, () => 0)) {
       const original = SIMULATION_CLIPS.find((source) => source.id === clip.id);
       expect(original).toBeDefined();
-      expect(clip.actions.map((action) => action.id)).not.toEqual(original?.actions.map((action) => action.id));
-      expect(clip.actions.findIndex((action) => action.id === clip.correctAction)).not.toBe(1);
+      expect(clip.actions.map((action) => action.id)).toEqual(original?.actions.map((action) => action.id));
       const correct = clip.actions.find((action) => action.id === clip.correctAction);
       expect(correct?.originalIndex).toBe(original?.actions.findIndex((action) => action.id === original.correctAction));
-      expect(clip.actions).not.toEqual(second.find((source) => source.id === clip.id)?.actions);
+      expect(clip.actions.map((action) => action.originalIndex)).toEqual(clip.actions.map((_, index) => index));
     }
   });
 
@@ -37,11 +34,26 @@ describe("simulation session rules", () => {
     expect(SIMULATION_CLIPS).toEqual(before);
   });
 
-  it("keeps each decision before the existing video ends with 2–4 actions", () => {
-    const durations = [5, 5, 2.1, 2.5, 3, 3];
-    SIMULATION_CLIPS.forEach((clip, index) => {
+  it("uses the six requested freeze points", () => {
+    expect(SIMULATION_CLIPS.map((clip) => clip.pauseAt)).toEqual([3.5, 2, 2, 4.5, 4.5, 1.5]);
+  });
+
+  it.each([
+    ["right-turn-on-green", ["right", "stop", "wait"], "right"],
+    ["left-turn-green-arrow", ["left", "yield", "stop"], "left"],
+    ["right-turn-on-red", ["stop", "slow", "right"], "stop"],
+    ["stop-sign-approach", ["stop", "slow", "go"], "stop"],
+    ["stop-sign-right-of-way", ["go", "yield"], "yield"],
+    ["lane-change", ["check", "move", "speed"], "check"],
+  ])("preserves authored actions and scoring for %s", (id, actions, correct) => {
+    const clip = SIMULATION_CLIPS.find((source) => source.id === id);
+    expect(clip?.actions.map((action) => action.id)).toEqual(actions);
+    expect(clip?.correctAction).toBe(correct);
+  });
+
+  it("offers 2–4 actions with a valid correct action", () => {
+    SIMULATION_CLIPS.forEach((clip) => {
       expect(clip.pauseAt).toBeGreaterThan(0);
-      expect(clip.pauseAt).toBeLessThan(durations[index]);
       expect(clip.actions.length).toBeGreaterThanOrEqual(2);
       expect(clip.actions.length).toBeLessThanOrEqual(4);
       expect(clip.actions.some((action) => action.id === clip.correctAction)).toBe(true);

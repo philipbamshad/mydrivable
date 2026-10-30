@@ -47,6 +47,7 @@ function SimulationPage() {
   const decisionStart = useRef(0);
   const frozenFrame = useRef<string | null>(null);
   const frameRequest = useRef<number | null>(null);
+  const endHoldTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const decisionPanel = useRef<HTMLDivElement>(null);
   const feedbackPanel = useRef<HTMLDivElement>(null);
   const scroller = useRef<HTMLDivElement>(null);
@@ -138,6 +139,7 @@ function SimulationPage() {
     if (typeof video.requestVideoFrameCallback === "function") frameRequest.current = video.requestVideoFrameCallback(checkFrame);
     return () => {
       stopped = true;
+      if (endHoldTimer.current !== null) { clearTimeout(endHoldTimer.current); endHoldTimer.current = null; }
       if (frameRequest.current !== null && typeof video.cancelVideoFrameCallback === "function") video.cancelVideoFrameCallback(frameRequest.current);
     };
   }, [clip, phase, beginDecision]);
@@ -145,6 +147,15 @@ function SimulationPage() {
   const resumeVideo = () => {
     const video = videoRef.current;
     if (video) void video.play().then(() => setNeedsPlay(false)).catch(() => setNeedsPlay(true));
+  };
+
+  const holdFinalFrame = () => {
+    const video = videoRef.current;
+    if (!video || !clip || phaseRef.current !== "playing") return;
+    // Keep the original trimmed asset; hold its final frame until the authored freeze time.
+    const holdMs = Math.max(0, clip.pauseAt - video.currentTime) * 1000;
+    if (endHoldTimer.current !== null) clearTimeout(endHoldTimer.current);
+    endHoldTimer.current = setTimeout(beginDecision, holdMs);
   };
 
   return (
@@ -192,16 +203,21 @@ function SimulationPage() {
                 <video ref={videoRef} key={clip.id} src={clip.videoUrl} autoPlay muted playsInline preload="auto"
                   onLoadedData={() => setLoaded(true)} onCanPlay={() => { if (phaseRef.current === "playing") resumeVideo(); }}
                   onTimeUpdate={(event) => { if (event.currentTarget.currentTime >= clip.pauseAt) beginDecision(); }}
-                  onEnded={beginDecision} onError={() => setVideoError(true)} className="block aspect-video w-full object-contain" />
+                  onEnded={holdFinalFrame} onError={() => setVideoError(true)} className="block aspect-video w-full object-contain" />
                 {(!loaded || videoError || needsPlay) && phase === "playing" && <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-card/80">{videoError ? <><p className="text-sm">Unable to load this clip.</p><Button onClick={() => { setVideoError(false); videoRef.current?.load(); }}>Retry</Button></> : needsPlay ? <Button onClick={resumeVideo}><Play />Play clip</Button> : <LoaderCircle className="h-8 w-8 animate-spin motion-reduce:animate-none" aria-label="Loading clip" />}</div>}
+                <span className="pointer-events-none absolute left-3 top-3 inline-flex max-w-[calc(100%-1.5rem)] items-center gap-2 rounded-full border border-border bg-primary-foreground px-3 py-1.5 text-xs font-semibold text-action shadow-sm" aria-label={`Intent: ${clip.intent}`}>
+                  {clip.intentIcon === "left" ? <ArrowLeft aria-hidden="true" className="h-4 w-4 shrink-0 animate-pulse [animation-duration:2s] motion-reduce:animate-none" /> : clip.intentIcon === "right" ? <ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0 animate-pulse [animation-duration:2s] motion-reduce:animate-none" /> : <ArrowUp aria-hidden="true" className="h-4 w-4 shrink-0 animate-pulse [animation-duration:2s] motion-reduce:animate-none" />}
+                  {clip.intent}
+                </span>
               </div>
+              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{clip.subtitle}</p>
               {(phase === "decision" || phase === "feedback") && <div ref={decisionPanel} className="mt-5">
                 {phase === "decision" && timed && <div className="mb-4 flex items-center gap-3"><div role="progressbar" aria-label="Decision time remaining" aria-valuemin={0} aria-valuemax={5} aria-valuenow={remaining / 1000} className="flex h-1 flex-1 overflow-hidden rounded-full bg-muted"><span className={cn("h-full transition-[flex-grow] duration-75", remaining > 1000 ? "bg-action" : "bg-destructive/60")} style={{ flexGrow: remaining }} /><span style={{ flexGrow: DECISION_MS - remaining }} /></div><span className="text-xs tabular-nums text-muted-foreground">{(remaining / 1000).toFixed(1)}s</span></div>}
                 <h2 className="mb-4 font-display text-lg font-semibold">What do you do?</h2>
                 <div className={cn("grid grid-cols-1 gap-3", clip.actions.length === 3 ? "sm:grid-cols-3" : clip.actions.length === 4 ? "sm:grid-cols-4" : "sm:grid-cols-2")}>
                   {clip.actions.map((action) => {
                     const Icon = icons[action.icon]; const reveal = phase === "feedback"; const correct = action.id === clip.correctAction; const selected = action.id === feedback?.selectedAction;
-                    return <Button key={action.id} variant="secondary" disabled={reveal} onClick={() => answer(action.id)} aria-pressed={selected} className={cn("h-12 w-full rounded-2xl border border-transparent text-sm font-semibold disabled:opacity-100", reveal && correct && "border-success/50 bg-success/10 text-success", reveal && selected && !correct && "border-destructive/50 bg-destructive/10 text-destructive", reveal && !correct && !selected && "opacity-60")}><Icon />{action.label}{reveal && correct && <Check />}{reveal && selected && !correct && <X />}</Button>;
+                    return <Button key={action.id} variant="secondary" disabled={reveal} onClick={() => answer(action.id)} aria-pressed={selected} className={cn("h-16 w-full min-w-0 gap-1.5 whitespace-normal rounded-2xl border border-transparent px-3 text-sm font-semibold disabled:opacity-100", reveal && correct && "border-success/50 bg-success/10 text-success", reveal && selected && !correct && "border-destructive/50 bg-destructive/10 text-destructive", reveal && !correct && !selected && "opacity-60")}><Icon /><span className="min-w-0 leading-5">{action.label}</span>{reveal && correct && <Check />}{reveal && selected && !correct && <X />}</Button>;
                   })}
                 </div>
               </div>}
