@@ -153,7 +153,7 @@ function SimulationPage() {
 
   return (
     <section className="simulation-game flex h-full min-h-0 w-full flex-col overflow-hidden" aria-label="Driving Test Simulation">
-      <header className="flex shrink-0 items-center justify-between gap-3 border-b border-border/50 px-4 py-3 sm:px-6">
+      <header className="flex shrink-0 items-center justify-between gap-3 border-b border-border/50 py-3 pl-16 pr-3 md:px-6">
         <div className="flex min-w-0 items-center gap-3">
           {phase !== "ready" && <Button variant="ghost" size="icon" onClick={exit} title="Exit simulation" aria-label="Exit simulation"><ArrowLeft /></Button>}
           <h1 className="font-display text-sm font-bold sm:text-lg">Driving Test Simulation</h1>
@@ -170,7 +170,7 @@ function SimulationPage() {
           <div className="relative flex flex-col items-center px-6 text-center">
             <Gauge className="mb-5 h-12 w-12 text-success" />
             <h2 className="font-display text-3xl font-bold sm:text-5xl">Take the wheel.</h2>
-            <div className="mt-5 flex items-center gap-4 text-sm font-medium text-foreground"><span>6 scenarios</span><span className="flex items-center gap-1.5"><Heart className="h-4 w-4 text-destructive" />3 lives</span></div>
+            <div className="mt-5 flex items-center gap-4 text-sm font-medium text-foreground"><span>{SIMULATION_CLIPS.length} scenarios</span><span className="flex items-center gap-1.5"><Heart className="h-4 w-4 text-destructive" />3 lives</span></div>
             <Button onClick={start} className="mt-8 h-14 rounded-full px-8 text-base font-bold"><Play /> Start simulation</Button>
           </div>
         </div>
