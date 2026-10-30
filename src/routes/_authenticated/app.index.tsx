@@ -16,6 +16,7 @@ import { useUserProfile } from "@/lib/user-profile";
 import { StateOnboardingDialog } from "@/components/dashboard/StateOnboardingDialog";
 import { tabGlowStyle } from "@/lib/tab-glow";
 import { examHistoryOptions } from "@/lib/mock-exam.functions";
+import { hubProgressOptions } from "@/lib/test-hub.functions";
 import type { PillarId } from "@/data/dmv/practice-bank";
 
 type TabId = "test-hub" | "state-exam" | "chat";
@@ -53,7 +54,14 @@ export const Route = createFileRoute("/_authenticated/app/")({
     if (s.topic === "signs" || s.topic === "intersections" || s.topic === "substances" || s.topic === "speed") out.topic = s.topic;
     return out;
   },
-  loader: ({ context }) => context.queryClient.ensureQueryData(examHistoryOptions(context.user.id)),
+  loader: async ({ context }) => {
+    await Promise.all([
+      context.queryClient.ensureQueryData(examHistoryOptions(context.user.id)),
+      context.queryClient.ensureQueryData(hubProgressOptions(context.user.id)),
+    ]);
+  },
+  errorComponent: () => <div role="alert" className="p-7">Unable to load your study progress. Please refresh and try again.</div>,
+  notFoundComponent: () => <div className="p-7">Study page not found.</div>,
   component: AppDashboard,
 });
 
@@ -114,7 +122,7 @@ function AppDashboard() {
         <div className="flex-1 min-h-0 overflow-hidden">
           <TabsContent value="test-hub" className="h-full min-h-0 overflow-y-auto m-0 p-0 data-[state=inactive]:hidden">
             <div className="relative min-h-full w-full p-5 sm:p-7 flex flex-col justify-center" style={tabGlowStyle}>
-              <TestHubDashboard key={search.topic ?? "hub"} initialTopic={search.topic} />
+              <TestHubDashboard key={search.topic ?? "hub"} initialTopic={search.topic} userId={user.id} />
             </div>
           </TabsContent>
 
