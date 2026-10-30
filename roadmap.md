@@ -20,6 +20,6 @@
 - [x] Test scoring rules and verify signed-in gameplay on desktop and mobile.
 
 # Simulation test prep redesign
-- [ ] Replace arcade presentation with existing exam styling, optional five-second timing and manual feedback.
-- [ ] Add accuracy/decision-time results and frozen-frame missed-scenario review.
-- [ ] Verify timed and untimed flows, completion, retry and mobile layout without changing other pages or global styles.
+- [x] Replace arcade presentation with existing exam styling, optional five-second timing and manual feedback.
+- [x] Add accuracy/decision-time results and frozen-frame missed-scenario review.
+- [x] Verify timed and untimed flows, completion, retry and mobile layout without changing other pages or global styles.
