@@ -18,3 +18,4 @@
 - Derive simulation signal direction and activity through the tested intent helper; scope signal tokens and synchronized CSS animations to the video so other tab styles stay unchanged.
 - Keep mock-exam wording, topic analytics and limit/scoring rules in the tested exam-only helper; preserve sibling banks and use existing history rows for saved summary statistics.
 - Load exam history through authenticated route/query integration and await confirmed attempt writes; topic remediation uses a validated topic search value with existing Test Hub gates.
+- Keep Test Hub progress state-scoped in its owner-only table; derive mastery and missed-question recovery in the pure Hub helper, use stable question identities across answer shuffles, and await answer/score saves before advancing.

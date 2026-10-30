@@ -274,6 +274,33 @@ export type Database = {
         }
         Relationships: []
       }
+      test_hub_progress: {
+        Row: {
+          last_score: number | null
+          questions: Json
+          state: string
+          topic: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          last_score?: number | null
+          questions?: Json
+          state: string
+          topic: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          last_score?: number | null
+          questions?: Json
+          state?: string
+          topic?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       threads: {
         Row: {
           created_at: string
