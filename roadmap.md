@@ -40,6 +40,6 @@
 - [x] Test pass/topic/free-limit rules and verify signed-in completion, saved history and topic navigation.
 
 # Permit Test Hub upgrade
-- [ ] Add saved per-topic mastery, last scores, recommendations and missed-question tracking.
-- [ ] Upgrade practice feedback, visuals, keyboard answers and mastery results within existing Hub style.
-- [ ] Test mastery/missed-question/free-limit rules and verify signed-in practice, persistence and review.
+- [x] Add saved per-topic mastery, last scores, recommendations and missed-question tracking.
+- [x] Upgrade practice feedback, visuals, keyboard answers and mastery results within existing Hub style.
+- [x] Test mastery/missed-question/free-limit rules and verify signed-in practice, persistence and review.

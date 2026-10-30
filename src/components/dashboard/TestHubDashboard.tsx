@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Check, X, TrafficCone, GitFork, Beer, Gauge, RefreshCw, Lock, BookOpen, Target } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useUserProfile } from "@/lib/user-profile";
-import { ExamQuestionVisual } from "./ExamQuestionVisual";
+import { HubQuestionVisual } from "./HubQuestionVisual";
 import { shuffleAnswers } from "@/data/dmv/question-generator";
 import { buildPillarBanks, PILLAR_META, type PillarId } from "@/data/dmv/practice-bank";
 import { pickUnseenQuestions } from "@/lib/seen-questions";
@@ -161,7 +161,7 @@ function QuizRunner({ mode, banks, missed, progress, stateName, isPro, usage, on
     <div className="flex items-center justify-between gap-3">{back}<span className="text-xs text-muted-foreground text-right">{title} · {idx + 1} / {questions.length}</span></div>
     <Meter value={(idx + (reveal ? 1 : 0)) / questions.length * 100} />
     {locked && !reveal ? <Card className="bg-card rounded-[28px] border-border/60 p-7 text-center space-y-4"><Lock className="h-6 w-6 mx-auto" /><h2 className="font-bold">Free limit reached · {PILLAR_META[q.topic].title}</h2><p className="text-sm text-muted-foreground">You've answered your 10 free lifetime questions for this section.</p><Button className={actionClass} onClick={onUpgrade}>Get Pro Pass — $9</Button>{mode === "review" && idx + 1 < questions.length && <Button variant="outline" className="rounded-full ml-2" onClick={() => { setQuestions(list => list.filter((_, i) => i !== idx)); }}>Skip section</Button>}</Card> : <Card className="bg-card border-border/60 shadow-md p-5 sm:p-7 rounded-[28px]">
-      <ExamQuestionVisual question={q} />
+      <HubQuestionVisual question={q} />
       <h3 className="font-display text-lg font-semibold mb-5">{q.q}</h3>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {q.options.map((option, i) => <Button key={i} variant="outline" disabled={reveal} onClick={() => choose(i)} aria-pressed={picked === i}
