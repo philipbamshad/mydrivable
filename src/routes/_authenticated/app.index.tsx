@@ -15,6 +15,8 @@ import { ChatTab } from "@/components/chat/ChatTab";
 import { useUserProfile } from "@/lib/user-profile";
 import { StateOnboardingDialog } from "@/components/dashboard/StateOnboardingDialog";
 import { tabGlowStyle } from "@/lib/tab-glow";
+import { examHistoryOptions } from "@/lib/mock-exam.functions";
+import type { PillarId } from "@/data/dmv/practice-bank";
 
 type TabId = "test-hub" | "state-exam" | "chat";
 
@@ -36,9 +38,9 @@ export const Route = createFileRoute("/_authenticated/app/")({
   }),
   validateSearch: (
     s: Record<string, unknown>,
-  ): { tab?: TabId; checkout?: string; intent?: string } => {
+  ): { tab?: TabId; checkout?: string; intent?: string; topic?: PillarId } => {
     const t = s.tab;
-    const out: { tab?: TabId; checkout?: string; intent?: string } = {};
+    const out: { tab?: TabId; checkout?: string; intent?: string; topic?: PillarId } = {};
     if (
       t === "test-hub" ||
       t === "state-exam" ||
@@ -48,8 +50,10 @@ export const Route = createFileRoute("/_authenticated/app/")({
     }
     if (typeof s.checkout === "string") out.checkout = s.checkout;
     if (typeof s.intent === "string") out.intent = s.intent;
+    if (s.topic === "signs" || s.topic === "intersections" || s.topic === "substances" || s.topic === "speed") out.topic = s.topic;
     return out;
   },
+  loader: ({ context }) => context.queryClient.ensureQueryData(examHistoryOptions(context.user.id)),
   component: AppDashboard,
 });
 
@@ -61,6 +65,7 @@ const TABS = [
 
 
 function AppDashboard() {
+  const { user } = Route.useRouteContext();
   const search = Route.useSearch();
   const navigate = Route.useNavigate();
   const tab: TabId = search.tab ?? "chat";
@@ -109,13 +114,13 @@ function AppDashboard() {
         <div className="flex-1 min-h-0 overflow-hidden">
           <TabsContent value="test-hub" className="h-full min-h-0 overflow-y-auto m-0 p-0 data-[state=inactive]:hidden">
             <div className="relative min-h-full w-full p-5 sm:p-7 flex flex-col justify-center" style={tabGlowStyle}>
-              <TestHubDashboard />
+              <TestHubDashboard key={search.topic ?? "hub"} initialTopic={search.topic} />
             </div>
           </TabsContent>
 
           <TabsContent value="state-exam" className="h-full min-h-0 overflow-y-auto overscroll-contain m-0 p-0 data-[state=inactive]:hidden">
             <div className="relative min-h-full w-full p-5 sm:p-7 flex flex-col justify-center" style={tabGlowStyle}>
-              <PermitExamSimulator />
+              <PermitExamSimulator userId={user.id} />
             </div>
           </TabsContent>
 

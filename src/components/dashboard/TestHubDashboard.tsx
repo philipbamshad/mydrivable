@@ -43,9 +43,9 @@ const PILLAR_ORDER: { id: PillarId; icon: typeof TrafficCone }[] = [
 
 const FREE_PILLAR_LIFETIME_LIMIT = 10;
 
-export function TestHubDashboard() {
+export function TestHubDashboard({ initialTopic }: { initialTopic?: PillarId }) {
   const { isPro, unlockPro, state, freeUsage, bumpFreeUsage } = useUserProfile();
-  const [active, setActive] = useState<PillarId | null>(null);
+  const [active, setActive] = useState<PillarId | null>(initialTopic ?? null);
 
 
   const pillars: Pillar[] = PILLAR_ORDER.map(({ id, icon }) => ({
@@ -58,7 +58,8 @@ export function TestHubDashboard() {
   const usage = freeUsage.pillars;
 
   if (active) {
-    const p = pillars.find((x) => x.id === active)!;
+    const p = pillars.find((x) => x.id === active);
+    if (!p) return null;
     return (
       <QuizRunner
         pillar={p}
