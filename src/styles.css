@@ -808,8 +808,9 @@
   --game-top-scrim: linear-gradient(to bottom, color-mix(in oklab, var(--background) 88%, transparent), transparent);
   background: var(--background);
   color: var(--foreground);
+  container-type: inline-size;
 }
-.simulation-game .drive-stage { isolation: isolate; min-height: 0; }
+.simulation-game .drive-stage { isolation: isolate; min-height: 0; max-height: calc(56.25cqw + 180px); }
 .simulation-game .drive-bottom { background: var(--game-scrim); }
 .simulation-game .drive-top { background: var(--game-top-scrim); }
 .simulation-game .drive-countdown { accent-color: var(--success); }
