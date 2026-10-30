@@ -30,5 +30,5 @@
 - [x] Test scenario rules and verify signed-in playback, feedback and compact layout.
 
 # Simulation turn signals
-- [ ] Add intent-derived edge glow and synchronized arrow, active only during playback/decision.
-- [ ] Verify all six directions, feedback removal and steady reduced-motion display.
+- [x] Add intent-derived edge glow and synchronized arrow, active only during playback/decision.
+- [x] Verify all six directions, feedback removal and steady reduced-motion display.
