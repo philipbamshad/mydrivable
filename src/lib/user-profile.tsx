@@ -78,7 +78,7 @@ type ProfileContextValue = ProfileState & {
   setTargetDate: (d: string | null) => void;
   unlockPro: () => void;
   openCheckout: (priceId?: string) => void;
-  recordQuizScore: (pct: number, kind?: "mock" | "pillar") => void;
+  recordQuizScore: (pct: number, kind?: "mock" | "pillar", state?: string) => Promise<void>;
   addDriveSession: (s: NewDriveSession) => void;
   updateDriveSession: (id: string, patch: Partial<NewDriveSession>) => void;
   deleteDriveSession: (id: string) => void;
@@ -410,22 +410,20 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
   const unlockPro = useCallback(() => openCheckout(), [openCheckout]);
 
   const recordQuizScore = useCallback(
-    (pct: number, kind: "mock" | "pillar" = "mock") => {
+    async (pct: number, kind: "mock" | "pillar" = "mock", state?: string) => {
       const uid = activeUserRef.current;
       const rounded = Math.round(pct);
       // Only full-length Mock Permit Exam attempts feed the dashboard
       // analytics chart. Pillar / section quiz scores are intentionally
       // excluded so the graph reflects true exam readiness.
       if (kind !== "mock") return;
-      setProfile((p) => ({
-        ...p,
-        quizScores: [...p.quizScores, rounded].slice(-30),
-      }));
       if (uid) {
-        void supabase
-          .from("mock_test_history" as never)
-          .insert({ user_id: uid, score_pct: rounded } as never);
+        const { error } = await supabase
+          .from("mock_test_history")
+          .insert({ user_id: uid, score_pct: rounded, state: state ?? null });
+        if (error) throw new Error("Unable to save exam attempt.");
       }
+      setProfile((p) => ({ ...p, quizScores: [...p.quizScores, rounded].slice(-30) }));
     },
     [],
   );

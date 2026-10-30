@@ -16,3 +16,5 @@
 - Serve simulation uploads as CDN-backed WebM assets so autoplay and ended events work in Chromium as well as other modern browsers.
 - Keep intent, subtitle and freeze time in each simulation scenario definition so presentation and review use the same source; hold the final frame when an unchanged video ends before its configured freeze time.
 - Derive simulation signal direction and activity through the tested intent helper; scope signal tokens and synchronized CSS animations to the video so other tab styles stay unchanged.
+- Keep mock-exam wording, topic analytics and limit/scoring rules in the tested exam-only helper; preserve sibling banks and use existing history rows for saved summary statistics.
+- Load exam history through authenticated route/query integration and await confirmed attempt writes; topic remediation uses a validated topic search value with existing Test Hub gates.
