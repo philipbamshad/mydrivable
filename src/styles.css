@@ -785,3 +785,51 @@
   color: transparent;
   padding-right: 0.08em;
 }
+
+/* Driving game tokens and effects are isolated to this tab. */
+.simulation-game {
+  --background: oklch(0.12 0 0);
+  --foreground: oklch(0.98 0 0);
+  --card: oklch(0.19 0.005 250);
+  --card-foreground: oklch(0.98 0 0);
+  --muted: oklch(0.24 0.005 250);
+  --muted-foreground: oklch(0.78 0.008 250);
+  --border: oklch(0.4 0.008 250);
+  --accent: oklch(0.3 0.008 250);
+  --accent-foreground: oklch(0.98 0 0);
+  --action: oklch(0.95 0 0);
+  --action-hover: oklch(0.84 0 0);
+  --action-foreground: oklch(0.15 0 0);
+  --success: oklch(0.8 0.18 150);
+  --destructive: oklch(0.72 0.2 25);
+  --ring: oklch(0.8 0.18 150);
+  --game-warning: oklch(0.88 0.17 95);
+  --game-scrim: linear-gradient(to top, var(--background), color-mix(in oklab, var(--background) 86%, transparent) 55%, transparent);
+  --game-top-scrim: linear-gradient(to bottom, color-mix(in oklab, var(--background) 88%, transparent), transparent);
+  background: var(--background);
+  color: var(--foreground);
+}
+.simulation-game .drive-stage { isolation: isolate; min-height: 0; }
+.simulation-game .drive-bottom { background: var(--game-scrim); }
+.simulation-game .drive-top { background: var(--game-top-scrim); }
+.simulation-game .drive-countdown { accent-color: var(--success); }
+.simulation-game .drive-countdown[data-urgency="warning"] { accent-color: var(--game-warning); }
+.simulation-game .drive-countdown[data-urgency="danger"] { accent-color: var(--destructive); }
+.simulation-game .drive-countdown::-webkit-progress-bar { background: var(--muted); }
+.simulation-game .drive-countdown::-webkit-progress-value { background: var(--success); }
+.simulation-game .drive-countdown[data-urgency="warning"]::-webkit-progress-value { background: var(--game-warning); }
+.simulation-game .drive-countdown[data-urgency="danger"]::-webkit-progress-value { background: var(--destructive); }
+.simulation-game .drive-countdown::-moz-progress-bar { background: var(--success); }
+.simulation-game .drive-countdown[data-urgency="warning"]::-moz-progress-bar { background: var(--game-warning); }
+.simulation-game .drive-countdown[data-urgency="danger"]::-moz-progress-bar { background: var(--destructive); }
+.simulation-game .drive-actions { animation: drive-slide 220ms ease-out both; }
+.simulation-game .drive-flash { animation: drive-flash 450ms ease-out both; }
+@keyframes drive-slide {
+  from { opacity: 0; transform: translateY(32px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes drive-flash { from { opacity: 0.35; } to { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .simulation-game .drive-actions, .simulation-game .drive-flash { animation: none; }
+  .simulation-game .drive-flash { display: none; }
+}
