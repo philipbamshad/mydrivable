@@ -34,7 +34,7 @@
 - [x] Verify all six directions, feedback removal and steady reduced-motion display.
 
 # Mock Permit Exam upgrade
-- [ ] Add saved best/last/attempt statistics and state-appropriate exam description.
-- [ ] Add concise exam-only questions, sign/signal/marking visuals, keyboard answers, flags and pre-submit navigation without answer feedback.
-- [ ] Add pass results, topic breakdown/practice links, missed-answer explanations and saved attempts.
-- [ ] Test pass/topic/free-limit rules and verify signed-in completion, saved history and topic navigation.
+- [x] Add saved best/last/attempt statistics and state-appropriate exam description.
+- [x] Add concise exam-only questions, sign/signal/marking visuals, keyboard answers, flags and pre-submit navigation without answer feedback.
+- [x] Add pass results, topic breakdown/practice links, missed-answer explanations and saved attempts.
+- [x] Test pass/topic/free-limit rules and verify signed-in completion, saved history and topic navigation.
