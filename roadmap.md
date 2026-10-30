@@ -15,6 +15,6 @@
 - [x] Add the uploaded right-turn-on-red clip, cut at three seconds before the line, with safe-turn checks; verify playback and scoring.
 
 # Driving simulation game
-- [ ] Convert existing clips to timed action scenarios and preserve session randomization.
-- [ ] Build simulation-only immersive video, countdown, HUD, feedback, sound and results.
-- [ ] Test scoring rules and verify signed-in gameplay on desktop and mobile.
+- [x] Convert existing clips to timed action scenarios and preserve session randomization.
+- [x] Build simulation-only immersive video, countdown, HUD, feedback, sound and results.
+- [x] Test scoring rules and verify signed-in gameplay on desktop and mobile.
