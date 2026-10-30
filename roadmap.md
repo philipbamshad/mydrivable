@@ -38,3 +38,8 @@
 - [x] Add concise exam-only questions, sign/signal/marking visuals, keyboard answers, flags and pre-submit navigation without answer feedback.
 - [x] Add pass results, topic breakdown/practice links, missed-answer explanations and saved attempts.
 - [x] Test pass/topic/free-limit rules and verify signed-in completion, saved history and topic navigation.
+
+# Permit Test Hub upgrade
+- [ ] Add saved per-topic mastery, last scores, recommendations and missed-question tracking.
+- [ ] Upgrade practice feedback, visuals, keyboard answers and mastery results within existing Hub style.
+- [ ] Test mastery/missed-question/free-limit rules and verify signed-in practice, persistence and review.
