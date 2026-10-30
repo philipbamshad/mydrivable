@@ -1,19 +1,20 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ArrowLeft, ArrowRight, ArrowUp, Check, X, RotateCcw, Play, Heart, Flame, Volume2, VolumeX, Octagon, Triangle, Eye, CornerUpLeft, CornerUpRight, Pause, Trophy, Gauge, LoaderCircle } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowUp, Check, X, RotateCcw, Play, Octagon, Triangle, Eye, CornerUpLeft, CornerUpRight, Pause, Video, LoaderCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 import { SIMULATION_CLIPS } from "@/data/simulation-clips";
 import { createSimulationSession, type ActionIcon, type SimulationClip } from "@/data/simulation-session";
-import { DECISION_MS, FEEDBACK_MS, initialDriveStats, recordDecision, driveSummary } from "@/data/simulation-game";
-import { useDriveSound } from "@/components/simulation/use-drive-sound";
+import { DECISION_MS, recordDecision, decisionSummary, type ScenarioDecision } from "@/data/simulation-game";
+import { ScenarioThumbnail } from "@/components/simulation/ScenarioThumbnail";
 
 export const Route = createFileRoute("/_authenticated/app/simulation")({
   head: () => ({ meta: [
     { title: "Driving Test Simulation | Drivable" },
-    { name: "description", content: "React to real driving scenarios in a timed driving game with lives, streaks and speed scoring." },
+    { name: "description", content: "Practice real-world driving scenarios with optional timed decisions and clear DMV-based feedback." },
     { property: "og:title", content: "Driving Test Simulation | Drivable" },
-    { property: "og:description", content: "React to real driving scenarios in a timed driving game with lives, streaks and speed scoring." },
+    { property: "og:description", content: "Practice real-world driving scenarios with optional timed decisions and clear DMV-based feedback." },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary" },
     { name: "robots", content: "noindex" },
@@ -22,83 +23,83 @@ export const Route = createFileRoute("/_authenticated/app/simulation")({
 });
 
 type Phase = "ready" | "playing" | "decision" | "feedback" | "results";
-type Feedback = { correct: boolean; timedOut: boolean; reaction: number | null; points: number };
 const icons: Record<ActionIcon, typeof ArrowUp> = { go: ArrowUp, stop: Octagon, yield: Triangle, left: CornerUpLeft, right: CornerUpRight, wait: Pause, check: Eye };
+const cardClass = "rounded-[28px] border border-border/60 bg-card p-5 shadow-lg sm:p-7";
+
+function StatTile({ label, value }: { label: string; value: string | number }) {
+  return <div className="rounded-3xl bg-muted p-4 text-center sm:p-5"><p className="text-xs uppercase text-muted-foreground">{label}</p><p className="mt-1 font-display text-2xl font-bold tabular-nums sm:text-3xl">{value}</p></div>;
+}
 
 function SimulationPage() {
   const [phase, setPhase] = useState<Phase>("ready");
   const phaseRef = useRef<Phase>("ready");
+  const [timed, setTimed] = useState(true);
   const [session, setSession] = useState<SimulationClip[]>([]);
   const [idx, setIdx] = useState(0);
-  const [stats, setStats] = useState(initialDriveStats);
+  const [decisions, setDecisions] = useState<ScenarioDecision[]>([]);
   const [remaining, setRemaining] = useState(DECISION_MS);
-  const [feedback, setFeedback] = useState<Feedback | null>(null);
-  const [autoNext, setAutoNext] = useState(6);
+  const [feedback, setFeedback] = useState<ScenarioDecision | null>(null);
   const [videoError, setVideoError] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [needsPlay, setNeedsPlay] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const decisionStart = useRef(0);
+  const frozenFrame = useRef<string | null>(null);
   const frameRequest = useRef<number | null>(null);
-  const { muted, toggle, unlock, play } = useDriveSound();
+  const decisionPanel = useRef<HTMLDivElement>(null);
+  const feedbackPanel = useRef<HTMLDivElement>(null);
+  const scroller = useRef<HTMLDivElement>(null);
   const clip = session[idx];
   const next = session[idx + 1];
-  const summary = driveSummary(stats);
-  const finished = stats.lives === 0 || idx === session.length - 1;
+  const summary = decisionSummary(decisions);
 
   const changePhase = useCallback((value: Phase) => { phaseRef.current = value; setPhase(value); }, []);
   const start = () => {
-    unlock();
     setSession(createSimulationSession(SIMULATION_CLIPS));
-    setIdx(0); setStats(initialDriveStats()); setFeedback(null);
+    setIdx(0); setDecisions([]); setFeedback(null);
     setVideoError(false); setLoaded(false); setNeedsPlay(false);
-    changePhase("playing");
+    scroller.current?.scrollTo({ top: 0 }); changePhase("playing");
   };
-  const exit = () => { videoRef.current?.pause(); changePhase("ready"); setSession([]); };
-  const goNext = useCallback(() => {
+  const exit = () => { videoRef.current?.pause(); changePhase("ready"); setSession([]); setDecisions([]); scroller.current?.scrollTo({ top: 0 }); };
+  const goNext = () => {
     if (phaseRef.current !== "feedback") return;
-    if (finished) { changePhase("results"); return; }
-    setIdx((value) => value + 1); setFeedback(null); setVideoError(false); setLoaded(false); setNeedsPlay(false);
-    changePhase("playing");
-  }, [finished, changePhase]);
+    scroller.current?.scrollTo({ top: 0 });
+    if (idx === session.length - 1) { changePhase("results"); return; }
+    setIdx((value) => value + 1); setFeedback(null); setVideoError(false); setLoaded(false); setNeedsPlay(false); changePhase("playing");
+  };
 
   const beginDecision = useCallback(() => {
     if (phaseRef.current !== "playing") return;
-    videoRef.current?.pause();
-    decisionStart.current = performance.now();
-    setRemaining(DECISION_MS);
-    changePhase("decision");
+    const video = videoRef.current;
+    video?.pause();
+    frozenFrame.current = null;
+    if (video && video.videoWidth) {
+      try {
+        const canvas = document.createElement("canvas"); canvas.width = 320; canvas.height = 180;
+        const context = canvas.getContext("2d");
+        if (context) { context.drawImage(video, 0, 0, 320, 180); frozenFrame.current = canvas.toDataURL("image/jpeg", 0.75); }
+      } catch { /* Cross-origin media falls back to a paused video thumbnail. */ }
+    }
+    decisionStart.current = performance.now(); setRemaining(DECISION_MS); changePhase("decision");
   }, [changePhase]);
 
   const answer = useCallback((actionId: string | null) => {
     if (phaseRef.current !== "decision" || !clip) return;
-    const elapsed = performance.now() - decisionStart.current;
-    const timedOut = actionId === null || elapsed >= DECISION_MS;
-    const correct = !timedOut && actionId === clip.correctAction;
-    // Lock synchronously so a key, click and timeout cannot score twice.
+    // Lock before setting state: simultaneous keyboard/click/timeout events record one decision.
     changePhase("feedback");
-    const result = recordDecision(stats, correct, timedOut ? null : elapsed);
-    setStats(result.stats);
-    setFeedback({ correct, timedOut, reaction: timedOut ? null : elapsed / 1000, points: result.points });
-    setAutoNext(FEEDBACK_MS / 1000);
-    play(correct ? "correct" : "wrong");
-  }, [clip, stats, play, changePhase]);
+    const result = recordDecision(clip.id, actionId, clip.correctAction, performance.now() - decisionStart.current, timed, frozenFrame.current);
+    setDecisions((items) => [...items, result]); setFeedback(result);
+  }, [clip, timed, changePhase]);
 
   useEffect(() => {
-    if (phase !== "decision") return;
-    let tick = -1;
+    if (phase !== "decision" || !timed) return;
     const interval = window.setInterval(() => {
       const left = Math.max(0, DECISION_MS - (performance.now() - decisionStart.current));
-      setRemaining(left);
-      if (left <= 1000 && left > 0) {
-        const beat = Math.floor((1000 - left) / 250);
-        if (beat !== tick) { tick = beat; play("tick"); }
-      }
-      if (left === 0) answer(null);
-    }, 30);
+      setRemaining(left); if (left === 0) answer(null);
+    }, 40);
     const deadline = window.setTimeout(() => answer(null), DECISION_MS);
     return () => { window.clearInterval(interval); window.clearTimeout(deadline); };
-  }, [phase, answer, play]);
+  }, [phase, timed, answer]);
 
   useEffect(() => {
     if (phase !== "decision" || !clip) return;
@@ -109,26 +110,21 @@ function SimulationPage() {
       const action = clip.actions[Number(event.key) - 1];
       if (/^[1-4]$/.test(event.key) && action) { event.preventDefault(); answer(action.id); }
     };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    window.addEventListener("keydown", onKey); return () => window.removeEventListener("keydown", onKey);
   }, [phase, clip, answer]);
 
   useEffect(() => {
-    if (phase !== "feedback") return;
-    const started = performance.now();
-    const interval = window.setInterval(() => setAutoNext(Math.max(0, Math.ceil((FEEDBACK_MS - performance.now() + started) / 1000))), 200);
-    const timeout = window.setTimeout(goNext, FEEDBACK_MS);
-    return () => { window.clearInterval(interval); window.clearTimeout(timeout); };
-  }, [phase, goNext]);
+    if (phase === "decision") decisionPanel.current?.scrollIntoView({ block: "nearest", behavior: "instant" });
+    if (phase === "feedback") feedbackPanel.current?.scrollIntoView({ block: "nearest", behavior: "instant" });
+  }, [phase]);
 
+  const active = phase !== "ready" && phase !== "results";
   useEffect(() => {
-    if (!next || phase === "ready" || phase === "results") return;
-    const video = document.createElement("video");
-    video.preload = "auto"; video.muted = true; video.src = next.videoUrl; video.load();
+    if (!next || !active) return;
+    const video = document.createElement("video"); video.preload = "auto"; video.muted = true; video.src = next.videoUrl; video.load();
     return () => { video.removeAttribute("src"); video.load(); };
-  }, [next, phase === "ready", phase === "results"]);
+  }, [next, active]);
 
-  // Frame callbacks pause at the authored decision timestamp rather than waiting for ended.
   useEffect(() => {
     const video = videoRef.current;
     if (!video || !clip || phase !== "playing") return;
@@ -146,105 +142,77 @@ function SimulationPage() {
   }, [clip, phase, beginDecision]);
 
   const resumeVideo = () => {
-    unlock();
     const video = videoRef.current;
     if (video) void video.play().then(() => setNeedsPlay(false)).catch(() => setNeedsPlay(true));
   };
 
   return (
-    <section className="simulation-game flex h-full min-h-0 w-full flex-col overflow-hidden" aria-label="Driving Test Simulation">
-      <header className="flex shrink-0 items-center justify-between gap-3 border-b border-border/50 py-3 pl-16 pr-3 md:px-6">
-        <div className="flex min-w-0 items-center gap-3">
-          {phase !== "ready" && <Button variant="ghost" size="icon" onClick={exit} title="Exit simulation" aria-label="Exit simulation"><ArrowLeft /></Button>}
-          <h1 className="font-display text-sm font-bold sm:text-lg">Driving Test Simulation</h1>
-        </div>
-        <Button variant="ghost" size="icon" onClick={toggle} aria-label={muted ? "Unmute sounds" : "Mute sounds"} title={muted ? "Unmute sounds" : "Mute sounds"} aria-pressed={muted}>
-          {muted ? <VolumeX /> : <Volume2 />}
-        </Button>
-      </header>
-
-      {phase === "ready" ? (
-        <div className="relative flex min-h-0 flex-1 items-center justify-center overflow-hidden">
-          <video src={SIMULATION_CLIPS[0]?.videoUrl} muted playsInline preload="auto" onLoadedMetadata={(event) => { event.currentTarget.currentTime = 1; }} className="absolute inset-0 h-full w-full object-cover" />
-          <div className="absolute inset-0 bg-background/65" />
-          <div className="relative flex flex-col items-center px-6 text-center">
-            <Gauge className="mb-5 h-12 w-12 text-success" />
-            <h2 className="font-display text-3xl font-bold sm:text-5xl">Take the wheel.</h2>
-            <div className="mt-5 flex items-center gap-4 text-sm font-medium text-foreground"><span>{SIMULATION_CLIPS.length} scenarios</span><span className="flex items-center gap-1.5"><Heart className="h-4 w-4 text-destructive" />3 lives</span></div>
-            <Button onClick={start} className="mt-8 h-14 rounded-full px-8 text-base font-bold"><Play /> Start simulation</Button>
-          </div>
-        </div>
-      ) : phase === "results" ? (
-        <div className="flex min-h-0 flex-1 flex-col items-center justify-center overflow-y-auto px-6 py-8 text-center">
-          <Trophy className="mb-4 h-10 w-10 text-success" />
-          <h2 className="font-display text-3xl font-bold">{stats.lives === 0 ? "Drive over" : "Drive complete"}</h2>
-          <p className="mt-5 font-display text-6xl font-bold tabular-nums">{stats.score.toLocaleString()}</p>
-          <p className="mt-1 text-sm text-muted-foreground">Total score</p>
-          <dl className="mt-8 grid w-full max-w-lg grid-cols-3 gap-3 border-y border-border/60 py-6">
-            <div><dd className="text-2xl font-bold tabular-nums">{summary.accuracy}%</dd><dt className="mt-1 text-xs text-muted-foreground">Accuracy</dt></div>
-            <div><dd className="text-2xl font-bold tabular-nums">{summary.averageReaction === null ? "—" : `${summary.averageReaction.toFixed(1)}s`}</dd><dt className="mt-1 text-xs text-muted-foreground">Avg. reaction</dt></div>
-            <div><dd className="text-2xl font-bold tabular-nums">{stats.bestStreak}</dd><dt className="mt-1 text-xs text-muted-foreground">Best streak</dt></div>
-          </dl>
-          <Button onClick={start} className="mt-8 h-14 rounded-full px-8 text-base font-bold"><RotateCcw />Drive Again</Button>
-        </div>
-      ) : clip ? (
-        <div className="drive-stage relative flex-1 overflow-hidden" data-scenario={clip.id} data-phase={phase}>
-          <video ref={videoRef} key={clip.id} src={clip.videoUrl} autoPlay muted playsInline preload="auto"
-            onLoadedData={() => setLoaded(true)}
-            onCanPlay={() => { if (phaseRef.current === "playing") resumeVideo(); }}
-            onTimeUpdate={(event) => { if (event.currentTarget.currentTime >= clip.pauseAt) beginDecision(); }}
-            onEnded={beginDecision}
-            onError={() => setVideoError(true)}
-            className="absolute inset-0 h-full w-full object-contain bg-background" />
-          <div className="drive-top pointer-events-none absolute inset-x-0 top-0 h-32" />
-          <div className="absolute inset-x-0 top-0 z-10">
-            {phase === "decision" && <progress aria-label="Decision time remaining" className="drive-countdown block h-1.5 w-full overflow-hidden" max={DECISION_MS} value={remaining} data-urgency={remaining > 2000 ? "safe" : remaining > 1000 ? "warning" : "danger"} />}
-            <div className="flex items-start justify-between gap-3 px-4 py-4 sm:px-6">
-              <div><p className="text-xs font-semibold uppercase text-muted-foreground">Score</p><p className="font-display text-2xl font-bold tabular-nums" aria-label="Score">{stats.score}</p></div>
-              <div className="text-right">
-                <p className="flex items-center justify-end gap-1.5 text-xs font-semibold sm:text-sm"><Flame className="h-4 w-4 text-success" />{stats.streak} in a row</p>
-                <div className="mt-2 flex justify-end gap-1.5" aria-label={`${stats.lives} lives remaining`}>
-                  {[0, 1, 2].map((heart) => <Heart key={heart} className={cn("h-5 w-5", heart < stats.lives ? "fill-destructive text-destructive" : "text-muted-foreground/40")} />)}
-                </div>
+    <div ref={scroller} className="h-full overflow-y-auto overscroll-contain bg-secondary/40 text-foreground" aria-label="Driving Test Simulation">
+      <div className="mx-auto flex min-h-full w-full max-w-5xl flex-col p-5 pt-16 sm:p-7 md:pt-7">
+        <header className="mb-5">
+          {phase !== "ready" && <Button variant="ghost" onClick={exit} className="mb-3 h-8 px-0 text-xs text-muted-foreground"><ArrowLeft />Exit simulation</Button>}
+          <h1 className="font-display text-xl font-bold">Driving Test Simulation</h1>
+        </header>
+        {phase === "ready" ? (
+          <div className="my-auto mx-auto w-full max-w-3xl pb-5">
+            <div className={cardClass}>
+              <div className="flex items-center gap-4">
+                <div className="grid h-12 w-12 shrink-0 place-items-center rounded-[18px] border border-border bg-muted text-foreground sm:h-14 sm:w-14"><Video className="h-6 w-6" /></div>
+                <div className="flex flex-wrap items-center gap-2"><h2 className="font-display text-lg font-bold sm:text-xl">Real-World Driving Scenarios</h2><span className="rounded-full border border-border bg-muted px-2 py-0.5 text-xs font-semibold text-foreground">Pro</span></div>
               </div>
+              <div className="mt-6 grid grid-cols-2 gap-3"><StatTile label="Scenarios" value={SIMULATION_CLIPS.length} /><StatTile label="Decision time" value="5 sec" /></div>
+              <p className="mt-5 text-sm leading-relaxed text-muted-foreground">Watch real driving situations and choose the right action before time runs out, just like on the road.</p>
+              <div className="mt-5 flex items-center justify-between gap-4"><label htmlFor="timed-mode" className="text-sm font-medium">Timed mode</label><Switch id="timed-mode" checked={timed} onCheckedChange={setTimed} className="data-[state=checked]:bg-action" /></div>
+              <Button onClick={start} className="mt-6 h-12 w-full rounded-full text-base font-semibold"><Play />Start simulation</Button>
             </div>
           </div>
-
-          {(!loaded || videoError || needsPlay) && phase === "playing" && <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-4 bg-background/65">
-            {videoError ? <><p>Unable to load this clip.</p><Button onClick={() => { setVideoError(false); videoRef.current?.load(); }}>Retry</Button></> : needsPlay ? <Button onClick={resumeVideo}><Play />Play clip</Button> : <LoaderCircle className="h-8 w-8 animate-spin motion-reduce:animate-none" aria-label="Loading clip" />}
-          </div>}
-
-          {phase === "playing" && <div className="drive-bottom pointer-events-none absolute inset-x-0 bottom-0 px-4 pb-6 pt-20 sm:px-6"><p className="text-sm font-semibold sm:text-base">{clip.cue}</p></div>}
-
-          {phase === "decision" && <div className="drive-bottom drive-actions absolute inset-x-0 bottom-0 z-20 px-4 pb-5 pt-16 sm:px-6 sm:pb-6">
-            <div className="mb-4 flex items-end justify-between gap-4"><h2 className="text-sm font-bold sm:text-lg">{clip.cue}</h2><span className="shrink-0 text-sm font-bold tabular-nums">{(remaining / 1000).toFixed(1)}s</span></div>
-            <div className={cn("grid grid-cols-2 gap-2 sm:gap-3", clip.actions.length === 3 ? "sm:grid-cols-3" : clip.actions.length === 4 ? "sm:grid-cols-4" : "sm:grid-cols-2")}>
-              {clip.actions.map((action, index) => {
-                const Icon = icons[action.icon];
-                return <Button key={action.id} onClick={() => answer(action.id)} className="relative h-16 min-w-0 flex-col gap-1 rounded-2xl px-2 text-sm font-bold sm:h-24 sm:text-base [&_svg]:size-6">
-                  <Icon /><span>{action.label}</span><kbd className="absolute right-2 top-2 hidden text-xs text-action-foreground/60 md:block">{index + 1}</kbd>
-                </Button>;
-              })}
-            </div>
-          </div>}
-
-          {phase === "feedback" && feedback && <>
-            <div key={`${clip.id}-flash`} className={cn("drive-flash pointer-events-none absolute inset-0 z-10", feedback.correct ? "bg-success" : "bg-destructive")} />
-            <div className="drive-bottom absolute inset-x-0 bottom-0 z-20 flex justify-center px-4 pb-5 pt-16 sm:pb-6">
-              <div role="status" className="w-full max-w-xl rounded-lg border border-border/70 bg-card/95 p-4 sm:p-5">
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <h2 className={cn("flex items-center gap-2 text-xl font-bold", feedback.correct ? "text-success" : "text-destructive")}>
-                    {feedback.correct ? <Check /> : <X />}{feedback.timedOut ? "Too slow!" : feedback.correct ? "Correct!" : "Wrong"}
-                  </h2>
-                  <span className="text-sm font-bold tabular-nums">{feedback.reaction !== null && `${feedback.reaction.toFixed(1)}s`}{feedback.correct && ` · +${feedback.points}`}</span>
-                </div>
-                <p className="mt-3 text-sm leading-relaxed text-foreground">{clip.explanation}</p>
-                <div className="mt-4 flex items-center justify-between gap-3"><span className="text-xs text-muted-foreground">{finished ? "Results" : "Next drive"} in {autoNext}s</span><Button onClick={goNext} className="rounded-full px-6">{finished ? "Results" : "Next"}<ArrowRight /></Button></div>
+        ) : phase === "results" ? (
+          <div className={cn(cardClass, "mx-auto w-full max-w-3xl")}>
+            <h2 className="font-display text-xl font-bold sm:text-2xl">Simulation complete</h2>
+            <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3"><StatTile label="Accuracy" value={`${summary.accuracy}%`} /><StatTile label="Avg. decision time" value={summary.averageReaction === null ? "—" : `${summary.averageReaction.toFixed(1)}s`} /><StatTile label="Scenarios" value={`${summary.completed} / ${session.length}`} /></div>
+            <section className="mt-7"><h3 className="font-display text-lg font-semibold">Review missed scenarios</h3>
+              {summary.missed.length === 0 ? <p className="mt-3 text-sm text-muted-foreground">No missed scenarios.</p> : <ul className="mt-4 divide-y divide-border">
+                {summary.missed.map((decision) => {
+                  const source = session.find((item) => item.id === decision.scenarioId);
+                  if (!source) return null;
+                  const correct = source.actions.find((action) => action.id === source.correctAction);
+                  return <li key={source.id} className="grid gap-4 py-5 first:pt-0 sm:grid-cols-[144px_1fr]"><div className="w-36"><ScenarioThumbnail clip={source} thumbnail={decision.thumbnail} /></div><div><h4 className="text-sm font-bold">{source.title}</h4><p className="mt-1 text-sm font-semibold text-success">Correct action: {correct?.label}</p><p className="mt-2 text-sm leading-relaxed text-muted-foreground">{source.explanation}</p></div></li>;
+                })}
+              </ul>}
+            </section>
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row"><Button onClick={start} className="h-12 flex-1 rounded-full"><RotateCcw />Try again</Button><Button variant="secondary" asChild className="h-12 flex-1 rounded-full"><Link to="/app">Back to dashboard</Link></Button></div>
+          </div>
+        ) : clip ? (
+          <div data-scenario={clip.id} data-phase={phase} className="mx-auto w-full max-w-3xl space-y-5">
+            <div className={cardClass}>
+              <div className="mb-3 flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground"><span>Scenario {idx + 1} of {session.length}</span><span>{clip.title}</span></div>
+              <div role="progressbar" aria-label="Scenario progress" aria-valuemin={0} aria-valuemax={session.length} aria-valuenow={idx + 1} className="mb-5 flex h-1 overflow-hidden rounded-full bg-muted">{session.map((item, index) => <span key={item.id} className={cn("h-full flex-1", index <= idx && "bg-action")} />)}</div>
+              <div className="relative overflow-hidden rounded-2xl bg-muted">
+                <video ref={videoRef} key={clip.id} src={clip.videoUrl} autoPlay muted playsInline preload="auto"
+                  onLoadedData={() => setLoaded(true)} onCanPlay={() => { if (phaseRef.current === "playing") resumeVideo(); }}
+                  onTimeUpdate={(event) => { if (event.currentTarget.currentTime >= clip.pauseAt) beginDecision(); }}
+                  onEnded={beginDecision} onError={() => setVideoError(true)} className="block aspect-video w-full object-contain" />
+                {(!loaded || videoError || needsPlay) && phase === "playing" && <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-card/80">{videoError ? <><p className="text-sm">Unable to load this clip.</p><Button onClick={() => { setVideoError(false); videoRef.current?.load(); }}>Retry</Button></> : needsPlay ? <Button onClick={resumeVideo}><Play />Play clip</Button> : <LoaderCircle className="h-8 w-8 animate-spin motion-reduce:animate-none" aria-label="Loading clip" />}</div>}
               </div>
+              {(phase === "decision" || phase === "feedback") && <div ref={decisionPanel} className="mt-5">
+                {phase === "decision" && timed && <div className="mb-4 flex items-center gap-3"><div role="progressbar" aria-label="Decision time remaining" aria-valuemin={0} aria-valuemax={5} aria-valuenow={remaining / 1000} className="flex h-1 flex-1 overflow-hidden rounded-full bg-muted"><span className={cn("h-full transition-[flex-grow] duration-75", remaining > 1000 ? "bg-action" : "bg-destructive/60")} style={{ flexGrow: remaining }} /><span style={{ flexGrow: DECISION_MS - remaining }} /></div><span className="text-xs tabular-nums text-muted-foreground">{(remaining / 1000).toFixed(1)}s</span></div>}
+                <h2 className="mb-4 font-display text-lg font-semibold">What do you do?</h2>
+                <div className={cn("grid grid-cols-1 gap-3", clip.actions.length === 3 ? "sm:grid-cols-3" : clip.actions.length === 4 ? "sm:grid-cols-4" : "sm:grid-cols-2")}>
+                  {clip.actions.map((action) => {
+                    const Icon = icons[action.icon]; const reveal = phase === "feedback"; const correct = action.id === clip.correctAction; const selected = action.id === feedback?.selectedAction;
+                    return <Button key={action.id} variant="secondary" disabled={reveal} onClick={() => answer(action.id)} aria-pressed={selected} className={cn("h-12 w-full rounded-2xl border border-transparent text-sm font-semibold disabled:opacity-100", reveal && correct && "border-success/50 bg-success/10 text-success", reveal && selected && !correct && "border-destructive/50 bg-destructive/10 text-destructive", reveal && !correct && !selected && "opacity-60")}><Icon />{action.label}{reveal && correct && <Check />}{reveal && selected && !correct && <X />}</Button>;
+                  })}
+                </div>
+              </div>}
             </div>
-          </>}
-        </div>
-      ) : null}
-    </section>
+            {phase === "feedback" && feedback && <div ref={feedbackPanel} role="status" className={cardClass}>
+              <div className="flex flex-wrap items-center justify-between gap-2"><h2 className={cn("font-display text-lg font-bold", feedback.correct ? "text-success" : "text-destructive")}>{feedback.selectedAction === null ? "No decision made" : feedback.correct ? "Correct" : "Not quite"}</h2>{feedback.reactionMs !== null && <span className="text-xs text-muted-foreground">Decided in {(feedback.reactionMs / 1000).toFixed(1)}s</span>}</div>
+              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{clip.explanation}</p>
+              <Button onClick={goNext} className="mt-5 h-12 w-full rounded-full sm:w-auto">Next scenario<ArrowRight /></Button>
+            </div>}
+          </div>
+        ) : null}
+      </div>
+    </div>
   );
 }

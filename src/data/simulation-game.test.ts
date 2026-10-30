@@ -1,49 +1,27 @@
 import { describe, expect, it } from "vitest";
-import { DECISION_MS, FEEDBACK_MS, initialDriveStats, recordDecision, driveSummary } from "./simulation-game";
+import { DECISION_MS, recordDecision, decisionSummary } from "./simulation-game";
 
-describe("driving game rules", () => {
-  it("starts with three lives", () => expect(initialDriveStats().lives).toBe(3));
-  it("allows four seconds to decide", () => {
-    expect(DECISION_MS).toBe(4000);
-    expect(recordDecision(initialDriveStats(), true, 4000).points).toBe(0);
-    expect(recordDecision(initialDriveStats(), true, 3999).points).toBe(100);
+describe("simulation prep rules", () => {
+  it("allows five seconds in timed mode", () => {
+    expect(DECISION_MS).toBe(5000);
+    expect(recordDecision("stop", "stop", "stop", 4999, true).correct).toBe(true);
+    expect(recordDecision("stop", "stop", "stop", 5000, true).selectedAction).toBeNull();
   });
-  it("advances feedback after six seconds", () => expect(FEEDBACK_MS).toBe(6000));
-  it("awards 100 base points and at most 100 speed points", () => {
-    expect(recordDecision(initialDriveStats(), true, 0).points).toBe(200);
-    expect(recordDecision(initialDriveStats(), true, 800).points).toBe(180);
-    expect(recordDecision(initialDriveStats(), true, -100).points).toBe(200);
+  it("has no deadline in untimed mode", () => {
+    expect(recordDecision("stop", "stop", "stop", 20000, false).correct).toBe(true);
+    expect(recordDecision("stop", "stop", "stop", 20000, false).reactionMs).toBe(20000);
   });
-  it("adds 50 points at every third consecutive correct answer", () => {
-    let stats = initialDriveStats();
-    const points = [];
-    for (let i = 0; i < 6; i += 1) {
-      const result = recordDecision(stats, true, 2000);
-      stats = result.stats;
-      points.push(result.points);
-    }
-    expect(points).toEqual([150, 150, 200, 150, 150, 200]);
-    expect(stats.bestStreak).toBe(6);
+  it("records timeout as no decision made", () => {
+    expect(recordDecision("stop", null, "stop", 5000, true)).toMatchObject({ correct: false, selectedAction: null, reactionMs: null });
   });
-  it("wrong answers lose a life, earn zero and reset the streak", () => {
-    const before = recordDecision(initialDriveStats(), true, 800).stats;
-    const result = recordDecision(before, false, 1000);
-    expect(result.points).toBe(0);
-    expect(result.stats.lives).toBe(2);
-    expect(result.stats.streak).toBe(0);
-    expect(result.stats.bestStreak).toBe(1);
+  it("tracks wrong decisions and preserves frozen review frames", () => {
+    const wrong = recordDecision("stop", "go", "stop", 1400, true, "frame-data");
+    expect(wrong).toMatchObject({ correct: false, selectedAction: "go", reactionMs: 1400, thumbnail: "frame-data" });
+    expect(decisionSummary([wrong]).missed).toEqual([wrong]);
   });
-  it("timeouts lose a life and three timeouts exhaust all lives", () => {
-    let stats = initialDriveStats();
-    for (let i = 0; i < 3; i += 1) stats = recordDecision(stats, false, null).stats;
-    expect(stats.lives).toBe(0);
-    expect(stats.score).toBe(0);
-    expect(stats.attempted).toBe(3);
-  });
-  it("calculates accuracy and mean reaction time excluding unanswered timeouts", () => {
-    let stats = recordDecision(initialDriveStats(), true, 800).stats;
-    stats = recordDecision(stats, false, 1200).stats;
-    stats = recordDecision(stats, false, null).stats;
-    expect(driveSummary(stats)).toEqual({ accuracy: 33, averageReaction: 1 });
+  it("calculates accuracy and average decision time excluding timeouts", () => {
+    const decisions = [recordDecision("a", "stop", "stop", 800, true), recordDecision("b", "go", "stop", 1200, true), recordDecision("c", null, "stop", 5000, true)];
+    expect(decisionSummary(decisions)).toMatchObject({ accuracy: 33, averageReaction: 1, completed: 3 });
+    expect(decisionSummary(decisions).missed.map((decision) => decision.scenarioId)).toEqual(["b", "c"]);
   });
 });
