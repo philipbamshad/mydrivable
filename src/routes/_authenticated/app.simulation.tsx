@@ -9,6 +9,7 @@ import { SIMULATION_CLIPS } from "@/data/simulation-clips";
 import { createSimulationSession, type ActionIcon, type SimulationClip } from "@/data/simulation-session";
 import { DECISION_MS, recordDecision, decisionSummary, type ScenarioDecision } from "@/data/simulation-game";
 import { ScenarioThumbnail } from "@/components/simulation/ScenarioThumbnail";
+import { signalDirection, signalIsActive } from "@/data/simulation-signal";
 
 export const Route = createFileRoute("/_authenticated/app/simulation")({
   head: () => ({ meta: [
@@ -43,6 +44,7 @@ function SimulationPage() {
   const [videoError, setVideoError] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [needsPlay, setNeedsPlay] = useState(false);
+  const [hasPlayed, setHasPlayed] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const decisionStart = useRef(0);
   const frozenFrame = useRef<string | null>(null);
@@ -54,9 +56,12 @@ function SimulationPage() {
   const clip = session[idx];
   const next = session[idx + 1];
   const summary = decisionSummary(decisions);
+  const signalSide = clip ? signalDirection(clip.intent) : null;
+  const signaling = signalIsActive(hasPlayed, phase);
 
   const changePhase = useCallback((value: Phase) => { phaseRef.current = value; setPhase(value); }, []);
   const start = () => {
+    setHasPlayed(false);
     setSession(createSimulationSession(SIMULATION_CLIPS));
     setIdx(0); setDecisions([]); setFeedback(null);
     setVideoError(false); setLoaded(false); setNeedsPlay(false);
@@ -67,6 +72,7 @@ function SimulationPage() {
     if (phaseRef.current !== "feedback") return;
     scroller.current?.scrollTo({ top: 0 });
     if (idx === session.length - 1) { changePhase("results"); return; }
+    setHasPlayed(false);
     setIdx((value) => value + 1); setFeedback(null); setVideoError(false); setLoaded(false); setNeedsPlay(false); changePhase("playing");
   };
 
@@ -198,14 +204,16 @@ function SimulationPage() {
             <div className={cardClass}>
               <div className="mb-3 flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground"><span>Scenario {idx + 1} of {session.length}</span><span>{clip.title}</span></div>
               <div role="progressbar" aria-label="Scenario progress" aria-valuemin={0} aria-valuemax={session.length} aria-valuenow={idx + 1} className="mb-5 flex h-1 overflow-hidden rounded-full bg-muted">{session.map((item, index) => <span key={item.id} className={cn("h-full flex-1", index <= idx && "bg-action")} />)}</div>
-              <div className="relative overflow-hidden rounded-2xl bg-muted">
+              <div key={clip.id} data-signal-active={signaling && signalSide !== null} className="simulation-signal-video relative overflow-hidden rounded-2xl bg-muted">
                 <video ref={videoRef} key={clip.id} src={clip.videoUrl} autoPlay muted playsInline preload="auto"
+                  onPlaying={() => setHasPlayed(true)}
                   onLoadedData={() => setLoaded(true)} onCanPlay={() => { if (phaseRef.current === "playing") resumeVideo(); }}
                   onTimeUpdate={(event) => { if (event.currentTarget.currentTime >= clip.pauseAt) beginDecision(); }}
                   onEnded={holdFinalFrame} onError={() => setVideoError(true)} className="block aspect-video w-full object-contain" />
+                {signalSide && <div aria-hidden="true" data-direction={signalSide} className="simulation-signal-glow pointer-events-none absolute inset-0 rounded-[inherit]" />}
                 {(!loaded || videoError || needsPlay) && phase === "playing" && <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-card/80">{videoError ? <><p className="text-sm">Unable to load this clip.</p><Button onClick={() => { setVideoError(false); videoRef.current?.load(); }}>Retry</Button></> : needsPlay ? <Button onClick={resumeVideo}><Play />Play clip</Button> : <LoaderCircle className="h-8 w-8 animate-spin motion-reduce:animate-none" aria-label="Loading clip" />}</div>}
                 <span className="pointer-events-none absolute left-3 top-3 inline-flex max-w-[calc(100%-1.5rem)] items-center gap-2 rounded-full border border-border bg-primary-foreground px-3 py-1.5 text-xs font-semibold text-action shadow-sm" aria-label={`Intent: ${clip.intent}`}>
-                  {clip.intentIcon === "left" ? <ArrowLeft aria-hidden="true" className="h-4 w-4 shrink-0 animate-pulse [animation-duration:2s] motion-reduce:animate-none" /> : clip.intentIcon === "right" ? <ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0 animate-pulse [animation-duration:2s] motion-reduce:animate-none" /> : <ArrowUp aria-hidden="true" className="h-4 w-4 shrink-0 animate-pulse [animation-duration:2s] motion-reduce:animate-none" />}
+                  {signalSide === "left" ? <ArrowLeft aria-hidden="true" className="simulation-signal-arrow h-4 w-4 shrink-0" /> : signalSide === "right" ? <ArrowRight aria-hidden="true" className="simulation-signal-arrow h-4 w-4 shrink-0" /> : <ArrowUp aria-hidden="true" className="h-4 w-4 shrink-0" />}
                   {clip.intent}
                 </span>
               </div>

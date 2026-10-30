@@ -28,3 +28,7 @@
 - [x] Replace the six scenario definitions and freeze times, keeping existing videos.
 - [x] Add intent badges/subtitles and equal-height wrapping actions in the specified order.
 - [x] Test scenario rules and verify signed-in playback, feedback and compact layout.
+
+# Simulation turn signals
+- [x] Add intent-derived edge glow and synchronized arrow, active only during playback/decision.
+- [x] Verify all six directions, feedback removal and steady reduced-motion display.

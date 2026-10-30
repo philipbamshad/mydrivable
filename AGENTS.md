@@ -15,3 +15,4 @@
 - Keep simulation decision timing/results in a pure tested module and stable action IDs through session shuffling; use existing semantic app styles without changing global styles or sibling tabs.
 - Serve simulation uploads as CDN-backed WebM assets so autoplay and ended events work in Chromium as well as other modern browsers.
 - Keep intent, subtitle and freeze time in each simulation scenario definition so presentation and review use the same source; hold the final frame when an unchanged video ends before its configured freeze time.
+- Derive simulation signal direction and activity through the tested intent helper; scope signal tokens and synchronized CSS animations to the video so other tab styles stay unchanged.
