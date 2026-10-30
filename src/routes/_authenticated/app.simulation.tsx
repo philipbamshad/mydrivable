@@ -172,9 +172,8 @@ function SimulationPage() {
                 <div className="grid h-12 w-12 shrink-0 place-items-center rounded-[18px] border border-border bg-muted text-foreground sm:h-14 sm:w-14"><Video className="h-6 w-6" /></div>
                 <div className="flex flex-wrap items-center gap-2"><h2 className="font-display text-lg font-bold sm:text-xl">Real-World Driving Scenarios</h2><span className="rounded-full border border-border bg-muted px-2 py-0.5 text-xs font-semibold text-foreground">Pro</span></div>
               </div>
-              <div className="mt-6 grid grid-cols-2 gap-3"><StatTile label="Scenarios" value={SIMULATION_CLIPS.length} /><StatTile label="Decision time" value="5 sec" /></div>
               <p className="mt-5 text-sm leading-relaxed text-muted-foreground">Watch real driving situations and choose the right action before time runs out, just like on the road.</p>
-              <div className="mt-5 flex items-center justify-between gap-4"><label htmlFor="timed-mode" className="text-sm font-medium">Timed mode</label><Switch id="timed-mode" checked={timed} onCheckedChange={setTimed} className="data-[state=checked]:bg-action" /></div>
+              <div className="mt-5 flex items-center justify-between gap-4"><label htmlFor="timed-mode" className="text-sm font-medium">Timed mode <span className="font-normal text-muted-foreground">(5 seconds)</span></label><Switch id="timed-mode" checked={timed} onCheckedChange={setTimed} className="data-[state=checked]:bg-action" /></div>
               <Button onClick={start} className="mt-6 h-12 w-full rounded-full text-base font-semibold"><Play />Start simulation</Button>
             </div>
           </div>
