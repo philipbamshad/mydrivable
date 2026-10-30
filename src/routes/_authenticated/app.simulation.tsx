@@ -47,6 +47,7 @@ function SimulationPage() {
   const frozenFrame = useRef<string | null>(null);
   const frameRequest = useRef<number | null>(null);
   const decisionPanel = useRef<HTMLDivElement>(null);
+  const feedbackPanel = useRef<HTMLDivElement>(null);
   const scroller = useRef<HTMLDivElement>(null);
   const clip = session[idx];
   const next = session[idx + 1];
@@ -114,6 +115,7 @@ function SimulationPage() {
 
   useEffect(() => {
     if (phase === "decision") decisionPanel.current?.scrollIntoView({ block: "nearest", behavior: "instant" });
+    if (phase === "feedback") feedbackPanel.current?.scrollIntoView({ block: "nearest", behavior: "instant" });
   }, [phase]);
 
   const active = phase !== "ready" && phase !== "results";
@@ -181,7 +183,7 @@ function SimulationPage() {
             <div className="mt-6 flex flex-col gap-3 sm:flex-row"><Button onClick={start} className="h-12 flex-1 rounded-full"><RotateCcw />Try again</Button><Button variant="secondary" asChild className="h-12 flex-1 rounded-full"><Link to="/app">Back to dashboard</Link></Button></div>
           </div>
         ) : clip ? (
-          <div data-scenario={clip.id} data-phase={phase} className="space-y-5">
+          <div data-scenario={clip.id} data-phase={phase} className="mx-auto w-full max-w-3xl space-y-5">
             <div className={cardClass}>
               <div className="mb-3 flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground"><span>Scenario {idx + 1} of {session.length}</span><span>{clip.title}</span></div>
               <div role="progressbar" aria-label="Scenario progress" aria-valuemin={0} aria-valuemax={session.length} aria-valuenow={idx + 1} className="mb-5 flex h-1 overflow-hidden rounded-full bg-muted">{session.map((item, index) => <span key={item.id} className={cn("h-full flex-1", index <= idx && "bg-action")} />)}</div>
@@ -203,7 +205,7 @@ function SimulationPage() {
                 </div>
               </div>}
             </div>
-            {phase === "feedback" && feedback && <div role="status" className={cardClass}>
+            {phase === "feedback" && feedback && <div ref={feedbackPanel} role="status" className={cardClass}>
               <div className="flex flex-wrap items-center justify-between gap-2"><h2 className={cn("font-display text-lg font-bold", feedback.correct ? "text-success" : "text-destructive")}>{feedback.selectedAction === null ? "No decision made" : feedback.correct ? "Correct" : "Not quite"}</h2>{feedback.reactionMs !== null && <span className="text-xs text-muted-foreground">Decided in {(feedback.reactionMs / 1000).toFixed(1)}s</span>}</div>
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{clip.explanation}</p>
               <Button onClick={goNext} className="mt-5 h-12 w-full rounded-full sm:w-auto">Next scenario<ArrowRight /></Button>
