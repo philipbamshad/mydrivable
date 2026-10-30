@@ -29,7 +29,10 @@ describe("mock exam rules", () => {
     const pool = buildExamPool("California");
     expect(pool.length).toBeGreaterThanOrEqual(46);
     expect(pool.every(q => !/During your morning drive|Imagine you are behind|While preparing for/i.test(q.q))).toBe(true);
-    expect(directQuestion("While driving home from school, what should you do?")).toBe("What should you do?");
+    const original = getStatePack("California").questions.find(q => /Solid white line between lanes/.test(q.q));
+    const normalized = pool.find(q => /Solid white line between lanes/.test(q.q));
+    expect(original).toBeDefined();
+    expect(normalized?.options[normalized.correct]).toBe(original?.options[original.correct]);
     expect(pool.every(q => q.correct >= 0 && q.correct < q.options.length)).toBe(true);
   });
 });

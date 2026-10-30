@@ -16,6 +16,8 @@ export function directQuestion(text: string): string {
     /^You are driving (?:in [^.]+|on a public road)\.\s*/i,
     /^On (?:a [^,]+ road|a typical road),\s*/i,
     /^On a clear afternoon in [^,]+,\s*/i,
+    /^Mid-storm on a rainy [^,]+ highway,\s*/i,
+    /^At dusk on a quiet residential street,\s*/i,
   ];
   for (let i = 0; i < 4; i++) for (const frame of frames) out = out.replace(frame, "");
   return out.charAt(0).toUpperCase() + out.slice(1);
