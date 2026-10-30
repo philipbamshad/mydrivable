@@ -18,3 +18,8 @@
 - [x] Convert existing clips to timed action scenarios and preserve session randomization.
 - [x] Build simulation-only immersive video, countdown, HUD, feedback, sound and results.
 - [x] Test scoring rules and verify signed-in gameplay on desktop and mobile.
+
+# Simulation test prep redesign
+- [ ] Replace arcade presentation with existing exam styling, optional five-second timing and manual feedback.
+- [ ] Add accuracy/decision-time results and frozen-frame missed-scenario review.
+- [ ] Verify timed and untimed flows, completion, retry and mobile layout without changing other pages or global styles.

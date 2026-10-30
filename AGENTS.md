@@ -12,5 +12,5 @@
 - Use the shared Button component and semantic action/status tokens for changed controls so contrast and states remain consistent across themes.
 - Keep study navigation and page-heading labels identical, with active-page emphasis rather than permanent promotional marks.
 - Create simulation sessions with the pure session shuffler, retaining each answer's original index to preserve scoring; replay retains the current session.
-- Keep driving game scoring in a pure tested module, stable action IDs through session shuffling, and game styling scoped to `.simulation-game` so sibling tabs remain unchanged.
+- Keep simulation decision timing/results in a pure tested module and stable action IDs through session shuffling; use existing semantic app styles without changing global styles or sibling tabs.
 - Serve simulation uploads as CDN-backed WebM assets so autoplay and ended events work in Chromium as well as other modern browsers.

@@ -11,7 +11,7 @@ export type SimulationClip = {
   id: string;
   videoUrl: string;
   pauseAt: number;
-  cue: string;
+  title: string;
   actions: SimulationAction[];
   correctAction: string;
   explanation: string;
