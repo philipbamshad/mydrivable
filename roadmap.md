@@ -13,3 +13,8 @@
 - [x] Add the uploaded left-turn green-arrow clip (starts after the first road arrow, cut at the stop line) with a protected-turn question.
 - [x] Add the uploaded right-turn-on-green clip with a yield-to-pedestrians question.
 - [x] Add the uploaded right-turn-on-red clip, cut at three seconds before the line, with safe-turn checks; verify playback and scoring.
+
+# Driving simulation game
+- [x] Convert existing clips to timed action scenarios and preserve session randomization.
+- [x] Build simulation-only immersive video, countdown, HUD, feedback, sound and results.
+- [x] Test scoring rules and verify signed-in gameplay on desktop and mobile.
