@@ -23,7 +23,7 @@ export function TestHubDashboard({ initialTopic, userId }: { initialTopic?: Pill
   const queryClient = useQueryClient();
   const save = useServerFn(saveHubProgress);
   const mutation = useMutation({
-    mutationFn: save,
+    mutationFn: (variables: { data: SaveInput & { state: string } }) => save(variables),
     onSuccess: (progress, variables) => {
       queryClient.setQueryData(hubProgressOptions(userId).queryKey, (old: typeof rows | undefined) => [
         ...(old ?? []).filter(row => row.state !== variables.data.state || row.progress.topic !== progress.topic),

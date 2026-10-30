@@ -30,7 +30,7 @@ describe("Permit Test Hub rules", () => {
   });
   it("retains identity across shuffled positions and distinguishes sign images", () => {
     expect(hubQuestion({ ...question, options: ["Go", "Stop"], correct: 1 }, "signs").key).toBe(question.key);
-    expect(hubQuestion({ ...question, sign: { shape: "octagon", letters: "STOP" } }, "signs").key).not.toBe(question.key);
+    expect(hubQuestion({ ...question, sign: { shape: "octagon", letters: "STOP", fill: "var(--exam-road-red)", stroke: "var(--exam-road-white)" } }, "signs").key).not.toBe(question.key);
     expect(question.q).toBe("What does a red light mean?");
   });
   it("preserves last score independently of live mastery", () => {
