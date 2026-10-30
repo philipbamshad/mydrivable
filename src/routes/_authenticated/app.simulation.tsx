@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight, ArrowUp, Check, X, RotateCcw, Play, Octagon, Tri
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
+import { tabGlowStyle } from "@/lib/tab-glow";
 import { SIMULATION_CLIPS } from "@/data/simulation-clips";
 import { createSimulationSession, type ActionIcon, type SimulationClip } from "@/data/simulation-session";
 import { DECISION_MS, recordDecision, decisionSummary, type ScenarioDecision } from "@/data/simulation-game";
@@ -147,7 +148,7 @@ function SimulationPage() {
   };
 
   return (
-    <div ref={scroller} className="h-full overflow-y-auto overscroll-contain bg-secondary/40 text-foreground" aria-label="Driving Test Simulation">
+    <div ref={scroller} className="h-full overflow-y-auto overscroll-contain bg-secondary/40 text-foreground" style={tabGlowStyle} aria-label="Driving Test Simulation">
       <div className="mx-auto flex min-h-full w-full max-w-5xl flex-col p-5 pt-16 sm:p-7 md:pt-7">
         <header className="mb-5">
           {phase !== "ready" && <Button variant="ghost" onClick={exit} className="mb-3 h-8 px-0 text-xs text-muted-foreground"><ArrowLeft />Exit simulation</Button>}
