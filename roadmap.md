@@ -25,6 +25,6 @@
 - [x] Verify timed and untimed flows, completion, retry and mobile layout without changing other pages or global styles.
 
 # Simulation scenario update
-- [ ] Replace the six scenario definitions and freeze times, keeping existing videos.
-- [ ] Add intent badges/subtitles and equal-height wrapping actions in the specified order.
-- [ ] Test scenario rules and verify signed-in playback, feedback and compact layout.
+- [x] Replace the six scenario definitions and freeze times, keeping existing videos.
+- [x] Add intent badges/subtitles and equal-height wrapping actions in the specified order.
+- [x] Test scenario rules and verify signed-in playback, feedback and compact layout.
