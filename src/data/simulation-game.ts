@@ -1,4 +1,4 @@
-export const DECISION_MS = 5_000;
+export const DECISION_MS = 2_500;
 
 export type ScenarioDecision = {
   scenarioId: string;
@@ -24,7 +24,7 @@ export function decisionSummary(decisions: readonly ScenarioDecision[]) {
   return {
     accuracy: decisions.length ? Math.round(decisions.filter((decision) => decision.correct).length / decisions.length * 100) : 0,
     averageReaction: times.length ? times.reduce((a, b) => a + b, 0) / times.length / 1000 : null,
-    completed: decisions.length,
+    completed: decisions.filter(decision => decision.selectedAction !== null).length,
     missed: decisions.filter((decision) => !decision.correct),
   };
 }
