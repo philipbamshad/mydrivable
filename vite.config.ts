@@ -14,6 +14,10 @@ export default defineConfig({
     server: { entry: "server" },
   },
   vite: {
-    plugins: [mcpPlugin()],
+    css: { devSourcemap: false },
+    plugins: [
+      { name: "resolved-css-defaults", configResolved(config) { if (!config.css) Object.defineProperty(config, "css", { value: { devSourcemap: false }, configurable: true }); } },
+      mcpPlugin(),
+    ],
   },
 });

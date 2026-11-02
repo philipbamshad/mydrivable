@@ -13,7 +13,7 @@ import logo from "@/assets/drivable-logo.png";
 
 export const Route = createFileRoute("/auth")({
   validateSearch: (s: Record<string, unknown>): { next?: string } => {
-    const next = typeof s.next === "string" && s.next.startsWith("/") ? s.next : undefined;
+    const next = typeof s.next === "string" && s.next.startsWith("/") && !s.next.startsWith("//") && !s.next.includes("\\") ? s.next : undefined;
     return next ? { next } : {};
   },
   head: () => ({
@@ -466,7 +466,7 @@ function AuthPage() {
           {/* AI coach preview */}
           <div className="rounded-[28px] border border-border/60 bg-card/70 p-5 backdrop-blur-md shadow-lg">
             <div className="flex items-center gap-2 mb-3">
-              <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="h-2 w-2 rounded-full bg-success" />
               <span className="text-sm font-medium text-foreground">
                 AI Coach
               </span>
@@ -513,7 +513,7 @@ function AuthPage() {
             <div className="flex-1">
               <p className="text-sm font-semibold">Tailored to your state</p>
               <p className="text-xs text-muted-foreground mt-1">
-                Questions match your state handbook and your target DMV date.
+                Questions follow your Active state. Your DMV target date stays saved in your account.
               </p>
             </div>
             <span className="rounded-full border border-border/70 bg-background/60 px-3 py-1 text-xs font-semibold uppercase tracking-normal">

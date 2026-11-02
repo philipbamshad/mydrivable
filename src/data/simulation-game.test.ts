@@ -2,10 +2,10 @@ import { describe, expect, it } from "vitest";
 import { DECISION_MS, recordDecision, decisionSummary } from "./simulation-game";
 
 describe("simulation prep rules", () => {
-  it("allows five seconds in timed mode", () => {
-    expect(DECISION_MS).toBe(5000);
-    expect(recordDecision("stop", "stop", "stop", 4999, true).correct).toBe(true);
-    expect(recordDecision("stop", "stop", "stop", 5000, true).selectedAction).toBeNull();
+  it("allows 2.5 seconds in timed mode", () => {
+    expect(DECISION_MS).toBe(2500);
+    expect(recordDecision("stop", "stop", "stop", 2499, true).correct).toBe(true);
+    expect(recordDecision("stop", "stop", "stop", 2500, true).selectedAction).toBeNull();
   });
   it("has no deadline in untimed mode", () => {
     expect(recordDecision("stop", "stop", "stop", 20000, false).correct).toBe(true);
@@ -21,7 +21,7 @@ describe("simulation prep rules", () => {
   });
   it("calculates accuracy and average decision time excluding timeouts", () => {
     const decisions = [recordDecision("a", "stop", "stop", 800, true), recordDecision("b", "go", "stop", 1200, true), recordDecision("c", null, "stop", 5000, true)];
-    expect(decisionSummary(decisions)).toMatchObject({ accuracy: 33, averageReaction: 1, completed: 3 });
+    expect(decisionSummary(decisions)).toMatchObject({ accuracy: 33, averageReaction: 1, completed: 2 });
     expect(decisionSummary(decisions).missed.map((decision) => decision.scenarioId)).toEqual(["b", "c"]);
   });
 });

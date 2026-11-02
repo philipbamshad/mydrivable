@@ -52,7 +52,7 @@ export function ChatWindow({
   // Free tier lifetime usage tracker. Bypassed entirely for Pro Pass.
   // Counter persists via the profile provider (localStorage + user_profiles
   // row) so the limit is permanent across refresh, logout, and devices.
-  const FREE_LIFETIME_LIMIT = 10;
+  const FREE_LIFETIME_LIMIT = 5;
   // The counter itself is incremented by the /api/chat handler, which is the
   // authoritative gate; the client only reads it back for display.
   const freeUsed = freeUsage.chat;
@@ -72,7 +72,7 @@ export function ChatWindow({
               "Content-Type": "application/json",
               ...(token ? { Authorization: `Bearer ${token}` } : {}),
             },
-            body: { messages, threadId, userState, ...body },
+            body: { ...body, messages, threadId, userState },
           };
         },
       }),
@@ -138,7 +138,7 @@ export function ChatWindow({
         <Lock className="h-4 w-4 text-foreground" />
       </div>
       <p className="mx-auto max-w-sm text-sm font-semibold text-foreground leading-snug">
-        You've used your 10 free lifetime AI questions. Upgrade to Pro Pass to continue chatting, get instant rule explanations, and access full exam simulators!
+        You've used your 5 free lifetime AI questions. Upgrade to Pro Pass to continue studying.
       </p>
       <Button
         onClick={() => openCheckout()}
@@ -153,7 +153,7 @@ export function ChatWindow({
     <>
       <PromptInput
         onSubmit={handleSubmit}
-        accept="image/*,application/pdf"
+        accept="image/jpeg,image/png,image/webp"
         maxFiles={4}
         maxFileSize={8 * 1024 * 1024}
         onError={(e) => toast.error(e.message)}
@@ -203,7 +203,7 @@ export function ChatWindow({
         <div className="w-full max-w-2xl text-center my-auto shrink-0">
           <img src={logo} alt="" width={48} height={48} className="logo-mask mx-auto mb-4 opacity-90" />
           <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground">
-            {greetingName ? `What's the vibe, ${greetingName}?` : "What are we studying today?"}
+            {greetingName ? `What would you like to study, ${greetingName}?` : "What would you like to study today?"}
           </h1>
           <p className="mt-2 text-sm text-muted-foreground">
             {userState

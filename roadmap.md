@@ -1,4 +1,15 @@
 # Design improvements
+ 
+# App-wide professional polish
+- [x] Calm tone, truthful homepage and consistent answer/exam wording.
+- [x] Active-state AI, supported image uploads and atomic five-message free cap.
+- [x] Improve ambiguous/joke answer choices, True/False order and STOP visuals; automated distinct-choice checks passed.
+- [x] Ever-correct topic mastery and past DMV date notice.
+- [x] Fixed three-action simulation, instructions/legend, 2.5-second timing and mobile layout.
+- [x] Verify signup/signin/cookies, saved exams, Hub progress, Active-state AI and simulation on desktop/mobile; 44 rule tests passed.
+- [ ] Purchase-to-Pro test: payment completion and confirmation email remain unverified; requires a test purchase.
+- [ ] Complete manual factual review of every state question: current tests establish unique choices, not handbook accuracy.
+- [ ] Complete remaining account/date/image flow checks: signout, changing target date, and a live uploaded-image reply remain unverified.
 - [x] Tighten homepage spacing and reduce competing motion.
 - [x] Improve sign-in, sidebar, and chat readability.
 - [x] Unify study-page labels and active navigation emphasis.

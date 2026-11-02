@@ -8,6 +8,13 @@
       "when": 1793341602032,
       "tag": "0000_test_hub_progress",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1793599415561,
+      "tag": "0001_atomic_ai_coach_quota",
+      "breakpoints": true
     }
   ]
 }

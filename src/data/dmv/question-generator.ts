@@ -4,6 +4,7 @@
 // generating phrasing variations so the per-state pool scales past 150.
 
 import type { Question, StateRules } from "./types";
+import { distinctOptions, orderBooleanAnswers } from "./question-quality";
 
 type Template = Omit<Question, "q" | "explanation"> & {
   q: string;
@@ -54,7 +55,7 @@ const SIGN_TEMPLATES: Template[] = [
   { q: "A flashing yellow signal means…", options: ["Stop completely", "Proceed with caution", "Pull over", "Malfunction — stop"], correct: 1, explanation: "Flashing yellow = slow and proceed with caution." },
   { q: "A flashing red signal means…", options: ["Stop, then proceed when safe", "Slow down", "Yield", "Continue at speed"], correct: 0, explanation: "Flashing red is treated as a stop sign." },
   { q: "A red flashing arrow means…", options: ["Go", "Stop, then proceed if clear", "Caution", "Malfunction"], correct: 1, explanation: "Red flashing arrow = stop, then proceed if safe for that turning movement." },
-  { q: "A solid green arrow means…", options: ["Yield while turning", "Protected turn — yield to nothing in your path", "Stop", "Caution"], correct: 1, explanation: "Solid green arrow = protected turn; oncoming traffic is held." },
+  { q: "A solid green arrow means…", options: ["Turn after yielding to oncoming cars", "Make the indicated protected turn", "Stop before making the indicated turn", "Wait for a circular green light"], correct: 1, explanation: "Solid green arrow = protected turn; oncoming traffic is held." },
   { q: "A flashing yellow arrow for left turn means…", options: ["Protected turn", "Turn allowed but yield to oncoming traffic", "Stop", "No turn"], correct: 1, explanation: "Flashing yellow arrow = turn permitted, yield to oncoming." },
   { q: "A steady yellow arrow means…", options: ["Go faster", "Protected turn ending — prepare to stop or yield", "No turn", "Sound horn"], correct: 1, explanation: "Steady yellow arrow = the protected turn is ending." },
   { q: "A 'Right Lane Must Turn' sign means…", options: ["Lane is optional", "You must turn right from this lane", "Right turn prohibited", "Yield right"], correct: 1, explanation: "A mandatory-movement sign requires the indicated turn." },
@@ -62,7 +63,7 @@ const SIGN_TEMPLATES: Template[] = [
   { q: "A 'Wrong Way' sign means…", options: ["You may continue with care", "You are facing oncoming traffic — stop and turn around", "Detour", "School zone"], correct: 1, explanation: "Wrong Way = you are entering a one-way road the wrong direction." },
   { q: "A 'Do Not Enter' sign on a ramp means…", options: ["Enter slowly", "Entry prohibited — likely an off-ramp", "Carpool only", "Service vehicles only"], correct: 1, explanation: "Do Not Enter typically marks the wrong side of a one-way or off-ramp." },
   { q: "A diamond-shaped lane marker means…", options: ["Bike lane", "HOV / carpool lane", "Bus stop", "Right turn only"], correct: 1, explanation: "Diamond = HOV / carpool lane." },
-  { q: "A sign with a deer silhouette warns of…", options: ["Petting zoo", "Wildlife crossing", "Hunting allowed", "Farm exit"], correct: 1, explanation: "Wildlife crossing — scan the shoulders, especially dawn/dusk." },
+  { q: "A sign with a deer silhouette warns of…", options: ["Livestock crossing", "Wildlife crossing", "Hunting allowed", "Farm exit"], correct: 1, explanation: "Wildlife crossing — scan the shoulders, especially dawn/dusk." },
   { q: "A sign showing a curving arrow with a posted speed means…", options: ["Maximum legal speed", "Advisory safe speed for the curve", "Minimum speed", "Truck speed only"], correct: 1, explanation: "Yellow advisory speed signs recommend a safe curve speed." },
   { q: "A black-on-white 'Speed Limit 55' sign is…", options: ["Advisory", "The legal maximum unless conditions require slower", "A minimum speed", "Suggested speed for trucks"], correct: 1, explanation: "Posted speed = legal max; basic speed law still requires slower in poor conditions." },
   { q: "A 'Minimum Speed 40' sign means…", options: ["Recommended cruising speed", "Going slower than 40 is illegal absent unsafe conditions", "Speed limit", "Truck speed"], correct: 1, explanation: "Minimum speed signs prohibit traveling below the posted floor without cause." },
@@ -70,10 +71,10 @@ const SIGN_TEMPLATES: Template[] = [
   { q: "Yellow flashing beacons above a school speed sign mean…", options: ["School is closed", "Reduced school zone speed limit is in effect", "Yield only", "Children only — adults may exceed"], correct: 1, explanation: "Flashing beacons activate the reduced school zone limit." },
   { q: "A 'Roundabout Ahead' sign tells you to…", options: ["Stop", "Slow and prepare to yield to traffic in the circle", "Speed up to merge", "Honk before entering"], correct: 1, explanation: "Slow on approach; you'll yield to traffic already circulating." },
   { q: "An 'X' with 'RR' marks…", options: ["A reststop", "A railroad crossing", "A right turn", "A repair zone"], correct: 1, explanation: "Crossbuck/RR sign marks a railroad crossing — look, listen, slow." },
-  { q: "A 'No Turn on Red' sign means…", options: ["Right on red still allowed", "You must wait for green before turning", "Only left on red", "Honk and turn"], correct: 1, explanation: "No Turn on Red overrides the default right-on-red rule." },
-  { q: "An octagonal red sign in any color/shape configuration always means…", options: ["Yield", "Stop", "Warning", "Construction"], correct: 1, explanation: "Shape alone signals STOP — recognizable even when snow-covered." },
+  { q: "A 'No Turn on Red' sign means…", options: ["Right on red still allowed", "You must wait for green before turning", "Only left on red", "Turn after yielding on red"], correct: 1, explanation: "No Turn on Red overrides the default right-on-red rule." },
+  { q: "What does an octagonal sign mean, even when its lettering is obscured?", options: ["Yield", "Stop", "Warning", "Construction"], correct: 1, explanation: "Shape alone signals STOP — recognizable even when snow-covered." },
   { q: "A sign showing a truck on a downgrade with a percentage means…", options: ["Truck route", "Steep grade ahead — trucks downshift", "Truck weigh station", "No trucks"], correct: 1, explanation: "Downgrade warning — gear down to manage speed without brake fade." },
-  { q: "Rumble strips on the shoulder are designed to…", options: ["Decorate the road", "Alert drifting drivers via vibration and sound", "Slow traffic in town", "Mark exits"], correct: 1, explanation: "Rumble strips wake drowsy/distracted drivers leaving the lane." },
+  { q: "Rumble strips on the shoulder are designed to…", options: ["Separate opposing traffic lanes", "Alert drifting drivers via vibration and sound", "Slow traffic in town", "Mark exits"], correct: 1, explanation: "Rumble strips wake drowsy/distracted drivers leaving the lane." },
   { q: "A flagger at a work zone directing traffic has authority…", options: ["Less than signs", "Above posted signs and signals", "Equal to a pedestrian", "Only over trucks"], correct: 1, explanation: "Always obey the flagger — they override conflicting signs/signals." },
   { q: "A pedestrian signal showing a flashing 'Don't Walk' / upraised hand means…", options: ["Start crossing", "Do not start; finish if already crossing", "Run", "Wait for green"], correct: 1, explanation: "Flashing 'Don't Walk' = do not start crossing; complete if mid-street." },
   { q: "A bicycle-shaped traffic signal lens applies to…", options: ["All drivers", "Bicyclists only", "Pedestrians", "Buses"], correct: 1, explanation: "Bike-shaped lenses control bicycle traffic only." },
@@ -82,7 +83,7 @@ const SIGN_TEMPLATES: Template[] = [
   { q: "A purple-stripe sign on tollways indicates…", options: ["HOV lane", "Electronic toll / transponder lane", "Bus lane", "Construction"], correct: 1, explanation: "Purple striping = electronic toll collection lanes (E-ZPass, FasTrak, etc.)." },
   { q: "A 'Reduced Speed Ahead' sign means…", options: ["You may speed now", "Slow before reaching the new posted limit", "Trucks only", "Construction ended"], correct: 1, explanation: "Begin slowing before the lower limit takes effect." },
   { q: "A 'Two-Way Traffic' sign warns…", options: ["The road becomes one-way", "Divided road ends — expect oncoming traffic in the next lane", "HOV starts", "No passing"], correct: 1, explanation: "Divided highway ends — oncoming traffic resumes beside you." },
-  { q: "A 'Slippery When Wet' sign means…", options: ["Wash the road", "Reduce speed in rain/snow — traction drops", "Use chains always", "Trucks only"], correct: 1, explanation: "Surface loses traction when wet — slow down." },
+  { q: "A 'Slippery When Wet' sign means…", options: ["Reduce speed only on gravel", "Reduce speed in rain/snow — traction drops", "Use chains always", "Trucks only"], correct: 1, explanation: "Surface loses traction when wet — slow down." },
   { q: "A 'Dead End' sign means…", options: ["Detour", "Road ends with no through route", "One-way ends", "Bridge out"], correct: 1, explanation: "Dead End = the road terminates; no through connection." },
   { q: "A 'No Outlet' sign means…", options: ["No exit ramp", "Network of roads with no through connection to other streets", "Road closed", "Cul-de-sac only"], correct: 1, explanation: "No Outlet = the area's streets don't connect through." },
 ];
@@ -91,7 +92,7 @@ const SIGN_TEMPLATES: Template[] = [
 // 50 UNIVERSAL DRIVING-RULE TEMPLATES (with state interpolation where useful)
 // ---------------------------------------------------------------------------
 const RULE_TEMPLATES: Template[] = [
-  { q: "Two cars arrive at a 4-way stop in {state} together. Who goes first?", options: ["Driver on the left", "Driver on the right", "Larger vehicle", "Whoever honks"], correct: 1, explanation: "At a 4-way stop, the car on the right has right-of-way." },
+  { q: "Two cars arrive at a 4-way stop in {state} together. Who goes first?", options: ["Driver on the left", "Driver on the right", "Larger vehicle", "First vehicle to signal"], correct: 1, explanation: "At a 4-way stop, the car on the right has right-of-way." },
   { q: "Turning left at a green ball (no arrow), you yield to…", options: ["Only pedestrians", "Only oncoming traffic", "Oncoming traffic AND pedestrians", "Nothing"], correct: 2, explanation: "Green ball = permissive turn; yield to oncoming traffic AND pedestrians." },
   { q: "An emergency vehicle with lights and siren approaches you on a two-lane road. You…", options: ["Speed up", "Pull to the right edge and stop", "Honk", "Continue at speed"], correct: 1, explanation: "Pull right and stop until the emergency vehicle passes." },
   { q: "Entering a roundabout in {state}, you must…", options: ["Stop fully", "Yield to traffic already circulating", "Honk", "Speed up to merge"], correct: 1, explanation: "Yield to vehicles already in the roundabout." },
@@ -101,17 +102,17 @@ const RULE_TEMPLATES: Template[] = [
   { q: "The legal adult (21+) BAC limit in {state} is…", options: ["{bacU21}%", "{bacAdult}%", "0.10%", "0.15%"], correct: 1, explanation: "{state} sets the adult per-se limit at {bacAdult}%." },
   { q: "Under {state}'s zero-tolerance law, the BAC limit for drivers under 21 is…", options: ["0.00%", "{bacU21}%", "{bacAdult}%", "0.05%"], correct: 1, explanation: "{state}'s under-21 limit is {bacU21}%." },
   { q: "The federal commercial driver BAC limit (also enforced in {state}) is…", options: ["0.02%", "{bacCDL}%", "{bacAdult}%", "0.10%"], correct: 1, explanation: "CDL operators are held to {bacCDL}% nationwide." },
-  { q: "An open container in the passenger area of a moving vehicle is…", options: ["Legal if no one is drinking", "Illegal in nearly every state, including {state}", "Legal if sealed", "Up to the driver"], correct: 1, explanation: "Open-container laws apply in {state} per the federal 23 USC 154 incentive." },
+  { q: "Where should an opened, unsealed container of alcohol be carried in an ordinary passenger vehicle?", options: ["In an unlocked glove box", "In the trunk or non-passenger cargo area", "On the rear passenger seat", "In the center-console storage area"], correct: 1, explanation: "Keep opened alcohol in the trunk or a non-passenger cargo area, not in the passenger compartment. Consult the {state} handbook for exceptions." },
   { q: "The safe following distance rule is…", options: ["1 car length", "1 second per 10 mph", "The 3-second rule (more in poor weather)", "5 car lengths"], correct: 2, explanation: "Use the 3-second rule; extend to 4+ seconds in rain or snow." },
   { q: "The left lane on a multi-lane highway in {state} is for…", options: ["Slow traffic", "Passing or faster traffic", "Trucks", "Carpool only"], correct: 1, explanation: "Keep right except to pass — codified in most state vehicle codes." },
   { q: "Fines in {state} work zones are typically…", options: ["The same as normal", "Doubled or higher", "Waived", "Warnings only"], correct: 1, explanation: "Work-zone fines are doubled in most states, {state} included." },
   { q: "The basic speed law in {state} means…", options: ["Always drive the posted limit", "Drive no faster than is safe for current conditions", "Drive the minimum", "Drive 5 under the limit"], correct: 1, explanation: "Even at the posted limit, you must slow for weather, traffic, and visibility." },
   { q: "If you begin to skid on a wet road, you should…", options: ["Slam the brakes", "Steer where you want to go and ease off the gas", "Turn opposite the skid", "Pull the parking brake"], correct: 1, explanation: "Steer into the direction of travel and ease off the throttle." },
   { q: "Hydroplaning can start at speeds as low as…", options: ["10 mph", "25 mph", "35+ mph", "65+ mph"], correct: 2, explanation: "Hydroplaning can begin near 35 mph on wet pavement with worn tires." },
-  { q: "Merging onto a freeway in {state}, you should…", options: ["Stop at the end of the ramp", "Match traffic speed and merge into a gap", "Honk and force in", "Wait for an empty lane"], correct: 1, explanation: "Use the ramp to match freeway speed, then merge smoothly." },
+  { q: "Merging onto a freeway in {state}, you should…", options: ["Stop before entering the traffic lane", "Match traffic speed and use a safe gap", "Enter slowly and let traffic adjust", "Wait until the entire lane is empty"], correct: 1, explanation: "Use the ramp to match freeway speed, then merge smoothly." },
   { q: "A pedestrian in a marked crosswalk has…", options: ["No right of way", "The right of way", "Right of way only at signals", "Right of way only at night"], correct: 1, explanation: "Pedestrians in crosswalks have right of way in every state, {state} included." },
-  { q: "When parking on a hill facing downhill with a curb, you turn the wheels…", options: ["Left, toward the curb", "Right, toward the curb", "Straight", "It doesn't matter"], correct: 1, explanation: "Downhill with a curb: turn wheels into the curb (right)." },
-  { q: "When parking on a hill facing uphill with a curb, you turn the wheels…", options: ["Left, away from the curb", "Right, toward the curb", "Straight", "It doesn't matter"], correct: 0, explanation: "Uphill with a curb: turn wheels away from the curb (left)." },
+  { q: "When parking on a hill facing downhill with a curb, you turn the wheels…", options: ["Away from the curb", "Toward the curb", "Parallel to the curb", "Toward the center line"], correct: 1, explanation: "Turn the front wheels toward the curb and set the parking brake." },
+  { q: "When parking on a hill facing uphill with a curb, you turn the wheels…", options: ["Away from the curb", "Toward the curb", "Parallel to the curb", "Toward the center line"], correct: 0, explanation: "Uphill with a curb: turn wheels away from the curb (left)." },
   { q: "Driving in fog, you should use…", options: ["High beams", "Low beams or fog lights", "Hazards while moving", "No lights"], correct: 1, explanation: "Use low beams or fog lights — high beams glare back off the fog." },
   { q: "With ABS brakes, during an emergency stop you should…", options: ["Pump the brakes", "Press and hold firmly while steering", "Ease off and re-apply", "Use the parking brake"], correct: 1, explanation: "With ABS, press firmly and hold — the system pulses for you." },
   { q: "Headlights in {state} are required…", options: ["From sunset to sunrise and in low visibility", "Only after midnight", "Only in rain", "Only on highways"], correct: 0, explanation: "Typical state code: headlights from ½ hour after sunset to ½ hour before sunrise, and any time visibility is reduced." },
@@ -134,7 +135,7 @@ const RULE_TEMPLATES: Template[] = [
   { q: "Driving on wet leaves is similar to driving on…", options: ["Dry pavement", "Ice — reduced traction", "Gravel only", "Sand"], correct: 1, explanation: "Wet leaves act like ice — reduce speed and avoid sudden moves." },
   { q: "Seat belts in {state} are required for…", options: ["The driver only", "All occupants (front seat at minimum)", "Adults only", "Optional use"], correct: 1, explanation: "{state} requires belts; 49 states require front-seat passenger belts (NH is the lone adult exception)." },
   { q: "Drowsy driving is most comparable to…", options: ["Texting", "Driving drunk", "Speeding", "Nothing"], correct: 1, explanation: "Being awake 18+ hours impairs you like a 0.05% BAC; 24 hours like 0.10%." },
-  { q: "If your brakes fail, you should…", options: ["Slam the parking brake", "Pump pedal, downshift, then apply the parking brake gradually", "Turn off the engine", "Open the door and jump"], correct: 1, explanation: "Pump the pedal, downshift to slow with the engine, then apply the parking brake gradually." },
+  { q: "If your brakes fail, you should…", options: ["Apply the parking brake abruptly", "Pump, downshift, then brake gradually", "Switch off the engine immediately", "Keep coasting until the road levels"], correct: 1, explanation: "Pump the pedal, downshift to slow with the engine, then apply the parking brake gradually." },
   { q: "Refusing a breathalyzer in {state} results in…", options: ["Only a warning", "A small fine, no license action", "License suspension under the implied-consent law", "Nothing — you can always refuse"], correct: 2, explanation: "{state}'s implied-consent statute imposes a license suspension on refusal." },
   { q: "The minimum age to apply for a learner's permit in {state} is…", options: ["14", "{permitAge}", "{provisionalAge}", "{fullAge}"], correct: 1, explanation: "{state} permits applications at {permitAge}." },
   { q: "The minimum age for a full unrestricted license in {state} is…", options: ["{permitAge}", "{provisionalAge}", "{fullAge}", "21"], correct: 2, explanation: "{state} grants full unrestricted licenses at {fullAge}." },
@@ -164,6 +165,8 @@ function lower(s: string): string {
  * right answer lands in an unpredictable position on every load.
  */
 export function shuffleAnswers(q: Question): Question {
+  q = distinctOptions(q);
+  if (q.options.length === 2 && q.options.includes("True") && q.options.includes("False")) return orderBooleanAnswers(q);
   const indices = q.options.map((_, i) => i);
   for (let i = indices.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));

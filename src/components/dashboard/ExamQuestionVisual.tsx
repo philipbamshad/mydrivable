@@ -3,6 +3,8 @@ import type { ExamQuestion } from "@/lib/mock-exam";
 
 export function ExamQuestionVisual({ question }: { question: ExamQuestion }) {
   const text = question.q.toLowerCase();
+  // Explicit sign artwork always wins over words such as crosswalk in its prompt.
+  if (question.sign || /\bstop sign\b|octagon/.test(text)) return <div className="exam-road-visual mb-5 grid h-44 place-items-center rounded-2xl bg-muted" role="img" aria-label={/\bstop sign\b|octagon/.test(text) ? "Stop sign" : "Road sign"}><SignVisual s={question.sign ?? { shape: "octagon", fill: "var(--exam-road-red)", stroke: "var(--exam-road-white)", letters: "STOP", textColor: "var(--exam-road-white)" }} size={140} /></div>;
   const signal = !/sign.*(?:says|means)|'no turn on red'|"no turn on red"/.test(text) && /signal|traffic light|green arrow|red arrow|yellow arrow|flashing .*light|light turns|walking person/.test(text);
   const marking = /curb|lane line|yellow line|white line|parallel yellow|pavement|sharrow|bike lane|bicycle lane|crosswalk|limit line|lane marking/.test(text);
   const sign = /sign|octagon|inverted.*triangle/.test(text);
@@ -12,7 +14,7 @@ export function ExamQuestionVisual({ question }: { question: ExamQuestion }) {
     shape: /stop|octagon/.test(text) ? "octagon" as const : /yield|triangle/.test(text) ? "triangle-down" as const : /pentagon|school zone/.test(text) ? "pentagon" as const : /pennant/.test(text) ? "pennant" as const : /diamond|warning|merge|pedestrian|deer|curving|slippery/.test(text) ? "diamond" as const : /circle|do not enter|no left/.test(text) ? "circle" as const : "rect" as const,
     fill: /green guide/.test(text) ? "var(--exam-road-green)" : /blue/.test(text) ? "var(--exam-road-blue)" : /brown/.test(text) ? "var(--exam-road-brown)" : /orange|construction|work.zone/.test(text) ? "var(--exam-road-orange)" : /yellow|diamond|warning|merge|deer|slippery|pennant/.test(text) ? "var(--exam-road-yellow)" : /stop|red|do not enter/.test(text) ? "var(--exam-road-red)" : "var(--exam-road-white)",
     stroke: "var(--exam-road-ink)", textColor: /stop|do not enter|green guide/.test(text) ? "var(--exam-road-white)" : "var(--exam-road-ink)",
-    letters: /stop|octagon/.test(text) ? "STOP" : /yield|triangle/.test(text) ? "YIELD" : /do not enter/.test(text) ? "DO NOT ENTER" : /no left/.test(text) ? "↰" : /merge/.test(text) ? "↗" : /crossroad|intersection/.test(text) ? "+" : /pedestrian|school/.test(text) ? "🚶" : /deer/.test(text) ? "🦌" : /orange|work.zone/.test(text) ? "SLOW" : /green guide/.test(text) ? "EXIT →" : question.q.match(/['"]([^'"]+)['"]/)?.[1].toUpperCase() ?? (/railroad|\brr\b/.test(text) ? "RR" : ""),
+    letters: /stop|octagon/.test(text) ? "STOP" : /yield|triangle/.test(text) ? "YIELD" : /do not enter/.test(text) ? "DO NOT ENTER" : /no left/.test(text) ? "↰" : /merge/.test(text) ? "↗" : /crossroad|intersection/.test(text) ? "+" : /pedestrian|school/.test(text) ? "PED XING" : /deer/.test(text) ? "DEER XING" : /orange|work.zone/.test(text) ? "SLOW" : /green guide/.test(text) ? "EXIT →" : question.q.match(/['"]([^'"]+)['"]/)?.[1].toUpperCase() ?? (/railroad|\brr\b/.test(text) ? "RR" : ""),
     bar: /do not enter/.test(text),
   };
   return <div className="exam-road-visual mb-5 grid h-44 place-items-center rounded-2xl bg-muted" role="img" aria-label={signal ? "Traffic signal illustration" : marking ? "Road marking illustration" : "Road sign illustration"}>

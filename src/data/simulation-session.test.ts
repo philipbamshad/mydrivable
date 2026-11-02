@@ -35,27 +35,26 @@ describe("simulation session rules", () => {
   });
 
   it("uses the six requested freeze points", () => {
-    expect(SIMULATION_CLIPS.map((clip) => clip.pauseAt)).toEqual([3.5, 2, 2, 4.5, 4.5, 1.5]);
+    expect(SIMULATION_CLIPS.map((clip) => clip.pauseAt)).toEqual([3.5, 1.5, 2, 4.5, 4.5, 1.5]);
   });
 
   it.each([
-    ["right-turn-on-green", ["right", "stop", "wait"], "right"],
-    ["left-turn-green-arrow", ["left", "yield", "stop"], "left"],
-    ["right-turn-on-red", ["stop", "slow", "right"], "stop"],
-    ["stop-sign-approach", ["stop", "slow", "go"], "stop"],
-    ["stop-sign-right-of-way", ["go", "yield"], "yield"],
-    ["lane-change", ["check", "move", "speed"], "check"],
+    ["right-turn-on-green", ["go", "yield", "stop"], "go"],
+    ["left-turn-green-arrow", ["go", "yield", "stop"], "go"],
+    ["right-turn-on-red", ["go", "yield", "stop"], "stop"],
+    ["stop-sign-approach", ["go", "yield", "stop"], "stop"],
+    ["stop-sign-right-of-way", ["go", "yield", "stop"], "yield"],
+    ["lane-change", ["go", "yield", "stop"], "yield"],
   ])("preserves authored actions and scoring for %s", (id, actions, correct) => {
     const clip = SIMULATION_CLIPS.find((source) => source.id === id);
     expect(clip?.actions.map((action) => action.id)).toEqual(actions);
     expect(clip?.correctAction).toBe(correct);
   });
 
-  it("offers 2–4 actions with a valid correct action", () => {
+  it("offers exactly three fixed actions with a valid correct action", () => {
     SIMULATION_CLIPS.forEach((clip) => {
       expect(clip.pauseAt).toBeGreaterThan(0);
-      expect(clip.actions.length).toBeGreaterThanOrEqual(2);
-      expect(clip.actions.length).toBeLessThanOrEqual(4);
+      expect(clip.actions.length).toBe(3);
       expect(clip.actions.some((action) => action.id === clip.correctAction)).toBe(true);
     });
   });

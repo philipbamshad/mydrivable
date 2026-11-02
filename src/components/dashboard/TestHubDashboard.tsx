@@ -34,11 +34,12 @@ export function TestHubDashboard({ initialTopic, userId }: { initialTopic?: Pill
   const progress = HUB_TOPICS.map(topic => rows.find(row => row.state === state && row.progress.topic === topic)?.progress ?? emptyTopic(topic));
   const [active, setActive] = useState<PillarId | "review" | null>(initialTopic ?? null);
   const missed = missedQuestions(progress);
-  const weakest = weakestTopic(progress);
   const banks = useMemo(() => {
     const raw = buildPillarBanks(state);
     return Object.fromEntries(HUB_TOPICS.map(topic => [topic, [...new Map(raw[topic].map(q => { const item = hubQuestion(q, topic); return [item.key, item]; })).values()]])) as Record<PillarId, HubQuestion[]>;
   }, [state]);
+  const totals = Object.fromEntries(HUB_TOPICS.map(topic => [topic, banks[topic].length]));
+  const weakest = weakestTopic(progress, totals);
 
   if (active) return <QuizRunner key={`${state}:${active}`} mode={active} banks={banks} missed={missed} progress={progress}
     isPro={isPro} usage={freeUsage.pillars} stateName={state} onExit={() => setActive(null)} onUpgrade={unlockPro}
@@ -50,7 +51,7 @@ export function TestHubDashboard({ initialTopic, userId }: { initialTopic?: Pill
       <Card className="bg-card rounded-[28px] border-border/60 p-5 flex flex-col gap-3 shadow-md">
         <div className="flex items-center gap-2"><Target className="h-5 w-5" /><h2 className="font-display font-bold">Recommended for you</h2></div>
         <p className="font-semibold">{PILLAR_META[weakest].title}</p>
-        <p className="text-sm text-muted-foreground">Mastery {topicStats(progress.find(p => p.topic === weakest) ?? emptyTopic(weakest)).mastery}%</p>
+        <p className="text-sm text-muted-foreground">Mastery {topicStats(progress.find(p => p.topic === weakest) ?? emptyTopic(weakest), banks[weakest].length).mastery}%</p>
         <Button className={cn(actionClass, "mt-auto h-11")} onClick={() => setActive(weakest)}>Practice now</Button>
       </Card>
       <Card className="bg-card rounded-[28px] border-border/60 p-5 flex flex-col gap-3 shadow-md">
@@ -63,7 +64,7 @@ export function TestHubDashboard({ initialTopic, userId }: { initialTopic?: Pill
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       {HUB_TOPICS.map(topic => {
         const Icon = ICONS[topic];
-        const stats = topicStats(progress.find(p => p.topic === topic) ?? emptyTopic(topic));
+        const stats = topicStats(progress.find(p => p.topic === topic) ?? emptyTopic(topic), banks[topic].length);
         const remaining = Math.max(0, HUB_FREE_LIMIT - (freeUsage.pillars[topic] ?? 0));
         const locked = !isPro && !remaining;
         return <Card key={topic} className="bg-card rounded-[28px] border-border/60 p-5 shadow-md flex flex-col gap-4">
@@ -102,7 +103,7 @@ function QuizRunner({ mode, banks, missed, progress, stateName, isPro, usage, on
   const busy = useRef(false);
   const charged = useRef(false);
   const [saved, setSaved] = useState(false);
-  const [before, setBefore] = useState(() => mode === "review" ? 0 : topicStats(progress.find(p => p.topic === mode) ?? emptyTopic(mode)).mastery);
+  const [before, setBefore] = useState(() => mode === "review" ? 0 : topicStats(progress.find(p => p.topic === mode) ?? emptyTopic(mode), banks[mode].length).mastery);
   const q = questions[idx];
   const reveal = picked !== null;
   const locked = q && !mayAnswerHub(isPro, usage[q.topic] ?? 0);
@@ -144,7 +145,7 @@ function QuizRunner({ mode, banks, missed, progress, stateName, isPro, usage, on
     finally { busy.current = false; setSaving(false); }
   };
   const restart = () => {
-    if (mode !== "review") setBefore(topicStats(progress.find(p => p.topic === mode) ?? emptyTopic(mode)).mastery);
+    if (mode !== "review") setBefore(topicStats(progress.find(p => p.topic === mode) ?? emptyTopic(mode), banks[mode].length).mastery);
     setQuestions(buildSet()); setIdx(0); setPicked(null); setScore(0); setDone(false); setError(null); setSaved(false); charged.current = false;
   };
   const back = <Button variant="ghost" className="text-muted-foreground px-0 hover:bg-transparent" onClick={onExit} disabled={saving}><ArrowLeft className="h-4 w-4" />Back to Hub</Button>;
@@ -153,7 +154,7 @@ function QuizRunner({ mode, banks, missed, progress, stateName, isPro, usage, on
     <h2 className="font-display font-bold text-lg">{title}</h2>
     <p className="text-5xl font-display font-bold mt-4">{questions.length ? Math.round(score / questions.length * 100) : 0}%</p>
     <p className="text-muted-foreground mt-2">{score} / {questions.length} correct</p>
-    {mode !== "review" && <p className="mt-4 font-medium">Mastery {before}% → {topicStats(progress.find(p => p.topic === mode) ?? emptyTopic(mode)).mastery}%</p>}
+    {mode !== "review" && <p className="mt-4 font-medium">Mastery {before}% → {topicStats(progress.find(p => p.topic === mode) ?? emptyTopic(mode), banks[mode].length).mastery}%</p>}
     <div className="flex flex-wrap justify-center gap-3 mt-6"><Button className={actionClass} onClick={restart} disabled={mode === "review" && !missed.length}><RefreshCw className="h-4 w-4" />Practice again</Button><Button variant="outline" className="rounded-full" onClick={onExit}>Back to Hub</Button></div>
   </Card></div>;
 
@@ -173,7 +174,7 @@ function QuizRunner({ mode, banks, missed, progress, stateName, isPro, usage, on
           {reveal && i === q.correct && <Check className="h-4 w-4 shrink-0" />}{reveal && picked === i && i !== q.correct && <X className="h-4 w-4 shrink-0" />}
         </Button>)}
       </div>
-      {reveal && <div className="mt-5 border-t border-border pt-5" aria-live="polite"><p className={cn("font-semibold mb-2", picked === q.correct ? "text-success" : "text-destructive")}>{picked === q.correct ? "Correct" : "Not quite"}</p><p className="text-sm leading-relaxed">{q.explanation}</p>
+      {reveal && <div className="mt-5 border-t border-border pt-5" aria-live="polite"><p className={cn("font-semibold mb-2", picked === q.correct ? "text-success" : "text-destructive")}>{picked === q.correct ? "Correct" : "Incorrect"}</p><p className="text-sm leading-relaxed">{q.explanation}</p>
         {error && <p role="alert" className="text-destructive text-sm mt-3">{error}</p>}
         {error && !saved && picked !== null ? <Button className={cn(actionClass, "mt-4")} onClick={() => void persistAnswer(picked)} disabled={saving}>Retry save</Button> : <Button className={cn(actionClass, "mt-4")} onClick={() => void advance()} disabled={saving || !saved}>{saving ? "Saving…" : idx + 1 === questions.length ? "See results" : "Next question"}</Button>}
       </div>}

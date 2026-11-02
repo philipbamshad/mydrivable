@@ -20,25 +20,25 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Ace Your Permit Test on the First Try. An AI driving coach trained on every official DMV handbook, with full-length mock permit exams and targeted section drills.",
+          "Prepare for your permit test with state-specific practice, full-length mock exams, and handbook-based explanations.",
       },
       { property: "og:title", content: "Drivable, Master Your Permit" },
       {
         property: "og:description",
         content:
-          "Ace Your Permit Test on the First Try. An AI driving coach trained on every official DMV handbook, with full-length mock permit exams and targeted section drills.",
+          "Prepare for your permit test with state-specific practice, full-length mock exams, and handbook-based explanations.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { property: "og:url", content: "https://www.mydrivable.com/" },
+      { property: "og:url", content: "https://mydrivable.com/" },
       { name: "twitter:title", content: "Drivable, Master Your Permit" },
       {
         name: "twitter:description",
         content:
-          "Ace Your Permit Test on the First Try. An AI driving coach trained on every official DMV handbook, with full-length mock permit exams and targeted section drills.",
+          "Prepare for your permit test with state-specific practice, full-length mock exams, and handbook-based explanations.",
       },
     ],
-    links: [{ rel: "canonical", href: "https://www.mydrivable.com/" }],
+    links: [{ rel: "canonical", href: "https://mydrivable.com/" }],
     scripts: [
       {
         type: "application/ld+json",
@@ -50,7 +50,7 @@ export const Route = createFileRoute("/")({
           logo: "https://mydrivable.com/favicon.png",
           email: "support@mydrivable.com",
           description:
-            "Ace Your Permit Test on the First Try. An AI driving coach trained on every official DMV handbook, with full-length mock permit exams and targeted section drills.",
+            "Prepare for your permit test with state-specific practice, full-length mock exams, and handbook-based explanations.",
         }),
       },
       {
@@ -216,7 +216,7 @@ function Hero() {
   return (
     <section className="relative flex min-h-[min(680px,76svh)] flex-col items-center justify-center px-6 py-16 text-center sm:py-20">
       <div className="mx-auto mb-6 flex max-w-2xl flex-wrap items-center justify-center gap-x-3 gap-y-1 text-sm">
-        <span className="animate-pulse font-bold text-primary motion-reduce:animate-none">Updated for 2026</span>
+        <span className="font-bold text-primary">Updated for 2026</span>
         <span className="hidden text-muted-foreground sm:inline">Full-length state-specific Mock Permit Exam simulator, now live</span>
       </div>
 
@@ -233,8 +233,8 @@ function Hero() {
       </div>
 
       <p className="fade-in-up relative mx-auto mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-        Ace Your Permit Test on the First Try. An AI driving coach trained on every official DMV handbook, with
-        full-length mock permit exams and targeted section drills.
+        Prepare for your permit test with state-specific practice, full-length mock exams,
+        and handbook-based explanations.
       </p>
 
       <div className="fade-in-up relative mt-8 flex flex-wrap items-center justify-center gap-3" style={{ "--reveal-delay": "160ms" } as React.CSSProperties}>
@@ -309,8 +309,8 @@ function Features() {
       visual: "simulator",
     },
     {
-      title: "AI Permit Coach, Answers The Moment You Miss",
-      body: "Instant explanations grounded in your state handbook",
+      title: "AI Permit Coach",
+      body: "Handbook-based explanations for your Active state",
       visual: "coach",
     },
     {
@@ -320,7 +320,7 @@ function Features() {
     },
     {
       title: "Tailored To Your Test Date and State",
-      body: "Your study plan adapts to your DMV target date and your state's exact rules.",
+      body: "Save your DMV target date and select your state for state-specific practice.",
       visual: "state",
     },
   ];
@@ -341,7 +341,7 @@ function Features() {
           </span>
         </h2>
         <p className="mx-auto mt-6 max-w-xl text-lg text-[#1f2b4d]/70 dark:text-[#d1d5db]/80">
-          Four focused tools, one outcome, pass on the first try.
+          Focused practice for your written permit test.
         </p>
       </div>
 
@@ -395,7 +395,7 @@ function Features() {
                     </div>
                     <p className="relative text-[11px] font-semibold uppercase tracking-wide text-[#10b981]">AI Coach</p>
                     <p className="relative mt-1 text-sm leading-relaxed text-[#1f2b4d]/80 dark:text-[#d1d5db]/80">
-                      A yellow diamond warns of conditions ahead, it never regulates speed.
+                      A yellow diamond warns of conditions ahead. Follow any posted speed limit.
                     </p>
                   </div>
                   <div className="feature-float-delay-2 relative ml-auto w-fit overflow-hidden rounded-full bg-white dark:bg-[#22262a] px-3 py-1.5 text-[11px] font-semibold text-[#1f2b4d]/60 dark:text-[#9ca3af]/75 shadow-sm transition-transform duration-500 group-hover:scale-105">
@@ -494,15 +494,15 @@ function Features() {
 function Pricing() {
   const proFeatures = [
     "Full-length state-specific Mock Permit Exam simulator",
-    "Unlimited AI coach chat synced to your DMV handbook",
-    "All 4 targeted pillar quizzes with infinite question pool",
+    "Unlimited AI Coach chat with state-specific study guidance",
+    "Growing question bank built from the official DMV handbook",
     "Sign recognition drills baked into the quiz hub",
     "All 50 state rule packs",
     "Pay once, use forever, no recurring fees",
   ];
 
   const freeFeatures = [
-"Limited AI coach chat (10 lifetime questions max)",
+"Limited AI coach chat (5 lifetime questions max)",
     "Limited practice tests (20 exam questions & 10 questions per quiz section max)",
   ];
 
@@ -566,7 +566,7 @@ function Pricing() {
           {/* Pro Pass */}
           <div className="lift relative flex flex-col rounded-[28px] border border-[#3b82f6]/40 bg-white/85 dark:bg-[#16191c]/90 p-8 backdrop-blur-xl shadow-[0_0_60px_-20px_rgba(30,64,175,0.22)]">
             <span className="bg-accent-orange absolute -top-3 left-1/2 z-10 -translate-x-1/2 rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-white whitespace-nowrap">
-              Most Popular
+              Pro Pass
             </span>
 
             <div className="rounded-2xl border border-[#1e40af]/18 dark:border-white/10 bg-[#1e40af]/[0.045] dark:bg-white/[0.04] p-7">
@@ -607,14 +607,14 @@ function CTA() {
     <section className="px-6 pb-24">
       <div className="relative mx-auto max-w-5xl overflow-hidden rounded-[36px] border border-[#1e40af]/18 dark:border-white/10 bg-[#1e40af]/[0.035] dark:bg-white/[0.03] p-16 text-center text-[#0f172a] dark:text-[#f3f4f6] backdrop-blur-xl">
         <h2 className="text-3xl font-semibold sm:text-5xl">
-          Get Your License.
+          Prepare With Confidence.
           <br />
           <span className="text-primary font-medium">
-            First Try.
+            One Topic at a Time.
           </span>
         </h2>
         <p className="mx-auto mt-6 max-w-xl text-[#1f2b4d]/70 dark:text-[#d1d5db]/80">
-          Sign up, pick your state, and start your first mock exam in under a minute.
+          Create an account, select your state, and start practicing.
         </p>
         <Link
           to="/auth"

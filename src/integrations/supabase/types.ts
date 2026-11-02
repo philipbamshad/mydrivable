@@ -14,6 +14,21 @@ export type Database = {
   }
   public: {
     Tables: {
+      ai_coach_usage: {
+        Row: {
+          used: number
+          user_id: string
+        }
+        Insert: {
+          used?: number
+          user_id: string
+        }
+        Update: {
+          used?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       driving_logs: {
         Row: {
           conditions: string | null
@@ -372,6 +387,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      consume_ai_coach_credit: { Args: never; Returns: number }
       delete_email: {
         Args: { message_id: number; queue_name: string }
         Returns: boolean

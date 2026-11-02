@@ -4,7 +4,7 @@ import { directQuestion } from "./mock-exam";
 export const HUB_TOPICS: PillarId[] = ["signs", "intersections", "substances", "speed"];
 export const HUB_FREE_LIMIT = 10;
 export type HubQuestion = PracticeQuestion & { topic: PillarId; key: string };
-export type QuestionProgress = { question: HubQuestion; correct: boolean; missed: boolean; recovery: number };
+export type QuestionProgress = { question: HubQuestion; correct: boolean; everCorrect?: boolean; missed: boolean; recovery: number };
 export type TopicProgress = { topic: PillarId; questions: Record<string, QuestionProgress>; lastScore: number | null };
 
 export function hubQuestion(question: PracticeQuestion, topic: PillarId): HubQuestion {
@@ -25,18 +25,18 @@ export function answerProgress(progress: TopicProgress, question: HubQuestion, c
   const recovery = correct && previous?.missed ? previous.recovery + 1 : 0;
   const missed = !correct || (previous?.missed === true && recovery < 2);
   return { ...progress, questions: { ...progress.questions, [question.key]: {
-    question, correct, missed, recovery: missed ? recovery : 0,
+    question, correct, everCorrect: correct || (previous?.everCorrect ?? previous?.correct ?? false), missed, recovery: missed ? recovery : 0,
   } } };
 }
 
-export function topicStats(progress: TopicProgress) {
+export function topicStats(progress: TopicProgress, totalQuestions = Object.keys(progress.questions).length) {
   const entries = Object.values(progress.questions);
-  const mastery = entries.length ? Math.round(entries.filter(q => q.correct).length / entries.length * 100) : 0;
+  const mastery = totalQuestions ? Math.min(100, Math.round(entries.filter(q => q.everCorrect ?? q.correct).length / totalQuestions * 100)) : 0;
   return { mastery, practiced: entries.length > 0, needsWork: mastery < 80, mastered: mastery === 100, lastScore: progress.lastScore };
 }
 
-export function weakestTopic(progress: TopicProgress[]): PillarId {
-  return [...progress].sort((a, b) => topicStats(a).mastery - topicStats(b).mastery)[0]?.topic ?? "signs";
+export function weakestTopic(progress: TopicProgress[], totals?: Partial<Record<PillarId, number>>): PillarId {
+  return [...progress].sort((a, b) => topicStats(a, totals?.[a.topic]).mastery - topicStats(b, totals?.[b.topic]).mastery)[0]?.topic ?? "signs";
 }
 
 export function missedQuestions(progress: TopicProgress[]): HubQuestion[] {
