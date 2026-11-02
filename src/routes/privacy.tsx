@@ -69,10 +69,8 @@ function PrivacyPage() {
           <section>
             <h2 className="text-xl font-semibold text-[#0f172a]">5. Analytics and tracking</h2>
             <p className="mt-3">
-              We use analytics and tracking tools to understand how visitors interact with the
-              Service. These tools may collect data such as your device type, browser, pages visited,
-              and general location. You can manage many tracking preferences through your browser or
-              device settings.
+              We do not currently use analytics or advertising trackers. If optional tracking is
+              introduced, it will run only after you give consent through Cookie preferences.
             </p>
           </section>
 
@@ -89,8 +87,8 @@ function PrivacyPage() {
             <h2 className="text-xl font-semibold text-[#0f172a]">7. Information sharing</h2>
             <p className="mt-3">
               We do not sell your personal information. We share information only with service
-              providers that help us operate the Service (such as hosting, payment, email, and
-              analytics providers), and when required by law or to protect our rights.
+              providers that help us operate the Service (such as hosting, payment, and email
+              providers), and when required by law or to protect our rights.
             </p>
           </section>
 
