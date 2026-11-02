@@ -29,6 +29,24 @@ export type Database = {
         }
         Relationships: []
       }
+      app_allowlist: {
+        Row: {
+          created_at: string
+          email: string
+          note: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          note?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          note?: string
+        }
+        Relationships: []
+      }
       driving_logs: {
         Row: {
           conditions: string | null
@@ -382,6 +400,24 @@ export type Database = {
         }
         Relationships: []
       }
+      waitlist: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -397,6 +433,7 @@ export type Database = {
         Args: { payload: Json; queue_name: string }
         Returns: number
       }
+      is_allowlisted: { Args: never; Returns: boolean }
       move_to_dlq: {
         Args: {
           dlq_name: string
