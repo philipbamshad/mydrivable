@@ -15,6 +15,9 @@ export default defineConfig({
   },
   vite: {
     css: { devSourcemap: false },
-    plugins: [mcpPlugin()],
+    plugins: [
+      { name: "resolved-css-defaults", configResolved(config) { config.css ??= { devSourcemap: false }; } },
+      mcpPlugin(),
+    ],
   },
 });
