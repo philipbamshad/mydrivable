@@ -156,6 +156,13 @@ function AuthPage() {
           password: parsed.data.password,
         });
         if (error) throw error;
+        const { data: allowed } = await supabase.rpc("is_allowlisted");
+        if (allowed !== true) {
+          await supabase.auth.signOut();
+          toast.error("Drivable is in private beta. Join the waitlist on the homepage.");
+          navigate({ to: "/" });
+          return;
+        }
         toast.success("Welcome back.");
       }
       goNext();
@@ -270,27 +277,7 @@ function AuthPage() {
         </Link>
 
         <div className="glass glow-soft rounded-2xl border border-primary/20 p-6 ">
-          <div className="flex gap-1 mb-5 p-1 bg-background/40 border border-border/60 rounded-lg backdrop-blur-sm">
-            {(["sign-in", "sign-up"] as const).map((m) => (
-              <Button
-                variant="ghost"
-                key={m}
-                type="button"
-                onClick={() => {
-                  setMode(m);
-                  setFieldErrors({});
-                  setSignupSuccess(false);
-                }}
-                className={`flex-1 text-sm py-1.5 rounded-md font-medium transition-all ${
-                  mode === m
-                    ? "bg-primary/15 text-foreground border border-primary/40 "
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                {m === "sign-in" ? "Sign in" : "Create account"}
-              </Button>
-            ))}
-          </div>
+          <h2 className="mb-5 font-display text-lg font-semibold">Sign in</h2>
 
           {mode === "sign-up" && signupSuccess ? (
             <div className="text-center space-y-5 py-6">
