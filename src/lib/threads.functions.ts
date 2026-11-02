@@ -1,9 +1,9 @@
 import { createServerFn } from "@tanstack/react-start";
-import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { requireAllowlisted } from "@/lib/allowlist-middleware";
 import { z } from "zod";
 
 export const listThreads = createServerFn({ method: "GET" })
-  .middleware([requireSupabaseAuth])
+  .middleware([requireAllowlisted])
   .handler(async ({ context }) => {
     const { data, error } = await context.supabase
       .from("threads")
@@ -15,7 +15,7 @@ export const listThreads = createServerFn({ method: "GET" })
   });
 
 export const createThread = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
+  .middleware([requireAllowlisted])
   .inputValidator((d: unknown) =>
     z.object({ title: z.string().optional() }).parse(d),
   )
@@ -30,7 +30,7 @@ export const createThread = createServerFn({ method: "POST" })
   });
 
 export const deleteThread = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
+  .middleware([requireAllowlisted])
   .inputValidator((d: unknown) => z.object({ id: z.string().uuid() }).parse(d))
   .handler(async ({ data, context }) => {
     const { error } = await context.supabase
@@ -43,7 +43,7 @@ export const deleteThread = createServerFn({ method: "POST" })
   });
 
 export const renameThread = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
+  .middleware([requireAllowlisted])
   .inputValidator((d: unknown) =>
     z.object({ id: z.string().uuid(), title: z.string().min(1).max(120) }).parse(d),
   )
@@ -58,7 +58,7 @@ export const renameThread = createServerFn({ method: "POST" })
   });
 
 export const getThreadMessages = createServerFn({ method: "GET" })
-  .middleware([requireSupabaseAuth])
+  .middleware([requireAllowlisted])
   .inputValidator((d: unknown) => z.object({ threadId: z.string().uuid() }).parse(d))
   .handler(async ({ data, context }) => {
     const { data: t, error: tErr } = await context.supabase

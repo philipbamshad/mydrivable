@@ -1,12 +1,12 @@
 import { createServerFn } from "@tanstack/react-start";
 import { queryOptions } from "@tanstack/react-query";
 import { z } from "zod";
-import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { requireAllowlisted } from "@/lib/allowlist-middleware";
 import { answerProgress, emptyTopic, type TopicProgress, type HubQuestion } from "./test-hub";
 
 const topicSchema = z.enum(["signs", "intersections", "substances", "speed"]);
 export const getHubProgress = createServerFn({ method: "GET" })
-  .middleware([requireSupabaseAuth])
+  .middleware([requireAllowlisted])
   .handler(async ({ context }): Promise<{ state: string; progress: TopicProgress }[]> => {
     const { data, error } = await context.supabase.from("test_hub_progress").select("state, topic, questions, last_score").eq("user_id", context.userId);
     if (error) throw new Error("Unable to load practice progress.");
@@ -20,7 +20,7 @@ export const hubProgressOptions = (userId: string) => queryOptions({
 });
 
 export const saveHubProgress = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
+  .middleware([requireAllowlisted])
   .inputValidator((input: unknown) => z.object({
     state: z.string().min(1).max(80), topic: topicSchema,
     answer: z.object({ question: z.custom<HubQuestion>(q => {
