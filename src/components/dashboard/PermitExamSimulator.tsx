@@ -117,6 +117,5 @@ function ExamRunner({ state, count, minCorrect, passPct, isPro, used, onAnswered
     </Card> : null}
   </div>;
 }
-}
 function Stat({ label, value }: { label: string; value: string }) { return <div className="rounded-3xl bg-muted px-2 py-4 text-center sm:p-5"><p className="text-xs uppercase text-muted-foreground">{label}</p><p className="mt-1 font-display text-2xl font-bold sm:text-3xl">{value}</p></div>; }
 function Meter({ pct, success }: { pct: number; success?: boolean }) { return <div className="flex h-1.5 overflow-hidden rounded-full bg-muted"><span className={cn("h-full", success === undefined ? "bg-action" : success ? "bg-success/60" : "bg-destructive/60")} style={{ width: `${pct}%` }} /></div>; }
