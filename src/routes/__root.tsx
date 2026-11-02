@@ -90,8 +90,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:card", content: "summary" },
       { name: "twitter:title", content: "Drivable, Master Your Permit" },
       { name: "twitter:description", content: "Ace Your Permit Test on the First Try. An AI driving coach trained on every official DMV handbook, with full-length mock permit exams and targeted section drills." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/60657b9a-07c5-4b9c-a24e-e9e049eeca9d/id-preview-999da0ac--3749a1e7-87d1-4a89-b24a-639e8b1f2b05.lovable.app-1782327350754.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/60657b9a-07c5-4b9c-a24e-e9e049eeca9d/id-preview-999da0ac--3749a1e7-87d1-4a89-b24a-639e8b1f2b05.lovable.app-1782327350754.png" },
     ],
     links: [
       {
@@ -120,7 +118,7 @@ const themeBootstrap = `(function(){try{var t=localStorage.getItem('drivable.the
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className="light">
+    <html lang="en" className="light" suppressHydrationWarning>
       <head>
         <HeadContent />
         <script dangerouslySetInnerHTML={{ __html: themeBootstrap }} />

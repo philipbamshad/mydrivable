@@ -7,7 +7,7 @@ import type { Database } from "@/integrations/supabase/types";
  * so a modified client or a direct API call cannot bypass the paywall.
  */
 
-export const FREE_CHAT_LIFETIME_LIMIT = 10;
+export const FREE_CHAT_LIFETIME_LIMIT = 5;
 
 type AnyClient = SupabaseClient<Database>;
 
@@ -90,19 +90,20 @@ export async function consumeChatCredit(
     return {
       allowed: false,
       reason:
-        "You have used all 10 free lifetime AI coach questions. Upgrade to the Pro Pass for unlimited chat.",
+        "You have used all 5 free lifetime AI Coach questions. Upgrade to the Pro Pass for unlimited chat.",
       used: usage.chat,
       limit: FREE_CHAT_LIFETIME_LIMIT,
     };
   }
 
   const next: FreeUsageShape = { ...usage, chat: usage.chat + 1 };
-  await supabase
+  const { error } = await supabase
     .from("user_profiles")
     .upsert(
       { user_id: userId, free_usage: next as never },
       { onConflict: "user_id" },
     );
+  if (error) throw new Error("Unable to save AI question usage. Please try again.");
 
   return { allowed: true, isPro: false, used: next.chat };
 }

@@ -29,7 +29,7 @@ const OrderConfirmationEmail = ({
     <Preview>You are in. Welcome to Drivable Pro Pass, lifetime access.</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Heading style={h1}>Welcome to Pro Pass 🚗</Heading>
+        <Heading style={h1}>Your Pro Pass is active</Heading>
         <Text style={text}>Hi,</Text>
         <Text style={text}>
           Thank you for purchasing the <strong>Drivable Pro Pass</strong>. Your
@@ -47,7 +47,7 @@ const OrderConfirmationEmail = ({
 
         <Section style={{ textAlign: 'center', marginTop: '28px' }}>
           <Button style={button} href={appUrl}>
-            Jump back in
+            Continue studying
           </Button>
         </Section>
 
@@ -63,7 +63,7 @@ const OrderConfirmationEmail = ({
 
 export const template = {
   component: OrderConfirmationEmail,
-  subject: 'Your Drivable Pro Pass is active 🎉',
+  subject: 'Your Drivable Pro Pass is active',
   displayName: 'Pro Pass order confirmation',
   previewData: { name: 'Alex', appUrl: 'https://mydrivable.com/app' },
 } satisfies TemplateEntry

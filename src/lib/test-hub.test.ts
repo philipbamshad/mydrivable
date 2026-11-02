@@ -11,7 +11,7 @@ describe("Permit Test Hub rules", () => {
     const wrongAgain = answerProgress(once, question, false);
     expect(missedQuestions([answerProgress(wrongAgain, question, true)])).toHaveLength(1);
   });
-  it("computes mastery from latest answers and flags below 80%, mastering at 100%", () => {
+  it("computes mastery from ever-correct answers and flags below 80%, mastering at 100%", () => {
     let progress = emptyTopic("signs");
     for (let i = 0; i < 5; i++) progress = answerProgress(progress, { ...question, key: String(i) }, i < 3);
     expect(topicStats(progress)).toMatchObject({ mastery: 60, needsWork: true, mastered: false });
@@ -19,6 +19,18 @@ describe("Permit Test Hub rules", () => {
     expect(topicStats(progress)).toMatchObject({ mastery: 80, needsWork: false });
     progress = answerProgress(progress, { ...question, key: "4" }, true);
     expect(topicStats(progress)).toMatchObject({ mastery: 100, mastered: true });
+  });
+  it("uses all topic questions, including unattempted ones, as the mastery denominator", () => {
+    const progress = answerProgress(emptyTopic("signs"), question, true);
+    expect(topicStats(progress, 8).mastery).toBe(13);
+    expect(topicStats(emptyTopic("signs"), 8)).toMatchObject({ mastery: 0, lastScore: null });
+  });
+  it("does not lose mastery after a previously correct question is missed", () => {
+    const first = answerProgress(emptyTopic("signs"), question, true);
+    const later = answerProgress(first, question, false);
+    expect(topicStats(later, 1).mastery).toBe(100);
+    expect(later.questions[question.key]?.correct).toBe(false);
+    expect(missedQuestions([later])).toHaveLength(1);
   });
   it("recommends the weakest topic", () => {
     expect(weakestTopic([answerProgress(emptyTopic("signs"), question, true), emptyTopic("speed")])).toBe("speed");

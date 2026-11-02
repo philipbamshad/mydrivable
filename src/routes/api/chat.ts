@@ -12,7 +12,7 @@ export const Route = createFileRoute("/api/chat")({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        const { messages, threadId, userState } = (await request.json()) as Body;
+        const { messages, threadId } = (await request.json()) as Body;
         if (!Array.isArray(messages) || !threadId) {
           return new Response("messages and threadId are required", { status: 400 });
         }
@@ -48,6 +48,9 @@ export const Route = createFileRoute("/api/chat")({
           .eq("user_id", userId)
           .maybeSingle();
         if (!thread) return new Response("Thread not found", { status: 404 });
+        const { data: profile, error: profileError } = await supabase.from("user_profiles").select("active_state").eq("user_id", userId).maybeSingle();
+        if (profileError) return new Response("Unable to load your Active state. Please try again.", { status: 503 });
+        if (!profile?.active_state) return new Response("Choose your Active state before asking the AI Coach.", { status: 400 });
 
         // Authoritative paywall / free tier enforcement. The UI also gates this,
         // but the credit is consumed and checked here so a direct API call or a
@@ -84,7 +87,7 @@ export const Route = createFileRoute("/api/chat")({
 
         const result = streamText({
           model,
-          system: buildSystemPrompt(userState),
+          system: buildSystemPrompt(profile.active_state),
           messages: await convertToModelMessages(messages),
         });
 

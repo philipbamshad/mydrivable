@@ -38,6 +38,7 @@ import logo from "@/assets/drivable-logo.png";
 import { cn } from "@/lib/utils";
 import { AccountPanel, type AccountSection } from "@/components/dashboard/AccountPanel";
 import { useUserProfile, US_STATES } from "@/lib/user-profile";
+import { targetDateHasPassed } from "@/lib/target-date";
 
 const PRIMARY_NAV = [
   { id: "chat", label: "AI Coach", icon: MessageSquare },
@@ -52,6 +53,8 @@ export function ThreadSidebar() {
   const [settingsMenuOpen, setSettingsMenuOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
+  const [today, setToday] = useState<Date | null>(null);
+  useEffect(() => { setToday(new Date()); }, []);
   const { state: userState, setState: setUserState, targetDate, setTargetDate, isPro } = useUserProfile();
   const [userMeta, setUserMeta] = useState<{ name: string | null; email: string | null }>({ name: null, email: null });
   const [activePopover, setActivePopover] = useState<"desktop-date" | "desktop-state" | "mobile-date" | "mobile-state" | null>(null);
@@ -143,7 +146,7 @@ export function ThreadSidebar() {
           </PopoverContent>
         )}
       </Popover>
-
+      {today && targetDateHasPassed(targetDate, today) && <div className="px-2 py-1"><p className="text-xs leading-relaxed text-muted-foreground">Your test date has passed. Update it?</p><Button variant="link" className="h-8 px-0 text-xs" onClick={() => setActivePopover(datePopoverKey)}>Change date</Button></div>}
       <Popover
         open={activePopover === statePopoverKey}
         onOpenChange={(open) => {
@@ -194,7 +197,7 @@ export function ThreadSidebar() {
                     onClick={() => {
                       setUserState(s);
                       setActivePopover(null);
-                      toast.success(`AI knowledge base recalibrated to ${s}`);
+                      toast.success(`Active state changed to ${s}`);
                     }}
                     style={{ WebkitTapHighlightColor: "transparent" }}
                     className={cn(
