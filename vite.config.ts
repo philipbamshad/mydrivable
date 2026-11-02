@@ -14,6 +14,7 @@ export default defineConfig({
     server: { entry: "server" },
   },
   vite: {
+    css: { devSourcemap: false },
     plugins: [mcpPlugin()],
   },
 });
