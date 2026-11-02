@@ -1,9 +1,9 @@
 import { createServerFn } from "@tanstack/react-start";
-import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { requireAllowlisted } from "@/lib/allowlist-middleware";
 import { queryOptions } from "@tanstack/react-query";
 
 export const getExamHistory = createServerFn({ method: "GET" })
-  .middleware([requireSupabaseAuth])
+  .middleware([requireAllowlisted])
   .handler(async ({ context }) => {
     const { data, error } = await context.supabase.from("mock_test_history")
       .select("id, score_pct, state, created_at").eq("user_id", context.userId)

@@ -1,5 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
-import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { requireAllowlisted } from "@/lib/allowlist-middleware";
 import {
   type StripeEnv,
   createStripeClient,
@@ -43,7 +43,7 @@ async function resolveOrCreateCustomer(
 }
 
 export const createCheckoutSession = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
+  .middleware([requireAllowlisted])
   .inputValidator(
     (data: {
       priceId: string;
@@ -104,7 +104,7 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
   });
 
 export const createPortalSession = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
+  .middleware([requireAllowlisted])
   .inputValidator(
     (data: { returnUrl?: string; environment: StripeEnv }) => data,
   )

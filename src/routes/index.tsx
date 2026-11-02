@@ -11,6 +11,7 @@ import {
   X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { WaitlistDialog, openWaitlist } from "@/components/marketing/WaitlistDialog";
 import { US_STATES } from "@/lib/user-profile";
 
 export const Route = createFileRoute("/")({
@@ -113,6 +114,7 @@ function Landing() {
       <Pricing />
       <CTA />
       <Footer />
+      <WaitlistDialog />
     </div>
   );
 }
@@ -153,15 +155,14 @@ function Nav() {
 
 
         <div className="flex items-center gap-2">
-          <Link
-            to="/auth"
+          <button type="button" onClick={openWaitlist}
             className={`${BTN_PRIMARY} group hidden sm:inline-flex px-5 py-2.5 text-sm`}
           >
-            Sign Up
+            Join the waitlist
             <span className="grid h-6 w-6 place-items-center rounded-full bg-white/15 transition-transform duration-300 group-hover:translate-x-0.5">
               <ArrowRight className="h-3.5 w-3.5" />
             </span>
-          </Link>
+          </button>
           <Button
             variant="ghost"
             size="icon"
@@ -197,13 +198,12 @@ function Nav() {
                 {label}
               </a>
             ))}
-            <Link
-              to="/auth"
-              onClick={() => setOpen(false)}
+            <button type="button" onClick={() => { setOpen(false); openWaitlist(); }}
+            
               className={`${BTN_PRIMARY} mt-2 px-5 py-3 text-sm`}
             >
-              Sign Up <ArrowRight className="h-3.5 w-3.5" />
-            </Link>
+              Join the waitlist <ArrowRight className="h-3.5 w-3.5" />
+            </button>
 
           </nav>
         </div>
@@ -238,13 +238,12 @@ function Hero() {
       </p>
 
       <div className="fade-in-up relative mt-8 flex flex-wrap items-center justify-center gap-3" style={{ "--reveal-delay": "160ms" } as React.CSSProperties}>
-        <Link
-          to="/auth"
-          className={`${BTN_PRIMARY} px-8 py-4 text-base`}
+        <button type="button" onClick={openWaitlist}
+            className={`${BTN_PRIMARY} px-8 py-4 text-base`}
         >
-          Get Started
+          Join the waitlist
           <ArrowRight className="h-4 w-4" />
-        </Link>
+        </button>
 
         <a
           href="#features"
@@ -545,14 +544,6 @@ function Pricing() {
               <p className="mt-2 text-sm text-[#1f2b4d]/75 dark:text-[#d1d5db]/80">Kick the tires and study the basics, no card required.</p>
             </div>
 
-            <Link
-              to="/auth"
-              search={{ next: "/app" }}
-              className={`${BTN_SECONDARY} mt-7 w-full py-4 text-sm`}
-            >
-              Start Free
-            </Link>
-
             <ul className="mt-7 space-y-3 text-[15px]">
               {freeFeatures.map((f) => (
                 <li key={f} className="flex items-center gap-3 rounded-lg text-[#1f2b4d]/85 dark:text-[#d1d5db]/80 transition-transform duration-200 hover:-translate-y-1">
@@ -577,14 +568,6 @@ function Pricing() {
               </div>
               <p className="mt-2 text-sm text-[#1f2b4d]/75 dark:text-[#d1d5db]/80">Pay once. Lifetime access to everything Drivable builds.</p>
             </div>
-
-            <Link
-              to="/auth"
-              search={{ next: "/app?intent=upgrade" }}
-              className={`${BTN_PRIMARY} mt-7 w-full py-4 text-sm`}
-            >
-              Get Pro Pass — $9 one-time
-            </Link>
 
             <ul className="mt-7 space-y-3 text-[15px]">
               {proFeatures.map((f) => (
@@ -614,15 +597,14 @@ function CTA() {
           </span>
         </h2>
         <p className="mx-auto mt-6 max-w-xl text-[#1f2b4d]/70 dark:text-[#d1d5db]/80">
-          Create an account, select your state, and start practicing.
+          Drivable is in private beta. Join the waitlist to hear when it opens.
         </p>
-        <Link
-          to="/auth"
-          className={`${BTN_PRIMARY} mt-10 px-10 py-5 text-base`}
+        <button type="button" onClick={openWaitlist}
+            className={`${BTN_PRIMARY} mt-10 px-10 py-5 text-base`}
         >
-          Start Practicing
+          Join the waitlist
           <ArrowRight className="h-4 w-4" />
-        </Link>
+        </button>
       </div>
     </section>
 

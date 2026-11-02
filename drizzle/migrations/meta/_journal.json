@@ -15,6 +15,13 @@
       "when": 1793599415561,
       "tag": "0001_atomic_ai_coach_quota",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1793647145218,
+      "tag": "0002_beta_allowlist_and_waitlist",
+      "breakpoints": true
     }
   ]
 }
