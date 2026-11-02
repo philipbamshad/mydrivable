@@ -49,21 +49,15 @@ async function readFreeUsage(
   supabase: AnyClient,
   userId: string,
 ): Promise<FreeUsageShape> {
-  const { data } = await supabase
-    .from("user_profiles")
-    .select("free_usage")
+  const { data, error } = await supabase
+    .from("ai_coach_usage")
+    .select("used")
     .eq("user_id", userId)
     .maybeSingle();
 
-  const raw = (data?.free_usage ?? {}) as Partial<FreeUsageShape> | null;
-  const pillarsRaw =
-    raw && typeof raw.pillars === "object" && raw.pillars ? raw.pillars : {};
+  if (error) throw new Error("Unable to load AI question usage.");
   return {
-    chat: toInt(raw?.chat),
-    exam: toInt(raw?.exam),
-    pillars: Object.fromEntries(
-      Object.entries(pillarsRaw).map(([k, v]) => [k, toInt(v)]),
-    ),
+    chat: toInt(data?.used), exam: 0, pillars: {},
   };
 }
 
@@ -85,8 +79,10 @@ export async function consumeChatCredit(
     return { allowed: true, isPro: true, used: 0 };
   }
 
-  const usage = await readFreeUsage(supabase, userId);
-  if (usage.chat >= FREE_CHAT_LIFETIME_LIMIT) {
+  const { data: used, error } = await supabase.rpc("consume_ai_coach_credit");
+  if (error) throw new Error("Unable to save AI question usage. Please try again.");
+  if (used === null) {
+    const usage = await readFreeUsage(supabase, userId);
     return {
       allowed: false,
       reason:
@@ -96,14 +92,5 @@ export async function consumeChatCredit(
     };
   }
 
-  const next: FreeUsageShape = { ...usage, chat: usage.chat + 1 };
-  const { error } = await supabase
-    .from("user_profiles")
-    .upsert(
-      { user_id: userId, free_usage: next as never },
-      { onConflict: "user_id" },
-    );
-  if (error) throw new Error("Unable to save AI question usage. Please try again.");
-
-  return { allowed: true, isPro: false, used: next.chat };
+  return { allowed: true, isPro: false, used };
 }

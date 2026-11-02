@@ -22,11 +22,11 @@ export const Route = createFileRoute("/privacy")({
 function PrivacyPage() {
   return (
     <MarketingLayout>
-      <div className="mx-auto max-w-3xl px-4 py-12 text-[#0f172a]">
+      <div className="mx-auto max-w-3xl px-4 py-12 text-foreground">
         <h1 className="text-4xl font-semibold tracking-tight">Privacy Policy</h1>
-        <p className="mt-2 text-sm text-[#1f2b4d]/70">Last updated: August 17, 2026</p>
+        <p className="mt-2 text-sm text-muted-foreground">Last updated: November 2, 2026</p>
 
-        <div className="mt-10 space-y-10 text-[15px] leading-7 text-[#1f2b4d]/90">
+        <div className="mt-10 space-y-10 text-[15px] leading-7 text-foreground/90">
           <section>
             <h2 className="text-xl font-semibold text-[#0f172a]">1. Introduction</h2>
             <p className="mt-3">
