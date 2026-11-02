@@ -1,4 +1,13 @@
 # Design improvements
+ 
+# App-wide professional polish
+- [ ] Calm tone, truthful homepage and consistent answer/exam wording.
+- [ ] Active-state AI, consistent images and five-message free cap.
+- [ ] Plausible unambiguous questions, True/False order and matching visuals.
+- [ ] Ever-correct topic mastery and past DMV date notice.
+- [ ] Fixed three-action simulation, instructions/legend, 2.5-second timing and mobile layout.
+- [ ] Verify account, study, state/date, AI and simulation flows on desktop/mobile.
+- [ ] Verify purchase test flow where available; report blockers and fixes.
 - [x] Tighten homepage spacing and reduce competing motion.
 - [x] Improve sign-in, sidebar, and chat readability.
 - [x] Unify study-page labels and active navigation emphasis.
