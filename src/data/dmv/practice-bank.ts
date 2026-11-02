@@ -260,12 +260,7 @@ const TEMPLATES: Template[] = [
   {
     pillar: "intersections",
     q: "When sharing the road with a trolley or light rail vehicle you should…",
-    options: [
-      "Race it through the intersection",
-      "Never turn in front of an approaching trolley or light rail vehicle",
-      "Always take the right of way",
-      "Sound your horn before crossing the tracks",
-    ],
+    options: ["Turn ahead if the signal is green", "Never turn directly in front of it", "Expect it to yield to turning cars", "Cross when the trolley starts slowing"],
     correct: 1,
     explanation:
       "Never turn in front of an approaching trolley or light rail vehicle. They cannot swerve and take a long distance to stop.",
@@ -534,12 +529,7 @@ const TEMPLATES: Template[] = [
   {
     pillar: "speed",
     q: "What speed should you be driving when entering onto a highway?",
-    options: [
-      "Well below the posted limit",
-      "At or near the speed of traffic",
-      "The minimum posted speed",
-      "As fast as your vehicle allows",
-    ],
+    options: ["Well below the flow of traffic", "At or near the speed of traffic", "At the minimum posted speed", "Above the flow of traffic"],
     correct: 1,
     explanation:
       "Use the on ramp to accelerate to the speed of highway traffic, then merge into a gap. Merging slow is one of the top causes of on ramp crashes.",
