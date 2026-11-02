@@ -875,3 +875,7 @@
   .simulation-signal-video[data-signal-active="true"] .simulation-signal-glow { animation: none; opacity: 0.4; }
   .simulation-signal-video[data-signal-active="true"] .simulation-signal-arrow { animation: none; opacity: 1; }
 }
+
+/* Calm preparation surfaces; retain only the requested turn-signal animation. */
+.ambient-blob, .ambient-blob-slow, .ambient-spin-slow, .aura-orbit, .status-dot, .text-grad, .text-grad-warm, .feature-float, .feature-float-delay, .feature-float-delay-2, .feature-progress, .feature-card::before { animation: none; }
+.simulation-game .drive-flash { display: none; }

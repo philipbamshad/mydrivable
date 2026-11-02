@@ -81,15 +81,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "apple-mobile-web-app-capable", content: "yes" },
       { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
       { title: "Drivable, Master Your Permit" },
-      { name: "description", content: "Ace Your Permit Test on the First Try. An AI driving coach trained on every official DMV handbook, with full-length mock permit exams and targeted section drills." },
+      { name: "description", content: "Prepare for your permit test with state-specific practice, full-length mock exams, and handbook-based explanations." },
       { name: "author", content: "Drivable" },
       { name: "google-site-verification", content: "NUwVkbtxYDBMMYIJckQW9XUdhSufkUu6g1ZoA28bsUw" },
       { property: "og:title", content: "Drivable, Master Your Permit" },
-      { property: "og:description", content: "Ace Your Permit Test on the First Try. An AI driving coach trained on every official DMV handbook, with full-length mock permit exams and targeted section drills." },
+      { property: "og:description", content: "Prepare for your permit test with state-specific practice, full-length mock exams, and handbook-based explanations." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:title", content: "Drivable, Master Your Permit" },
-      { name: "twitter:description", content: "Ace Your Permit Test on the First Try. An AI driving coach trained on every official DMV handbook, with full-length mock permit exams and targeted section drills." },
+      { name: "twitter:description", content: "Prepare for your permit test with state-specific practice, full-length mock exams, and handbook-based explanations." },
     ],
     links: [
       {
