@@ -4,6 +4,7 @@
 // generating phrasing variations so the per-state pool scales past 150.
 
 import type { Question, StateRules } from "./types";
+import { distinctOptions, orderBooleanAnswers } from "./question-quality";
 
 type Template = Omit<Question, "q" | "explanation"> & {
   q: string;
@@ -164,6 +165,8 @@ function lower(s: string): string {
  * right answer lands in an unpredictable position on every load.
  */
 export function shuffleAnswers(q: Question): Question {
+  q = distinctOptions(q);
+  if (q.options.length === 2 && q.options.includes("True") && q.options.includes("False")) return orderBooleanAnswers(q);
   const indices = q.options.map((_, i) => i);
   for (let i = indices.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));

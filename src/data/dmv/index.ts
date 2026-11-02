@@ -5,6 +5,7 @@ import { buildOfficialPool } from "./official-pool";
 import { expandPool } from "./variation-engine";
 import { DEFAULT_STATE_NAME } from "./state-numerics";
 import type { Question, StateRules, StatePack } from "./types";
+import { distinctOptions } from "./question-quality";
 
 
 
@@ -151,7 +152,7 @@ export function getStatePack(stateName: string | null | undefined): StatePack {
   return {
     rules,
     questions: expandPool(
-      [...official, ...stateFacts, ...generated, ...BASELINE],
+      [...official, ...stateFacts, ...generated, ...BASELINE].map(distinctOptions),
       6,
       rules.name,
     ),
