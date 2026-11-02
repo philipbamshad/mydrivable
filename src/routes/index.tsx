@@ -114,6 +114,7 @@ function Landing() {
       <Pricing />
       <CTA />
       <Footer />
+      <WaitlistDialog />
     </div>
   );
 }
