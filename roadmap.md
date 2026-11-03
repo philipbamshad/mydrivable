@@ -1,5 +1,10 @@
 # Design improvements
 
+# Waitlist App emails
+- [ ] Save validated signups through a protected server action with duplicate, honeypot and three-per-hour visitor checks.
+- [ ] Send branded confirmation and fixed-owner notification using Lovable App emails; retain signups when sending fails.
+- [ ] Test the real confirmation address, duplicate/spam behavior and both send records; clean up only the test signup.
+
 # Compact practice and two-step simulation
 - [x] Fit active simulation, exam and Hub questions in the available window; fix tablet heading/menu spacing.
 - [x] Add authored two-step decisions, fresh timers and scenario-level results with all-decision reaction averages.
