@@ -102,21 +102,21 @@ function ExamRunner({ state, count, minCorrect, passPct, isPro, used, onAnswered
   return <StudyQuestionFrame>
     <div className="flex items-center justify-between gap-3"><Button variant="ghost" onClick={onExit} className="h-8 px-0 text-xs text-muted-foreground"><ArrowLeft />Exit exam</Button><span className="text-right text-xs text-muted-foreground">{state} · {idx + 1} / {questions.length}<span className="ml-2 tabular-nums">· <span className="text-success">{correctCount} correct</span> · <span className="text-destructive">{answered - correctCount} incorrect</span></span></span></div>
     <Meter pct={answered / questions.length * 100} />
-    {q ? <Card className={card}>
+    {q ? <Card className={cn(card, "study-question-card")}>
       <ExamQuestionVisual question={q} /><h3 className="mb-5 font-display text-lg font-semibold">{q.q}</h3>
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">{q.options.map((option, index) => {
+      <div className="study-answers grid grid-cols-1 gap-3 sm:grid-cols-2">{q.options.map((option, index) => {
         const isCorrect = index === q.correct; const picked = chosen === index; const revealed = chosen !== null;
         return <Button key={index} variant="secondary" onClick={() => choose(index)} disabled={locked || revealed} aria-pressed={picked} className={cn("h-auto min-h-14 justify-start whitespace-normal rounded-2xl border-2 px-4 py-3 text-left text-sm leading-relaxed disabled:opacity-100", !revealed && "border-transparent", revealed && isCorrect && "border-success/60 bg-success/10 text-foreground", revealed && picked && !isCorrect && "border-destructive/60 bg-destructive/10 text-foreground", revealed && !picked && !isCorrect && "border-transparent opacity-60")}><span className="shrink-0 text-xs text-muted-foreground">{index + 1}</span><span>{option}</span>{revealed && isCorrect && <Check className="ml-auto text-success" />}</Button>;
       })}</div>
       {locked && <div className="mt-5 border-t border-border pt-4"><p className="text-sm text-muted-foreground">You've used your 20 free lifetime exam questions.</p><Button onClick={onUpgrade} className="mt-3 rounded-full"><Lock />Get Pro Pass — $9</Button></div>}
-      {chosen !== null && <div className="mt-5 border-t border-border pt-4" aria-live="polite">
+      {chosen !== null && <div className="study-feedback mt-5 border-t border-border pt-4" aria-live="polite">
         <p className={cn("text-sm font-semibold", chosen === q.correct ? "text-success" : "text-destructive")}>{chosen === q.correct ? "Correct" : "Incorrect"}</p>
         <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{q.explanation.replace(/\s*Source:.*$/s, "").split(/(?<=[.!?])\s+/).slice(0, 2).join(" ")}</p>
         {saveError && <p role="alert" className="mt-3 text-sm text-destructive">Your attempt could not be saved. Please try again.</p>}
         <div className="mt-4 flex justify-end"><Button onClick={advance} disabled={saving} className="h-11 rounded-full">{saving ? "Saving attempt…" : isLast ? "See results" : "Next question"}<ArrowRight /></Button></div>
       </div>}
     </Card> : null}
-  </div>;
+  </StudyQuestionFrame>;
 }
 function Stat({ label, value }: { label: string; value: string }) { return <div className="rounded-3xl bg-muted px-2 py-4 text-center sm:p-5"><p className="text-xs uppercase text-muted-foreground">{label}</p><p className="mt-1 font-display text-2xl font-bold sm:text-3xl">{value}</p></div>; }
 function Meter({ pct, success }: { pct: number; success?: boolean }) { return <div className="flex h-1.5 overflow-hidden rounded-full bg-muted"><span className={cn("h-full", success === undefined ? "bg-action" : success ? "bg-success/60" : "bg-destructive/60")} style={{ width: `${pct}%` }} /></div>; }
