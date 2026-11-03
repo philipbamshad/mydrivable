@@ -120,14 +120,14 @@ function AppDashboard() {
         </TabsList>
 
         <div className="flex-1 min-h-0 overflow-hidden">
-          <TabsContent value="test-hub" className="h-full min-h-0 overflow-y-auto m-0 p-0 data-[state=inactive]:hidden">
-            <div className="relative min-h-full w-full p-5 sm:p-7 flex flex-col justify-center" style={tabGlowStyle}>
+          <TabsContent value="test-hub" className="study-tab-content h-full min-h-0 overflow-y-auto m-0 p-0 data-[state=inactive]:hidden">
+            <div className="study-tab-inner relative min-h-full w-full p-5 sm:p-7 flex flex-col justify-center" style={tabGlowStyle}>
               <TestHubDashboard key={search.topic ?? "hub"} initialTopic={search.topic} userId={user.id} />
             </div>
           </TabsContent>
 
-          <TabsContent value="state-exam" className="h-full min-h-0 overflow-y-auto overscroll-contain m-0 p-0 data-[state=inactive]:hidden">
-            <div className="relative min-h-full w-full p-5 sm:p-7 flex flex-col justify-center" style={tabGlowStyle}>
+          <TabsContent value="state-exam" className="study-tab-content h-full min-h-0 overflow-y-auto overscroll-contain m-0 p-0 data-[state=inactive]:hidden">
+            <div className="study-tab-inner relative min-h-full w-full p-5 sm:p-7 flex flex-col justify-center" style={tabGlowStyle}>
               <PermitExamSimulator userId={user.id} />
             </div>
           </TabsContent>

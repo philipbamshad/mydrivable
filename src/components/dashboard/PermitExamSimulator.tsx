@@ -14,6 +14,7 @@ import { pickUnseenQuestions } from "@/lib/seen-questions";
 import { buildExamPool, examSummary, examHistoryStats, mayAnswerExam, EXAM_FREE_LIMIT, type ExamQuestion } from "@/lib/mock-exam";
 import { examHistoryOptions } from "@/lib/mock-exam.functions";
 import { ExamQuestionVisual } from "./ExamQuestionVisual";
+import { StudyQuestionFrame } from "./StudyQuestionFrame";
 
 const card = "bg-card rounded-[28px] border border-border/60 p-5 sm:p-7 shadow-lg";
 
@@ -98,7 +99,7 @@ function ExamRunner({ state, count, minCorrect, passPct, isPro, used, onAnswered
       <div className="mt-6 flex flex-col gap-3 sm:flex-row"><Button onClick={restart} className="h-12 flex-1 rounded-full"><RefreshCw />Retake exam</Button><Button variant="secondary" asChild className="h-12 flex-1 rounded-full"><Link to="/app" search={{ tab: "chat" }}>Back to dashboard</Link></Button></div>
     </Card>
   </div>;
-  return <div className="mx-auto w-full max-w-3xl space-y-5">
+  return <StudyQuestionFrame>
     <div className="flex items-center justify-between gap-3"><Button variant="ghost" onClick={onExit} className="h-8 px-0 text-xs text-muted-foreground"><ArrowLeft />Exit exam</Button><span className="text-right text-xs text-muted-foreground">{state} · {idx + 1} / {questions.length}<span className="ml-2 tabular-nums">· <span className="text-success">{correctCount} correct</span> · <span className="text-destructive">{answered - correctCount} incorrect</span></span></span></div>
     <Meter pct={answered / questions.length * 100} />
     {q ? <Card className={card}>
