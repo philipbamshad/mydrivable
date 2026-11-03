@@ -17,6 +17,7 @@ export type SimulationClip = {
   subtitle: string;
   actions: SimulationAction[];
   correctAction: string;
+  steps: string[];
   explanation: string;
 };
 

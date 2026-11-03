@@ -43,7 +43,7 @@ describe("simulation session rules", () => {
     ["left-turn-green-arrow", ["go", "yield", "stop"], "go"],
     ["right-turn-on-red", ["go", "yield", "stop"], "stop"],
     ["stop-sign-approach", ["go", "yield", "stop"], "stop"],
-    ["stop-sign-right-of-way", ["go", "yield", "stop"], "yield"],
+    ["stop-sign-right-of-way", ["go", "yield", "stop"], "stop"],
     ["lane-change", ["go", "yield", "stop"], "yield"],
   ])("preserves authored actions and scoring for %s", (id, actions, correct) => {
     const clip = SIMULATION_CLIPS.find((source) => source.id === id);
@@ -57,5 +57,15 @@ describe("simulation session rules", () => {
       expect(clip.actions.length).toBe(3);
       expect(clip.actions.some((action) => action.id === clip.correctAction)).toBe(true);
     });
+  });
+  it.each([
+    ["stop-sign-approach", ["stop", "yield"]],
+    ["stop-sign-right-of-way", ["stop", "yield"]],
+    ["right-turn-on-red", ["stop", "yield"]],
+    ["lane-change", ["yield", "go"]],
+    ["left-turn-green-arrow", ["go"]],
+    ["right-turn-on-green", ["go"]],
+  ])("uses the required steps for %s", (id, steps) => {
+    expect(SIMULATION_CLIPS.find(clip => clip.id === id)?.steps).toEqual(steps);
   });
 });

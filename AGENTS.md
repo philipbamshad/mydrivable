@@ -21,6 +21,7 @@
 - Keep Test Hub progress state-scoped in its owner-only table; derive mastery and missed-question recovery in the pure Hub helper, use stable question identities across answer shuffles, and await answer/score saves before advancing.
 - Derive Hub mastery from ever-correct identities divided by the canonical topic bank size; latest answer and missed recovery remain separate so later misses cannot erase mastery.
 - Use fixed semantic simulation actions with pure timing and scenario data; instruction and legend preferences are browser-only presentation state.
+- Author simulation steps in scenario data; aggregate scenario correctness across every required step and reaction averages across individual decisions. Active study layouts share a viewport-bounded question frame so feedback stays visible.
 - Resolve Coach jurisdiction from the authenticated profile and consume free usage through the owner-scoped atomic RPC; client request state and browser counters are never authoritative.
 - Supply missing resolved CSS defaults through the Vite compatibility plugin so the preview stylesheet compiler receives the same configuration shape as production.
 - Private beta: app access is gated by the database allowlist (is_allowlisted RPC) in the _authenticated route, every server function via requireAllowlisted, /api/chat, and restrictive RLS on user tables; the client check alone is never trusted.
