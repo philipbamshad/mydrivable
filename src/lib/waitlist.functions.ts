@@ -26,7 +26,7 @@ export const joinWaitlist = createServerFn({ method: 'POST' }).inputValidator(wa
   if (row.result === 'limited') throw new Error('You can submit up to 3 times per hour. Please try again later.');
   if (row.signup_id && row.signup_time) {
     await deliverWaitlistEmails({ id: row.signup_id, email: data.email, createdAt: row.signup_time }, async payload => {
-      const response = await fetch(`${origin}/lovable/email/transactional/send`, { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${serviceKey}` }, body: JSON.stringify(payload) });
+      const response = await fetch(`${origin}/lovable/email/transactional/send`, { method: 'POST', redirect: 'error', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${serviceKey}` }, body: JSON.stringify(payload) });
       const result = await response.json() as { success?: boolean };
       if (!response.ok || !result.success) throw new Error('Email not queued');
     }, template => console.error('Waitlist email failed', { signupId: row.signup_id, template }));
