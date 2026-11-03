@@ -1,13 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ArrowLeft, ArrowRight, ArrowUp, RotateCcw, Play, Video, LoaderCircle, CircleHelp } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowUp, RotateCcw, Play, Video, LoaderCircle, CircleHelp, Check, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 import { tabGlowStyle } from "@/lib/tab-glow";
 import { SIMULATION_CLIPS } from "@/data/simulation-clips";
 import { createSimulationSession, type ActionIcon, type SimulationClip } from "@/data/simulation-session";
-import { DECISION_MS, recordDecision, decisionSummary, type ScenarioDecision } from "@/data/simulation-game";
+import { DECISION_MS, recordDecision, decisionSummary, finishScenario, stepProgress, type ScenarioDecision } from "@/data/simulation-game";
 import { ScenarioThumbnail } from "@/components/simulation/ScenarioThumbnail";
 import { signalDirection, signalIsActive } from "@/data/simulation-signal";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -52,6 +52,9 @@ function SimulationPage() {
   const [session, setSession] = useState<SimulationClip[]>([]);
   const [idx, setIdx] = useState(0);
   const [decisions, setDecisions] = useState<ScenarioDecision[]>([]);
+  const [stepIndex, setStepIndex] = useState(0);
+  const stepRecords = useRef<ScenarioDecision[]>([]);
+  const answerLock = useRef(false);
   const [remaining, setRemaining] = useState(DECISION_MS);
   const [feedback, setFeedback] = useState<ScenarioDecision | null>(null);
   const [videoError, setVideoError] = useState(false);
@@ -77,7 +80,7 @@ function SimulationPage() {
     if (!isPro) { openCheckout(); return; }
     setHasPlayed(false);
     setSession(createSimulationSession(SIMULATION_CLIPS));
-    setIdx(0); setDecisions([]); setFeedback(null);
+    setIdx(0); setStepIndex(0); stepRecords.current = []; answerLock.current = false; setDecisions([]); setFeedback(null);
     setVideoError(false); setLoaded(false); setNeedsPlay(false);
     scroller.current?.scrollTo({ top: 0 }); changePhase("playing");
   };
@@ -91,7 +94,7 @@ function SimulationPage() {
     scroller.current?.scrollTo({ top: 0 });
     if (idx === session.length - 1) { changePhase("results"); return; }
     setHasPlayed(false);
-    setIdx((value) => value + 1); setFeedback(null); setVideoError(false); setLoaded(false); setNeedsPlay(false); changePhase("playing");
+    setIdx((value) => value + 1); setStepIndex(0); stepRecords.current = []; answerLock.current = false; setFeedback(null); setVideoError(false); setLoaded(false); setNeedsPlay(false); changePhase("playing");
   };
 
   const beginDecision = useCallback(() => {
@@ -111,11 +114,23 @@ function SimulationPage() {
 
   const answer = useCallback((actionId: string | null) => {
     if (phaseRef.current !== "decision" || !clip) return;
-    // Lock before setting state: simultaneous keyboard/click/timeout events record one decision.
+    if (answerLock.current) return;
+    answerLock.current = true;
+    const expected = clip.steps[stepIndex];
+    if (!expected) return;
+    const result = recordDecision(clip.id, actionId, expected, performance.now() - decisionStart.current, timed, frozenFrame.current);
+    const records = [...stepRecords.current, result]; stepRecords.current = records;
+    if (stepProgress(clip.steps, records) === "next") {
+      decisionStart.current = performance.now(); setRemaining(DECISION_MS);
+      setStepIndex(records.length);
+      return;
+    }
     changePhase("feedback");
-    const result = recordDecision(clip.id, actionId, clip.correctAction, performance.now() - decisionStart.current, timed, frozenFrame.current);
-    setDecisions((items) => [...items, result]); setFeedback(result);
-  }, [clip, timed, changePhase]);
+    const scenario = finishScenario(clip.steps, records);
+    setDecisions(items => [...items, scenario]); setFeedback(scenario);
+  }, [clip, stepIndex, timed, changePhase]);
+
+  useEffect(() => { answerLock.current = false; }, [stepIndex]);
 
   useEffect(() => {
     if (phase !== "decision" || !timed) return;
@@ -125,7 +140,7 @@ function SimulationPage() {
     }, 40);
     const deadline = window.setTimeout(() => answer(null), DECISION_MS);
     return () => { window.clearInterval(interval); window.clearTimeout(deadline); };
-  }, [phase, timed, answer]);
+  }, [phase, timed, answer, stepIndex]);
 
   useEffect(() => {
     if (phase !== "decision" || !clip) return;
@@ -138,11 +153,6 @@ function SimulationPage() {
     };
     window.addEventListener("keydown", onKey); return () => window.removeEventListener("keydown", onKey);
   }, [phase, clip, answer]);
-
-  useEffect(() => {
-    if (phase === "decision") decisionPanel.current?.scrollIntoView({ block: "nearest", behavior: "instant" });
-    if (phase === "feedback") feedbackPanel.current?.scrollIntoView({ block: "nearest", behavior: "instant" });
-  }, [phase]);
 
   const active = phase === "playing" || phase === "decision" || phase === "feedback";
   useEffect(() => {
@@ -183,11 +193,11 @@ function SimulationPage() {
   };
 
   return (
-    <div ref={scroller} className="h-full overflow-y-auto overscroll-contain bg-secondary/40 text-foreground" style={tabGlowStyle} aria-label="Driving Test Simulation">
-      <div className="mx-auto flex min-h-full w-full max-w-5xl flex-col p-5 pt-16 sm:p-7 md:pt-7">
-        <header className="mb-5">
-          {phase !== "ready" && <Button variant="ghost" onClick={exit} className="mb-3 h-8 px-0 text-xs text-muted-foreground"><ArrowLeft />Exit simulation</Button>}
-          <h1 className="font-display text-xl font-bold">Driving Test Simulation</h1>
+    <div ref={scroller} className={cn("h-full min-h-0 bg-secondary/40 text-foreground", active ? "overflow-hidden" : "overflow-y-auto overscroll-contain")} style={tabGlowStyle} aria-label="Driving Test Simulation">
+      <div className={cn("mx-auto flex w-full max-w-6xl flex-col p-3 sm:p-5", active ? "h-full min-h-0" : "min-h-full")}>
+        <header className="mb-3 grid shrink-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-2 pl-14 md:pl-0">
+          {phase !== "ready" && <Button variant="ghost" onClick={exit} className="order-2 h-8 px-0 text-xs text-muted-foreground"><ArrowLeft />Exit simulation</Button>}
+          <h1 className="min-w-0 font-display text-lg font-bold sm:text-xl">Driving Test Simulation</h1>
         </header>
         {phase === "ready" ? (
           <div className="my-auto mx-auto w-full max-w-3xl pb-5">
@@ -207,6 +217,7 @@ function SimulationPage() {
           <div className={cn(cardClass, "my-auto mx-auto w-full max-w-3xl")}>
             <h2 className="font-display text-xl font-bold">How it works</h2>
             <p className="mb-7 mt-4 text-sm leading-relaxed text-muted-foreground">Each video stops at a decision point. The turn signal shows where you're going. Choose the correct action before time runs out.</p>
+            <p className="mb-5 text-sm text-muted-foreground">Some scenarios have two steps. After your first decision, choose what you do next.</p>
             <ActionLegend />
             <div className="mt-7 flex items-center gap-3"><Checkbox id="skip-instructions" checked={skipInstructions} onCheckedChange={checked => { const value = checked === true; setSkipInstructions(value); localStorage.setItem("drivable.simulation.skip-instructions", String(value)); }} /><label htmlFor="skip-instructions" className="text-sm">Don't show again</label></div>
             <Button onClick={start} className="mt-5 h-12 w-full rounded-full">I'm ready<ArrowRight /></Button>
@@ -229,46 +240,37 @@ function SimulationPage() {
             <div className="mt-6 flex flex-col gap-3 sm:flex-row"><Button onClick={start} className="h-12 flex-1 rounded-full"><RotateCcw />Try again</Button><Button variant="secondary" asChild className="h-12 flex-1 rounded-full"><Link to="/app">Back to dashboard</Link></Button></div>
           </div>
         ) : clip ? (
-          <div data-scenario={clip.id} data-phase={phase} className="mx-auto w-full space-y-5">
-            <div className={cn("grid items-start gap-5", showLegend && "lg:grid-cols-[minmax(0,1fr)_180px]")}>
-            <div className="min-w-0">
-              <div className="mb-3 flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground"><span>Scenario {idx + 1} of {session.length}</span><span>{clip.title}</span></div>
-              <div role="progressbar" aria-label="Scenario progress" aria-valuemin={0} aria-valuemax={session.length} aria-valuenow={idx + 1} className="mb-5 flex h-1 overflow-hidden rounded-full bg-muted">{session.map((item, index) => <span key={item.id} className={cn("h-full flex-1", index <= idx && "bg-action")} />)}</div>
-              <div key={clip.id} data-signal-active={signaling && signalSide !== null} className="simulation-signal-video relative overflow-hidden rounded-2xl bg-muted">
-                <video ref={videoRef} key={clip.id} src={clip.videoUrl} autoPlay muted playsInline preload="auto"
-                  onPlaying={() => setHasPlayed(true)}
-                  onLoadedData={() => setLoaded(true)} onCanPlay={() => { if (phaseRef.current === "playing") resumeVideo(); }}
-                  onTimeUpdate={(event) => { if (event.currentTarget.currentTime >= clip.pauseAt) beginDecision(); }}
-                  onEnded={holdFinalFrame} onError={() => setVideoError(true)} className="block h-[45dvh] min-h-[45dvh] w-full object-contain sm:aspect-video sm:h-auto sm:min-h-0" />
+          <div data-scenario={clip.id} data-phase={phase} data-step={stepIndex + 1} className="flex min-h-0 flex-1 flex-col gap-2">
+            <div className="grid shrink-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-2 text-xs text-muted-foreground"><span>Scenario {idx + 1} of {session.length} · {clip.title}</span><div className="hidden items-center gap-2 md:flex"><Switch id="hide-legend" checked={!showLegend} onCheckedChange={hidden => { setShowLegend(!hidden); localStorage.setItem("drivable.simulation.hide-legend", String(hidden)); }} /><label htmlFor="hide-legend">Hide legend</label></div></div>
+            <div role="progressbar" aria-label="Scenario progress" aria-valuemin={0} aria-valuemax={session.length} aria-valuenow={idx + 1} className="flex h-1 shrink-0 overflow-hidden rounded-full bg-muted">{session.map((item, index) => <span key={item.id} className={cn("h-full flex-1", index <= idx && "bg-action")} />)}</div>
+            {clip.steps.length > 1 && <p className="shrink-0 text-xs text-muted-foreground">Step {stepIndex + 1} of {clip.steps.length}</p>}
+            <div className={cn("grid min-h-0 flex-1 gap-3", showLegend && "md:grid-cols-[minmax(0,1fr)_170px]")}>
+              <div key={clip.id} data-signal-active={signaling && signalSide !== null} className="simulation-signal-video relative min-h-0 overflow-hidden rounded-2xl bg-muted">
+                <video ref={videoRef} src={clip.videoUrl} autoPlay muted playsInline preload="auto"
+                  onPlaying={() => setHasPlayed(true)} onLoadedData={() => setLoaded(true)} onCanPlay={() => { if (phaseRef.current === "playing") resumeVideo(); }}
+                  onTimeUpdate={event => { if (event.currentTarget.currentTime >= clip.pauseAt) beginDecision(); }}
+                  onEnded={holdFinalFrame} onError={() => setVideoError(true)} className="absolute inset-0 h-full w-full object-contain" />
                 {signalSide && <div aria-hidden="true" data-direction={signalSide} className="simulation-signal-glow pointer-events-none absolute inset-0 rounded-[inherit]" />}
                 {(!loaded || videoError || needsPlay) && phase === "playing" && <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-card/80">{videoError ? <><p className="text-sm">Unable to load this clip.</p><Button onClick={() => { setVideoError(false); videoRef.current?.load(); }}>Retry</Button></> : needsPlay ? <Button onClick={resumeVideo}><Play />Play clip</Button> : <LoaderCircle className="h-8 w-8 animate-spin motion-reduce:animate-none" aria-label="Loading clip" />}</div>}
                 <span className="pointer-events-none absolute left-3 top-3 inline-flex max-w-[calc(100%-1.5rem)] items-center gap-2 rounded-full border border-border bg-primary-foreground px-3 py-1.5 text-xs font-semibold text-action shadow-sm" aria-label={`Intent: ${clip.intent}`}>
-                  {signalSide === "left" ? <ArrowLeft aria-hidden="true" className="simulation-signal-arrow h-4 w-4 shrink-0" /> : signalSide === "right" ? <ArrowRight aria-hidden="true" className="simulation-signal-arrow h-4 w-4 shrink-0" /> : <ArrowUp aria-hidden="true" className="h-4 w-4 shrink-0" />}
-                  {clip.intent}
+                  {signalSide === "left" ? <ArrowLeft aria-hidden="true" className="simulation-signal-arrow h-4 w-4 shrink-0" /> : signalSide === "right" ? <ArrowRight aria-hidden="true" className="simulation-signal-arrow h-4 w-4 shrink-0" /> : <ArrowUp aria-hidden="true" className="h-4 w-4 shrink-0" />}{clip.intent}
                 </span>
-                <Button variant="secondary" size="icon" aria-label="Show action legend" title="Action legend" onClick={() => setMobileLegend(true)} className="absolute bottom-3 right-3 h-10 w-10 rounded-full lg:hidden"><CircleHelp /></Button>
+                <Button variant="secondary" size="icon" aria-label="Show action legend" title="Action legend" onClick={() => setMobileLegend(true)} className="absolute bottom-3 right-3 h-10 w-10 rounded-full md:hidden"><CircleHelp /></Button>
               </div>
-              {timed && <div role="progressbar" aria-label="Decision time remaining" aria-valuemin={0} aria-valuemax={2.5} aria-valuenow={phase === "playing" ? 2.5 : phase === "feedback" ? 0 : remaining / 1000} className="mt-3 flex h-1 overflow-hidden rounded-full bg-muted"><span className={cn("h-full transition-[flex-grow] duration-75", remaining > 1000 ? "bg-action" : "bg-destructive/60")} style={{ flexGrow: phase === "playing" ? DECISION_MS : phase === "feedback" ? 0 : remaining }} /><span style={{ flexGrow: phase === "playing" ? 0 : phase === "feedback" ? DECISION_MS : DECISION_MS - remaining }} /></div>}
-              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{clip.subtitle}</p>
-              <div ref={decisionPanel} className="mt-5">
-                <TooltipProvider delayDuration={150}><div className="grid grid-cols-3 gap-3">
-                  {clip.actions.map((action) => {
-                    const Icon = icons[action.icon]; const reveal = phase === "feedback"; const correct = action.id === clip.correctAction; const selected = action.id === feedback?.selectedAction;
-                    if (!Icon) return null;
-                    return <Tooltip key={action.id}><TooltipTrigger asChild><span className="block"><Button variant="secondary" disabled={phase !== "decision"} onClick={() => answer(action.id)} aria-label={action.label} aria-pressed={selected} className={cn("aspect-square h-auto min-h-20 w-full min-w-0 rounded-2xl border border-border", phase === "playing" && "opacity-40", reveal && "disabled:opacity-100", reveal && correct && "border-success/50 bg-success/10 text-success", reveal && selected && !correct && "border-destructive/50 bg-destructive/10 text-destructive", reveal && !correct && !selected && "opacity-60")}><Icon className="size-9 sm:size-11" /></Button></span></TooltipTrigger><TooltipContent>{action.label}</TooltipContent></Tooltip>;
-                  })}
-                </div></TooltipProvider>
-              </div>
+              {showLegend && <aside aria-label="Action legend" className="hidden h-full min-h-0 rounded-2xl bg-card p-3 md:flex md:items-center"><ActionLegend /></aside>}
             </div>
-            {showLegend && <aside aria-label="Action legend" className="hidden rounded-2xl bg-card p-4 lg:block"><ActionLegend /></aside>}
+            {timed && <div role="progressbar" aria-label="Decision time remaining" aria-valuemin={0} aria-valuemax={2.5} aria-valuenow={phase === "playing" ? 2.5 : phase === "feedback" ? 0 : remaining / 1000} className="flex h-1 shrink-0 overflow-hidden rounded-full bg-muted"><span className={cn("h-full transition-[flex-grow] duration-75", remaining > 1000 ? "bg-action" : "bg-destructive/60")} style={{ flexGrow: phase === "playing" ? DECISION_MS : phase === "feedback" ? 0 : remaining }} /><span style={{ flexGrow: phase === "playing" ? 0 : phase === "feedback" ? DECISION_MS : DECISION_MS - remaining }} /></div>}
+            <div className="shrink-0 basis-[192px] sm:basis-[168px]">
+              {phase === "feedback" && feedback ? <div ref={feedbackPanel} role="status" className="flex h-full flex-col gap-2 rounded-2xl border border-border/60 bg-card p-3 sm:p-4">
+                <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2"><h2 className={cn("font-display text-base font-bold", feedback.correct ? "text-success" : "text-destructive")}>{feedback.selectedAction === null ? "No decision made" : feedback.correct ? "Correct" : "Incorrect"}</h2>{feedback.reactionMs !== null && <span className="text-xs text-muted-foreground">Avg. {(feedback.reactionMs / 1000).toFixed(1)}s</span>}</div>
+                <div className="flex flex-wrap gap-3 text-xs font-semibold">{clip.steps.map((id, index) => { const recorded = feedback.steps?.[index]; return <span key={index} className={cn("inline-flex items-center gap-1", recorded?.correct ? "text-success" : "text-destructive")}>{index > 0 && "Then "}{clip.actions.find(a => a.id === id)?.label}{recorded?.correct ? <Check className="size-3.5" /> : <X className="size-3.5" />}</span>; })}</div>
+                <p className="text-xs leading-relaxed text-muted-foreground sm:text-sm">{clip.explanation}</p>
+                <Button onClick={goNext} className="mt-auto h-9 shrink-0 self-end rounded-full">Next scenario<ArrowRight /></Button>
+              </div> : <div ref={decisionPanel} className="flex h-full flex-col gap-2">
+                <div><p className="text-sm font-semibold">{stepIndex === 0 ? "What do you do?" : "Then what?"}</p><p className="text-xs text-muted-foreground">{clip.subtitle}</p></div>
+                <TooltipProvider delayDuration={150}><div className="grid grid-cols-3 gap-3">{clip.actions.map(action => { const Icon = icons[action.icon]; if (!Icon) return null; return <Tooltip key={action.id}><TooltipTrigger asChild><span className="block"><Button variant="secondary" disabled={phase !== "decision"} onClick={() => answer(action.id)} aria-label={action.label} className={cn("h-[72px] w-full min-w-0 rounded-2xl border border-border", phase === "playing" && "opacity-40")}><Icon className="size-8" /></Button></span></TooltipTrigger><TooltipContent>{action.label}</TooltipContent></Tooltip>; })}</div></TooltipProvider>
+              </div>}
             </div>
-            <div className="hidden items-center gap-3 lg:flex"><Switch id="hide-legend" checked={!showLegend} onCheckedChange={hidden => { setShowLegend(!hidden); localStorage.setItem("drivable.simulation.hide-legend", String(hidden)); }} /><label htmlFor="hide-legend" className="text-xs text-muted-foreground">Hide legend</label></div>
-            {phase === "feedback" && feedback && <div ref={feedbackPanel} role="status" className={cardClass}>
-              <div className="flex flex-wrap items-center justify-between gap-2"><h2 className={cn("font-display text-lg font-bold", feedback.correct ? "text-success" : "text-destructive")}>{feedback.selectedAction === null ? "No decision made" : feedback.correct ? "Correct" : "Incorrect"}</h2>{feedback.reactionMs !== null && <span className="text-xs text-muted-foreground">Decided in {(feedback.reactionMs / 1000).toFixed(1)}s</span>}</div>
-              {clip.actions.filter(action => action.id === clip.correctAction).map(action => { const Icon = icons[action.icon]; return <p key={action.id} className="mt-3 flex items-center gap-2 text-sm font-semibold">{Icon && <Icon className="h-5 w-5" />}Correct action: {action.label}</p>; })}
-              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{clip.explanation}</p>
-              <Button onClick={goNext} className="mt-5 h-12 w-full rounded-full sm:w-auto">Next scenario<ArrowRight /></Button>
-            </div>}
           </div>
         ) : null}
       </div>
