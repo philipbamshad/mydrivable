@@ -418,6 +418,24 @@ export type Database = {
         }
         Relationships: []
       }
+      waitlist_submission_windows: {
+        Row: {
+          started_at: string
+          submissions: number
+          visitor_hash: string
+        }
+        Insert: {
+          started_at?: string
+          submissions?: number
+          visitor_hash: string
+        }
+        Update: {
+          started_at?: string
+          submissions?: number
+          visitor_hash?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -434,6 +452,14 @@ export type Database = {
         Returns: number
       }
       is_allowlisted: { Args: never; Returns: boolean }
+      join_waitlist_checked: {
+        Args: { p_email: string; p_visitor_hash: string }
+        Returns: {
+          result: string
+          signup_id: string
+          signup_time: string
+        }[]
+      }
       move_to_dlq: {
         Args: {
           dlq_name: string
