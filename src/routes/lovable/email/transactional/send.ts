@@ -5,7 +5,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { TEMPLATES } from '@/lib/email-templates/registry'
 
 // Configuration baked in at scaffold time
-const SITE_NAME = "mydrivable"
+const SITE_NAME = "Drivable"
 // SENDER_DOMAIN is the verified sender subdomain FQDN (e.g., "notify.example.com").
 // It MUST match the subdomain delegated to Lovable's nameservers. NEVER use the root domain.
 const SENDER_DOMAIN = "notify.mydrivable.com"
@@ -95,9 +95,12 @@ export const Route = createFileRoute("/lovable/email/transactional/send")({
 
         const token = authHeader.slice('Bearer '.length).trim()
         const supabase = createClient(supabaseUrl, supabaseServiceKey)
-        const { data: { user }, error: authError } = await supabase.auth.getUser(token)
+        const trustedServer = token === supabaseServiceKey
+        const { data: { user }, error: authError } = trustedServer
+          ? { data: { user: null }, error: null }
+          : await supabase.auth.getUser(token)
 
-        if (authError || !user) {
+        if (!trustedServer && (authError || !user)) {
           return Response.json({ error: 'Unauthorized' }, { status: 401 })
         }
 
@@ -130,6 +133,15 @@ export const Route = createFileRoute("/lovable/email/transactional/send")({
           )
         }
 
+        // Privileged callers are confined to the two fixed waitlist events.
+        if (trustedServer && !['waitlist-confirmation', 'new-waitlist-signup'].includes(templateName)) {
+          return Response.json({ error: 'Forbidden' }, { status: 403 })
+        }
+        // Waitlist templates cannot be triggered independently by signed-in clients.
+        if (!trustedServer && ['waitlist-confirmation', 'new-waitlist-signup'].includes(templateName)) {
+          return Response.json({ error: 'Forbidden' }, { status: 403 })
+        }
+
         // 1. Look up template from registry (early — needed to resolve recipient)
         const template = TEMPLATES[templateName]
 
@@ -148,6 +160,10 @@ export const Route = createFileRoute("/lovable/email/transactional/send")({
         // to always send to a fixed address (e.g., site owner from env var).
         const effectiveRecipient = template.to || recipientEmail
 
+        if (typeof effectiveRecipient !== 'string' || effectiveRecipient.length > 255 || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(effectiveRecipient)) {
+          return Response.json({ error: 'Invalid recipient' }, { status: 400 })
+        }
+
         if (!effectiveRecipient) {
           return Response.json(
             {
@@ -162,8 +178,8 @@ export const Route = createFileRoute("/lovable/email/transactional/send")({
         // exempt because the recipient is not caller controlled. Server
         // triggered flows should use enqueueTransactionalEmail instead of this
         // endpoint.
-        if (!template.to) {
-          const callerEmail = user.email?.toLowerCase()
+        if (!trustedServer && !template.to) {
+          const callerEmail = user?.email?.toLowerCase()
           if (!callerEmail || callerEmail !== effectiveRecipient.toLowerCase()) {
             console.warn('Blocked attempt to email a third party address', {
               templateName,
@@ -194,7 +210,7 @@ export const Route = createFileRoute("/lovable/email/transactional/send")({
           )
         }
 
-        if ((recentCount ?? 0) >= MAX_EMAILS_PER_USER_PER_HOUR) {
+        if (!trustedServer && (recentCount ?? 0) >= MAX_EMAILS_PER_USER_PER_HOUR) {
           return Response.json(
             { success: false, reason: 'rate_limited' },
             { status: 429 }
