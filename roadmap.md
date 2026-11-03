@@ -1,4 +1,9 @@
 # Design improvements
+
+# Compact practice and two-step simulation
+- [ ] Fit active simulation, exam and Hub questions in the available window; fix tablet heading/menu spacing.
+- [ ] Add authored two-step decisions, fresh timers and scenario-level results with all-decision reaction averages.
+- [ ] Test all scenarios timed/untimed at 1440×820, 1280×720 and mobile; check exam/Hub feedback visibility.
  
 # App-wide professional polish
 - [x] Calm tone, truthful homepage and consistent answer/exam wording.

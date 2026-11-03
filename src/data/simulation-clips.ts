@@ -22,6 +22,7 @@ export const SIMULATION_CLIPS: SimulationClip[] = [
     subtitle: "Turning right on green · crosswalk ahead",
     actions,
     correctAction: "go",
+    steps: ["go"],
     explanation: "The light is green and the crosswalk is clear, so you can turn right. Keep checking for pedestrians and cyclists as you turn.",
   },
   {
@@ -30,6 +31,7 @@ export const SIMULATION_CLIPS: SimulationClip[] = [
     subtitle: "Turning left · green arrow",
     actions,
     correctAction: "go",
+    steps: ["go"],
     explanation: "A green arrow means a protected turn. Oncoming traffic has a red light, so you can turn left.",
   },
   {
@@ -38,7 +40,8 @@ export const SIMULATION_CLIPS: SimulationClip[] = [
     subtitle: "Turning right · red light",
     actions,
     correctAction: "stop",
-    explanation: "You must come to a complete stop at the limit line first. Then you may turn right when it's clear, unless a sign prohibits it.",
+    steps: ["stop", "yield"],
+    explanation: "You must stop completely at the limit line first. Then yield to cross traffic and pedestrians, and turn right only when it's clear, unless a sign prohibits it.",
   },
   {
     id: "stop-sign-approach", videoUrl: stopSign.url, pauseAt: 4.5,
@@ -46,15 +49,17 @@ export const SIMULATION_CLIPS: SimulationClip[] = [
     subtitle: "Going straight · stop sign",
     actions,
     correctAction: "stop",
-    explanation: "Come to a complete stop at the limit line, then go only when it's safe.",
+    steps: ["stop", "yield"],
+    explanation: "Come to a complete stop at the limit line. A car is already at the intersection, so let it go first, then proceed when it's clear.",
   },
   {
     id: "stop-sign-right-of-way", videoUrl: rightOfWay.url, pauseAt: 4.5,
     title: "All-way stop", intent: "Going straight", intentIcon: "go",
     subtitle: "Going straight · all-way stop · the red car stopped first",
     actions,
-    correctAction: "yield",
-    explanation: "The red car stopped first, so it goes first. Let it go, then proceed.",
+    correctAction: "stop",
+    steps: ["stop", "yield"],
+    explanation: "Stop completely first. The red car stopped before you, so it has the right of way. Let it go, then proceed.",
   },
   {
     id: "lane-change", videoUrl: laneChange.url, pauseAt: 1.5,
@@ -62,6 +67,7 @@ export const SIMULATION_CLIPS: SimulationClip[] = [
     subtitle: "Changing lanes · highway",
     actions,
     correctAction: "yield",
-    explanation: "Before changing lanes, signal, check your mirrors, and look over your shoulder at your blind spot. Change lanes only when there's a safe gap.",
+    steps: ["yield", "go"],
+    explanation: "First signal, check your mirrors, and look over your shoulder at your blind spot. Once there's a safe gap, change lanes smoothly.",
   },
 ];
