@@ -2,6 +2,8 @@ import {supabase} from '@/integrations/supabase/client';
 import {drainAnswers,type PendingAnswer} from './answer-queue';
 import type {StudyAnswerInput} from './study-attempt.functions';
 import type {StudyAttempt} from './study-attempt';
+import {recordDecision,finishScenario} from '@/data/simulation-game';
+import type {SimulationClip} from '@/data/simulation-session';
 const listeners=new Set<()=>void>();
 const owners=new Map<string,{queue:PendingAnswer[];running:Promise<boolean>|null;failed:boolean;row?:StudyAttempt}>();
 const key=(id:string)=>`drivable.answer-queue.v1.${id}`;
@@ -22,7 +24,12 @@ export async function flushAnswers(id:string):Promise<boolean>{
 }
 export function enqueueAnswer(id:string,data:StudyAnswerInput){const state=owner(id);if(!state.queue.some(e=>e.data.id===data.id&&e.data.version===data.version)){state.queue.push({data,retries:0});persist(id);}void flushAnswers(id);}
 export function queuedAttempt(id:string,attempt:StudyAttempt):StudyAttempt{
- let row={...attempt,answers:[...attempt.answers]};for(const {data} of owner(id).queue){if(data.id!==row.id||data.version!==row.version)continue;row={...row,answers:[...row.answers,data.answer??0],version:row.version+1};}return row;
+ const confirmed=latestSavedAnswer(id);
+ let row=confirmed?.id===attempt.id && confirmed.version>attempt.version ? {...confirmed,answers:[...confirmed.answers]} : {...attempt,answers:[...attempt.answers]};
+ for(const {data} of owner(id).queue){if(data.id!==row.id||data.version!==row.version)continue;
+ const clip=row.payload[data.version] as SimulationClip;
+ const answer=data.answer ?? (data.steps ? finishScenario(clip.steps,data.steps.map((step,index)=>recordDecision(clip.id,step.action,clip.steps[index] ?? '',step.elapsed,data.timed!==false))) : 0);
+ row={...row,answers:[...row.answers,answer],version:row.version+1};}return row;
 }
 export function resumeAnswers(id:string){const state=owner(id);state.queue.forEach(e=>e.retries=0);return flushAnswers(id);}
 export function leaveAnswers(id:string){const state=owner(id);if(!state.queue.length)return;void supabase.auth.getSession().then(({data})=>{if(data.session?.user.id!==id)return;void fetch('/api/public/study/answers',{method:'POST',keepalive:true,headers:{'Content-Type':'application/json',Authorization:`Bearer ${data.session.access_token}`},body:JSON.stringify(state.queue.map(e=>e.data))}).catch(()=>{});});}
