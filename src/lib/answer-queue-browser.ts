@@ -31,6 +31,6 @@ export function queuedAttempt(id:string,attempt:StudyAttempt):StudyAttempt{
  const answer=data.answer ?? (data.steps ? finishScenario(clip.steps,data.steps.map((step,index)=>recordDecision(clip.id,step.action,clip.steps[index] ?? '',step.elapsed,data.timed!==false))) : 0);
  row={...row,answers:[...row.answers,answer],version:row.version+1};}return row;
 }
-export function resumeAnswers(id:string){const state=owner(id);state.queue.forEach(e=>e.retries=0);return flushAnswers(id);}
+export function resumeAnswers(id:string){const state=owner(id);state.queue.forEach(e=>{e.retries=0;e.exhausted=false;});return flushAnswers(id);}
 export function leaveAnswers(id:string){const state=owner(id);if(!state.queue.length)return;void supabase.auth.getSession().then(({data})=>{if(data.session?.user.id!==id)return;void fetch('/api/public/study/answers',{method:'POST',keepalive:true,headers:{'Content-Type':'application/json',Authorization:`Bearer ${data.session.access_token}`},body:JSON.stringify(state.queue.map(e=>e.data))}).catch(()=>{});});}
 export const latestSavedAnswer=(id:string)=>owner(id).row;
