@@ -29,6 +29,21 @@ export type Database = {
         }
         Relationships: []
       }
+      app_admins: {
+        Row: {
+          created_at: string
+          email: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+        }
+        Relationships: []
+      }
       app_allowlist: {
         Row: {
           created_at: string
@@ -44,6 +59,21 @@ export type Database = {
           created_at?: string
           email?: string
           note?: string
+        }
+        Relationships: []
+      }
+      cron_tokens: {
+        Row: {
+          name: string
+          token: string
+        }
+        Insert: {
+          name: string
+          token?: string
+        }
+        Update: {
+          name?: string
+          token?: string
         }
         Relationships: []
       }
@@ -367,36 +397,51 @@ export type Database = {
           created_at: string
           daily_done: Json
           daily_done_date: string | null
+          email_reminders: boolean
           free_usage: Json
+          reminder_1d_sent_for_date: string | null
+          reminder_7d_sent_for_date: string | null
           skill_mastery: Json
           target_date: string | null
           theme: string
+          timezone: string
           updated_at: string
           user_id: string
+          welcome_email_sent_at: string | null
         }
         Insert: {
           active_state?: string
           created_at?: string
           daily_done?: Json
           daily_done_date?: string | null
+          email_reminders?: boolean
           free_usage?: Json
+          reminder_1d_sent_for_date?: string | null
+          reminder_7d_sent_for_date?: string | null
           skill_mastery?: Json
           target_date?: string | null
           theme?: string
+          timezone?: string
           updated_at?: string
           user_id: string
+          welcome_email_sent_at?: string | null
         }
         Update: {
           active_state?: string
           created_at?: string
           daily_done?: Json
           daily_done_date?: string | null
+          email_reminders?: boolean
           free_usage?: Json
+          reminder_1d_sent_for_date?: string | null
+          reminder_7d_sent_for_date?: string | null
           skill_mastery?: Json
           target_date?: string | null
           theme?: string
+          timezone?: string
           updated_at?: string
           user_id?: string
+          welcome_email_sent_at?: string | null
         }
         Relationships: []
       }
@@ -442,6 +487,7 @@ export type Database = {
     }
     Functions: {
       consume_ai_coach_credit: { Args: never; Returns: number }
+      is_admin: { Args: never; Returns: boolean }
       is_allowlisted: { Args: never; Returns: boolean }
       join_waitlist_checked: {
         Args: { p_email: string; p_visitor_hash: string }

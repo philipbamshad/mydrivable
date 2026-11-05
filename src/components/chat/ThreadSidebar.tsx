@@ -239,6 +239,7 @@ export function ThreadSidebar() {
     { label: "Appearance", icon: Sun, section: "theme" },
     { label: "Driving state", icon: Settings2, section: "state" },
     { label: "DMV target date", icon: CalendarDays, section: "date" },
+    { label: "Email reminders", icon: CalendarDays, section: "email" },
     { label: "Pro Pass", icon: Check, section: "membership" },
   ];
 

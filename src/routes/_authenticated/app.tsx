@@ -2,6 +2,9 @@ import { createFileRoute, Outlet } from "@tanstack/react-router";
 import { ThreadSidebar } from "@/components/chat/ThreadSidebar";
 import { UserProfileProvider } from "@/lib/user-profile";
 import { ThemeProvider } from "@/lib/theme";
+import { useEffect } from "react";
+import { useServerFn } from "@tanstack/react-start";
+import { syncAccount } from "@/lib/email-prefs.functions";
 import { PaymentTestModeBanner } from "@/components/payments/PaymentTestModeBanner";
 
 export const Route = createFileRoute("/_authenticated/app")({
@@ -9,6 +12,11 @@ export const Route = createFileRoute("/_authenticated/app")({
 });
 
 function AppLayout() {
+  const sync = useServerFn(syncAccount);
+  useEffect(() => {
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone || "America/Los_Angeles";
+    sync({ data: { timezone } }).catch(err => console.error("Account sync failed", err));
+  }, [sync]);
   return (
     <ThemeProvider>
       <UserProfileProvider>

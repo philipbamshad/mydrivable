@@ -29,6 +29,13 @@
       "when": 1793744877943,
       "tag": "0003_secure_waitlist_submissions",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1793840481237,
+      "tag": "0004_email_reminders_and_welcome",
+      "breakpoints": true
     }
   ]
 }

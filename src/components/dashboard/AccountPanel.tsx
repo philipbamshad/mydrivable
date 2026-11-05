@@ -14,8 +14,9 @@ import { useUserProfile, US_STATES } from "@/lib/user-profile";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { TargetDatePicker } from "@/components/dashboard/TargetDatePicker";
 import { useTheme } from "@/lib/theme";
+import { EmailRemindersCard } from "@/components/dashboard/EmailRemindersCard";
 
-export type AccountSection = "theme" | "state" | "date" | "membership" | "delete";
+export type AccountSection = "theme" | "state" | "date" | "email" | "membership" | "delete";
 
 export function AccountPanel({ section }: { section?: AccountSection } = {}) {
   const show = (k: AccountSection) => !section || section === k;
@@ -136,6 +137,8 @@ export function AccountPanel({ section }: { section?: AccountSection } = {}) {
         </div>
       </Card>
       )}
+
+      {show("email") && <EmailRemindersCard />}
 
       {show("delete") && (
 <Card className="p-5">
