@@ -9,9 +9,9 @@ export const Route = createFileRoute("/_authenticated/app/c/$threadId")({
   head: () => ({
     meta: [
       { title: "Coach Conversation | Drivable" },
-      { name: "description", content: "Review your permit-prep conversation with the Drivable AI coach." },
+      { name: "description", content: "Review your permit and driving test preparation with the Drivable AI coach." },
       { property: "og:title", content: "Coach Conversation | Drivable" },
-      { property: "og:description", content: "Review your permit-prep conversation with the Drivable AI coach." },
+      { property: "og:description", content: "Review your permit and driving test preparation with the Drivable AI coach." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "robots", content: "noindex" },
