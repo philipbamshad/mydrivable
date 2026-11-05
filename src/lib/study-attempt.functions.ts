@@ -58,7 +58,7 @@ export const answerStudyAttempt=createServerFn({method:'POST'}).middleware([requ
     const item=attempt.payload[attempt.version];
     if(!item) throw new Error('No unanswered question.');
     let answer:number|ScenarioDecision; let score:number; let reaction:number|null=null;
-    let hub:TopicProgress|null=null;
+    let hub:{topic:HubQuestion['topic'];question:HubQuestion;correct:boolean}|null=null;
     if(attempt.feature==='simulation') {
       const clip=item as SimulationClip;
       if(!data.steps) throw new Error('Decision required.');
@@ -79,13 +79,11 @@ export const answerStudyAttempt=createServerFn({method:'POST'}).middleware([requ
       score=Math.round(answers.filter((a,i)=>a===(attempt.payload[i] as ExamQuestion).correct).length/answers.length*100);
       if(attempt.feature!=='exam') {
         const question=q as HubQuestion;
-        const {data:progress,error:readError}=await context.supabase.from('test_hub_progress').select('questions,last_score').eq('user_id',context.userId).eq('state',attempt.state).eq('topic',question.topic).maybeSingle();
-        if(readError) throw new Error('Unable to load progress.');
-        hub=answerProgress(progress?{topic:question.topic,questions:progress.questions as unknown as TopicProgress['questions'],lastScore:progress.last_score}:emptyTopic(question.topic),question,answer===question.correct);
+        hub={topic:question.topic,question,correct:answer===question.correct};
       }
     }
     const {supabaseAdmin}=await import('@/integrations/supabase/client.server');
-    const {data:saved,error:saveError}=await supabaseAdmin.rpc('commit_study_answer',{p_id:attempt.id,p_user:context.userId,p_version:attempt.version,p_answer:JSON.parse(JSON.stringify(answer)),p_score:score,p_reaction:reaction ?? 0,p_hub:hub?JSON.parse(JSON.stringify({...hub,last_score:hub.lastScore})):undefined});
+    const {data:saved,error:saveError}=await supabaseAdmin.rpc('commit_study_answer',{p_id:attempt.id,p_user:context.userId,p_version:attempt.version,p_answer:JSON.parse(JSON.stringify(answer)),p_score:score,p_reaction:reaction ?? 0,p_hub:hub?JSON.parse(JSON.stringify(hub)):undefined});
     if(saveError) throw new Error('Unable to save your answer. Please retry or reload.');
     return asAttempt(saved);
   });
