@@ -53,6 +53,45 @@ export const runReminderJobNow = createServerFn({ method: 'POST' })
     return runReminderJob({ force: true })
   })
 
+const TESTABLE_TEMPLATES = [
+  'waitlist-confirmation',
+  'new-waitlist-signup',
+  'order-confirmation',
+  'welcome',
+  'test-in-7-days',
+  'test-tomorrow',
+  'launch-announcement',
+] as const
+
+/** Admin-only: sends one app email template (or all of them) to the admin's own inbox for review. */
+export const sendTestEmails = createServerFn({ method: 'POST' })
+  .middleware([requireAllowlisted])
+  .inputValidator(z.object({ templateName: z.enum(TESTABLE_TEMPLATES).optional() }))
+  .handler(async ({ data, context }) => {
+    const { data: admin } = await context.supabase.rpc('is_admin')
+    if (admin !== true) throw new Error('Forbidden')
+    const { supabaseAdmin } = await import('@/integrations/supabase/client.server')
+    const { data: u } = await supabaseAdmin.auth.admin.getUserById(context.userId)
+    const email = u?.user?.email
+    if (!email) throw new Error('No admin email found')
+    const { TEMPLATES } = await import('@/lib/email-templates/registry')
+    const { sendLoggedTemplateEmail } = await import('@/lib/email/send-transactional.server')
+    const names = data.templateName ? [data.templateName] : [...TESTABLE_TEMPLATES]
+    const results: { template: string; ok: boolean; reason?: string }[] = []
+    for (const name of names) {
+      const entry = TEMPLATES[name]
+      if (!entry) { results.push({ template: name, ok: false, reason: 'not_registered' }); continue }
+      const r = await sendLoggedTemplateEmail({
+        templateName: name,
+        recipientEmail: entry.to ?? email,
+        templateData: entry.previewData ?? {},
+        idempotencyKey: `test-${name}-${context.userId}-${Date.now()}`,
+      })
+      results.push({ template: name, ok: r.success, reason: r.reason })
+    }
+    return { sentTo: email, results }
+  })
+
 export const getAdminStatus = createServerFn({ method: 'GET' })
   .middleware([requireAllowlisted])
   .handler(async ({ context }) => {

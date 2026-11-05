@@ -3,7 +3,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { getAdminStatus, runReminderJobNow } from "@/lib/email-prefs.functions";
+import { getAdminStatus, runReminderJobNow, sendTestEmails } from "@/lib/email-prefs.functions";
 import type { ReminderRun } from "@/lib/reminders.server";
 
 export const Route = createFileRoute("/_authenticated/app/admin")({
