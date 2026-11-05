@@ -19,6 +19,7 @@ import "@/components/simulation/simulation-actions.css";
 import { useStudyAttempts } from "@/lib/use-study-attempt";
 import { attemptAccess, simulationHistoryStats, type StudyAttempt } from "@/lib/study-attempt";
 import { AttemptLock } from "@/components/dashboard/AttemptLock";
+import { RecentResultsCard, type RecentResultRow } from "@/components/dashboard/RecentResultsCard";
 import { useUserProfile } from "@/lib/user-profile";
 
 export const Route = createFileRoute("/_authenticated/app/simulation")({
@@ -36,10 +37,10 @@ export const Route = createFileRoute("/_authenticated/app/simulation")({
 
 type Phase = "ready" | "instructions" | "playing" | "decision" | "feedback" | "results";
 const icons: Partial<Record<ActionIcon, typeof ArrowUp>> = ACTION_ICONS;
-const cardClass = "rounded-[28px] border border-border/60 bg-card p-4 shadow-lg sm:p-6";
+const cardClass = "rounded-[28px] border border-border/60 bg-card p-8 shadow-lg";
 
 function StatTile({ label, value }: { label: string; value: string | number }) {
-  return <div className="rounded-3xl bg-muted p-4 text-center sm:p-5"><p className="text-xs uppercase text-muted-foreground">{label}</p><p className="mt-1 font-display text-2xl font-bold tabular-nums sm:text-3xl">{value}</p></div>;
+  return <div className="flex h-[120px] flex-col items-center justify-center rounded-3xl bg-muted px-2 text-center"><p className="text-xs uppercase text-muted-foreground">{label}</p><p className="mt-1 font-display text-3xl font-bold tabular-nums sm:text-4xl">{value}</p></div>;
 }
 
 function SimulationPage() {
@@ -50,6 +51,16 @@ function SimulationPage() {
   const freeAttempt=store.attempts.find(a=>a.feature==="simulation" && a.free_slot);
   const access=attemptAccess(isPro,freeAttempt);
   const historyStats=simulationHistoryStats(store.attempts);
+  const recentRows: RecentResultRow[] = store.attempts
+    .filter(a => a.feature === "simulation" && a.completed)
+    .sort((a, b) => b.created_at.localeCompare(a.created_at))
+    .slice(0, 3)
+    .map(a => ({
+      id: a.id,
+      date: new Date(a.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
+      primary: a.score === null ? "—" : `${a.score}% accuracy`,
+      secondary: a.average_reaction === null ? "—" : `${a.average_reaction.toFixed(1)}s avg. reaction`,
+    }));
   const [savingDecision,setSavingDecision]=useState(false);
   const [pendingDecision,setPendingDecision]=useState<ScenarioDecision[]|null>(null);
   const [skipInstructions, setSkipInstructions] = useState(false);
@@ -215,13 +226,13 @@ function SimulationPage() {
 
   return (
     <div ref={scroller} className={cn("h-full min-h-0 bg-secondary/40 text-foreground", active ? "overflow-hidden" : "overflow-y-auto overscroll-contain")} style={tabGlowStyle} aria-label="Driving Test Simulation">
-      <div className={cn("mx-auto flex w-full max-w-6xl flex-col p-4 sm:p-6", active ? "h-full min-h-0" : "min-h-full")}>
-        <header className="mb-6 grid shrink-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-2 pl-14 md:pl-0">
-          {phase !== "ready" && <Button variant="ghost" onClick={exit} className="order-2 h-8 px-0 text-xs text-muted-foreground"><ArrowLeft /><span className="sm:hidden">Exit</span><span className="hidden sm:inline">Exit simulation</span></Button>}
-          <h1 className="min-w-0 truncate font-display text-lg font-bold sm:text-xl">Driving Test Simulation</h1>
+      <div className={cn("mx-auto flex w-full max-w-[960px] flex-col px-4 pb-8 pt-6 md:px-8", active ? "h-full min-h-0" : "min-h-full")}>
+        <header className="flex shrink-0 items-center justify-between gap-3 pl-14 md:pl-0">
+          <h1 className="min-w-0 truncate font-display text-xl font-bold leading-tight">Driving Test Simulation</h1>
+          {phase !== "ready" && <Button variant="ghost" onClick={exit} className="h-8 shrink-0 px-0 text-xs text-muted-foreground"><ArrowLeft /><span className="sm:hidden">Exit</span><span className="hidden sm:inline">Exit simulation</span></Button>}
         </header>
         {phase === "ready" ? (
-          <div className="mx-auto w-full max-w-3xl">
+          <div className="mt-8 w-full space-y-4">
             <div className={cardClass}>
               <div className="flex items-center gap-4">
                 <div className="grid h-12 w-12 shrink-0 place-items-center rounded-[18px] border border-border bg-muted text-foreground sm:h-14 sm:w-14"><Video className="h-6 w-6" /></div>
@@ -233,11 +244,12 @@ function SimulationPage() {
               <Button variant="link" onClick={() => changePhase("instructions")} className="mt-3 h-9 px-0 text-sm">How it works</Button>
               {access==="locked" && <AttemptLock onUpgrade={openCheckout}/>}
               {store.error && <p role="alert" className="mt-3 text-sm text-destructive">{store.error}</p>}
-              <Button disabled={hydrating || store.busy} onClick={requestStart} className="mt-3 h-12 w-full rounded-full text-base font-semibold"><Play />{access==="resume" ? "Resume your free attempt" : access==="locked" ? "View past results" : "Start simulation"}</Button>
+              <Button disabled={hydrating || store.busy} onClick={requestStart} className="mt-3 h-14 w-full rounded-full text-base font-semibold"><Play />{access==="resume" ? "Resume your free attempt" : access==="locked" ? "View past results" : "Start simulation"}</Button>
             </div>
+            <RecentResultsCard rows={recentRows} />
           </div>
         ) : phase === "instructions" ? (
-          <div className={cn(cardClass, "mx-auto w-full max-w-3xl")}>
+          <div className={cn(cardClass, "mt-8 w-full")}>
             <h2 className="font-display text-xl font-bold">How it works</h2>
             <p className="mb-7 mt-4 text-sm leading-relaxed text-muted-foreground">Each video stops at a decision point. The turn signal shows where you're going. Choose the correct action before time runs out.</p>
             <p className="mb-5 text-sm text-muted-foreground">Some scenarios need two actions. If your first choice is right, it's marked with a check. Then choose your next action.</p>
@@ -246,7 +258,7 @@ function SimulationPage() {
             <Button disabled={store.busy} onClick={()=>void start()} className="mt-5 h-12 w-full rounded-full">I'm ready<ArrowRight /></Button>
           </div>
         ) : phase === "results" ? (
-          <div className={cn(cardClass, "mx-auto w-full max-w-3xl")}>
+          <div className={cn(cardClass, "mt-8 w-full")}>
             <h2 className="font-display text-xl font-bold sm:text-2xl">Simulation complete</h2>
             <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2"><StatTile label="Correct decisions" value={`${summary.accuracy}%`} /><StatTile label="Avg. reaction time" value={summary.averageReaction === null ? "—" : `${summary.averageReaction.toFixed(1)}s`} /></div>
             <section className="mt-7"><h3 className="font-display text-lg font-semibold">Review missed scenarios</h3>
@@ -263,7 +275,7 @@ function SimulationPage() {
             <div className="mt-6 flex flex-col gap-3 sm:flex-row"><Button disabled={store.busy} onClick={()=>isPro ? void start() : openCheckout()} className="h-12 flex-1 rounded-full"><RotateCcw />{isPro ? "Try again" : "Upgrade to Pro"}</Button><Button variant="secondary" asChild className="h-12 flex-1 rounded-full"><Link to="/app">Back to dashboard</Link></Button></div>
           </div>
         ) : clip ? (
-          <div data-scenario={clip.id} data-phase={phase} data-step={stepIndex + 1} className="flex min-h-0 flex-1 flex-col gap-2">
+          <div data-scenario={clip.id} data-phase={phase} data-step={stepIndex + 1} className="mt-4 flex min-h-0 flex-1 flex-col gap-2">
             <div className="grid shrink-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-2 text-xs text-muted-foreground"><span>{clip.title}</span><div className="hidden items-center gap-2 md:flex"><Switch id="hide-legend" checked={!showLegend} onCheckedChange={hidden => { setShowLegend(!hidden); localStorage.setItem("drivable.simulation.hide-legend", String(hidden)); }} /><label htmlFor="hide-legend">Hide legend</label></div></div>
             <div role="progressbar" aria-label="Scenario progress" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round((idx+1)/session.length*100)} className="h-1 w-full shrink-0 overflow-hidden rounded-full bg-muted"><span className="block h-full rounded-full bg-action transition-all" style={{ width: `${(idx + 1) / session.length * 100}%` }} /></div>
                         <div className={cn("grid min-h-0 flex-1 gap-3", showLegend && "md:grid-cols-[minmax(0,1fr)_170px]")}>

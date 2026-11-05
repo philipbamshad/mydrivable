@@ -38,10 +38,10 @@ export function TestHubDashboard({ initialTopic, userId }: { initialTopic?: Pill
     attempt={attempt} isPro={isPro} stateName={attempt.state} onExit={() => setActive(null)} onUpgrade={unlockPro}
     onRestart={() => void begin(active)} onAnswer={async (answer) => {const row=await store.answer({id:attempt.id,version:attempt.version,answer});if(!row)throw new Error('Unable to save');setAttempt(row);}} />;
 
-  return <div className="max-w-[900px] mx-auto space-y-4 w-full">
+  return <div className="w-full space-y-4">
     {store.error && <p role="alert" className="text-sm text-destructive">{store.error}</p>}
     {initialTopic && <Button disabled={store.busy} onClick={()=>void begin(initialTopic)} className={actionClass}>Practice {PILLAR_META[initialTopic].title}</Button>}
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <Card className="bg-card rounded-[28px] border-border/60 p-4 sm:p-6 flex flex-col gap-3 shadow-md">
         <div className="flex items-center gap-2"><Target className="h-5 w-5" /><h2 className="font-display font-bold">Recommended for you</h2></div>
         <p className="font-semibold">{PILLAR_META[weakest].title}</p>
@@ -55,7 +55,7 @@ export function TestHubDashboard({ initialTopic, userId }: { initialTopic?: Pill
         <Button variant="outline" className="mt-auto rounded-full h-11" disabled={isPro && !missed.length || store.busy} onClick={() => void begin("review")}>{!isPro && <Lock/>}{isPro ? "Review questions" : "Upgrade to Pro"}</Button>
       </Card>
     </div>
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       {HUB_TOPICS.map(topic => {
         const Icon = ICONS[topic];
         const stats = topicStats(progress.find(p => p.topic === topic) ?? emptyTopic(topic), banks[topic].length);
@@ -64,7 +64,7 @@ export function TestHubDashboard({ initialTopic, userId }: { initialTopic?: Pill
         return <Card key={topic} className="bg-card rounded-[28px] border-border/60 p-4 sm:p-6 shadow-md flex flex-col gap-4">
           <div className="flex items-center gap-3">
             <span className="grid h-12 w-12 place-items-center rounded-[18px] border border-border bg-muted shrink-0"><Icon className="w-5 h-5" /></span>
-            <div className="min-w-0"><div className="flex items-center flex-wrap gap-2"><h3 className="font-display text-base font-bold">{PILLAR_META[topic].title}</h3><Badge className="bg-muted text-foreground border-border">Pro</Badge></div><p className="text-sm text-muted-foreground mt-1">{Math.min(8, banks[topic].length)} questions</p></div>
+            <div className="min-w-0"><div className="flex items-center flex-wrap gap-2"><h3 className="font-display text-base font-bold">{PILLAR_META[topic].title}</h3><Badge className="bg-muted text-foreground border-border">Pro</Badge></div><p className="text-sm text-muted-foreground mt-1">{banks[topic].length} questions</p></div>
           </div>
           <div className="space-y-2"><div className="flex items-center justify-between gap-2 text-sm"><span>Mastery {stats.mastery}%</span>{stats.mastered ? <Badge variant="outline" className="text-success border-success/30"><Check className="h-3 w-3 mr-1" />Mastered</Badge> : stats.needsWork ? <Badge variant="outline" className="text-muted-foreground">Needs work</Badge> : null}</div><Meter value={stats.mastery} /></div>
           <p className="text-sm text-muted-foreground">Last score <span className="text-foreground font-semibold">{stats.lastScore === null ? "—" : `${stats.lastScore}%`}</span></p>

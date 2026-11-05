@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { getAdminStatus, runReminderJobNow, sendTestEmails } from "@/lib/email-prefs.functions";
+import { PageShell } from "@/components/dashboard/PageShell";
 import type { ReminderRun } from "@/lib/reminders.server";
 
 export const Route = createFileRoute("/_authenticated/app/admin")({
@@ -58,9 +59,8 @@ function AdminPage() {
     setBusy(true); setError(null);
     try { setResult(await run()); } catch (e) { setError(e instanceof Error ? e.message : "Job failed"); } finally { setBusy(false); }
   };
-  return <div className="h-full overflow-y-auto p-5 pl-16 sm:p-8 md:pl-8">
-    <h1 className="font-display text-2xl font-bold">Admin</h1>
-    <Card className="mt-6 max-w-xl space-y-4 p-6">
+  return <PageShell title="Admin">
+    <Card className="max-w-xl space-y-4 p-6">
       <div><h2 className="font-semibold">Test date reminders</h2>
         <p className="mt-1 text-sm text-muted-foreground">Runs the same job as the hourly schedule, without waiting for 9 AM.</p></div>
       <Button onClick={go} disabled={busy}>{busy ? "Running…" : "Run reminder job now"}</Button>
@@ -72,5 +72,5 @@ function AdminPage() {
       </div>}
     </Card>
     <EmailTestsCard />
-  </div>;
+  </PageShell>;
 }

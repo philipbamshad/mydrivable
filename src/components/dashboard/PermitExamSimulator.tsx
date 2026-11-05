@@ -15,9 +15,10 @@ import { ExamQuestionVisual } from "./ExamQuestionVisual";
 import { useStudyAttempts } from "@/lib/use-study-attempt";
 import { attemptAccess, type StudyAttempt } from "@/lib/study-attempt";
 import { AttemptLock } from "./AttemptLock";
+import { RecentResultsCard } from "./RecentResultsCard";
 import { StudyQuestionFrame } from "./StudyQuestionFrame";
 
-const card = "bg-card rounded-[28px] border border-border/60 p-4 sm:p-6 shadow-lg";
+const card = "bg-card rounded-[28px] border border-border/60 p-8 shadow-lg";
 
 export function PermitExamSimulator({ userId }: { userId: string }) {
   const { isPro, unlockPro, state } = useUserProfile();
@@ -31,15 +32,27 @@ export function PermitExamSimulator({ userId }: { userId: string }) {
   const pack = getStatePack(state);
   const stats = examHistoryStats(history, pack.rules.name);
   if (running && attempt) { const rules=getStatePack(attempt.state).rules; return <ExamRunner key={attempt.id} attempt={attempt} state={attempt.state} count={rules.questionsCount} minCorrect={rules.minCorrectToPass} passPct={rules.passingScorePct} isPro={isPro} onUpgrade={unlockPro} onExit={() => setRunning(false)} onRestart={() => void begin()} onAnswer={async (answer) => {const row = await store.answer({id:attempt.id,version:attempt.version,answer}); if(!row) throw new Error('Unable to save'); setAttempt(row);}} />; }
-  return <div className="mx-auto w-full max-w-3xl space-y-4">
+  const recentRows = history
+    .filter(row => row.state === null || row.state === pack.rules.name)
+    .sort((a, b) => b.created_at.localeCompare(a.created_at))
+    .slice(0, 3)
+    .map(row => ({
+      id: row.id,
+      date: new Date(row.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
+      primary: `${row.score_pct}%`,
+      secondary: row.score_pct >= pack.rules.passingScorePct ? "Passed" : "Not passed",
+      tone: (row.score_pct >= pack.rules.passingScorePct ? "success" : "destructive") as "success" | "destructive",
+    }));
+  return <div className="w-full space-y-4">
     <Card className={card}>
       <div className="flex items-center gap-4"><div className="grid h-12 w-12 shrink-0 place-items-center rounded-[18px] border border-border bg-muted sm:h-14 sm:w-14"><Timer className="h-6 w-6" /></div><div className="min-w-0"><div className="flex flex-wrap items-center gap-2"><h3 className="font-display text-lg font-bold sm:text-xl">{pack.rules.name} DMV Permit Exam</h3><Badge className="border border-border bg-muted text-foreground">{isPro ? "Pro" : "Free preview"}</Badge></div><p className="mt-2 text-sm leading-relaxed text-muted-foreground">Matches the real {pack.rules.name} DMV knowledge test: {pack.rules.questionsCount} questions, {pack.rules.minCorrectToPass} correct to pass.</p></div></div>
       <div className="mt-6 grid grid-cols-2 gap-3"><Stat label="Questions" value={String(pack.rules.questionsCount)} /><Stat label="Pass score" value={`${pack.rules.passingScorePct}%`} /></div>
       <div className="mt-3 grid grid-cols-3 gap-3"><Stat label="Best score" value={stats.best === null ? "—" : `${stats.best}%`} /><Stat label="Last score" value={stats.last === null ? "—" : `${stats.last}%`} /><Stat label="Attempts" value={stats.attempts === null ? "—" : String(stats.attempts)} /></div>
-      <Button disabled={store.busy} onClick={() => void begin()} className="mt-6 h-12 w-full rounded-full text-base font-semibold">{access === 'resume' ? 'Resume your free attempt' : access === 'locked' ? 'View past results' : 'Start full-length exam'}</Button>
+      <Button disabled={store.busy} onClick={() => void begin()} className="mt-6 h-14 w-full rounded-full text-base font-semibold">{access === 'resume' ? 'Resume your free attempt' : access === 'locked' ? 'View past results' : 'Start full-length exam'}</Button>
       {access === 'locked' && <AttemptLock onUpgrade={unlockPro}/>}
       {store.error && <p role="alert" className="mt-3 text-sm text-destructive">{store.error}</p>}
     </Card>
+    <RecentResultsCard rows={recentRows} />
   </div>;
 }
 
@@ -86,7 +99,7 @@ function ExamRunner({ attempt, state, count, minCorrect, passPct, isPro, onUpgra
     window.addEventListener("keydown", handler); return () => window.removeEventListener("keydown", handler);
   }, [q, idx, done, choose, advance]);
   const restart = () => { if(isPro) onRestart(); else onUpgrade(); };
-  if (done) return <div className="mx-auto w-full max-w-3xl space-y-4">
+  if (done) return <div className="w-full space-y-4">
     <Card className={card}>
       <div className="text-center"><h2 className={cn("font-display text-4xl font-bold sm:text-5xl", summary.passed ? "text-success" : "text-destructive")}>{summary.passed ? "Passed" : "Not passed"}</h2><p className="mt-3 font-display text-2xl font-semibold">{summary.correct} / {questions.length} · {summary.pct}%</p></div>
       <div className="relative mt-6"><Meter pct={summary.pct} success={summary.passed} /><span className="absolute -top-1 h-4 w-0.5 bg-foreground" style={{ left: `${passPct}%` }} /><p className="mt-2 text-right text-xs text-muted-foreground">Pass line: {passPct}%</p></div>
@@ -113,5 +126,5 @@ function ExamRunner({ attempt, state, count, minCorrect, passPct, isPro, onUpgra
     </Card> : null}
   </StudyQuestionFrame>;
 }
-function Stat({ label, value }: { label: string; value: string }) { return <div className="rounded-3xl bg-muted px-2 py-4 text-center sm:p-5"><p className="text-xs uppercase text-muted-foreground">{label}</p><p className="mt-1 font-display text-2xl font-bold sm:text-3xl">{value}</p></div>; }
+function Stat({ label, value }: { label: string; value: string }) { return <div className="flex h-[120px] flex-col items-center justify-center rounded-3xl bg-muted px-2 text-center"><p className="text-xs uppercase text-muted-foreground">{label}</p><p className="mt-1 font-display text-3xl font-bold sm:text-4xl">{value}</p></div>; }
 function Meter({ pct, success, className }: { pct: number; success?: boolean; className?: string }) { return <div className={cn("flex h-1.5", className, " overflow-hidden rounded-full bg-muted")}><span className={cn("h-full", success === undefined ? "bg-action" : success ? "bg-success/60" : "bg-destructive/60")} style={{ width: `${pct}%` }} /></div>; }
