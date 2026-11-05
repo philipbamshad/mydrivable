@@ -16,7 +16,7 @@ import { examHistoryOptions } from "@/lib/mock-exam.functions";
 import { ExamQuestionVisual } from "./ExamQuestionVisual";
 import { StudyQuestionFrame } from "./StudyQuestionFrame";
 
-const card = "bg-card rounded-[28px] border border-border/60 p-5 sm:p-7 shadow-lg";
+const card = "bg-card rounded-[28px] border border-border/60 p-4 sm:p-6 shadow-lg";
 
 export function PermitExamSimulator({ userId }: { userId: string }) {
   const { isPro, unlockPro, state, freeUsage, bumpFreeUsage, recordQuizScore } = useUserProfile();

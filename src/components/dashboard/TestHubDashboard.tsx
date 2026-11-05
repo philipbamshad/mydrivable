@@ -151,7 +151,7 @@ function QuizRunner({ mode, banks, missed, progress, stateName, isPro, usage, on
   };
   const back = <Button variant="ghost" className="text-muted-foreground px-0 hover:bg-transparent" onClick={onExit} disabled={saving}><ArrowLeft className="h-4 w-4" />Back to Hub</Button>;
 
-  if (done || !q) return <div className="max-w-2xl mx-auto w-full space-y-4">{back}<Card className="bg-card rounded-[28px] border-border/60 shadow-md p-7 text-center">
+  if (done || !q) return <div className="max-w-2xl mx-auto w-full space-y-4">{back}<Card className="bg-card rounded-[28px] border-border/60 shadow-md p-4 sm:p-6 text-center">
     <h2 className="font-display font-bold text-lg">{title}</h2>
     <p className="text-5xl font-display font-bold mt-4">{questions.length ? Math.round(score / questions.length * 100) : 0}%</p>
     <p className="text-muted-foreground mt-2">{score} / {questions.length} correct</p>
@@ -162,7 +162,7 @@ function QuizRunner({ mode, banks, missed, progress, stateName, isPro, usage, on
   return <StudyQuestionFrame>
     <div className="study-question-meta flex items-center justify-between gap-3">{back}<span className="text-xs text-muted-foreground text-right">{title} · {idx + 1} / {questions.length}</span></div>
     <Meter className="study-progress" value={(idx + (reveal ? 1 : 0)) / questions.length * 100} />
-    {locked && !reveal ? <Card className="bg-card rounded-[28px] border-border/60 p-7 text-center space-y-4"><Lock className="h-6 w-6 mx-auto" /><h2 className="font-bold">Free limit reached · {PILLAR_META[q.topic].title}</h2><p className="text-sm text-muted-foreground">You've answered your 10 free lifetime questions for this section.</p><Button className={actionClass} onClick={onUpgrade}>Get Pro Pass — $9</Button>{mode === "review" && idx + 1 < questions.length && <Button variant="outline" className="rounded-full ml-2" onClick={() => { setQuestions(list => list.filter((_, i) => i !== idx)); }}>Skip section</Button>}</Card> : <Card className="study-question-card bg-card border-border/60 shadow-md rounded-[28px]">
+    {locked && !reveal ? <Card className="bg-card rounded-[28px] border-border/60 p-4 sm:p-6 text-center space-y-4"><Lock className="h-6 w-6 mx-auto" /><h2 className="font-bold">Free limit reached · {PILLAR_META[q.topic].title}</h2><p className="text-sm text-muted-foreground">You've answered your 10 free lifetime questions for this section.</p><Button className={actionClass} onClick={onUpgrade}>Get Pro Pass — $9</Button>{mode === "review" && idx + 1 < questions.length && <Button variant="outline" className="rounded-full ml-2" onClick={() => { setQuestions(list => list.filter((_, i) => i !== idx)); }}>Skip section</Button>}</Card> : <Card className="study-question-card bg-card border-border/60 shadow-md rounded-[28px]">
       <HubQuestionVisual question={q} />
       <h3 className="font-display text-lg font-semibold">{q.q}</h3>
       <div className="study-answers">

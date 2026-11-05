@@ -33,7 +33,7 @@ export const Route = createFileRoute("/_authenticated/app/simulation")({
 
 type Phase = "ready" | "instructions" | "playing" | "decision" | "feedback" | "results";
 const icons: Partial<Record<ActionIcon, typeof ArrowUp>> = ACTION_ICONS;
-const cardClass = "rounded-[28px] border border-border/60 bg-card p-5 shadow-lg sm:p-7";
+const cardClass = "rounded-[28px] border border-border/60 bg-card p-4 shadow-lg sm:p-6";
 
 function StatTile({ label, value }: { label: string; value: string | number }) {
   return <div className="rounded-3xl bg-muted p-4 text-center sm:p-5"><p className="text-xs uppercase text-muted-foreground">{label}</p><p className="mt-1 font-display text-2xl font-bold tabular-nums sm:text-3xl">{value}</p></div>;
