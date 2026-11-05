@@ -223,6 +223,7 @@ function SimulationPage() {
       <div className={cn("mx-auto flex w-full max-w-[960px] flex-col px-4 pb-8 pt-6 md:px-8", active ? "h-full min-h-0" : "min-h-full")}>
         <header className="flex shrink-0 items-center justify-between gap-3 pl-14 md:pl-0">
           <h1 className="min-w-0 truncate font-display text-xl font-bold leading-tight">Driving Test Simulation</h1>
+          {!isPro && <Button onClick={() => openCheckout()} className="h-9 shrink-0 rounded-full px-4 text-sm font-semibold md:h-10 md:px-5">Upgrade</Button>}
           {phase !== "ready" && <Button variant="ghost" onClick={exit} className="h-8 shrink-0 px-0 text-xs text-muted-foreground"><ArrowLeft /><span className="sm:hidden">Exit</span><span className="hidden sm:inline">Exit simulation</span></Button>}
         </header>
         {phase === "ready" ? (
@@ -238,7 +239,7 @@ function SimulationPage() {
               <Button variant="link" onClick={() => changePhase("instructions")} className="mt-3 h-9 px-0 text-sm">How it works</Button>
               {access==="locked" && <AttemptLock onUpgrade={openCheckout}/>}
               {store.error && <p role="alert" className="mt-3 text-sm text-destructive">{store.error}</p>}
-              <Button disabled={hydrating || store.busy} onClick={requestStart} className="mt-3 h-14 w-full rounded-full text-base font-semibold"><Play />{access==="resume" ? "Resume your free attempt" : access==="locked" ? "View past results" : "Start simulation"}</Button>
+              <Button variant={access === "locked" ? "secondary" : "default"} disabled={hydrating || store.busy} onClick={requestStart} className="mt-3 h-14 w-full rounded-full text-base font-semibold"><Play />{access==="resume" ? "Resume your free attempt" : access==="locked" ? "View past results" : "Start simulation"}</Button>
             </div>
             <RecentResultsCard rows={recentRows} />
           </div>

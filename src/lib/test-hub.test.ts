@@ -3,6 +3,9 @@ import { answerProgress, emptyTopic, hubQuestion, topicStats, weakestTopic, miss
 
 const question = hubQuestion({ q: "During your morning drive, what does a red light mean?", options: ["Stop", "Go"], correct: 0, explanation: "Stop at the limit line." }, "signs");
 describe("Permit Test Hub rules", () => {
+  it("does not label an unattempted topic as needing work", () => {
+    expect(topicStats(emptyTopic("signs"), 8)).toMatchObject({ practiced: false, needsWork: false });
+  });
   it("keeps a miss until two correct answers, resetting recovery on another miss", () => {
     const missed = answerProgress(emptyTopic("signs"), question, false);
     const once = answerProgress(missed, question, true);

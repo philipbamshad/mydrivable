@@ -51,6 +51,8 @@ export type FreeUsage = {
 export type ProfileState = {
   state: string;
   targetDate: string | null;
+  under18: boolean | null;
+  onboardingCompleted: boolean;
   quizScores: number[];
   driveSessions: DriveSession[];
   dailyDone: Record<string, boolean>;
@@ -76,6 +78,7 @@ type ProfileContextValue = ProfileState & {
   hydrating: boolean;
   setState: (s: string) => void;
   setTargetDate: (d: string | null) => void;
+  completeSetup: (state: string, date: string | null, under18: boolean) => Promise<void>;
   unlockPro: () => void;
   openCheckout: (priceId?: string) => void;
   recordQuizScore: (pct: number, kind?: "mock" | "pillar", state?: string) => Promise<void>;
@@ -94,6 +97,8 @@ const DEFAULT_FREE_USAGE: FreeUsage = { chat: 0, exam: 0, pillars: {} };
 const DEFAULT: ProfileState = {
   state: "",
   targetDate: null,
+  under18: null,
+  onboardingCompleted: false,
   quizScores: [],
   driveSessions: [],
   dailyDone: {},
@@ -226,7 +231,7 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
       const { data: existing } = await supabase
         .from("user_profiles" as never)
         .select(
-          "active_state, target_date, daily_done, daily_done_date, skill_mastery, free_usage",
+          "active_state, target_date, under_18, onboarding_completed_at, daily_done, daily_done_date, skill_mastery, free_usage",
         )
         .eq("user_id", userId)
         .maybeSingle();
@@ -235,6 +240,8 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
         | {
             active_state: string;
             target_date: string | null;
+            under_18: boolean | null;
+            onboarding_completed_at: string | null;
             daily_done: Record<string, boolean> | null;
             daily_done_date: string | null;
             skill_mastery: Record<string, SkillMasteryEntry> | null;
@@ -249,6 +256,8 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
         prof = {
           active_state: "",
           target_date: null,
+          under_18: null,
+          onboarding_completed_at: null,
           daily_done: {},
           daily_done_date: null,
           skill_mastery: {},
@@ -302,6 +311,8 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
       setProfile({
         state: prof.active_state ?? "",
         targetDate: prof.target_date,
+        under18: prof.under_18,
+        onboardingCompleted: !!prof.onboarding_completed_at,
         quizScores: ((scores as { score_pct: number }[] | null) ?? []).map(
           (r) => r.score_pct,
         ),
@@ -408,6 +419,13 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
     setCheckoutPriceId(priceId || PRO_PASS_PRICE_ID);
   }, []);
   const unlockPro = useCallback(() => openCheckout(), [openCheckout]);
+  const completeSetup = useCallback(async (state: string, date: string | null, under18: boolean) => {
+    const uid = activeUserRef.current;
+    if (!uid || !US_STATES.includes(state)) throw new Error("Select your state.");
+    const { error } = await supabase.from("user_profiles").upsert({ user_id: uid, active_state: state, target_date: date, under_18: under18, onboarding_completed_at: new Date().toISOString() }, { onConflict: "user_id" });
+    if (error) throw new Error("Unable to save setup. Please try again.");
+    setProfile(p => ({ ...p, state, targetDate: date, under18, onboardingCompleted: true }));
+  }, []);
 
   const recordQuizScore = useCallback(
     async (pct: number, kind: "mock" | "pillar" = "mock", state?: string) => {
@@ -647,6 +665,7 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
     hydrating,
     setState: setStateName,
     setTargetDate,
+    completeSetup,
     unlockPro,
     openCheckout,
     recordQuizScore,
