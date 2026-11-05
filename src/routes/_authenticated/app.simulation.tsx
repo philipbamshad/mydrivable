@@ -19,6 +19,7 @@ import "@/components/simulation/simulation-actions.css";
 import { useStudyAttempts } from "@/lib/use-study-attempt";
 import { attemptAccess, simulationHistoryStats, type StudyAttempt } from "@/lib/study-attempt";
 import { AttemptLock } from "@/components/dashboard/AttemptLock";
+import { RecentResultsCard, type RecentResultRow } from "@/components/dashboard/RecentResultsCard";
 import { useUserProfile } from "@/lib/user-profile";
 
 export const Route = createFileRoute("/_authenticated/app/simulation")({
@@ -50,6 +51,16 @@ function SimulationPage() {
   const freeAttempt=store.attempts.find(a=>a.feature==="simulation" && a.free_slot);
   const access=attemptAccess(isPro,freeAttempt);
   const historyStats=simulationHistoryStats(store.attempts);
+  const recentRows: RecentResultRow[] = store.attempts
+    .filter(a => a.feature === "simulation" && a.completed)
+    .sort((a, b) => b.created_at.localeCompare(a.created_at))
+    .slice(0, 3)
+    .map(a => ({
+      id: a.id,
+      date: new Date(a.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
+      primary: a.score === null ? "—" : `${a.score}% accuracy`,
+      secondary: a.average_reaction === null ? "—" : `${a.average_reaction.toFixed(1)}s avg. reaction`,
+    }));
   const [savingDecision,setSavingDecision]=useState(false);
   const [pendingDecision,setPendingDecision]=useState<ScenarioDecision[]|null>(null);
   const [skipInstructions, setSkipInstructions] = useState(false);
@@ -233,11 +244,12 @@ function SimulationPage() {
               <Button variant="link" onClick={() => changePhase("instructions")} className="mt-3 h-9 px-0 text-sm">How it works</Button>
               {access==="locked" && <AttemptLock onUpgrade={openCheckout}/>}
               {store.error && <p role="alert" className="mt-3 text-sm text-destructive">{store.error}</p>}
-              <Button disabled={hydrating || store.busy} onClick={requestStart} className="mt-3 h-12 w-full rounded-full text-base font-semibold"><Play />{access==="resume" ? "Resume your free attempt" : access==="locked" ? "View past results" : "Start simulation"}</Button>
+              <Button disabled={hydrating || store.busy} onClick={requestStart} className="mt-3 h-14 w-full rounded-full text-base font-semibold"><Play />{access==="resume" ? "Resume your free attempt" : access==="locked" ? "View past results" : "Start simulation"}</Button>
             </div>
+            <RecentResultsCard rows={recentRows} />
           </div>
         ) : phase === "instructions" ? (
-          <div className={cn(cardClass, "mx-auto w-full max-w-3xl")}>
+          <div className={cn(cardClass, "mt-8 w-full")}>
             <h2 className="font-display text-xl font-bold">How it works</h2>
             <p className="mb-7 mt-4 text-sm leading-relaxed text-muted-foreground">Each video stops at a decision point. The turn signal shows where you're going. Choose the correct action before time runs out.</p>
             <p className="mb-5 text-sm text-muted-foreground">Some scenarios need two actions. If your first choice is right, it's marked with a check. Then choose your next action.</p>
@@ -246,7 +258,7 @@ function SimulationPage() {
             <Button disabled={store.busy} onClick={()=>void start()} className="mt-5 h-12 w-full rounded-full">I'm ready<ArrowRight /></Button>
           </div>
         ) : phase === "results" ? (
-          <div className={cn(cardClass, "mx-auto w-full max-w-3xl")}>
+          <div className={cn(cardClass, "mt-8 w-full")}>
             <h2 className="font-display text-xl font-bold sm:text-2xl">Simulation complete</h2>
             <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2"><StatTile label="Correct decisions" value={`${summary.accuracy}%`} /><StatTile label="Avg. reaction time" value={summary.averageReaction === null ? "—" : `${summary.averageReaction.toFixed(1)}s`} /></div>
             <section className="mt-7"><h3 className="font-display text-lg font-semibold">Review missed scenarios</h3>
@@ -263,7 +275,7 @@ function SimulationPage() {
             <div className="mt-6 flex flex-col gap-3 sm:flex-row"><Button disabled={store.busy} onClick={()=>isPro ? void start() : openCheckout()} className="h-12 flex-1 rounded-full"><RotateCcw />{isPro ? "Try again" : "Upgrade to Pro"}</Button><Button variant="secondary" asChild className="h-12 flex-1 rounded-full"><Link to="/app">Back to dashboard</Link></Button></div>
           </div>
         ) : clip ? (
-          <div data-scenario={clip.id} data-phase={phase} data-step={stepIndex + 1} className="flex min-h-0 flex-1 flex-col gap-2">
+          <div data-scenario={clip.id} data-phase={phase} data-step={stepIndex + 1} className="mt-4 flex min-h-0 flex-1 flex-col gap-2">
             <div className="grid shrink-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-2 text-xs text-muted-foreground"><span>{clip.title}</span><div className="hidden items-center gap-2 md:flex"><Switch id="hide-legend" checked={!showLegend} onCheckedChange={hidden => { setShowLegend(!hidden); localStorage.setItem("drivable.simulation.hide-legend", String(hidden)); }} /><label htmlFor="hide-legend">Hide legend</label></div></div>
             <div role="progressbar" aria-label="Scenario progress" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round((idx+1)/session.length*100)} className="h-1 w-full shrink-0 overflow-hidden rounded-full bg-muted"><span className="block h-full rounded-full bg-action transition-all" style={{ width: `${(idx + 1) / session.length * 100}%` }} /></div>
                         <div className={cn("grid min-h-0 flex-1 gap-3", showLegend && "md:grid-cols-[minmax(0,1fr)_170px]")}>
