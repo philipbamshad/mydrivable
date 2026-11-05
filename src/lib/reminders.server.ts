@@ -22,12 +22,12 @@ export async function runReminderJob({ force = false, now = new Date() }: { forc
 
     const { data: u } = await supabaseAdmin.auth.admin.getUserById(row.user_id)
     const email = u?.user?.email
-    if (!email || !u.user.email_confirmed_at) continue
+    if (!email || !u?.user?.email_confirmed_at) continue
 
     // Claim the send first so overlapping runs can never send twice.
     const column = kind === '7d' ? 'reminder_7d_sent_for_date' : 'reminder_1d_sent_for_date'
     const previous = kind === '7d' ? row.reminder_7d_sent_for_date : row.reminder_1d_sent_for_date
-    const { data: claimed } = await supabaseAdmin.from('user_profiles').update({ [column]: target })
+    const { data: claimed } = await supabaseAdmin.from('user_profiles').update(kind === '7d' ? { reminder_7d_sent_for_date: target } : { reminder_1d_sent_for_date: target })
       .eq('user_id', row.user_id).eq('target_date', target)
       .or(`${column}.is.null,${column}.neq.${target}`).select('user_id')
     if (!claimed?.length) continue
@@ -50,7 +50,7 @@ export async function runReminderJob({ force = false, now = new Date() }: { forc
     if (result.success || result.reason === 'email_suppressed') {
       if (result.success) run.sent.push({ email, kind, testDate: target })
     } else {
-      await supabaseAdmin.from('user_profiles').update({ [column]: previous }).eq('user_id', row.user_id)
+      await supabaseAdmin.from('user_profiles').update(kind === '7d' ? { reminder_7d_sent_for_date: previous } : { reminder_1d_sent_for_date: previous }).eq('user_id', row.user_id)
       run.failed.push({ email, kind })
     }
   }

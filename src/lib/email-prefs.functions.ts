@@ -16,7 +16,7 @@ export const syncAccount = createServerFn({ method: 'POST' })
 
     const { data: u } = await supabaseAdmin.auth.admin.getUserById(context.userId)
     const email = u?.user?.email
-    if (!email || !u.user.email_confirmed_at) return { welcomeSent: false }
+    if (!email || !u?.user?.email_confirmed_at) return { welcomeSent: false }
     const { data: claimed } = await supabaseAdmin.from('user_profiles').update({ welcome_email_sent_at: new Date().toISOString() })
       .eq('user_id', context.userId).is('welcome_email_sent_at', null).select('user_id')
     if (!claimed?.length) return { welcomeSent: false }
