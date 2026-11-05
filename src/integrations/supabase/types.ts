@@ -590,6 +590,7 @@ export type Database = {
       }
       consume_ai_coach_credit: { Args: never; Returns: number }
       consume_daily_coach_credit: { Args: never; Returns: number }
+      delete_own_app_data: { Args: never; Returns: undefined }
       get_daily_coach_used: { Args: never; Returns: number }
       has_pro_access: { Args: { p_user: string }; Returns: boolean }
       is_admin: { Args: never; Returns: boolean }
