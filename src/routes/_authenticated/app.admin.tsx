@@ -23,6 +23,32 @@ export const Route = createFileRoute("/_authenticated/app/admin")({
   component: AdminPage,
 });
 
+function EmailTestsCard() {
+  const run = useServerFn(sendTestEmails);
+  const [busy, setBusy] = useState<string | null>(null);
+  const [outcome, setOutcome] = useState<{ sentTo: string; results: { template: string; ok: boolean; reason?: string }[] } | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const go = async (templateName?: "launch-announcement") => {
+    setBusy(templateName ?? "all"); setError(null); setOutcome(null);
+    try { setOutcome(await run({ data: templateName ? { templateName } : {} })); }
+    catch (e) { setError(e instanceof Error ? e.message : "Send failed"); }
+    finally { setBusy(null); }
+  };
+  return <Card className="mt-6 max-w-xl space-y-4 p-6">
+    <div><h2 className="font-semibold">Email tests</h2>
+      <p className="mt-1 text-sm text-muted-foreground">Sends the app emails to your own inbox so you can review them. The launch announcement uses the "Drivable is live" template.</p></div>
+    <div className="flex flex-wrap gap-2">
+      <Button onClick={() => go()} disabled={busy !== null}>{busy === "all" ? "Sending…" : "Send all app emails to me"}</Button>
+      <Button variant="outline" onClick={() => go("launch-announcement")} disabled={busy !== null}>{busy === "launch-announcement" ? "Sending…" : "Send launch announcement test"}</Button>
+    </div>
+    {error && <p className="text-sm text-destructive">{error}</p>}
+    {outcome && <div className="space-y-1 text-sm">
+      <p>Sent to {outcome.sentTo}:</p>
+      {outcome.results.map(r => <p key={r.template} className={r.ok ? "text-muted-foreground" : "text-destructive"}>{r.template}: {r.ok ? "sent" : `failed (${r.reason ?? "unknown"})`}</p>)}
+    </div>}
+  </Card>;
+}
+
 function AdminPage() {
   const run = useServerFn(runReminderJobNow);
   const [busy, setBusy] = useState(false);
