@@ -45,5 +45,6 @@ function AdminPage() {
         {result.failed.map(s => <p key={s.email + s.kind} className="text-destructive">Failed: {s.kind} → {s.email}</p>)}
       </div>}
     </Card>
+    <EmailTestsCard />
   </div>;
 }
