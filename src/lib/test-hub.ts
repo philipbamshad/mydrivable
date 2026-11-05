@@ -5,7 +5,7 @@ export const HUB_TOPICS: PillarId[] = ["signs", "intersections", "substances", "
 export const HUB_FREE_LIMIT = 1;
 export type HubQuestion = PracticeQuestion & { topic: PillarId; key: string };
 export type QuestionProgress = { question: HubQuestion; correct: boolean; everCorrect?: boolean; missed: boolean; recovery: number };
-export type TopicProgress = { topic: PillarId; questions: Record<string, QuestionProgress>; lastScore: number | null };
+export type TopicProgress = { topic: PillarId; questions: Record<string, QuestionProgress>; lastScore: number | null; bestScore?: number | null };
 
 export function hubQuestion(question: PracticeQuestion, topic: PillarId): HubQuestion {
   const q = directQuestion(question.q)
@@ -31,7 +31,9 @@ export function answerProgress(progress: TopicProgress, question: HubQuestion, c
 
 export function topicStats(progress: TopicProgress, totalQuestions = Object.keys(progress.questions).length) {
   const entries = Object.values(progress.questions);
-  const mastery = totalQuestions ? Math.min(100, Math.round(entries.filter(q => q.everCorrect ?? q.correct).length / totalQuestions * 100)) : 0;
+  const everCorrect = totalQuestions ? Math.min(100, Math.round(entries.filter(q => q.everCorrect ?? q.correct).length / totalQuestions * 100)) : 0;
+  // Mastery never drops below the user's best score for the topic.
+  const mastery = Math.max(everCorrect, progress.bestScore ?? 0);
   return { mastery, practiced: entries.length > 0, needsWork: mastery < 80, mastered: mastery === 100, lastScore: progress.lastScore };
 }
 

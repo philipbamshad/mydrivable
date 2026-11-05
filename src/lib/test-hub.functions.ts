@@ -8,10 +8,10 @@ const topicSchema = z.enum(["signs", "intersections", "substances", "speed"]);
 export const getHubProgress = createServerFn({ method: "GET" })
   .middleware([requireAllowlisted])
   .handler(async ({ context }): Promise<{ state: string; progress: TopicProgress }[]> => {
-    const { data, error } = await context.supabase.from("test_hub_progress").select("state, topic, questions, last_score").eq("user_id", context.userId);
+    const { data, error } = await context.supabase.from("test_hub_progress").select("state, topic, questions, last_score, best_score").eq("user_id", context.userId);
     if (error) throw new Error("Unable to load practice progress.");
     return (data ?? []).map(row => ({ state: row.state, progress: {
-      topic: topicSchema.parse(row.topic), questions: row.questions as unknown as TopicProgress["questions"], lastScore: row.last_score,
+      topic: topicSchema.parse(row.topic), questions: row.questions as unknown as TopicProgress["questions"], lastScore: row.last_score, bestScore: row.best_score,
     } }));
   });
 
@@ -33,12 +33,12 @@ export const saveHubProgress = createServerFn({ method: "POST" })
   .handler(async ({ data, context }): Promise<TopicProgress> => {
     const { data: row, error } = await context.supabase.from("test_hub_progress").select("questions, last_score").eq("user_id", context.userId).eq("state", data.state).eq("topic", data.topic).maybeSingle();
     if (error) throw new Error("Unable to save practice progress.");
-    let progress: TopicProgress = row ? { topic: data.topic, questions: row.questions as unknown as TopicProgress["questions"], lastScore: row.last_score } : emptyTopic(data.topic);
+    let progress: TopicProgress = row ? { topic: data.topic, questions: row.questions as unknown as TopicProgress["questions"], lastScore: row.last_score, bestScore: row.best_score } : emptyTopic(data.topic);
     if (data.answer) progress = answerProgress(progress, data.answer.question, data.answer.correct);
-    if (data.score !== undefined) progress = { ...progress, lastScore: data.score };
+    if (data.score !== undefined) progress = { ...progress, lastScore: data.score, bestScore: Math.max(progress.bestScore ?? 0, data.score) };
     const { error: writeError } = await context.supabase.from("test_hub_progress").upsert({
       user_id: context.userId, state: data.state, topic: data.topic,
-      questions: JSON.parse(JSON.stringify(progress.questions)), last_score: progress.lastScore, updated_at: new Date().toISOString(),
+      questions: JSON.parse(JSON.stringify(progress.questions)), last_score: progress.lastScore, best_score: progress.bestScore ?? null, updated_at: new Date().toISOString(),
     }, { onConflict: "user_id,state,topic" });
     if (writeError) throw new Error("Unable to save practice progress. Please try again.");
     return progress;

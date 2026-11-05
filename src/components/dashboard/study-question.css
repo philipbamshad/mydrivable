@@ -1,6 +1,5 @@
 /* Shared question layout for Mock Permit Exam and Permit Test Hub: content-height card near the top. */
-.study-tab-inner:has(.study-question-frame) { justify-content: flex-start; padding: 24px; }
-.study-question-frame { display: flex; flex-direction: column; max-width: 900px; }
+.study-question-frame { display: flex; flex-direction: column; }
 .study-question-frame > .study-question-meta { margin-bottom: 8px; }
 .study-question-frame > .study-progress { height: 4px; border-radius: 9999px; margin-bottom: 12px; }
 .study-question-frame > .study-question-card { flex: none; display: flex; flex-direction: column; gap: 16px; padding: 24px; }
@@ -14,7 +13,6 @@
 .study-question-card .study-feedback p { font-size: 14px; line-height: 1.45; }
 .study-question-card .study-feedback .study-next { display: flex; justify-content: flex-end; margin-top: 12px; }
 @media (max-width: 639px) {
-  .study-tab-inner:has(.study-question-frame) { padding: 16px; }
   .study-question-frame > .study-question-card { padding: 16px; }
   .study-question-card .question-visual { height: 120px; }
 }
