@@ -1,5 +1,6 @@
 import type { PillarId, PracticeQuestion } from "@/data/dmv/practice-bank";
 import { directQuestion } from "./mock-exam";
+import { canonicalConcept } from "@/data/dmv/question-concepts";
 
 export const HUB_TOPICS: PillarId[] = ["signs", "intersections", "substances", "speed"];
 export const HUB_FREE_LIMIT = 1;
@@ -12,7 +13,7 @@ export function hubQuestion(question: PracticeQuestion, topic: PillarId): HubQue
     .replace(/^(?:During your morning drive|While driving home from school|While driving|On your way to school|During your commute),\s*/i, "");
   const text = q.charAt(0).toUpperCase() + q.slice(1);
   // Sorting options is for identity only; displayed order/scoring stay intact.
-  const key = JSON.stringify([topic, text, question.sign ?? null, [...question.options].sort()]);
+  const key = question.conceptId ? JSON.stringify([topic, canonicalConcept(question.conceptId)]) : JSON.stringify([topic, text, question.sign ?? null, [...question.options].sort()]);
   return { ...question, q: text, topic, key };
 }
 

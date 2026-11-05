@@ -501,7 +501,7 @@ function AuthPage() {
             <div className="flex-1">
               <p className="text-sm font-semibold">Tailored to your state</p>
               <p className="text-xs text-muted-foreground mt-1">
-                Questions follow your Active state. Your DMV target date stays saved in your account.
+                Questions follow your state. Your DMV target date stays saved in your account.
               </p>
             </div>
             <span className="rounded-full border border-border/70 bg-background/60 px-3 py-1 text-xs font-semibold uppercase tracking-normal">

@@ -89,7 +89,7 @@ export function ChatWindow({
   });
 
   useEffect(() => {
-    textareaRef.current?.focus();
+    textareaRef.current?.focus({ preventScroll: true });
   }, [threadId, status]);
 
   const handleSubmit = async (msg: PromptInputMessage) => {
@@ -236,7 +236,7 @@ export function ChatWindow({
 
   return (
     <div className="flex flex-col h-full bg-background">
-      <Conversation className="flex-1">
+      <Conversation key={threadId} initial="instant" className="flex-1 min-h-0">
         <ConversationContent className="max-w-3xl mx-auto w-full px-4 py-6">
           <div className="space-y-6">
             {messages.map((m) => (

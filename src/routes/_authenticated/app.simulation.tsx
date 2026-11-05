@@ -37,10 +37,10 @@ export const Route = createFileRoute("/_authenticated/app/simulation")({
 
 type Phase = "ready" | "instructions" | "playing" | "decision" | "feedback" | "results";
 const icons: Partial<Record<ActionIcon, typeof ArrowUp>> = ACTION_ICONS;
-const cardClass = "rounded-[28px] border border-border/60 bg-card p-8 shadow-lg";
+const cardClass = "rounded-[28px] border border-border/60 bg-card p-4 sm:p-8 shadow-lg";
 
 function StatTile({ label, value }: { label: string; value: string | number }) {
-  return <div className="flex h-[120px] flex-col items-center justify-center rounded-3xl bg-muted px-2 text-center"><p className="text-xs uppercase text-muted-foreground">{label}</p><p className="mt-1 font-display text-3xl font-bold tabular-nums sm:text-4xl">{value}</p></div>;
+  return <div className="flex h-[120px] flex-col items-center justify-center rounded-3xl bg-muted px-2 text-center"><p className="text-xs uppercase text-muted-foreground">{label}</p><p className="mt-1 whitespace-nowrap font-display text-xl font-bold tabular-nums sm:text-4xl">{value}</p></div>;
 }
 
 function SimulationPage() {
@@ -240,7 +240,7 @@ function SimulationPage() {
               </div>
               <div className="mt-5 grid grid-cols-3 gap-3"><StatTile label="Decision time" value="2.5 sec"/><StatTile label="Best accuracy" value={historyStats.best===null ? "—" : `${historyStats.best}%`}/><StatTile label="Avg. reaction" value={historyStats.reaction===null ? "—" : `${historyStats.reaction.toFixed(1)}s`}/></div>
               <p className="mt-5 text-sm leading-relaxed text-muted-foreground">Real driving decisions happen in a split second. Covers intersections, turns, right-of-way, and lane changes.</p>
-              <div className="mt-5 flex items-center justify-between gap-4"><label htmlFor="timed-mode" className="text-sm font-medium">Timed mode</label><Switch id="timed-mode" checked={timed} onCheckedChange={setTimed} className="data-[state=checked]:bg-action" /></div>
+              <div className="mt-5 flex items-center justify-between gap-4"><label htmlFor="timed-mode" className="text-sm font-medium">Timed mode</label><Switch id="timed-mode" checked={timed} onCheckedChange={setTimed} className="simulation-toggle" /></div>
               <Button variant="link" onClick={() => changePhase("instructions")} className="mt-3 h-9 px-0 text-sm">How it works</Button>
               {access==="locked" && <AttemptLock onUpgrade={openCheckout}/>}
               {store.error && <p role="alert" className="mt-3 text-sm text-destructive">{store.error}</p>}

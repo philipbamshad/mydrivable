@@ -38,24 +38,26 @@ export const DEFAULT_RULES: StateRules = {
 
 /** Build a small set of state-fact questions auto-derived from the ruleset. */
 function buildStateFactQuestions(r: StateRules): Question[] {
-  const pctOptions = Array.from(new Set([70, 72, 75, 80, 83, 85, 88]))
+  const pctOptions = Array.from(new Set([r.passingScorePct, r.passingScorePct-5, r.passingScorePct-10, r.passingScorePct+5]))
     .sort((a, b) => a - b)
     .map((n) => `${n}%`);
   const bacAdultOptions = ["0.05%", "0.08%", "0.10%", "0.15%"];
   const bacUnder21Options = ["0.00%", "0.01%", "0.02%", "0.05%"];
-  const ageOptions = [14, 15, 16, 17].map((n) => `${n}`);
+  const ageLabel = (age: number) => age % 1 === 0.5 ? `${Math.floor(age)}½` : String(age);
+  const ageOptions = [...new Set([14, r.permitMinAge, 16, 17])].map(ageLabel);
 
   const passingIdx = pctOptions.indexOf(`${r.passingScorePct}%`);
   const bacAdultIdx = bacAdultOptions.indexOf(`${r.bacAdult.toFixed(2)}%`);
   const bacUnder21Idx = bacUnder21Options.indexOf(
     `${r.bacUnder21.toFixed(2)}%`,
   );
-  const permitAgeIdx = ageOptions.indexOf(`${Math.floor(r.permitMinAge)}`);
+  const permitAgeIdx = ageOptions.indexOf(ageLabel(r.permitMinAge));
 
   const out: Question[] = [];
 
   if (passingIdx >= 0) {
     out.push({
+      conceptId: "state-fact-exam-score",
       q: `What passing score is required on the ${r.name} written permit exam?`,
       options: pctOptions,
       correct: passingIdx,
@@ -65,6 +67,7 @@ function buildStateFactQuestions(r: StateRules): Question[] {
   }
   if (bacAdultIdx >= 0) {
     out.push({
+      conceptId: "state-fact-adult-bac",
       q: `What is the legal BAC limit for adult drivers (21+) in ${r.name}?`,
       options: bacAdultOptions,
       correct: bacAdultIdx,
@@ -76,6 +79,7 @@ function buildStateFactQuestions(r: StateRules): Question[] {
   }
   if (bacUnder21Idx >= 0) {
     out.push({
+      conceptId: "state-fact-under21-bac",
       q: `Under ${r.name}'s zero-tolerance law, the BAC limit for drivers under 21 is…`,
       options: bacUnder21Options,
       correct: bacUnder21Idx,
@@ -87,6 +91,7 @@ function buildStateFactQuestions(r: StateRules): Question[] {
   }
   if (permitAgeIdx >= 0) {
     out.push({
+      conceptId: "state-fact-permit-age",
       q: `What is the minimum age to apply for a learner's permit in ${r.name}?`,
       options: ageOptions,
       correct: permitAgeIdx,
@@ -96,6 +101,7 @@ function buildStateFactQuestions(r: StateRules): Question[] {
   }
 
   out.push({
+    conceptId: "state-fact-phone",
     q: `In ${r.name}, holding your phone in your hand while driving is…`,
     options: [
       "Always legal",
@@ -113,12 +119,13 @@ function buildStateFactQuestions(r: StateRules): Question[] {
   });
 
   out.push({
+    conceptId: "state-fact-refusal",
     q: `Refusing a breathalyzer in ${r.name} results in…`,
     options: [
-      "Only a warning",
-      "Small fine, no license action",
-      r.impliedConsentRefusal,
-      "Nothing — you can always refuse",
+      "A monetary fine only",
+      "A mandatory written retest only",
+      "License suspension",
+      "License points only",
     ],
     correct: 2,
     explanation: `${r.name} implied-consent law: ${r.impliedConsentRefusal} Source: ${r.handbookUrl}`,
@@ -141,6 +148,7 @@ export function getStatePack(stateName: string | null | undefined): StatePack {
     stateName && RULES[stateName] ? stateName : DEFAULT_STATE_NAME;
   const rules = RULES[resolvedName] ?? DEFAULT_RULES;
   const official = buildOfficialPool(resolvedName).map<Question>((q) => ({
+    conceptId: q.conceptId,
     q: q.q,
     options: q.options,
     correct: q.correct,

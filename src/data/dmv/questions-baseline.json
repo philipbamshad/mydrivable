@@ -2,17 +2,18 @@
   {
     "q": "What does a red octagonal sign mean?",
     "options": [
-      "Yield",
-      "Stop completely",
-      "Slow",
-      "Do not enter"
+      "Yield to crossing traffic",
+      "Stop",
+      "Do not enter this road",
+      "Proceed with caution"
     ],
     "correct": 1,
     "explanation": "Red octagon = full stop behind the line.",
-    "source": "*"
+    "source": "*",
+    "conceptId": "BASELINE-001"
   },
   {
-    "q": "An inverted (point-down) triangle sign means\u2026",
+    "q": "An inverted (point-down) triangle sign means…",
     "options": [
       "Stop",
       "Yield",
@@ -21,10 +22,11 @@
     ],
     "correct": 1,
     "explanation": "Inverted triangle = yield. Slow down, stop only if needed.",
-    "source": "*"
+    "source": "*",
+    "conceptId": "BASELINE-002"
   },
   {
-    "q": "A yellow diamond sign is\u2026",
+    "q": "A yellow diamond sign is…",
     "options": [
       "Regulatory",
       "Warning",
@@ -33,22 +35,24 @@
     ],
     "correct": 1,
     "explanation": "Yellow diamond signs warn of upcoming conditions.",
-    "source": "*"
+    "source": "*",
+    "conceptId": "BASELINE-003"
   },
   {
-    "q": "Solid white line between lanes means\u2026",
+    "q": "Solid white line between lanes means…",
     "options": [
-      "Pass freely",
-      "Lane change discouraged",
-      "HOV",
-      "Bike lane"
+      "Lane changes are freely permitted",
+      "Lane changes are discouraged",
+      "The lane is reserved for carpools",
+      "The lane is reserved for bicycles"
     ],
     "correct": 1,
     "explanation": "Solid white = lane change discouraged; cross only when needed.",
-    "source": "*"
+    "source": "*",
+    "conceptId": "BASELINE-004"
   },
   {
-    "q": "Solid yellow line on your side means\u2026",
+    "q": "Solid yellow line on your side means…",
     "options": [
       "Pass allowed",
       "No passing",
@@ -57,43 +61,47 @@
     ],
     "correct": 1,
     "explanation": "Solid yellow on your side = no passing.",
-    "source": "*"
+    "source": "*",
+    "conceptId": "BASELINE-005"
   },
   {
-    "q": "Green guide signs indicate\u2026",
+    "q": "Green guide signs indicate…",
     "options": [
-      "Warnings",
-      "Services",
-      "Directions/mileage",
-      "Construction"
+      "General hazard warnings",
+      "Available motorist services",
+      "Directions",
+      "Temporary construction zones"
     ],
     "correct": 2,
-    "explanation": "Green signs guide drivers \u2014 directions, exits, mileage.",
-    "source": "*"
+    "explanation": "Green signs guide drivers — directions, exits, mileage.",
+    "source": "*",
+    "conceptId": "BASELINE-006"
   },
   {
-    "q": "Flashing yellow signal means\u2026",
+    "q": "Flashing yellow signal means…",
     "options": [
-      "Stop completely",
-      "Proceed with caution",
-      "Pull over",
-      "Malfunction \u2014 stop"
+      "Stop before entering the intersection",
+      "Proceed cautiously",
+      "Wait until the signal turns green",
+      "Treat it as an uncontrolled intersection"
     ],
     "correct": 1,
     "explanation": "Flashing yellow = proceed with caution.",
-    "source": "*"
+    "source": "*",
+    "conceptId": "BASELINE-007"
   },
   {
-    "q": "Flashing red signal means\u2026",
+    "q": "Flashing red signal means…",
     "options": [
-      "Stop, then proceed when safe",
-      "Slow down",
-      "Yield",
-      "Continue"
+      "Stop, then go when safe",
+      "Slow down without coming to a stop",
+      "Yield only to traffic on the right",
+      "Wait until the light becomes steady"
     ],
     "correct": 0,
     "explanation": "Flashing red is treated as a stop sign.",
-    "source": "*"
+    "source": "*",
+    "conceptId": "BASELINE-008"
   },
   {
     "q": "Two cars arrive at a 4-way stop together. Who goes first?",
@@ -105,70 +113,76 @@
     ],
     "correct": 1,
     "explanation": "At a 4-way stop, the car on the right has right-of-way.",
-    "source": "*"
+    "source": "*",
+    "conceptId": "BASELINE-009"
   },
   {
-    "q": "Turning left at a green (no arrow), you yield to\u2026",
+    "q": "Turning left at a green (no arrow), you yield to…",
     "options": [
-      "Only pedestrians",
-      "Only oncoming traffic",
-      "Oncoming traffic AND pedestrians",
-      "Nothing"
+      "Only crossing pedestrians",
+      "Only oncoming vehicles",
+      "Both traffic and pedestrians",
+      "Only vehicles already turning"
     ],
     "correct": 2,
     "explanation": "Green ball = permissive; yield to oncoming traffic AND pedestrians.",
-    "source": "*"
+    "source": "*",
+    "conceptId": "BASELINE-010"
   },
   {
-    "q": "Emergency vehicle with lights and sirens approaches. You\u2026",
+    "q": "Emergency vehicle with lights and sirens approaches. You…",
     "options": [
-      "Speed up",
+      "Continue until the next intersection",
       "Pull right and stop",
-      "Honk",
-      "Continue"
+      "Stop in your current travel lane",
+      "Pull left and wait on the shoulder"
     ],
     "correct": 1,
     "explanation": "Pull to the right edge of the road and stop.",
-    "source": "*"
+    "source": "*",
+    "conceptId": "BASELINE-011"
   },
   {
-    "q": "Entering a roundabout, you must\u2026",
+    "q": "Entering a roundabout, you must…",
     "options": [
-      "Stop fully",
-      "Yield to traffic in the circle",
-      "Honk",
-      "Speed up"
+      "Stop even when no traffic is present",
+      "Yield to circulating traffic",
+      "Yield only to traffic entering on the right",
+      "Enter when traffic in the circle slows"
     ],
     "correct": 1,
     "explanation": "Yield to traffic already in the roundabout.",
-    "source": "*"
+    "source": "*",
+    "conceptId": "BASELINE-012"
   },
   {
-    "q": "School bus stopped with flashing red lights on undivided road\u2026",
+    "q": "School bus stopped with flashing red lights on undivided road…",
     "options": [
-      "Pass slowly left",
+      "Pass slowly if no child is visible",
       "Stop in both directions",
-      "Only stop if behind",
-      "Stop only if children are visible"
+      "Stop only if traveling behind the bus",
+      "Stop only after the bus door opens"
     ],
     "correct": 1,
     "explanation": "Both directions must stop on an undivided road.",
-    "source": "*"
+    "source": "*",
+    "conceptId": "BASELINE-013"
   },
   {
-    "q": "Right turn on red is permitted unless\u2026",
+    "q": "Right turn on red is permitted unless…",
     "options": [
-      "Always permitted",
-      "A sign prohibits it or red arrow shown",
-      "Only daytime",
-      "Only with passenger"
+      "The intersecting road has two lanes",
+      "A sign or red arrow prohibits it",
+      "The intersection has a marked crosswalk",
+      "The signal has just changed to red"
     ],
     "correct": 1,
-    "explanation": "Right on red is legal after a full stop unless prohibited (NYC is the major exception \u2014 banned by default).",
-    "source": "*"
+    "explanation": "Right on red is legal after a full stop unless prohibited (NYC is the major exception — banned by default).",
+    "source": "*",
+    "conceptId": "BASELINE-014"
   },
   {
-    "q": "Federal commercial driver BAC limit is\u2026",
+    "q": "Federal commercial driver BAC limit is…",
     "options": [
       "0.02%",
       "0.04%",
@@ -177,106 +191,115 @@
     ],
     "correct": 1,
     "explanation": "Commercial drivers: 0.04% federal limit, uniform in all states.",
-    "source": "*"
+    "source": "*",
+    "conceptId": "BASELINE-015"
   },
   {
     "q": "Where should an opened, unsealed container of alcohol be carried in an ordinary passenger vehicle?",
     "options": [
-      "In an unlocked glove box",
-      "In the trunk or non-passenger cargo area",
+      "In an unlocked glove compartment",
+      "In the trunk",
       "On the rear passenger seat",
       "In the center-console storage area"
     ],
     "correct": 1,
     "explanation": "Keep opened alcohol in the trunk or an area not occupied by passengers, not in the passenger compartment. Check the active state handbook for exceptions.",
-    "source": "*"
+    "source": "*",
+    "conceptId": "BASELINE-016"
   },
   {
-    "q": "Safe following distance rule\u2026",
+    "q": "In good conditions, what is a recommended minimum following gap? Increase it in poor conditions.",
     "options": [
-      "1 car length",
-      "1 second per 10 mph",
-      "3-second rule",
-      "5 car lengths"
+      "One car length at any road speed",
+      "One second for each ten mph",
+      "At least three seconds",
+      "Five car lengths at any road speed"
     ],
     "correct": 2,
     "explanation": "Use the 3-second rule; extend to 4+ seconds in rain/snow.",
-    "source": "*"
+    "source": "*",
+    "conceptId": "BASELINE-017"
   },
   {
-    "q": "Left lane on a multi-lane highway is for\u2026",
+    "q": "Left lane on a multi-lane highway is for…",
     "options": [
-      "Slow traffic",
-      "Passing/faster traffic",
-      "Trucks",
-      "Carpool only"
+      "Slower vehicles traveling through",
+      "Passing traffic",
+      "All heavy commercial vehicles",
+      "Any vehicle traveling at the minimum"
     ],
     "correct": 1,
-    "explanation": "Keep right except to pass \u2014 codified in most state vehicle codes.",
-    "source": "*"
+    "explanation": "Keep right except to pass — codified in most state vehicle codes.",
+    "source": "*",
+    "conceptId": "BASELINE-018"
   },
   {
-    "q": "School/work zone fines are typically\u2026",
+    "q": "Where a state posts enhanced work-zone penalties, what can a traffic violation carry?",
     "options": [
-      "Same as normal",
-      "Doubled or higher",
-      "None",
-      "Warning only"
+      "The normal fine without an increase",
+      "An increased fine",
+      "Only the fine for a parking violation",
+      "Only the fine for a first offense"
     ],
     "correct": 1,
     "explanation": "School/work zone fines are doubled in most states.",
-    "source": "*"
+    "source": "*",
+    "conceptId": "BASELINE-019"
   },
   {
-    "q": "Basic speed law means\u2026",
+    "q": "Basic speed law means…",
     "options": [
-      "Always drive posted limit",
-      "No faster than safe for conditions",
-      "Drive minimum",
-      "5 under limit"
+      "Maintain the posted limit in all weather",
+      "Choose a safe speed",
+      "Stay at the minimum regardless of visibility",
+      "Stay five below the limit in all conditions"
     ],
     "correct": 1,
     "explanation": "Drive no faster than is safe for current conditions, even below the posted limit.",
-    "source": "*"
+    "source": "*",
+    "conceptId": "BASELINE-020"
   },
   {
-    "q": "If you skid on a wet road, you should\u2026",
+    "q": "If you skid on a wet road, you should…",
     "options": [
-      "Slam brakes",
-      "Steer into skid, ease off gas",
-      "Turn opposite",
-      "Pull parking brake"
+      "Apply firm braking immediately",
+      "Ease off; steer toward your path",
+      "Steer opposite the intended direction",
+      "Apply the parking brake progressively"
     ],
     "correct": 1,
     "explanation": "Steer where you want to go and ease off the gas.",
-    "source": "*"
+    "source": "*",
+    "conceptId": "BASELINE-021"
   },
   {
-    "q": "Hydroplaning can start around\u2026",
+    "q": "Hydroplaning can begin around which speed in substantial standing water? Conditions and tires can cause it at lower speeds.",
     "options": [
       "10 mph",
       "25 mph",
-      "35+ mph",
-      "65+ mph"
+      "35 mph",
+      "65 mph"
     ],
     "correct": 2,
     "explanation": "Hydroplaning can start near 35 mph on wet roads with worn tires.",
-    "source": "*"
+    "source": "*",
+    "conceptId": "BASELINE-022"
   },
   {
-    "q": "Merging onto a freeway you should\u2026",
+    "q": "Merging onto a freeway you should…",
     "options": [
-      "Stop before entering the traffic lane",
-      "Match traffic speed and use a safe gap",
-      "Enter slowly and let traffic adjust",
-      "Wait until the entire lane is empty"
+      "Stop at the end of the entrance ramp",
+      "Match traffic; find a gap",
+      "Enter well below the traffic speed",
+      "Wait until the entire traffic lane is empty"
     ],
     "correct": 1,
     "explanation": "Match the speed of freeway traffic and merge smoothly.",
-    "source": "*"
+    "source": "*",
+    "conceptId": "BASELINE-023"
   },
   {
-    "q": "A pedestrian at a marked crosswalk has\u2026",
+    "q": "A pedestrian at a marked crosswalk has…",
     "options": [
       "No right of way",
       "Right of way",
@@ -285,10 +308,11 @@
     ],
     "correct": 1,
     "explanation": "Pedestrians in crosswalks have right of way in every state.",
-    "source": "*"
+    "source": "*",
+    "conceptId": "BASELINE-024"
   },
   {
-    "q": "When parking on a hill facing downhill with a curb\u2026",
+    "q": "When parking on a hill facing downhill with a curb…",
     "options": [
       "Away from the curb",
       "Toward the curb",
@@ -297,10 +321,11 @@
     ],
     "correct": 1,
     "explanation": "Turn the front wheels toward the curb and set the parking brake.",
-    "source": "*"
+    "source": "*",
+    "conceptId": "BASELINE-025"
   },
   {
-    "q": "When parking on a hill facing uphill with a curb\u2026",
+    "q": "When parking on a hill facing uphill with a curb…",
     "options": [
       "Away from the curb",
       "Toward the curb",
@@ -309,130 +334,141 @@
     ],
     "correct": 0,
     "explanation": "Uphill with curb: turn wheels away from the curb (left).",
-    "source": "*"
+    "source": "*",
+    "conceptId": "BASELINE-026"
   },
   {
-    "q": "Driving in fog you should use\u2026",
+    "q": "Driving in fog you should use…",
     "options": [
-      "High beams",
-      "Low beams or fog lights",
-      "Hazards while moving",
-      "No lights"
+      "High-beam headlights",
+      "Low-beam headlights",
+      "Parking lights without headlights",
+      "Hazard flashers instead of headlights"
     ],
     "correct": 1,
     "explanation": "Low beams/fog lights; high beams glare back off the fog.",
-    "source": "*"
+    "source": "*",
+    "conceptId": "BASELINE-027"
   },
   {
-    "q": "ABS brakes during emergency stop \u2014 you should\u2026",
+    "q": "ABS brakes during emergency stop — you should…",
     "options": [
-      "Pump brakes",
-      "Press and hold firmly",
-      "Ease off and re-apply",
-      "Use parking brake"
+      "Pump the brake pedal repeatedly",
+      "Hold firm brake pressure",
+      "Release the pedal when ABS pulses",
+      "Apply the parking brake instead"
     ],
     "correct": 1,
     "explanation": "With ABS, press and hold firmly; the system pulses for you.",
-    "source": "*"
+    "source": "*",
+    "conceptId": "BASELINE-028"
   },
   {
-    "q": "A double solid yellow line means\u2026",
+    "q": "A double solid yellow line means…",
     "options": [
-      "Pass freely",
-      "Pass only with care",
-      "No passing in either direction",
-      "HOV only"
+      "Passing is allowed when clear",
+      "Passing is allowed after signaling",
+      "No passing either way",
+      "Only trucks may cross to pass"
     ],
     "correct": 2,
     "explanation": "Double solid yellow = no passing either direction.",
-    "source": "*"
+    "source": "*",
+    "conceptId": "BASELINE-029"
   },
   {
-    "q": "Headlights are required from\u2026",
+    "q": "In addition to any state-specific timing or wiper rules, when should headlights be used?",
     "options": [
-      "Sunset to sunrise / low visibility",
-      "Only after midnight",
-      "Only in rain",
-      "Only on highways"
+      "At night and in low visibility",
+      "Only after midnight on unlit roads",
+      "Only while driving outside city limits",
+      "Only when other drivers flash their lights"
     ],
     "correct": 0,
-    "explanation": "Headlights required from sunset to sunrise and in low visibility (typical state code: \u00bd hour after sunset to \u00bd hour before sunrise).",
-    "source": "*"
+    "explanation": "Headlights required from sunset to sunrise and in low visibility (typical state code: ½ hour after sunset to ½ hour before sunrise).",
+    "source": "*",
+    "conceptId": "BASELINE-030"
   },
   {
-    "q": "When following a motorcycle you should\u2026",
+    "q": "When following a motorcycle you should…",
     "options": [
-      "Tailgate to be seen",
-      "Allow extra following distance",
-      "Pass aggressively",
-      "Use high beams"
+      "Use the same close gap as in slow traffic",
+      "Increase your following gap",
+      "Follow beside the motorcycle in its lane",
+      "Use high beams to improve its visibility"
     ],
     "correct": 1,
-    "explanation": "Motorcycles can stop faster \u2014 allow extra following distance (4-second rule).",
-    "source": "*"
+    "explanation": "Motorcycles can stop faster — allow extra following distance (4-second rule).",
+    "source": "*",
+    "conceptId": "BASELINE-031"
   },
   {
-    "q": "Texting while driving is\u2026",
+    "q": "Is manually composing a text while driving permitted in the selected state?",
     "options": [
-      "Legal if hands-free",
-      "Illegal in nearly every state",
-      "Legal at lights",
-      "Up to driver"
+      "Permitted when stopped at a red light",
+      "Prohibited by state law",
+      "Permitted when traffic is moving slowly",
+      "Permitted when only one hand is used"
     ],
     "correct": 1,
     "explanation": "Texting while driving is illegal in 48 states + DC (Missouri and Montana are the lone partial exceptions).",
-    "source": "*"
+    "source": "*",
+    "conceptId": "BASELINE-032"
   },
   {
-    "q": "A flashing yellow arrow for left turn means\u2026",
+    "q": "A flashing yellow arrow for left turn means…",
     "options": [
-      "Protected turn",
-      "Turn allowed but yield to oncoming",
-      "Stop",
-      "No turn"
+      "The turn is protected from traffic",
+      "Yield before turning",
+      "Wait until a green arrow appears",
+      "Stop regardless of approaching traffic"
     ],
     "correct": 1,
     "explanation": "Flashing yellow arrow = turn permitted, yield to oncoming traffic.",
-    "source": "*"
+    "source": "*",
+    "conceptId": "BASELINE-033"
   },
   {
-    "q": "On a 4-lane divided highway, school bus stops with flashing reds. Oncoming traffic must\u2026",
+    "q": "On a highway separated by a raised or unpaved median, a school bus on the opposite roadway stops with red lights flashing. What must oncoming traffic do?",
     "options": [
-      "Stop",
-      "Slow only",
-      "Not required to stop",
-      "Honk"
+      "Stop regardless of the road divider",
+      "Slow to the school-zone speed limit",
+      "No stop required",
+      "Stop only when the bus driver signals"
     ],
     "correct": 2,
     "explanation": "On a divided highway with a physical median, oncoming traffic does NOT need to stop.",
-    "source": "*"
+    "source": "*",
+    "conceptId": "BASELINE-034"
   },
   {
-    "q": "If your tire blows out you should\u2026",
+    "q": "If your tire blows out you should…",
     "options": [
-      "Slam brakes",
-      "Grip wheel, ease off gas, coast to side",
-      "Turn sharply",
-      "Pull e-brake"
+      "Apply firm braking immediately",
+      "Hold steady; ease off the gas",
+      "Steer quickly toward the shoulder",
+      "Downshift abruptly to reduce speed"
     ],
     "correct": 1,
     "explanation": "Grip the wheel firmly, ease off the gas, coast to slow down before braking gently.",
-    "source": "*"
+    "source": "*",
+    "conceptId": "BASELINE-035"
   },
   {
-    "q": "Move Over laws require you to\u2026",
+    "q": "When approaching a stopped emergency vehicle covered by your state’s Move Over law, what should you do when safe?",
     "options": [
-      "Speed up past stopped emergency vehicles",
-      "Change lanes away or slow down",
-      "Honk",
-      "Stop completely"
+      "Maintain speed while passing in the same lane",
+      "Move over or slow down",
+      "Change lanes only if an officer directs you",
+      "Stop beside the emergency vehicle"
     ],
     "correct": 1,
     "explanation": "Move Over: change lanes away from stopped emergency/utility/tow vehicles, or slow significantly. Now law in all 50 states.",
-    "source": "*"
+    "source": "*",
+    "conceptId": "BASELINE-036"
   },
   {
-    "q": "A solid green arrow means\u2026",
+    "q": "A solid green arrow means…",
     "options": [
       "Turn after yielding to oncoming cars",
       "Make the indicated protected turn",
@@ -441,34 +477,37 @@
     ],
     "correct": 1,
     "explanation": "Solid green arrow = protected turn; oncoming traffic is stopped.",
-    "source": "*"
+    "source": "*",
+    "conceptId": "BASELINE-037"
   },
   {
-    "q": "Cannabis affects driving by\u2026",
+    "q": "Cannabis affects driving by…",
     "options": [
-      "Improving reflexes",
-      "Slowing reaction and impairing judgment",
-      "Sharpening vision",
-      "Nothing"
+      "Impairing balance but not judgment",
+      "Slowing reactions and judgment",
+      "Affecting vision only during night driving",
+      "Causing impairment only with alcohol"
     ],
     "correct": 1,
     "explanation": "THC slows reaction time and impairs judgment of speed/distance. DUI applies in every state regardless of recreational legality.",
-    "source": "*"
+    "source": "*",
+    "conceptId": "BASELINE-038"
   },
   {
-    "q": "Three-point turn (K-turn) requires you to check\u2026",
+    "q": "Three-point turn (K-turn) requires you to check…",
     "options": [
-      "Mirror only",
-      "Both directions and mirrors",
-      "Just forward",
-      "Nothing if road is empty"
+      "Check mirrors only before starting",
+      "Check around before each move",
+      "Look forward throughout the maneuver",
+      "Rely only on your reversing camera"
     ],
     "correct": 1,
     "explanation": "Always check both directions and mirrors before each move.",
-    "source": "*"
+    "source": "*",
+    "conceptId": "BASELINE-039"
   },
   {
-    "q": "Pedestrian using a white cane or guide dog has\u2026",
+    "q": "Pedestrian using a white cane or guide dog has…",
     "options": [
       "No right of way",
       "Absolute right of way",
@@ -477,58 +516,63 @@
     ],
     "correct": 1,
     "explanation": "Every state code grants absolute right of way to a pedestrian with a white cane or guide dog.",
-    "source": "*"
+    "source": "*",
+    "conceptId": "BASELINE-040"
   },
   {
-    "q": "When passing a bicyclist most states require at least\u2026",
+    "q": "Where the posted rule requires three feet of passing clearance, how much space must you give a bicyclist?",
     "options": [
-      "1 foot",
-      "3 feet of clearance",
-      "Honk while passing",
-      "Pass in same lane closely"
+      "One foot of clearance",
+      "Three feet",
+      "Two feet of clearance",
+      "Four feet of clearance"
     ],
     "correct": 1,
     "explanation": "3-foot passing law is on the books in 33+ states; the remainder require 'safe distance'.",
-    "source": "*"
+    "source": "*",
+    "conceptId": "BASELINE-041"
   },
   {
-    "q": "Backing up safely you should\u2026",
+    "q": "Backing up safely you should…",
     "options": [
-      "Use mirrors only",
-      "Turn your head and look back",
-      "Reverse fast to clear",
-      "Trust the backup camera alone"
+      "Use only the side mirrors",
+      "Turn and look behind you",
+      "Watch only the rearview mirror",
+      "Use only the reversing camera"
     ],
     "correct": 1,
-    "explanation": "Always turn your head and look \u2014 camera/mirrors have blind spots.",
-    "source": "*"
+    "explanation": "Always turn your head and look — camera/mirrors have blind spots.",
+    "source": "*",
+    "conceptId": "BASELINE-042"
   },
   {
-    "q": "Yellow traffic light means\u2026",
+    "q": "Yellow traffic light means…",
     "options": [
-      "Speed up",
-      "Stop if you can do so safely",
-      "Continue at speed",
-      "Yield to opposite"
+      "Continue if you are near the limit line",
+      "Stop if safe",
+      "Stop only when cross traffic begins moving",
+      "Continue whenever no pedestrians are present"
     ],
     "correct": 1,
     "explanation": "Yellow = stop if you can do so safely; do NOT accelerate to beat it.",
-    "source": "*"
+    "source": "*",
+    "conceptId": "BASELINE-043"
   },
   {
-    "q": "First-offense DUI typically includes\u2026",
+    "q": "Which consequences can a first-offense DUI carry? Other penalties depend on state law and circumstances.",
     "options": [
-      "Warning",
-      "Fines, suspension, possible jail, mandatory education",
-      "Just points",
-      "Nothing"
+      "A fine without any licensing consequence",
+      "Fines and license penalties",
+      "License points instead of any other penalty",
+      "A warning if no collision has occurred"
     ],
     "correct": 1,
     "explanation": "Even a first DUI involves fines, license suspension, possible jail, and mandatory alcohol education in every state.",
-    "source": "*"
+    "source": "*",
+    "conceptId": "BASELINE-044"
   },
   {
-    "q": "Liver metabolizes about one standard drink per\u2026",
+    "q": "Liver metabolizes about one standard drink per…",
     "options": [
       "15 min",
       "1 hour",
@@ -537,115 +581,125 @@
     ],
     "correct": 1,
     "explanation": "~1 drink per hour. Coffee, food, and cold showers do NOT speed this up.",
-    "source": "*"
+    "source": "*",
+    "conceptId": "BASELINE-045"
   },
   {
-    "q": "Highway hypnosis is best avoided by\u2026",
+    "q": "Highway hypnosis is best avoided by…",
     "options": [
-      "Driving longer",
-      "Frequent breaks, varying focus",
-      "Cruise control max",
-      "Loud music alone"
+      "Continue driving until your next fuel stop",
+      "Take regular breaks",
+      "Rely on cruise control to maintain attention",
+      "Use loud music instead of stopping"
     ],
     "correct": 1,
     "explanation": "Take a break every 2 hours; keep eyes scanning, not fixed.",
-    "source": "*"
+    "source": "*",
+    "conceptId": "BASELINE-046"
   },
   {
     "q": "Roundabout: when do you signal?",
     "options": [
-      "No signal needed",
-      "Right turn signal before exit",
-      "Left signal entering",
-      "Hazards"
+      "No signal when leaving the circle",
+      "Signal right before exiting",
+      "Signal left throughout the entire circle",
+      "Use hazard flashers while exiting"
     ],
     "correct": 1,
     "explanation": "Signal right just before your exit so others know you're leaving.",
-    "source": "*"
+    "source": "*",
+    "conceptId": "BASELINE-047"
   },
   {
-    "q": "Driving with worn tire tread is dangerous because\u2026",
+    "q": "Driving with worn tire tread is dangerous because…",
     "options": [
-      "Better grip",
-      "Loss of traction, longer stops, hydroplane risk",
-      "Lower fuel use",
-      "It is fine"
+      "It affects comfort but not braking distance",
+      "It reduces traction",
+      "It causes problems only on gravel roads",
+      "It matters only at highway speeds"
     ],
     "correct": 1,
     "explanation": "Worn tread loses traction, lengthens stops, raises hydroplane risk. Legal minimum: 2/32 inch.",
-    "source": "*"
+    "source": "*",
+    "conceptId": "BASELINE-048"
   },
   {
-    "q": "Sharing the road with large trucks \u2014 best practice\u2026",
+    "q": "Sharing the road with large trucks — best practice…",
     "options": [
-      "Cut in front close after passing",
-      "Avoid blind spots (No-Zones)",
-      "Tailgate to draft",
-      "Pass on right shoulder"
+      "Return to the lane as soon as the cab is visible",
+      "Avoid the truck’s blind spots",
+      "Follow close enough to see beneath the trailer",
+      "Pass alongside the trailer at the same speed"
     ],
     "correct": 1,
     "explanation": "Trucks have large No-Zones (blind spots) on all four sides; avoid lingering beside them.",
-    "source": "*"
+    "source": "*",
+    "conceptId": "BASELINE-049"
   },
   {
-    "q": "Driving on wet leaves is similar to driving on\u2026",
+    "q": "Driving on wet leaves is similar to driving on…",
     "options": [
-      "Dry pavement",
-      "Ice \u2014 reduced traction",
-      "Gravel only",
-      "Sand"
+      "Dry pavement with normal grip",
+      "Ice",
+      "Compacted gravel with reliable grip",
+      "Dry sand with predictable grip"
     ],
     "correct": 1,
-    "explanation": "Wet leaves act like ice \u2014 reduce speed and avoid sudden moves.",
-    "source": "*"
+    "explanation": "Wet leaves act like ice — reduce speed and avoid sudden moves.",
+    "source": "*",
+    "conceptId": "BASELINE-050"
   },
   {
-    "q": "Seat belts are required for\u2026",
+    "q": "Who must use a seat belt?",
     "options": [
-      "Driver only",
-      "All occupants in nearly every state",
-      "Adults only",
-      "Optional"
+      "The driver but not adult passengers",
+      "Occupants covered by state law",
+      "Only occupants traveling on highways",
+      "Only occupants in vehicles without airbags"
     ],
     "correct": 1,
     "explanation": "All 50 states require driver belts; 49 states require front-seat passenger belts (NH is the only exception for adults).",
-    "source": "*"
+    "source": "*",
+    "conceptId": "BASELINE-051"
   },
   {
-    "q": "A red flashing arrow means\u2026",
+    "q": "A red flashing arrow means…",
     "options": [
-      "Go",
-      "Stop, then proceed if clear",
-      "Caution",
-      "Malfunction"
+      "Turn without making a stop",
+      "Stop, then turn when safe",
+      "Wait for a steady green arrow",
+      "Yield without making a full stop"
     ],
     "correct": 1,
     "explanation": "Red flashing arrow is treated like a stop sign for that turning movement.",
-    "source": "*"
+    "source": "*",
+    "conceptId": "BASELINE-052"
   },
   {
-    "q": "Drowsy driving is most comparable to\u2026",
+    "q": "Drowsy driving is most comparable to…",
     "options": [
-      "Texting",
-      "Driving drunk",
-      "Speeding",
-      "Nothing"
+      "Ordinary fatigue after physical exercise",
+      "Alcohol impairment",
+      "Only the distraction of using a radio",
+      "Only the effects of driving above the limit"
     ],
     "correct": 1,
     "explanation": "Being awake 18+ hours impairs you like a 0.05% BAC; 24 hours = 0.10%.",
-    "source": "*"
+    "source": "*",
+    "conceptId": "BASELINE-053"
   },
   {
-    "q": "If your brakes fail you should\u2026",
+    "q": "If the service brakes fail, after trying the pedal, how can you slow safely?",
     "options": [
-      "Apply the parking brake abruptly",
-      "Pump, downshift, then brake gradually",
-      "Switch off the engine immediately",
-      "Keep coasting until the road levels"
+      "Apply the parking brake all at once",
+      "Downshift; brake gradually",
+      "Switch the ignition off while moving",
+      "Coast until the road becomes level"
     ],
     "correct": 1,
     "explanation": "Pump pedal, downshift to slow via engine, then apply parking brake gradually.",
-    "source": "*"
+    "source": "*",
+    "conceptId": "BASELINE-054"
   },
   {
     "q": "What does an octagonal sign mean, even when its lettering is obscured?",
@@ -656,7 +710,8 @@
       "Construction"
     ],
     "correct": 1,
-    "explanation": "Shape alone signals STOP \u2014 recognizable even when snow-covered.",
-    "source": "*"
+    "explanation": "Shape alone signals STOP — recognizable even when snow-covered.",
+    "source": "*",
+    "conceptId": "BASELINE-055"
   }
 ]
