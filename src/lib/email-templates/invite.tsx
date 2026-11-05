@@ -5,7 +5,7 @@ interface InviteEmailProps { siteName?: string; siteUrl?: string; confirmationUr
 
 export const InviteEmail = ({ confirmationUrl }: InviteEmailProps) => (
   <WaitlistEmailLayout preview="You've been invited to Drivable" title="You've been invited">
-    <Text style={waitlistTextStyle}>You've been invited to join Drivable, state-specific permit test prep with full-length mock exams and an AI coach built on your official DMV handbook.</Text>
+    <Text style={waitlistTextStyle}>You've been invited to join Drivable, state-specific prep for your permit test and driving test, with full-length mock exams, a Driving Test Simulation, and an AI coach built on your official DMV handbook.</Text>
     <ActionButton href={confirmationUrl} label="Accept invite" />
   </WaitlistEmailLayout>
 )

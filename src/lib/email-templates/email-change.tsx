@@ -7,7 +7,7 @@ export const EmailChangeEmail = ({ confirmationUrl }: EmailChangeEmailProps) => 
   <WaitlistEmailLayout preview="Confirm your new email for Drivable" title="Confirm your new email">
     <Text style={waitlistTextStyle}>Confirm this new email address for your Drivable account.</Text>
     <ActionButton href={confirmationUrl} label="Confirm new email" />
-    <Text style={noteStyle}>If you didn't request this change, contact philip@mydrivable.com right away.</Text>
+    <Text style={noteStyle}>If you didn't request this change, contact support@mydrivable.com right away.</Text>
   </WaitlistEmailLayout>
 )
 export default EmailChangeEmail

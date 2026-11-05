@@ -5,7 +5,7 @@ interface SignupEmailProps { siteName?: string; siteUrl?: string; recipient?: st
 
 export const SignupEmail = ({ confirmationUrl }: SignupEmailProps) => (
   <WaitlistEmailLayout preview="Confirm your email for Drivable" title="Confirm your email">
-    <Text style={waitlistTextStyle}>Welcome to Drivable. Confirm your email to start practicing for your permit test.</Text>
+    <Text style={waitlistTextStyle}>Welcome to Drivable. Confirm your email to start preparing for your permit test and driving test.</Text>
     <ActionButton href={confirmationUrl} label="Confirm email" />
     <Text style={noteStyle}>If you didn't create a Drivable account, you can ignore this email.</Text>
   </WaitlistEmailLayout>
