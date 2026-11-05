@@ -26,8 +26,14 @@ function interp(text: string, r: StateRules): string {
     .replace(/\{fullAge\}/g, String(r.fullLicenseMinAge))
     .replace(/\{supervisedHours\}/g, String(r.supervisedHoursRequired))
     .replace(/\{questionsCount\}/g, String(r.questionsCount))
+    .replace(/\{minCorrectMinus2\}/g, String(Math.max(1,r.minCorrectToPass-2)))
+    .replace(/\{minCorrectPlus2\}/g, String(Math.min(r.questionsCount,r.minCorrectToPass+2)))
+    .replace(/\{minCorrectMinus4\}/g, String(Math.max(0,r.minCorrectToPass-4)))
     .replace(/\{minCorrect\}/g, String(r.minCorrectToPass))
     .replace(/\{passPct\}/g, String(r.passingScorePct))
+    .replace(/\{phoneFineLow\}/g, String(Math.max(0,r.firstOffensePhoneFineUSD-20)))
+    .replace(/\{phoneFineMid\}/g, String(r.firstOffensePhoneFineUSD+25))
+    .replace(/\{phoneFineHigh\}/g, String(r.firstOffensePhoneFineUSD+100))
     .replace(/\{phoneFine\}/g, String(r.firstOffensePhoneFineUSD))
     .replace(/\{handbook\}/g, r.handbookUrl);
 }
@@ -299,6 +305,7 @@ function expandWithVariations(
       used.add(qText);
       out.push(
         shuffleAnswers({
+          conceptId: t.conceptId,
           q: qText,
           options: t.options.map((o) => interp(o, rules)),
           correct: t.correct,

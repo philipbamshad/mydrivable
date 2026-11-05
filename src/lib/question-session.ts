@@ -1,13 +1,15 @@
 import { directQuestion } from './mock-exam'
+import { canonicalConcept } from '@/data/dmv/question-concepts'
 
-type SessionQuestion = { q: string; options: string[]; correct: number }
+type SessionQuestion = { conceptId?: string; sign?: unknown; q: string; options: string[]; correct: number }
 
 /** Ignore incidental phrasing and shuffled choices when selecting a session. */
 export function questionFamily(q: SessionQuestion): string {
   const text = directQuestion(q.q).toLowerCase().replace(/[^a-z0-9½]+/g, ' ').trim()
   if (/minimum age.*(?:learner|permit)|(?:learner|permit).*minimum age/.test(text)) return 'learner-permit-age'
   if (/octagon/.test(text)) return 'stop-sign-shape'
-  return text
+  if (q.conceptId) return canonicalConcept(q.conceptId)
+  return text + (q.sign ? JSON.stringify(q.sign) : "")
 }
 
 export function uniqueQuestionSession<T extends SessionQuestion>(questions: T[], count: number, random = Math.random): T[] {

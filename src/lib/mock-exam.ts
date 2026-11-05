@@ -35,11 +35,13 @@ export function buildExamPool(state: string): ExamQuestion[] {
   const authored = new Map<string, ExamQuestion>();
   for (const topic of TOPICS) for (const q of banks[topic]) {
     const text = directQuestion(q.q);
-    if (!authored.has(text)) authored.set(text, { ...q, q: text, topic });
+    const key = q.conceptId ?? text + JSON.stringify(q.sign ?? null);
+    if (!authored.has(key)) authored.set(key, { ...q, q: text, topic });
   }
   for (const q of getStatePack(state).questions) {
     const text = directQuestion(q.q);
-    if (!authored.has(text)) authored.set(text, { ...q, q: text, topic: inferTopic(text) });
+    const key = q.conceptId ?? text;
+    if (!authored.has(key)) authored.set(key, { ...q, q: text, topic: inferTopic(text) });
   }
   return [...authored.values()];
 }

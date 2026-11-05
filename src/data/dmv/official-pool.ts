@@ -34,6 +34,7 @@ export const CATEGORY_TO_PILLAR: Record<PoolCategory, PillarId> = {
 };
 
 type PoolTemplate = {
+  conceptId: string;
   id: string;
   category: PoolCategory;
   q: string;
@@ -43,6 +44,7 @@ type PoolTemplate = {
 };
 
 export type PoolQuestion = {
+  conceptId: string;
   id: string;
   /** USPS code this materialized row belongs to. */
   state_code: string;
@@ -533,6 +535,7 @@ export function buildOfficialPool(stateName?: string | null): PoolQuestion[] {
   const n: StateNumerics = getStateNumerics(stateName);
   return POOL.map((t) => ({
     id: `${n.stateCode}-${t.id}`,
+    conceptId: t.conceptId,
     state_code: n.stateCode,
     category: t.category,
     pillar: CATEGORY_TO_PILLAR[t.category],

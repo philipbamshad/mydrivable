@@ -49,6 +49,7 @@ export type StateRules = {
 };
 
 export type Question = {
+  conceptId?: string;
   q: string;
   options: string[];
   correct: number;

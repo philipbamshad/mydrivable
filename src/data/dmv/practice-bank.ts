@@ -19,6 +19,7 @@ import { buildOfficialPool } from "./official-pool";
 import { expandPool } from "./variation-engine";
 
 export type PracticeQuestion = {
+  conceptId?: string;
   q: string;
   options: string[];
   correct: number;
@@ -600,6 +601,7 @@ export function buildPillarBanks(
   for (const o of buildOfficialPool(stateName)) {
     out[o.pillar].push(
       shuffleAnswers({
+        conceptId: o.conceptId,
         q: o.q,
         options: o.options,
         correct: o.correct,
@@ -610,6 +612,7 @@ export function buildPillarBanks(
 
   for (const t of TEMPLATES) {
     const interpolated: PracticeQuestion = {
+      conceptId: t.conceptId,
       q: interp(t.q, n),
       options: t.options.map((o) => interp(o, n)),
       correct: t.correct,
