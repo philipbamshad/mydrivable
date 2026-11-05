@@ -36,6 +36,13 @@
       "when": 1793840481237,
       "tag": "0004_email_reminders_and_welcome",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1793843802969,
+      "tag": "0005_daily_ai_and_resumable_study_attempts",
+      "breakpoints": true
     }
   ]
 }
