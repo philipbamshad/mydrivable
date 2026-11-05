@@ -1,8 +1,8 @@
 # Design improvements
 
 # Pro Pass receipt update and sandbox test
-- [ ] Add actual paid amount, safe card label and optional official Stripe receipt; send only on confirmed success.
-- [ ] Test $9 sandbox purchase and template Send test; verify upgrade/email, then restore test account to Free without deleting Stripe test payment.
+- [x] Add actual paid amount, safe card label and optional official Stripe receipt; send only on confirmed success.
+- [x] Test $9 sandbox payment with pm_card_visa through the real Stripe success webhook; verify sent email, receipt and Pro UI, then restore Free without deleting Stripe test payment. Inbox arrival cannot be observed.
 
 # Permit and driving prep plans
 - [x] Update simulation counts/statistics, branding, homepage plans and existing welcome/waitlist/order App emails; launch campaign remains skipped by prior user choice.
@@ -26,7 +26,7 @@
 - [x] Ever-correct topic mastery and past DMV date notice.
 - [x] Fixed three-action simulation, instructions/legend, 2.5-second timing and mobile layout.
 - [x] Verify signup/signin/cookies, saved exams, Hub progress, Active-state AI and simulation on desktop/mobile; 44 rule tests passed.
-- [ ] Purchase-to-Pro test: payment completion and confirmation email remain unverified; requires a test purchase.
+- [x] Purchase-to-Pro test: confirmed $9 sandbox payment, automatic Stripe webhook upgrade and email send, official receipt and restored Free UI.
 - [ ] Complete manual factual review of every state question: current tests establish unique choices, not handbook accuracy.
 - [ ] Complete remaining account/date/image flow checks: signout, changing target date, and a live uploaded-image reply remain unverified.
 - [x] Tighten homepage spacing and reduce competing motion.

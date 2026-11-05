@@ -9,6 +9,9 @@ describe('Pro Pass confirmed payment receipts', () => {
   it('never treats sandbox payments as live sales', () => {
     expect(isConfirmedPayment({ mode: 'payment', payment_status: 'paid', livemode: false }, 'live')).toBe(false)
   })
+  it('uses the payment date in the business local timezone', () => {
+    expect(orderConfirmationDetails({ id: 'pi_test', created: 1793857946 }, {}).orderDate).toBe('November 4, 2026')
+  })
   it('formats the $9 payment and exposes only card brand and four digits', () => {
     const details = orderConfirmationDetails({ id: 'cs_test_3f9a2c7b', amount_total: 900, currency: 'usd', created: 1793851200 }, { payment_method_details: { card: { brand: 'visa', last4: '4242' } }, receipt_url: 'https://pay.stripe.com/receipts/test' })
     expect(details.amountPaid).toBe('$9.00')
