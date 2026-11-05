@@ -1,5 +1,10 @@
 # Design improvements
 
+# Instant durable study answers
+- [ ] Immediate feedback and usable Next controls in exam, Hub and simulation.
+- [ ] Persistent owner-scoped queue, retries, entry replay and authenticated keepalive with idempotent commits.
+- [ ] Confirmed completion, batched cache refresh, regression tests and measured click-to-Next latency.
+
 # November private-beta fixes
 - [x] Coach driving-test coverage, newest-message scrolling and solid header.
 - [x] Correct new permit-age questions, unique concept sessions, 191 revised answer sets and complete changed-question list; exam misses now save in Hub review.
