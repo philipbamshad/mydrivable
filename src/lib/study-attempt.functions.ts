@@ -11,6 +11,7 @@ import { createSimulationSession, type SimulationClip } from '@/data/simulation-
 import { SIMULATION_CLIPS } from '@/data/simulation-clips';
 import { decisionSummary, finishScenario, recordDecision, stepProgress, type ScenarioDecision } from '@/data/simulation-game';
 import type { StudyAttempt } from './study-attempt';
+export type StudyAnswerInput = {id:string;version:number;answer?:number;steps?:{action:'go'|'yield'|'stop'|null;elapsed:number}[];timed?:boolean};
 
 const feature = z.enum(['exam','signs','intersections','substances','speed','simulation','review']);
 function asAttempt(row: unknown): StudyAttempt { return row as StudyAttempt; }
@@ -84,7 +85,7 @@ export const answerStudyAttempt=createServerFn({method:'POST'}).middleware([requ
       }
     }
     const {supabaseAdmin}=await import('@/integrations/supabase/client.server');
-    const {data:saved,error:saveError}=await supabaseAdmin.rpc('commit_study_answer',{p_id:attempt.id,p_user:context.userId,p_version:attempt.version,p_answer:JSON.parse(JSON.stringify(answer)),p_score:score,p_reaction:reaction ?? undefined,p_hub:hub?JSON.parse(JSON.stringify({...hub,last_score:hub.lastScore})):undefined});
+    const {data:saved,error:saveError}=await supabaseAdmin.rpc('commit_study_answer',{p_id:attempt.id,p_user:context.userId,p_version:attempt.version,p_answer:JSON.parse(JSON.stringify(answer)),p_score:score,p_reaction:reaction ?? 0,p_hub:hub?JSON.parse(JSON.stringify({...hub,last_score:hub.lastScore})):undefined});
     if(saveError) throw new Error('Unable to save your answer. Please retry or reload.');
     return asAttempt(saved);
   });
