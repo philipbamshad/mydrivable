@@ -6,6 +6,8 @@ it('makes at most one initial send and three automatic retries without dropping 
  const queue=[entry(0),entry(1)];let calls=0;
  expect(await drainAnswers(queue,async()=>{calls++;throw Error('offline');},()=>{},()=>{},async()=>{})).toBe(false);
  expect(calls).toBe(4);expect(queue).toHaveLength(2);expect(queue[0]?.retries).toBe(3);
+ expect(await drainAnswers(queue,async()=>{calls++;throw Error('offline');},()=>{},()=>{},async()=>{})).toBe(false);
+ expect(calls).toBe(4);
 });
 it('preserves order during brief disconnection and acknowledges every answer before completion',async()=>{
  const queue=[entry(0),entry(1),entry(2)];const sent:number[]=[];let failures=2;let persisted=0;
