@@ -1,5 +1,10 @@
 # Design improvements
 
+# Permit and driving prep plans
+- [ ] Update simulation counts/statistics, branding, homepage plans and existing App emails.
+- [ ] Enforce five daily AI questions and one reserved, resumable free attempt per exam, Hub topic and simulation.
+- [ ] Add the chosen allowlisted Free test account and verify Free/Pro limits and resume flows.
+
 # Waitlist App emails
 - [x] Save validated signups through a protected server action with duplicate, honeypot and three-per-hour visitor checks.
 - [x] Send branded confirmation and fixed-owner notification using Lovable App emails; retain signups when sending fails.
