@@ -32,6 +32,12 @@ describe("Permit Test Hub rules", () => {
     expect(later.questions[question.key]?.correct).toBe(false);
     expect(missedQuestions([later])).toHaveLength(1);
   });
+  it("never lets mastery fall below the topic's best score", () => {
+    const progress = { ...answerProgress(emptyTopic("signs"), question, true), bestScore: 88 };
+    expect(topicStats(progress, 24).mastery).toBe(88);
+    const withoutBest = answerProgress(emptyTopic("signs"), question, true);
+    expect(topicStats(withoutBest, 24).mastery).toBe(4);
+  });
   it("recommends the weakest topic", () => {
     expect(weakestTopic([answerProgress(emptyTopic("signs"), question, true), emptyTopic("speed")])).toBe("speed");
   });
