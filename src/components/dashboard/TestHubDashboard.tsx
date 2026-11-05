@@ -47,8 +47,8 @@ export function TestHubDashboard({ initialTopic, userId }: { initialTopic?: Pill
     onAnswered={topic => bumpFreeUsage(`pillar:${topic}`)}
     onSave={data => mutation.mutateAsync({ data: { state, ...data } })} />;
 
-  return <div className="max-w-5xl mx-auto space-y-5 w-full">
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+  return <div className="max-w-[900px] mx-auto space-y-4 w-full">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
       <Card className="bg-card rounded-[28px] border-border/60 p-5 flex flex-col gap-3 shadow-md">
         <div className="flex items-center gap-2"><Target className="h-5 w-5" /><h2 className="font-display font-bold">Recommended for you</h2></div>
         <p className="font-semibold">{PILLAR_META[weakest].title}</p>
@@ -62,7 +62,7 @@ export function TestHubDashboard({ initialTopic, userId }: { initialTopic?: Pill
         <Button variant="outline" className="mt-auto rounded-full h-11" disabled={!missed.length} onClick={() => setActive("review")}>Review questions</Button>
       </Card>
     </div>
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
       {HUB_TOPICS.map(topic => {
         const Icon = ICONS[topic];
         const stats = topicStats(progress.find(p => p.topic === topic) ?? emptyTopic(topic), banks[topic].length);

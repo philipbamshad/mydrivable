@@ -196,13 +196,13 @@ function SimulationPage() {
 
   return (
     <div ref={scroller} className={cn("h-full min-h-0 bg-secondary/40 text-foreground", active ? "overflow-hidden" : "overflow-y-auto overscroll-contain")} style={tabGlowStyle} aria-label="Driving Test Simulation">
-      <div className={cn("mx-auto flex w-full max-w-6xl flex-col p-3 sm:p-5", active ? "h-full min-h-0" : "min-h-full")}>
-        <header className="mb-3 grid shrink-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-2 pl-14 md:pl-0">
-          {phase !== "ready" && <Button variant="ghost" onClick={exit} className="order-2 h-8 px-0 text-xs text-muted-foreground"><ArrowLeft />Exit simulation</Button>}
-          <h1 className="min-w-0 font-display text-lg font-bold sm:text-xl">Driving Test Simulation</h1>
+      <div className={cn("mx-auto flex w-full max-w-6xl flex-col p-4 sm:p-6", active ? "h-full min-h-0" : "min-h-full")}>
+        <header className="mb-6 grid shrink-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-2 pl-14 md:pl-0">
+          {phase !== "ready" && <Button variant="ghost" onClick={exit} className="order-2 h-8 px-0 text-xs text-muted-foreground"><ArrowLeft />Exit<span className="hidden sm:inline">&nbsp;simulation</span></Button>}
+          <h1 className="min-w-0 truncate font-display text-lg font-bold sm:text-xl">Driving Test Simulation</h1>
         </header>
         {phase === "ready" ? (
-          <div className="my-auto mx-auto w-full max-w-3xl pb-5">
+          <div className="mx-auto w-full max-w-3xl">
             <div className={cardClass}>
               <div className="flex items-center gap-4">
                 <div className="grid h-12 w-12 shrink-0 place-items-center rounded-[18px] border border-border bg-muted text-foreground sm:h-14 sm:w-14"><Video className="h-6 w-6" /></div>
@@ -216,7 +216,7 @@ function SimulationPage() {
             </div>
           </div>
         ) : phase === "instructions" ? (
-          <div className={cn(cardClass, "my-auto mx-auto w-full max-w-3xl")}>
+          <div className={cn(cardClass, "mx-auto w-full max-w-3xl")}>
             <h2 className="font-display text-xl font-bold">How it works</h2>
             <p className="mb-7 mt-4 text-sm leading-relaxed text-muted-foreground">Each video stops at a decision point. The turn signal shows where you're going. Choose the correct action before time runs out.</p>
             <p className="mb-5 text-sm text-muted-foreground">Some scenarios need two actions. If your first choice is right, it's marked with a check. Then choose your next action.</p>
