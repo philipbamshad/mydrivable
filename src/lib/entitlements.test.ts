@@ -14,4 +14,12 @@ describe("AI Coach daily limit", () => {
   it("denies any question beyond five", async () => {
     expect(await consumeChatCredit(client(null), "user")).toMatchObject({ allowed: false, used: 5, limit: 5 });
   });
+  it("accepts a first credit returned by the new local-day bucket", async () => {
+    expect(await consumeChatCredit(client(1), "user")).toMatchObject({ allowed: true, used: 1 });
+  });
+  it("Pro bypasses usage even after five questions", async () => {
+    const chain={select:()=>chain,eq:()=>chain,order:()=>chain,limit:()=>chain,maybeSingle:async()=>({data:{status:'active',current_period_end:null},error:null})};
+    const pro={from:()=>chain,rpc:async()=>{throw new Error('Pro must not consume a free credit');}} as unknown as SupabaseClient<Database>;
+    expect(await consumeChatCredit(pro,'user')).toMatchObject({allowed:true,isPro:true,used:0});
+  });
 });
