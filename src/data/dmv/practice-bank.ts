@@ -57,92 +57,75 @@ function interp(text: string, n: StateNumerics): string {
 const TEMPLATES: Template[] = [
   // --------------------------- SIGNS & MARKINGS ---------------------------
   {
+    conceptId: "TEMPLATES-001",
     pillar: "signs",
     q: "What does this sign mean?",
     sign: { shape: "octagon", fill: "#dc2626", stroke: "#fff", letters: "STOP" },
-    options: ["Yield", "Stop completely", "Do Not Enter", "Slow down"],
+    options: ["Yield to crossing traffic","Stop","Do not enter this road","Proceed with caution"],
     correct: 1,
     explanation:
       "A red octagon always means a full stop at the limit line or before any crosswalk, then proceed only when safe.",
   },
   {
+    conceptId: "TEMPLATES-001",
     pillar: "signs",
     q: "What does this sign mean?",
     sign: { shape: "triangle-down", fill: "#fff", stroke: "#dc2626", letters: "YIELD" },
-    options: ["Stop", "Yield the right of way", "Merge", "Caution"],
+    options: ["Yield to crossing traffic","Stop","Do not enter this road","Proceed with caution"],
     correct: 1,
     explanation:
       "An inverted red and white triangle is a yield sign. Slow, give the right of way to traffic and pedestrians, and stop only if needed.",
   },
   {
+    conceptId: "TEMPLATES-001",
     pillar: "signs",
     q: "What does this sign mean?",
     sign: { shape: "circle", fill: "#dc2626", stroke: "#fff", letters: "DO NOT ENTER", bar: true },
-    options: [
-      "You may proceed with caution",
-      "You cannot do whatever is shown in the circle",
-      "One way traffic ahead",
-      "Yield to oncoming vehicles",
-    ],
+    options: ["Yield to crossing traffic","Stop","Do not enter this road","Proceed with caution"],
     correct: 1,
     explanation:
       "A red circle with a red line through a symbol always means the pictured action is prohibited. The classic Do Not Enter disc uses the same rule with a white bar.",
   },
   {
+    conceptId: "TEMPLATES-004",
     pillar: "signs",
     q: "A diamond shaped '+' sign warns you that…",
     sign: { shape: "diamond", fill: "#facc15", stroke: "#000", letters: "+" },
-    options: [
-      "A hospital is nearby",
-      "An intersection or crossroad is ahead",
-      "A pedestrian crossing is ahead",
-      "A first aid station is ahead",
-    ],
+    options: ["A hospital entrance is nearby","A crossroad is ahead","A pedestrian crossing is ahead","A first-aid station is nearby"],
     correct: 1,
     explanation:
       "Yellow diamond warning signs describe what is coming. A '+' shape signals an intersection or crossroad ahead.",
   },
   {
+    conceptId: "TEMPLATES-005",
     pillar: "signs",
     q: "A lighted green arrow by itself at a signal means…",
-    options: [
-      "You may turn in the direction of the arrow",
-      "You must stop before turning",
-      "Yield to oncoming traffic before turning",
-      "The signal is malfunctioning",
-    ],
-    correct: 0,
+    options: ["Stop before making the indicated turn","Make the protected turn","Yield to oncoming vehicles before turning","Wait for a circular green light"],
+    correct: 1,
     explanation:
       "A solid green arrow is a protected turn. Oncoming and cross traffic are held, so you may turn in the direction of the arrow.",
   },
   {
+    conceptId: "TEMPLATES-006",
     pillar: "signs",
     q: "A flashing red light at a railroad crossing means…",
     sign: { shape: "circle", fill: "#dc2626", stroke: "#fff", letters: "RR" },
-    options: [
-      "Proceed slowly across the tracks",
-      "Stop because a train is approaching",
-      "Yield to oncoming traffic",
-      "The signal is out of service",
-    ],
+    options: ["Proceed if the crossing gate is raised","Stop for a train","Yield only when a train is visible","Stop only if a second signal is flashing"],
     correct: 1,
     explanation:
       "Flashing red at a railroad crossing means stop because a train is approaching. Do not cross until the lights stop flashing.",
   },
   {
+    conceptId: "TEMPLATES-007",
     pillar: "signs",
     q: "When you see orange cones and construction signs, you should…",
-    options: [
-      "Maintain your normal speed",
-      "Watch out because lanes may be closing ahead",
-      "Turn around and find another route",
-      "Ignore them if no workers are visible",
-    ],
+    options: ["Keep speed until a lane actually closes","Watch for lane closures","Change lanes only when a worker waves","Apply restrictions only when workers are visible"],
     correct: 1,
     explanation:
       "Orange work zone signs and cones warn that lanes may be closing or shifting ahead. Slow down and follow the flagger or signage.",
   },
   {
+    conceptId: "TEMPLATES-008",
     pillar: "signs",
     q: "What color curb never allows vehicles to stop or park?",
     options: ["Yellow", "White", "Green", "Red"],
@@ -151,6 +134,7 @@ const TEMPLATES: Template[] = [
       "A red curb means no stopping, standing, or parking at any time. Emergency vehicles and buses may be the only exceptions.",
   },
   {
+    conceptId: "TEMPLATES-009",
     pillar: "signs",
     q: "A pedestrian using a white cane is telling drivers that they are…",
     options: [
@@ -164,6 +148,7 @@ const TEMPLATES: Template[] = [
       "A white cane, often with a red tip, identifies a blind pedestrian who has absolute right of way at all intersections.",
   },
   {
+    conceptId: "TEMPLATES-010",
     pillar: "signs",
     q: "You may pass another vehicle by crossing over the double solid parallel yellow lines.",
     options: ["True", "False"],
@@ -172,19 +157,16 @@ const TEMPLATES: Template[] = [
       "False. A double solid yellow line means passing is prohibited in both directions. Cross only for a legal left turn into a driveway.",
   },
   {
+    conceptId: "TEMPLATES-011",
     pillar: "signs",
     q: "A pavement marking of a bicycle and chevrons (a 'sharrow') means…",
-    options: [
-      "Bicyclists are prohibited from this lane",
-      "Bicyclists share the travel lane with cars",
-      "This is a bike only lane",
-      "Bicyclists must dismount here",
-    ],
+    options: ["Only bicycles may use this lane","Bicycles share this lane","Bicycles must use the sidewalk","Bicyclists must dismount here"],
     correct: 1,
     explanation:
       "Sharrows mark a shared travel lane. Motorists must give bicyclists the full use of the lane and pass with a safe cushion.",
   },
   {
+    conceptId: "TEMPLATES-012",
     pillar: "signs",
     q: "It is important to keep the inside and outside of your windshield clean.",
     options: ["True", "False"],
@@ -195,6 +177,7 @@ const TEMPLATES: Template[] = [
 
   // --------------------- INTERSECTIONS & RIGHT OF WAY ---------------------
   {
+    conceptId: "TEMPLATES-013",
     pillar: "intersections",
     q: "You should begin a right turn in the lane nearest the curb.",
     options: ["True", "False"],
@@ -203,6 +186,7 @@ const TEMPLATES: Template[] = [
       "True. Enter the turn from the lane closest to the curb and finish the turn into the lane closest to the curb on the receiving street.",
   },
   {
+    conceptId: "TEMPLATES-014",
     pillar: "intersections",
     q: "Wherever there is a STOP sign in {state}, you must stop at the limit line or before entering any crosswalk.",
     options: ["True", "False"],
@@ -211,6 +195,7 @@ const TEMPLATES: Template[] = [
       "True. In {state}, stop at the marked limit line. If there is no line, stop before the crosswalk, and if there is no crosswalk, stop before entering the intersection.",
   },
   {
+    conceptId: "TEMPLATES-015",
     pillar: "intersections",
     q: "When is it required for you to obey directions from a crossing guard?",
     options: [
@@ -224,19 +209,16 @@ const TEMPLATES: Template[] = [
       "A crossing guard has legal authority over that intersection. Obey their directions at all times, even if they conflict with signals.",
   },
   {
+    conceptId: "TEMPLATES-016",
     pillar: "intersections",
     q: "When a traffic signal is not working at an intersection you should…",
-    options: [
-      "Speed through so you clear the intersection",
-      "Come to a complete stop, then proceed when it is safe",
-      "Yield only to vehicles on the right",
-      "Continue at the posted speed",
-    ],
+    options: ["Proceed if no cross traffic is visible","Stop; go when safe","Yield only to vehicles approaching from right","Treat it like an ordinary green signal"],
     correct: 1,
     explanation:
       "Treat a dark or malfunctioning signal as a four way stop. Come to a complete stop, then proceed in normal right of way order.",
   },
   {
+    conceptId: "TEMPLATES-017",
     pillar: "intersections",
     q: "You see the flashing lights of an emergency vehicle in your rear view mirror. You should speed up to prevent delaying it.",
     options: ["True", "False"],
@@ -245,19 +227,16 @@ const TEMPLATES: Template[] = [
       "False. Pull as close to the right edge of the road as safe and stop until the emergency vehicle passes. Never race an emergency vehicle.",
   },
   {
+    conceptId: "TEMPLATES-018",
     pillar: "intersections",
     q: "If the traffic light turns yellow after you have already entered an intersection, you should…",
-    options: [
-      "Stop in the middle of the intersection",
-      "Reverse out of the intersection",
-      "Proceed across with caution",
-      "Turn right to clear the box",
-    ],
+    options: ["Stop after entering the intersection","Return to the original stopping position","Clear it cautiously","Change direction to leave the intersection"],
     correct: 2,
     explanation:
       "Once you are lawfully in the intersection and the light turns yellow, proceed across with caution and clear the intersection.",
   },
   {
+    conceptId: "TEMPLATES-019",
     pillar: "intersections",
     q: "When sharing the road with a trolley or light rail vehicle you should…",
     options: ["Turn ahead if the signal is green", "Never turn directly in front of it", "Expect it to yield to turning cars", "Cross when the trolley starts slowing"],
@@ -266,6 +245,7 @@ const TEMPLATES: Template[] = [
       "Never turn in front of an approaching trolley or light rail vehicle. They cannot swerve and take a long distance to stop.",
   },
   {
+    conceptId: "TEMPLATES-020",
     pillar: "intersections",
     q: "When entering an intersection on a green light, you can get a ticket if you block the intersection.",
     options: ["True", "False"],
@@ -274,6 +254,7 @@ const TEMPLATES: Template[] = [
       "True. 'Do not block the box' laws let officers cite drivers who enter an intersection they cannot fully clear before the light changes.",
   },
   {
+    conceptId: "TEMPLATES-021",
     pillar: "intersections",
     q: "If another car has stopped at a crosswalk to permit someone to walk across, you may pass that car.",
     options: ["True", "False"],
@@ -282,6 +263,7 @@ const TEMPLATES: Template[] = [
       "False. Never pass a vehicle that has stopped at a crosswalk. The stopped car may be hiding a pedestrian who is already crossing.",
   },
   {
+    conceptId: "TEMPLATES-022",
     pillar: "intersections",
     q: "A pedestrian must yield the right of way at intersections where crosswalks are not marked.",
     options: ["True", "False"],
@@ -290,6 +272,7 @@ const TEMPLATES: Template[] = [
       "False. Every corner is treated as an unmarked crosswalk. Drivers must yield to pedestrians crossing at intersections whether the crosswalk is painted or not.",
   },
   {
+    conceptId: "TEMPLATES-023",
     pillar: "intersections",
     q: "When approaching a roundabout, enter traffic in which direction?",
     options: ["Clockwise", "Counter clockwise", "Either direction", "Whichever has an opening"],
@@ -298,6 +281,7 @@ const TEMPLATES: Template[] = [
       "Traffic in a US roundabout always circulates counter clockwise. Yield to vehicles already in the circle before entering.",
   },
   {
+    conceptId: "TEMPLATES-024",
     pillar: "intersections",
     q: "Even when you have the right of way, you should never insist on taking it.",
     options: ["True", "False"],
@@ -306,19 +290,16 @@ const TEMPLATES: Template[] = [
       "True. Right of way is something you give, not take. Defensive driving means yielding when another road user does not, even if you are legally correct.",
   },
   {
+    conceptId: "TEMPLATES-025",
     pillar: "intersections",
     q: "You must show your driver license to…",
-    options: [
-      "Any pedestrian who asks",
-      "Any other drivers if you are in a collision",
-      "Any passenger under 18",
-      "Nobody except a judge",
-    ],
+    options: ["Any pedestrian who requests it","Another driver after a collision","Any passenger who asks to inspect it","Only a judge during a court hearing"],
     correct: 1,
     explanation:
       "In a collision you must exchange license and insurance information with the other drivers involved. You must also show it to any peace officer on demand.",
   },
   {
+    conceptId: "TEMPLATES-026",
     pillar: "intersections",
     q: "If you hit a parked car and cannot find the owner, you should leave a note giving your name and address.",
     options: ["True", "False"],
@@ -327,6 +308,7 @@ const TEMPLATES: Template[] = [
       "True. Every state treats leaving the scene of an unattended collision without a note as a hit and run. Include your name, address, and how to reach you.",
   },
   {
+    conceptId: "TEMPLATES-027",
     pillar: "intersections",
     q: "In {state} you are required to notify the DMV by filing an accident report when a collision involves an injury or property damage over {accidentThreshold}.",
     options: ["True", "False"],
@@ -337,66 +319,52 @@ const TEMPLATES: Template[] = [
 
   // --------------------------- SUBSTANCE LAWS ---------------------------
   {
+    conceptId: "TEMPLATES-028",
     pillar: "substances",
     q: "The only truly effective way to lower blood alcohol content is to…",
-    options: [
-      "Drink strong coffee",
-      "Take a cold shower",
-      "Stop drinking so that your body has time to adjust",
-      "Eat a heavy meal",
-    ],
+    options: ["Drinking strong coffee after alcohol","Taking a cold shower after alcohol","Allowing time","Eating a heavy meal after alcohol"],
     correct: 2,
     explanation:
       "Only time lowers BAC. The liver processes about one standard drink per hour. Coffee, food, and cold showers do not speed elimination.",
   },
   {
+    conceptId: "TEMPLATES-029",
     pillar: "substances",
-    q: "The number one cause of death among teenagers ages 15 to 19 is…",
-    options: [
-      "Sports injuries",
-      "Traffic collisions",
-      "Drownings",
-      "Bicycle accidents",
-    ],
+    q: "Which is a major preventable cause of teen deaths?",
+    options: ["Unintentional drowning incidents","Traffic collisions","Unintentional sports injuries","Unintentional bicycle falls"],
     correct: 1,
     explanation:
       "Traffic collisions are the leading cause of death for US teenagers. Distraction, inexperience, and impairment drive the numbers.",
   },
   {
+    conceptId: "TEMPLATES-030",
     pillar: "substances",
     q: "The following is a myth about seat belts:",
-    options: [
-      "Seat belts reduce ejection risk in a crash",
-      "Seat belts are good on long trips but I do not need them driving around town",
-      "Seat belts work with airbags to protect you",
-      "Seat belts help keep you behind the wheel in a skid",
-    ],
+    options: ["They reduce ejection in a collision","They are unnecessary on short trips","They complement properly used airbags","They help keep a driver behind the wheel"],
     correct: 1,
     explanation:
       "It is a myth that seat belts are only needed for long trips. Most crashes happen within 25 miles of home at speeds under 40 mph.",
   },
   {
+    conceptId: "TEMPLATES-031",
     pillar: "substances",
-    q: "A child may not sit in the front seat of an air bag equipped vehicle if the child weighs less than…",
-    options: ["10 pounds", "20 pounds", "40 pounds", "60 pounds"],
-    correct: 1,
+    q: "Where should a rear-facing child safety seat be placed relative to an active front passenger airbag?",
+    options: ["In front only on short trips","In front if tightly secured","Never in front of an active airbag","In front if the seat belt fits"],
+    correct: 2,
     explanation:
       "Under general federal guidance and most state codes, a child weighing less than 20 pounds should not ride in a front seat with an active passenger air bag.",
   },
   {
+    conceptId: "TEMPLATES-032",
     pillar: "substances",
     q: "Much of what has been said about alcohol also applies to…",
-    options: [
-      "Prescribed medicines and street drugs",
-      "Energy drinks only",
-      "Caffeine",
-      "Nothing else",
-    ],
+    options: ["Other impairing drugs","Only caffeinated energy beverages","Only medicines available by prescription","Only medicines that contain alcohol"],
     correct: 0,
     explanation:
       "Prescription medicines and street drugs can impair reaction time, judgment, and coordination the same way alcohol does. Read every warning label.",
   },
   {
+    conceptId: "TEMPLATES-033",
     pillar: "substances",
     q: "The legal adult (21+) BAC limit in {state} is…",
     options: ["0.05%", "{bacAdult}", "0.10%", "0.15%"],
@@ -405,6 +373,7 @@ const TEMPLATES: Template[] = [
       "{state} sets the adult per se BAC limit at {bacAdult}. Utah is the outlier at 0.05%.",
   },
   {
+    conceptId: "TEMPLATES-034",
     pillar: "substances",
     q: "Under {state}'s zero tolerance rule, the BAC limit for drivers under 21 is…",
     options: ["0.00%", "{bacU21}", "0.05%", "0.08%"],
@@ -413,6 +382,7 @@ const TEMPLATES: Template[] = [
       "{state} enforces {bacU21} as the maximum BAC for drivers under 21. Any detectable alcohol above this can suspend a novice license.",
   },
   {
+    conceptId: "TEMPLATES-035",
     pillar: "substances",
     q: "New drivers, when faced with difficult driving conditions, usually have…",
     options: [
@@ -426,27 +396,19 @@ const TEMPLATES: Template[] = [
       "Inexperience shows up fastest in weather, night, and heavy traffic. New drivers have significantly more loss of control crashes in tough conditions.",
   },
   {
+    conceptId: "TEMPLATES-036",
     pillar: "substances",
     q: "Which of the following is illegal while driving?",
-    options: [
-      "Playing music through the stereo",
-      "Wearing a headset or earplugs that cover both ears",
-      "Using a hands free voice call",
-      "Speaking with a passenger",
-    ],
+    options: ["Playing music through the stereo","Covering both ears with earphones","Making a permitted hands-free call","Speaking with a seated passenger"],
     correct: 1,
     explanation:
       "Wearing a headset or earplugs covering both ears is illegal in most states because it blocks safety cues like sirens, horns, and train warnings.",
   },
   {
+    conceptId: "TEMPLATES-037",
     pillar: "substances",
     q: "At night, you should never drive at a speed which would prevent you from…",
-    options: [
-      "Reaching your destination on time",
-      "Keeping up with traffic",
-      "Coming to a stop within the distance you can see with your headlights",
-      "Passing slower vehicles",
-    ],
+    options: ["Reaching the destination on schedule","Keeping pace with faster traffic","Stopping within headlight range","Passing a slow vehicle without delay"],
     correct: 2,
     explanation:
       "Overdriving your headlights is a leading cause of night crashes. Your safe speed at night is whatever lets you stop within the beam you can actually see.",
@@ -454,32 +416,25 @@ const TEMPLATES: Template[] = [
 
   // ------------------------- SPEED & VEHICLE OPS -------------------------
   {
+    conceptId: "TEMPLATES-038",
     pillar: "speed",
     q: "Large trucks turning onto a street with two lanes in each direction often…",
-    options: [
-      "Complete the turn entirely in the right lane",
-      "Use part of the left lane to complete the turn",
-      "Reverse before turning",
-      "Turn on the shoulder",
-    ],
+    options: ["Remain entirely inside the curb lane","Need extra turning space","Reverse before starting every turn","Complete every turn from the shoulder"],
     correct: 1,
     explanation:
       "Long trailers need extra swing room. Trucks turning onto a two lane road often have to use part of the left lane to complete the turn safely.",
   },
   {
+    conceptId: "TEMPLATES-039",
     pillar: "speed",
-    q: "When braking your car on a slippery road, you should…",
-    options: [
-      "Slam the pedal and hold",
-      "Pump the brakes gently (or follow ABS guidelines if your car is equipped)",
-      "Pull the parking brake",
-      "Shift into reverse",
-    ],
+    q: "With ABS on a slippery road, how should you brake in an emergency?",
+    options: ["Pump the pedal throughout the stop","Hold firm pressure","Release whenever the pedal pulses","Apply the parking brake at the same time"],
     correct: 1,
     explanation:
       "On slick pavement pump the brakes gently to keep the wheels rolling. If your car has ABS, press firmly and steadily and let the system pulse for you.",
   },
   {
+    conceptId: "TEMPLATES-040",
     pillar: "speed",
     q: "To watch for hazards, check your rear view mirror every…",
     options: ["1 second", "2 to 5 seconds", "10 to 15 seconds", "Only before braking"],
@@ -488,53 +443,43 @@ const TEMPLATES: Template[] = [
       "A quick mirror scan every 2 to 5 seconds keeps you aware of what is behind and beside you so surprises never come from your blind side.",
   },
   {
+    conceptId: "TEMPLATES-041",
     pillar: "speed",
     q: "When driving through a curve, you should…",
-    options: [
-      "Accelerate into it and coast out",
-      "Slow into it and accelerate out of it",
-      "Maintain a constant high speed",
-      "Brake through the entire curve",
-    ],
+    options: ["Accelerate before reaching the curve","Slow before the curve","Hold a high speed through the curve","Begin firm braking halfway through"],
     correct: 1,
     explanation:
       "Slow before the curve, then gently accelerate out of it. Braking inside a curve upsets weight transfer and can start a skid.",
   },
   {
+    conceptId: "TEMPLATES-042",
     pillar: "speed",
     q: "The best way to stop quickly (in a vehicle equipped with ABS) is to…",
-    options: [
-      "Pump the brakes",
-      "Brake hard and hold the pedal down until you stop",
-      "Pull the parking brake",
-      "Downshift only",
-    ],
+    options: ["Pump the brake pedal repeatedly","Hold firm brake pressure","Release the pedal when ABS pulses","Apply the parking brake instead"],
     correct: 1,
     explanation:
       "With ABS, brake hard and hold. The system pulses each wheel for you and lets you steer while braking at maximum grip.",
   },
   {
+    conceptId: "TEMPLATES-043",
     pillar: "speed",
     q: "Which of the following is the proper procedure for parallel parking?",
-    options: [
-      "Pull head first into the space",
-      "Stop next to the vehicle in front of the open space, and then back into the space",
-      "Back in from the vehicle behind the space",
-      "Drive at an angle from the curb",
-    ],
+    options: ["Pull forward into the space at an angle","Align alongside; back in","Start behind the space and drive forward","Enter directly from the adjacent travel lane"],
     correct: 1,
     explanation:
       "Stop parallel to the car in front of the open space, then reverse and swing the wheel to slide back into the spot. Straighten and center between the two cars.",
   },
   {
+    conceptId: "TEMPLATES-044",
     pillar: "speed",
     q: "What speed should you be driving when entering onto a highway?",
-    options: ["Well below the flow of traffic", "At or near the speed of traffic", "At the minimum posted speed", "Above the flow of traffic"],
+    options: ["Stop at the end of the entrance ramp","Match traffic; find a gap","Enter well below the traffic speed","Wait until the entire traffic lane is empty"],
     correct: 1,
     explanation:
       "Use the on ramp to accelerate to the speed of highway traffic, then merge into a gap. Merging slow is one of the top causes of on ramp crashes.",
   },
   {
+    conceptId: "TEMPLATES-045",
     pillar: "speed",
     q: "It is legal to sometimes exceed the maximum speed limit on a highway.",
     options: ["True", "False"],
@@ -543,19 +488,16 @@ const TEMPLATES: Template[] = [
       "False. The posted maximum is the legal ceiling in all conditions. The basic speed law can require you to go slower, never faster.",
   },
   {
+    conceptId: "TEMPLATES-046",
     pillar: "speed",
     q: "Since more highway construction takes place at night, you should…",
-    options: [
-      "Speed up to clear the zone quickly",
-      "Drive slower as a safety precaution",
-      "Turn off your headlights so workers can see",
-      "Ignore posted limits after 9pm",
-    ],
+    options: ["Maintain speed until workers appear","Slow for conditions","Use high beams continuously near workers","Follow the preceding vehicle closely"],
     correct: 1,
     explanation:
       "Night construction combines glare, workers on foot, and shifting lanes. Slow down as a safety precaution and follow the posted work zone limits.",
   },
   {
+    conceptId: "TEMPLATES-047",
     pillar: "speed",
     q: "Within {schoolZoneFeet} of a school in {state}, the speed limit is typically {schoolZone} unless otherwise posted.",
     options: ["True", "False"],
@@ -564,6 +506,7 @@ const TEMPLATES: Template[] = [
       "True. In {state}, school zone limits are commonly {schoolZone} within {schoolZoneFeet} of a school when children are present. Watch for posted signs and flashing beacons.",
   },
   {
+    conceptId: "TEMPLATES-048",
     pillar: "speed",
     q: "The speed limit in an alley in {state} is typically…",
     options: [
@@ -577,6 +520,7 @@ const TEMPLATES: Template[] = [
       "{state} caps alley travel at {alley}. Alleys are narrow, sight lines are poor, and pedestrians appear from doorways.",
   },
   {
+    conceptId: "TEMPLATES-049",
     pillar: "speed",
     q: "When a railroad crossing is not controlled and you cannot see for {railroadViewFeet} in both directions, your maximum speed within {railroadFeet} of the crossing is…",
     options: ["5 mph", "10 mph", "{nearRailroad}", "25 mph"],
@@ -585,19 +529,16 @@ const TEMPLATES: Template[] = [
       "At an uncontrolled crossing with obstructed sight lines, {nearRailroad} is the standard maximum within {railroadFeet} of the tracks. Slow further if visibility is worse.",
   },
   {
+    conceptId: "TEMPLATES-050",
     pillar: "speed",
-    q: "You may pass on the right when…",
-    options: [
-      "Never, passing on the right is always illegal",
-      "The open highway is clearly marked for two or more lanes in your direction, or the driver in front is turning left, and you do not drive off the road",
-      "Only if the driver ahead waves you around",
-      "Only on a two lane road",
-    ],
+    q: "When may you pass on the right?",
+    options: ["Only after the other driver waves","In a lawful lane; stay on the road","Whenever a shoulder is paved","Whenever the traffic lane stops"],
     correct: 1,
     explanation:
       "Passing on the right is legal when the road has two or more lanes in your direction and it is safe, or when a driver ahead is signaling and turning left, so long as you stay on the paved roadway.",
   },
   {
+    conceptId: "TEMPLATES-051",
     pillar: "speed",
     q: "You can use your high beams on dark city streets.",
     options: ["True", "False"],
@@ -606,32 +547,25 @@ const TEMPLATES: Template[] = [
       "False. On lit city streets and within roughly {highBeamFeet} of oncoming traffic or {followBeamFeet} behind another vehicle, use low beams.",
   },
   {
+    conceptId: "TEMPLATES-052",
     pillar: "speed",
     q: "An acceleration skid usually involves…",
-    options: [
-      "All four wheels",
-      "Only the front wheels",
-      "Only the drive wheels",
-      "Only the parking brake",
-    ],
+    options: ["All wheels equally","Only the steering wheels","The drive wheels","Only wheels without parking brakes"],
     correct: 2,
     explanation:
       "An acceleration skid happens when the drive wheels overpower the available traction. Ease off the throttle and let the tires recover grip.",
   },
   {
+    conceptId: "TEMPLATES-053",
     pillar: "speed",
     q: "Pedestrian responsibilities at night include…",
-    options: [
-      "Wearing dark clothing to blend in",
-      "Wearing lighter colored clothing to make one more visible",
-      "Walking with traffic",
-      "Only using the roadway",
-    ],
+    options: ["Wear dark clothing near moving traffic","Wear visible clothing","Walk with traffic when no sidewalk exists","Cross wherever headlights seem distant"],
     correct: 1,
     explanation:
       "Light colored or reflective clothing dramatically improves how far away drivers can spot a pedestrian at night. Walk facing traffic where sidewalks are absent.",
   },
   {
+    conceptId: "TEMPLATES-054",
     pillar: "speed",
     q: "You may operate a motor scooter on the street without a driver license or instruction permit.",
     options: ["True", "False"],
