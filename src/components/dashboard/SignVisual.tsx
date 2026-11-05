@@ -56,7 +56,7 @@ export function SignVisual({ s, size = 140 }: { s: SignSpec; size?: number }) {
   const lines = s.letters ? (s.bar ? [s.letters] : wrap(s.letters)) : [];
   const maxLen = Math.max(1, ...lines.map(l => l.length));
   const width = s.shape === "diamond" || s.shape === "triangle-down" ? 52 : s.shape === "pennant" ? 46 : 74;
-  const fontSize = s.bar ? (s.letters!.length > 10 ? 8 : 10) : Math.min(22, Math.floor((width / maxLen) * 1.7), Math.floor((s.shape === "diamond" ? 48 : 72) / lines.length / 1.1));
+  const fontSize = s.bar ? (s.letters!.length > 10 ? 8 : 10) : Math.min(22, Math.floor((width / maxLen) * 1.4), Math.floor((s.shape === "diamond" ? 48 : 72) / lines.length / 1.1));
   const lineHeight = fontSize * 1.1;
   const centerY = s.shape === "triangle-down" ? 40 : s.shape === "pennant" ? 42 : 50;
   const firstY = s.bar ? 78 : centerY - ((lines.length - 1) * lineHeight) / 2 + fontSize * 0.36;

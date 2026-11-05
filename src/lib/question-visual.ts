@@ -26,6 +26,7 @@ export function questionVisual(question: { q: string; sign?: SignSpec }): Questi
 
   if (/railroad/.test(t) && /flashing red/.test(t)) return { kind: "signal", label: "Railroad crossing flashing red lights", lit: "red", rail: true };
   if (/\bstop sign\b|octagon/.test(t)) return STOP;
+  if (question.sign?.letters === "+") return warn("Crossroad warning sign", "crossroad");
   if (question.sign) return { kind: "sign", label: question.sign.letters === "STOP" ? "Stop sign" : "Road sign", spec: question.sign };
 
   if (/red circle.*(?:slash|line through)|no[ -]u[ -]turn|no left turn/.test(t)) {
@@ -48,7 +49,7 @@ export function questionVisual(question: { q: string; sign?: SignSpec }): Questi
   }
 
   // Pavement markings
-  if (/arrow on the pavement/.test(t)) return { kind: "marking", label: "Diagonal arrow pavement marking", variant: "exit-arrow", color: "white" };
+  if (/arrow on the pavement/.test(t)) return { kind: "marking", label: "Diagonal arrow pavement marking", variant: "exit-arrow", color: "yellow" };
   if (/what color curb/.test(t)) return null;
   if (/painted curb|(?:red|yellow|white|green|blue) curb/.test(t)) {
     const color = /green/.test(t) ? "green" : /yellow/.test(t) ? "yellow" : /blue/.test(t) ? "blue" : /white/.test(t) ? "white" : "red";

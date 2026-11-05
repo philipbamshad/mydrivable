@@ -26,7 +26,7 @@ function Marking({ v }: { v: Extract<QuestionVisual, { kind: "marking" }> }) {
   return <svg viewBox="0 0 260 150"><rect x="10" y="5" width="240" height="140" rx="8" fill={R.asphalt} />
     {v.variant === "curb" ? <><rect x="10" y="112" width="240" height="18" fill={R[v.color]} /></>
       : v.variant === "crosswalk" ? <>{[45, 80, 115, 150, 185].map(x => <rect key={x} x={x} y="45" width="18" height="75" fill={R.white} />)}<path d="M25 25H235" stroke={R.white} strokeWidth="7" /></>
-      : v.variant === "exit-arrow" ? <><path d="M130 10V140" stroke={R.white} strokeWidth="5" strokeDasharray="16 12" /><path d="M80 125L170 40M150 38h22v22" stroke={R.white} strokeWidth="9" fill="none" /></>
+      : v.variant === "exit-arrow" ? <><path d="M130 10V140" stroke={R.white} strokeWidth="5" strokeDasharray="16 12" /><path d="M80 125L170 40M150 38h22v22" stroke={R[v.color]} strokeWidth="9" fill="none" /></>
       : v.variant === "bike" ? <><path d="M90 10V140" stroke={R.white} strokeWidth="5" /><g stroke={R.white} strokeWidth="4" fill="none"><circle cx="150" cy="95" r="16" /><circle cx="200" cy="95" r="16" /><path d="M150 95l20-32 14 32h-34l16-24h20l14 24" /></g></>
       : <><path d="M120 10V140" stroke={R[v.color]} strokeWidth="5" strokeDasharray={v.dashed ? "16 12" : undefined} />{v.double && <path d="M132 10V140" stroke={R[v.color]} strokeWidth="5" />}</>}
   </svg>;
