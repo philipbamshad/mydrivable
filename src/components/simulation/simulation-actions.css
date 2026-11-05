@@ -1,5 +1,6 @@
 /* Traffic-light accents, scoped to the simulation's own classes. */
 .sim-action-button, .sim-action-ic { --sim-accent: oklch(0.55 0.15 152); }
+.sim-action-ic { color: var(--sim-accent); }
 .sim-action-button[data-action="go"], .sim-action-ic[data-action="go"] { --sim-accent: oklch(0.55 0.15 152); }
 .sim-action-button[data-action="yield"], .sim-action-ic[data-action="yield"] { --sim-accent: oklch(0.66 0.13 70); }
 .sim-action-button[data-action="stop"], .sim-action-ic[data-action="stop"] { --sim-accent: oklch(0.55 0.20 25); }
