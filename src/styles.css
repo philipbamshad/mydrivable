@@ -44,6 +44,8 @@
   --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+  --color-progress: var(--progress-blue);
+  --color-progress-text: var(--progress-text);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
@@ -71,6 +73,8 @@
 /* ===== Light mode (canonical) — minimalist AI aesthetic ===== */
 :root {
   --radius: 0.75rem;
+  --progress-blue: #2563eb;
+  --progress-text: var(--progress-blue);
 
   /* Off-white canvas, pure white cards */
   --background: #f9f9fb;
@@ -132,6 +136,7 @@
 /* ===== Dark mode — clean Claude-style neutral ===== */
 .dark {
   --background: #0b0c0e;
+  --progress-text: #60a5fa;
   --foreground: #f3f4f6;
 
   --card: #141618;
@@ -780,7 +785,7 @@
   font-family: "Instrument Serif", ui-serif, Georgia, serif;
   font-style: italic;
   font-weight: 400;
-  background-image: linear-gradient(90deg, #2563eb 0%, #0284c7 100%);
+  background-image: linear-gradient(90deg, var(--progress-blue) 0%, #0284c7 100%);
   background-clip: text;
   color: transparent;
   padding-right: 0.08em;
