@@ -1,12 +1,13 @@
 # Design improvements
 
 # November private-beta fixes
-- [ ] Coach driving-test coverage, newest-message scrolling and solid header.
-- [ ] Correct permit age, unique sessions, balanced plausible choices and changed-question list; exam misses in Hub review.
-- [ ] Neutral octagonal simulation controls, mobile stats/toggle and matching progress bars/tab titles.
-- [ ] Admin waitlist count/disabled launch control; confirmed account deletion and App email.
-- [ ] Homepage beta badge, concise feature heading, your-state wording and Log in link.
-- [ ] Run rule tests and authenticated desktop/mobile checks.
+- [x] Coach driving-test coverage, newest-message scrolling and solid header.
+- [x] Correct new permit-age questions, unique concept sessions, 191 revised answer sets and complete changed-question list; exam misses now save in Hub review.
+- [ ] Legacy saved malformed permit-age attempts and historical exam misses: controlled one-time repair/replay remains unverified; do not overwrite existing progress.
+- [x] Neutral octagonal simulation controls, mobile stats/toggle and matching progress bars/tab titles.
+- [x] Admin waitlist count/disabled launch control; confirmed account deletion and App email implemented. Real deletion/email delivery deliberately not exercised on existing users.
+- [x] Homepage beta badge, concise feature heading, your-state wording and Log in link.
+- [x] All 94 tests passed; authenticated exam answer persisted with feedback, Hub review available and mobile simulation has no overflow.
 
 # Pro Pass receipt update and sandbox test
 - [x] Add actual paid amount, safe card label and optional official Stripe receipt; send only on confirmed success.
