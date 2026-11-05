@@ -29,7 +29,7 @@ function EmailTestsCard() {
   const [busy, setBusy] = useState<string | null>(null);
   const [outcome, setOutcome] = useState<{ sentTo: string; results: { template: string; ok: boolean; reason?: string }[] } | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const go = async (templateName?: "launch-announcement") => {
+  const go = async (templateName?: "launch-announcement" | "order-confirmation") => {
     setBusy(templateName ?? "all"); setError(null); setOutcome(null);
     try { setOutcome(await run({ data: templateName ? { templateName } : {} })); }
     catch (e) { setError(e instanceof Error ? e.message : "Send failed"); }
@@ -41,6 +41,7 @@ function EmailTestsCard() {
     <div className="flex flex-wrap gap-2">
       <Button onClick={() => go()} disabled={busy !== null}>{busy === "all" ? "Sending…" : "Send all app emails to me"}</Button>
       <Button variant="outline" onClick={() => go("launch-announcement")} disabled={busy !== null}>{busy === "launch-announcement" ? "Sending…" : "Send launch announcement test"}</Button>
+      <Button variant="outline" onClick={() => go("order-confirmation")} disabled={busy !== null}>{busy === "order-confirmation" ? "Sending…" : "Send Pro Pass order confirmation test"}</Button>
     </div>
     {error && <p className="text-sm text-destructive">{error}</p>}
     {outcome && <div className="space-y-1 text-sm">

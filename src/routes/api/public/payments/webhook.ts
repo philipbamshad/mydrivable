@@ -183,6 +183,20 @@ async function handleWebhook(req: Request, env: StripeEnv) {
     case "checkout.session.async_payment_succeeded":
       await handleCheckoutSessionCompleted(event.data.object, env);
       break;
+    case "payment_intent.succeeded": {
+      // Direct Stripe payments use the same confirmed fulfillment path. Checkout
+      // intents carry no order metadata, so their checkout event remains owner.
+      const intent = event.data.object;
+      if (intent.metadata?.priceId !== 'pro_pass_lifetime_9' || !intent.metadata?.userId) break;
+      await handleCheckoutSessionCompleted({
+        id: intent.id, mode: 'payment', payment_status: 'paid',
+        livemode: intent.livemode, customer: intent.customer,
+        payment_intent: intent.id, metadata: intent.metadata,
+        amount_total: intent.amount_received, currency: intent.currency,
+        created: intent.created,
+      }, env);
+      break;
+    }
     default:
       console.log("Unhandled event:", event.type);
   }
