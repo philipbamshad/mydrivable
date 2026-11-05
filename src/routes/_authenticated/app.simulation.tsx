@@ -36,10 +36,10 @@ export const Route = createFileRoute("/_authenticated/app/simulation")({
 
 type Phase = "ready" | "instructions" | "playing" | "decision" | "feedback" | "results";
 const icons: Partial<Record<ActionIcon, typeof ArrowUp>> = ACTION_ICONS;
-const cardClass = "rounded-[28px] border border-border/60 bg-card p-4 shadow-lg sm:p-6";
+const cardClass = "rounded-[28px] border border-border/60 bg-card p-8 shadow-lg";
 
 function StatTile({ label, value }: { label: string; value: string | number }) {
-  return <div className="rounded-3xl bg-muted p-4 text-center sm:p-5"><p className="text-xs uppercase text-muted-foreground">{label}</p><p className="mt-1 font-display text-2xl font-bold tabular-nums sm:text-3xl">{value}</p></div>;
+  return <div className="flex h-[120px] flex-col items-center justify-center rounded-3xl bg-muted px-2 text-center"><p className="text-xs uppercase text-muted-foreground">{label}</p><p className="mt-1 font-display text-3xl font-bold tabular-nums sm:text-4xl">{value}</p></div>;
 }
 
 function SimulationPage() {
@@ -215,13 +215,13 @@ function SimulationPage() {
 
   return (
     <div ref={scroller} className={cn("h-full min-h-0 bg-secondary/40 text-foreground", active ? "overflow-hidden" : "overflow-y-auto overscroll-contain")} style={tabGlowStyle} aria-label="Driving Test Simulation">
-      <div className={cn("mx-auto flex w-full max-w-6xl flex-col p-4 sm:p-6", active ? "h-full min-h-0" : "min-h-full")}>
-        <header className="mb-6 grid shrink-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-2 pl-14 md:pl-0">
-          {phase !== "ready" && <Button variant="ghost" onClick={exit} className="order-2 h-8 px-0 text-xs text-muted-foreground"><ArrowLeft /><span className="sm:hidden">Exit</span><span className="hidden sm:inline">Exit simulation</span></Button>}
-          <h1 className="min-w-0 truncate font-display text-lg font-bold sm:text-xl">Driving Test Simulation</h1>
+      <div className={cn("mx-auto flex w-full max-w-[960px] flex-col px-4 pb-8 pt-6 md:px-8", active ? "h-full min-h-0" : "min-h-full")}>
+        <header className="flex shrink-0 items-center justify-between gap-3 pl-14 md:pl-0">
+          <h1 className="min-w-0 truncate font-display text-xl font-bold leading-tight">Driving Test Simulation</h1>
+          {phase !== "ready" && <Button variant="ghost" onClick={exit} className="h-8 shrink-0 px-0 text-xs text-muted-foreground"><ArrowLeft /><span className="sm:hidden">Exit</span><span className="hidden sm:inline">Exit simulation</span></Button>}
         </header>
         {phase === "ready" ? (
-          <div className="mx-auto w-full max-w-3xl">
+          <div className="mt-8 w-full space-y-4">
             <div className={cardClass}>
               <div className="flex items-center gap-4">
                 <div className="grid h-12 w-12 shrink-0 place-items-center rounded-[18px] border border-border bg-muted text-foreground sm:h-14 sm:w-14"><Video className="h-6 w-6" /></div>
