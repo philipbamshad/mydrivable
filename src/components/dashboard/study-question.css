@@ -1,19 +1,20 @@
-.study-tab-content:has(.study-question-frame) { overflow: hidden; }
-.study-tab-inner:has(.study-question-frame) { height: 100%; min-height: 0; padding: 10px 14px; justify-content: flex-start; }
-.study-question-frame { height: 100%; min-height: 0; display: flex; flex-direction: column; gap: 8px; container-type: size; }
-.study-question-card { min-height: 0; flex: 1; display: flex; flex-direction: column; gap: 10px; padding: 14px 18px; }
-.study-question-card > .exam-road-visual { flex: 1 1 112px; min-height: 36px; max-height: 24cqh; height: auto; margin: 0; overflow: hidden; }
-.study-question-card > .exam-road-visual > * { width: auto !important; height: 100% !important; max-height: 112px; max-width: 100%; aspect-ratio: 1; }
-.study-question-card > .exam-road-visual svg { max-height: 100%; max-width: 100%; }
-.study-question-card > h3 { margin: 0; font-size: 16px; line-height: 1.35; flex-shrink: 0; }
-.study-question-card .study-answers { gap: 8px; flex-shrink: 0; }
-.study-question-card .study-answers button { min-height: 48px; padding: 8px 12px; font-size: 13px; line-height: 1.35; }
-.study-question-card .study-feedback { margin-top: auto; padding-top: 8px; flex-shrink: 0; }
-.study-question-card .study-feedback p { font-size: 13px; line-height: 1.4; margin-bottom: 0; }
-.study-question-card .study-feedback button { margin-top: 8px; height: 36px; }
-.study-question-card .study-feedback > div { margin-top: 4px; }
+/* Shared question layout for Mock Permit Exam and Permit Test Hub: content-height card near the top. */
+.study-tab-inner:has(.study-question-frame) { justify-content: flex-start; padding: 24px; }
+.study-question-frame { display: flex; flex-direction: column; max-width: 900px; }
+.study-question-frame > .study-question-meta { margin-bottom: 8px; }
+.study-question-frame > .study-progress { height: 4px; border-radius: 9999px; margin-bottom: 12px; }
+.study-question-frame > .study-question-card { flex: none; display: flex; flex-direction: column; gap: 16px; padding: 24px; }
+.study-question-card > * { margin: 0 !important; }
+.study-question-card > h3 { font-size: 17px; line-height: 1.4; }
+.study-question-card .question-visual { display: flex; align-items: center; justify-content: center; height: 160px; padding: 12px; border-radius: 16px; background: var(--muted); overflow: hidden; }
+.study-question-card .question-visual > *, .study-question-card .question-visual svg { width: auto !important; height: 100% !important; max-width: 100%; object-fit: contain; }
+.study-question-card .study-answers { display: grid; grid-template-columns: 1fr; gap: 8px; }
+.study-question-card .study-answers button { width: 100%; min-height: 48px; padding: 10px 16px; font-size: 14px; line-height: 1.4; }
+.study-question-card .study-feedback { padding-top: 16px; border-top: 1px solid var(--border); }
+.study-question-card .study-feedback p { font-size: 14px; line-height: 1.45; }
+.study-question-card .study-feedback .study-next { display: flex; justify-content: flex-end; margin-top: 12px; }
 @media (max-width: 639px) {
-  .study-question-card { gap: 8px; padding: 12px; }
-  .study-question-card > .exam-road-visual { max-height: 16cqh; }
-  .study-question-card .study-answers button { min-height: 44px; padding: 7px 10px; }
+  .study-tab-inner:has(.study-question-frame) { padding: 16px; }
+  .study-question-frame > .study-question-card { padding: 16px; }
+  .study-question-card .question-visual { height: 120px; }
 }

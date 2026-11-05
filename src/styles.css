@@ -847,6 +847,8 @@
   --exam-road-ink: #171717;
   --exam-road-off: #414141;
   --exam-road-asphalt: #525252;
+  --exam-road-school: #c4e538;
+  --exam-road-purple: #7e22ce;
 }
 .simulation-signal-video {
   --signal-amber: #FFA500;

@@ -64,3 +64,13 @@
 - [x] Add saved per-topic mastery, last scores, recommendations and missed-question tracking.
 - [x] Upgrade practice feedback, visuals, keyboard answers and mastery results within existing Hub style.
 - [x] Test mastery/missed-question/free-limit rules and verify signed-in practice, persistence and review.
+
+# Spacing and layout pass
+- [x] Content-height question cards, single-column answers, right-aligned Next, 4px progress bars (exam + Hub).
+- [x] Sign images: contained 160/120px boxes; every sign shows its real symbol.
+- [ ] App-wide spacing audit of AI Coach, settings, homepage at all four sizes (question pages and simulation checked).
+
+# Simulation look and clarity
+- [x] Solid action buttons (octagon Stop), freeze-only prompt/countdown/step label, 10% freeze overlay.
+- [x] Two-step check badge and "Correct. Now choose your next action."; result chips per step; timeout never marks correct answers ✕.
+- [x] Update How it works text/icon and full-width progress bar; test all 6 scenarios timed/untimed.

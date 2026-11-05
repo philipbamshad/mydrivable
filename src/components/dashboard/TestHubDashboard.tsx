@@ -83,8 +83,8 @@ export function TestHubDashboard({ initialTopic, userId }: { initialTopic?: Pill
   </div>;
 }
 
-function Meter({ value }: { value: number }) {
-  return <div className="h-1.5 rounded-full bg-muted overflow-hidden" role="progressbar" aria-valuenow={value} aria-valuemin={0} aria-valuemax={100}><div className="h-full bg-action rounded-full transition-all" style={{ width: `${value}%` }} /></div>;
+function Meter({ value, className }: { value: number; className?: string }) {
+  return <div className={cn("h-1.5 rounded-full bg-muted overflow-hidden", className)} role="progressbar" aria-valuenow={value} aria-valuemin={0} aria-valuemax={100}><div className="h-full bg-action rounded-full transition-all" style={{ width: `${value}%` }} /></div>;
 }
 
 type SaveInput = { topic: PillarId; answer?: { question: HubQuestion; correct: boolean }; score?: number };
@@ -160,12 +160,12 @@ function QuizRunner({ mode, banks, missed, progress, stateName, isPro, usage, on
   </Card></div>;
 
   return <StudyQuestionFrame>
-    <div className="flex items-center justify-between gap-3">{back}<span className="text-xs text-muted-foreground text-right">{title} · {idx + 1} / {questions.length}</span></div>
-    <Meter value={(idx + (reveal ? 1 : 0)) / questions.length * 100} />
-    {locked && !reveal ? <Card className="bg-card rounded-[28px] border-border/60 p-7 text-center space-y-4"><Lock className="h-6 w-6 mx-auto" /><h2 className="font-bold">Free limit reached · {PILLAR_META[q.topic].title}</h2><p className="text-sm text-muted-foreground">You've answered your 10 free lifetime questions for this section.</p><Button className={actionClass} onClick={onUpgrade}>Get Pro Pass — $9</Button>{mode === "review" && idx + 1 < questions.length && <Button variant="outline" className="rounded-full ml-2" onClick={() => { setQuestions(list => list.filter((_, i) => i !== idx)); }}>Skip section</Button>}</Card> : <Card className="study-question-card bg-card border-border/60 shadow-md p-5 sm:p-7 rounded-[28px]">
+    <div className="study-question-meta flex items-center justify-between gap-3">{back}<span className="text-xs text-muted-foreground text-right">{title} · {idx + 1} / {questions.length}</span></div>
+    <Meter className="study-progress" value={(idx + (reveal ? 1 : 0)) / questions.length * 100} />
+    {locked && !reveal ? <Card className="bg-card rounded-[28px] border-border/60 p-7 text-center space-y-4"><Lock className="h-6 w-6 mx-auto" /><h2 className="font-bold">Free limit reached · {PILLAR_META[q.topic].title}</h2><p className="text-sm text-muted-foreground">You've answered your 10 free lifetime questions for this section.</p><Button className={actionClass} onClick={onUpgrade}>Get Pro Pass — $9</Button>{mode === "review" && idx + 1 < questions.length && <Button variant="outline" className="rounded-full ml-2" onClick={() => { setQuestions(list => list.filter((_, i) => i !== idx)); }}>Skip section</Button>}</Card> : <Card className="study-question-card bg-card border-border/60 shadow-md rounded-[28px]">
       <HubQuestionVisual question={q} />
-      <h3 className="font-display text-lg font-semibold mb-5">{q.q}</h3>
-      <div className="study-answers grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <h3 className="font-display text-lg font-semibold">{q.q}</h3>
+      <div className="study-answers">
         {q.options.map((option, i) => <Button key={i} variant="outline" disabled={reveal} onClick={() => choose(i)} aria-pressed={picked === i}
           className={cn("h-auto min-h-16 whitespace-normal text-left justify-between p-4 rounded-xl font-medium disabled:opacity-100",
             reveal && i === q.correct && "border-success/40 bg-success/10 text-success",
@@ -175,9 +175,9 @@ function QuizRunner({ mode, banks, missed, progress, stateName, isPro, usage, on
           {reveal && i === q.correct && <Check className="h-4 w-4 shrink-0" />}{reveal && picked === i && i !== q.correct && <X className="h-4 w-4 shrink-0" />}
         </Button>)}
       </div>
-      {reveal && <div className="study-feedback mt-5 border-t border-border pt-5" aria-live="polite"><p className={cn("font-semibold mb-2", picked === q.correct ? "text-success" : "text-destructive")}>{picked === q.correct ? "Correct" : "Incorrect"}</p><p className="text-sm leading-relaxed">{q.explanation}</p>
+      {reveal && <div className="study-feedback" aria-live="polite"><p className={cn("font-semibold mb-2", picked === q.correct ? "text-success" : "text-destructive")}>{picked === q.correct ? "Correct" : "Incorrect"}</p><p className="text-sm leading-relaxed">{q.explanation}</p>
         {error && <p role="alert" className="text-destructive text-sm mt-3">{error}</p>}
-        {error && !saved && picked !== null ? <Button className={cn(actionClass, "mt-4")} onClick={() => void persistAnswer(picked)} disabled={saving}>Retry save</Button> : <Button className={cn(actionClass, "mt-4")} onClick={() => void advance()} disabled={saving || !saved}>{saving ? "Saving…" : idx + 1 === questions.length ? "See results" : "Next question"}</Button>}
+        <div className="study-next">{error && !saved && picked !== null ? <Button className={actionClass} onClick={() => void persistAnswer(picked)} disabled={saving}>Retry save</Button> : <Button className={actionClass} onClick={() => void advance()} disabled={saving || !saved}>{saving ? "Saving…" : idx + 1 === questions.length ? "See results" : "Next question"}</Button>}</div>
       </div>}
     </Card>}
   </StudyQuestionFrame>;
