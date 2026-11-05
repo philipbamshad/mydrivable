@@ -1,5 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireAllowlisted } from "@/lib/allowlist-middleware";
+import { z } from "zod";
+import type Stripe from "stripe";
 import {
   type StripeEnv,
   createStripeClient,
@@ -50,15 +52,13 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
       returnUrl: string;
       environment: StripeEnv;
     }) => {
-      if (!/^[a-zA-Z0-9_-]+$/.test(data.priceId)) throw new Error("Invalid priceId");
-      return data;
+      return z.object({ priceId: z.literal("pro_pass_lifetime_9"), returnUrl: z.string().url(), environment: z.enum(["sandbox", "live"]) }).parse(data);
     },
   )
   .handler(async ({ data, context }): Promise<CheckoutSessionResult> => {
     try {
       const { userId, supabase } = context;
-      const { data: { user } } = await supabase.auth.getUser();
-      const email = user?.email ?? undefined;
+      const email = typeof context.claims.email === "string" ? context.claims.email : undefined;
 
       const stripe = createStripeClient(data.environment);
 
@@ -77,7 +77,7 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
         : stripePrice.product.id;
       const product = await stripe.products.retrieve(productId);
 
-      const session = await stripe.checkout.sessions.create({
+      const params: Stripe.Checkout.SessionCreateParams & { managed_payments: { enabled: boolean } } = {
         line_items: [{ price: stripePrice.id, quantity: 1 }],
         mode: isRecurring ? "subscription" : "payment",
         ui_mode: "embedded_page",
@@ -95,7 +95,8 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
           subscription_data: { metadata: { userId } },
         }),
         managed_payments: { enabled: true },
-      } as any);
+      };
+      const session = await stripe.checkout.sessions.create(params);
 
       return { clientSecret: session.client_secret ?? "" };
     } catch (error) {

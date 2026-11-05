@@ -468,12 +468,14 @@ export type Database = {
           daily_done_date: string | null
           email_reminders: boolean
           free_usage: Json
+          onboarding_completed_at: string | null
           reminder_1d_sent_for_date: string | null
           reminder_7d_sent_for_date: string | null
           skill_mastery: Json
           target_date: string | null
           theme: string
           timezone: string
+          under_18: boolean | null
           updated_at: string
           user_id: string
           welcome_email_sent_at: string | null
@@ -485,12 +487,14 @@ export type Database = {
           daily_done_date?: string | null
           email_reminders?: boolean
           free_usage?: Json
+          onboarding_completed_at?: string | null
           reminder_1d_sent_for_date?: string | null
           reminder_7d_sent_for_date?: string | null
           skill_mastery?: Json
           target_date?: string | null
           theme?: string
           timezone?: string
+          under_18?: boolean | null
           updated_at?: string
           user_id: string
           welcome_email_sent_at?: string | null
@@ -502,12 +506,14 @@ export type Database = {
           daily_done_date?: string | null
           email_reminders?: boolean
           free_usage?: Json
+          onboarding_completed_at?: string | null
           reminder_1d_sent_for_date?: string | null
           reminder_7d_sent_for_date?: string | null
           skill_mastery?: Json
           target_date?: string | null
           theme?: string
           timezone?: string
+          under_18?: boolean | null
           updated_at?: string
           user_id?: string
           welcome_email_sent_at?: string | null

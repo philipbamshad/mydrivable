@@ -32,3 +32,5 @@
 
 - Propagate canonical authored concept IDs through bank variations, exam selection and Hub progress so phrasing or option edits cannot duplicate concepts or change scoring identity.
 - Queue study answers by owner, attempt and version in browser storage; replay through an authenticated allowlisted raw POST sharing the existing atomic scoring helper, and gate results on confirmed draining to preserve limits and recovery.
+- Gate all app content on saved state and self-reported age-band setup; share permit-format rules between server reservations and UI, retaining the saved payload format on resume.
+- Merge legacy exam answers only for identities missing from Hub progress, preserving recovered misses and canonical question counts.

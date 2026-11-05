@@ -40,6 +40,7 @@ import { cn } from "@/lib/utils";
 import { AccountPanel, type AccountSection } from "@/components/dashboard/AccountPanel";
 import { useUserProfile, US_STATES } from "@/lib/user-profile";
 import { targetDateHasPassed } from "@/lib/target-date";
+import { useQueryClient } from "@tanstack/react-query";
 
 const PRIMARY_NAV = [
   { id: "chat", label: "AI Coach", icon: MessageSquare },
@@ -49,6 +50,7 @@ const PRIMARY_NAV = [
 
 export function ThreadSidebar() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [panelSection, setPanelSection] = useState<AccountSection | undefined>(undefined);
   const [settingsMenuOpen, setSettingsMenuOpen] = useState(false);
@@ -78,9 +80,12 @@ export function ThreadSidebar() {
   const activeTab = (search as { tab?: string }).tab ?? "chat";
 
   const signOut = async () => {
+    setSettingsOpen(false); setSettingsMenuOpen(false); setMobileOpen(false);
+    await queryClient.cancelQueries();
+    queryClient.clear();
     await supabase.auth.signOut();
     toast.success("Signed out");
-    navigate({ to: "/auth" });
+    navigate({ to: "/auth", replace: true });
   };
 
   const localTarget = useMemo(() => {
@@ -231,6 +236,7 @@ export function ThreadSidebar() {
   );
 
   const openSettingsSection = (section: AccountSection | undefined) => {
+    setMobileOpen(false);
     setSettingsMenuOpen(false);
     setPanelSection(section);
     setSettingsOpen(true);
@@ -254,9 +260,9 @@ export function ThreadSidebar() {
 
     return (
       <div className={cn("flex items-center gap-2 border-t border-sidebar-border mt-auto", isCollapsed ? "flex-col p-2" : "p-3")}>
-        <button
+        <Button variant="ghost"
           type="button"
-          onClick={() => setSettingsMenuOpen(true)}
+          onClick={() => surface === "mobile" ? openSettingsSection(undefined) : setSettingsMenuOpen(true)}
           aria-label="Open account menu"
           aria-haspopup="menu"
           aria-expanded={settingsMenuOpen}
@@ -278,8 +284,8 @@ export function ThreadSidebar() {
               </span>
             </span>
           )}
-        </button>
-        <Popover open={settingsMenuOpen} onOpenChange={setSettingsMenuOpen}>
+        </Button>
+        <Popover open={surface === "desktop" && settingsMenuOpen} onOpenChange={(open) => surface === "mobile" && open ? openSettingsSection(undefined) : setSettingsMenuOpen(open)}>
           <PopoverTrigger asChild>
             <Button
               variant="ghost"
@@ -419,29 +425,7 @@ export function ThreadSidebar() {
 
       {createInfoCards(surface)}
 
-      <Sheet open={settingsOpen} onOpenChange={setSettingsOpen}>
         {createUserFooter(surface)}
-        <SheetContent side="right" className="w-full sm:max-w-lg overflow-y-auto">
-          <SheetHeader>
-            <SheetTitle>{panelSection === "state" ? "Driving state" : panelSection === "date" ? "DMV target date" : panelSection === "membership" ? "Pro Pass" : "Settings"}</SheetTitle>
-          </SheetHeader>
-          <div className="mt-4">
-            <AccountPanel section={panelSection} />
-          </div>
-          {!panelSection && (
-            <Button
-              variant="outline"
-              onClick={() => {
-                setSettingsOpen(false);
-                void signOut();
-              }}
-              className="mt-6 w-full min-h-11 border-destructive/40 text-destructive hover:bg-destructive/10 press"
-            >
-              <LogOut className="w-4 h-4" /> Sign out
-            </Button>
-          )}
-        </SheetContent>
-      </Sheet>
     </>
   );
   };
@@ -479,6 +463,13 @@ export function ThreadSidebar() {
             <SheetTitle>Navigation</SheetTitle>
           </SheetHeader>
           {createBody("mobile")}
+        </SheetContent>
+      </Sheet>
+      <Sheet open={settingsOpen} onOpenChange={setSettingsOpen}>
+        <SheetContent side="right" className="w-full sm:max-w-lg overflow-y-auto">
+          <SheetHeader><SheetTitle>{panelSection === "state" ? "Driving state" : panelSection === "date" ? "DMV target date" : panelSection === "membership" ? "Pro Pass" : "Settings"}</SheetTitle></SheetHeader>
+          <div className="mt-4"><AccountPanel section={panelSection} /></div>
+          {!panelSection && <Button variant="outline" onClick={() => void signOut()} className="mt-6 w-full min-h-11 border-destructive/40 text-destructive hover:bg-destructive/10"><LogOut />Sign out</Button>}
         </SheetContent>
       </Sheet>
     </>

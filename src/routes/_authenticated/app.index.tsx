@@ -13,7 +13,6 @@ import { TestHubDashboard } from "@/components/dashboard/TestHubDashboard";
 import { PermitExamSimulator } from "@/components/dashboard/PermitExamSimulator";
 import { ChatTab } from "@/components/chat/ChatTab";
 import { useUserProfile } from "@/lib/user-profile";
-import { StateOnboardingDialog } from "@/components/dashboard/StateOnboardingDialog";
 import { tabGlowStyle } from "@/lib/tab-glow";
 import { examHistoryOptions } from "@/lib/mock-exam.functions";
 import { hubProgressOptions } from "@/lib/test-hub.functions";
@@ -140,7 +139,6 @@ function AppDashboard() {
           </TabsContent>
         </div>
       </Tabs>
-      <StateOnboardingDialog />
     </div>
   );
 }

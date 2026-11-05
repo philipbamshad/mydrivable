@@ -1,6 +1,7 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 import { ThreadSidebar } from "@/components/chat/ThreadSidebar";
-import { UserProfileProvider } from "@/lib/user-profile";
+import { UserProfileProvider, useUserProfile } from "@/lib/user-profile";
+import { StateOnboardingDialog } from "@/components/dashboard/StateOnboardingDialog";
 import { ThemeProvider } from "@/lib/theme";
 import { useEffect } from "react";
 import { useServerFn } from "@tanstack/react-start";
@@ -29,7 +30,7 @@ function AppLayout() {
           <div className="relative flex flex-col md:flex-row flex-1 min-h-0 min-w-0 overflow-hidden p-0 gap-0 md:p-4 md:gap-4">
             <ThreadSidebar />
             <main className="flex-1 min-w-0 overflow-x-hidden md:rounded-[32px] glass glow-soft overflow-hidden">
-              <Outlet />
+              <SetupContent />
             </main>
           </div>
         </div>
@@ -37,5 +38,12 @@ function AppLayout() {
       </UserProfileProvider>
     </ThemeProvider>
   );
+}
+
+function SetupContent() {
+  const { hydrating, onboardingCompleted, state } = useUserProfile();
+  if (hydrating) return null;
+  if (!onboardingCompleted || !state) return <StateOnboardingDialog />;
+  return <Outlet />;
 }
 
