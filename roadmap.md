@@ -68,7 +68,7 @@
 # Spacing and layout pass
 - [x] Content-height question cards, single-column answers, right-aligned Next, 4px progress bars (exam + Hub).
 - [x] Sign images: contained 160/120px boxes; every sign shows its real symbol.
-- [ ] App-wide spacing audit of AI Coach, settings, homepage at all four sizes (question pages and simulation checked).
+- [x] App-wide spacing pass: 16/24px padding, 24px under headers, 900px max width, checked at 1440/1280/768/375.
 
 # Simulation look and clarity
 - [x] Solid action buttons (octagon Stop), freeze-only prompt/countdown/step label, 10% freeze overlay.
