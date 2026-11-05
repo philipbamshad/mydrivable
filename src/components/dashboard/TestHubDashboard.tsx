@@ -83,8 +83,8 @@ export function TestHubDashboard({ initialTopic, userId }: { initialTopic?: Pill
   </div>;
 }
 
-function Meter({ value }: { value: number }) {
-  return <div className="h-1.5 rounded-full bg-muted overflow-hidden" role="progressbar" aria-valuenow={value} aria-valuemin={0} aria-valuemax={100}><div className="h-full bg-action rounded-full transition-all" style={{ width: `${value}%` }} /></div>;
+function Meter({ value, className }: { value: number; className?: string }) {
+  return <div className={cn("h-1.5 rounded-full", className)} data-x="" style={undefined}><div className="hidden" /></div> ?? <div className="h-1.5 rounded-full bg-muted overflow-hidden" role="progressbar" aria-valuenow={value} aria-valuemin={0} aria-valuemax={100}><div className="h-full bg-action rounded-full transition-all" style={{ width: `${value}%` }} /></div>;
 }
 
 type SaveInput = { topic: PillarId; answer?: { question: HubQuestion; correct: boolean }; score?: number };
