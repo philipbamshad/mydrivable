@@ -49,13 +49,13 @@ export function TestHubDashboard({ initialTopic, userId }: { initialTopic?: Pill
 
   return <div className="max-w-[900px] mx-auto space-y-4 w-full">
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-      <Card className="bg-card rounded-[28px] border-border/60 p-5 flex flex-col gap-3 shadow-md">
+      <Card className="bg-card rounded-[28px] border-border/60 p-4 sm:p-6 flex flex-col gap-3 shadow-md">
         <div className="flex items-center gap-2"><Target className="h-5 w-5" /><h2 className="font-display font-bold">Recommended for you</h2></div>
         <p className="font-semibold">{PILLAR_META[weakest].title}</p>
         <p className="text-sm text-muted-foreground">Mastery {topicStats(progress.find(p => p.topic === weakest) ?? emptyTopic(weakest), banks[weakest].length).mastery}%</p>
         <Button className={cn(actionClass, "mt-auto h-11")} onClick={() => setActive(weakest)}>Practice now</Button>
       </Card>
-      <Card className="bg-card rounded-[28px] border-border/60 p-5 flex flex-col gap-3 shadow-md">
+      <Card className="bg-card rounded-[28px] border-border/60 p-4 sm:p-6 flex flex-col gap-3 shadow-md">
         <div className="flex items-center gap-2"><BookOpen className="h-5 w-5" /><h2 className="font-display font-bold">Review missed questions</h2></div>
         <p className="font-semibold">{missed.length} {missed.length === 1 ? "question" : "questions"}</p>
         <p className="text-sm text-muted-foreground">{missed.length ? "Your missed questions, across all topics." : "No missed questions to review."}</p>
@@ -68,7 +68,7 @@ export function TestHubDashboard({ initialTopic, userId }: { initialTopic?: Pill
         const stats = topicStats(progress.find(p => p.topic === topic) ?? emptyTopic(topic), banks[topic].length);
         const remaining = Math.max(0, HUB_FREE_LIMIT - (freeUsage.pillars[topic] ?? 0));
         const locked = !isPro && !remaining;
-        return <Card key={topic} className="bg-card rounded-[28px] border-border/60 p-5 shadow-md flex flex-col gap-4">
+        return <Card key={topic} className="bg-card rounded-[28px] border-border/60 p-4 sm:p-6 shadow-md flex flex-col gap-4">
           <div className="flex items-center gap-3">
             <span className="grid h-12 w-12 place-items-center rounded-[18px] border border-border bg-muted shrink-0"><Icon className="w-5 h-5" /></span>
             <div className="min-w-0"><div className="flex items-center flex-wrap gap-2"><h3 className="font-display text-base font-bold">{PILLAR_META[topic].title}</h3><Badge className="bg-muted text-foreground border-border">Pro</Badge></div><p className="text-sm text-muted-foreground mt-1">{Math.min(8, banks[topic].length)} questions</p></div>
