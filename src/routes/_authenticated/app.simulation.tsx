@@ -13,7 +13,9 @@ import { signalDirection, signalIsActive } from "@/data/simulation-signal";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { ActionLegend, ACTION_ICONS } from "@/components/simulation/ActionLegend";
+import { ActionLegend, ACTION_ICONS, STANDARD_ACTIONS } from "@/components/simulation/ActionLegend";
+import { scenarioResultView, type ResultChip } from "@/data/simulation-result";
+import "@/components/simulation/simulation-actions.css";
 import { useUserProfile } from "@/lib/user-profile";
 
 export const Route = createFileRoute("/_authenticated/app/simulation")({
@@ -217,7 +219,7 @@ function SimulationPage() {
           <div className={cn(cardClass, "my-auto mx-auto w-full max-w-3xl")}>
             <h2 className="font-display text-xl font-bold">How it works</h2>
             <p className="mb-7 mt-4 text-sm leading-relaxed text-muted-foreground">Each video stops at a decision point. The turn signal shows where you're going. Choose the correct action before time runs out.</p>
-            <p className="mb-5 text-sm text-muted-foreground">Some scenarios have two steps. After your first decision, choose what you do next.</p>
+            <p className="mb-5 text-sm text-muted-foreground">Some scenarios need two actions. If your first choice is right, it's marked with a check. Then choose your next action.</p>
             <ActionLegend />
             <div className="mt-7 flex items-center gap-3"><Checkbox id="skip-instructions" checked={skipInstructions} onCheckedChange={checked => { const value = checked === true; setSkipInstructions(value); localStorage.setItem("drivable.simulation.skip-instructions", String(value)); }} /><label htmlFor="skip-instructions" className="text-sm">Don't show again</label></div>
             <Button onClick={start} className="mt-5 h-12 w-full rounded-full">I'm ready<ArrowRight /></Button>
@@ -242,14 +244,14 @@ function SimulationPage() {
         ) : clip ? (
           <div data-scenario={clip.id} data-phase={phase} data-step={stepIndex + 1} className="flex min-h-0 flex-1 flex-col gap-2">
             <div className="grid shrink-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-2 text-xs text-muted-foreground"><span>Scenario {idx + 1} of {session.length} · {clip.title}</span><div className="hidden items-center gap-2 md:flex"><Switch id="hide-legend" checked={!showLegend} onCheckedChange={hidden => { setShowLegend(!hidden); localStorage.setItem("drivable.simulation.hide-legend", String(hidden)); }} /><label htmlFor="hide-legend">Hide legend</label></div></div>
-            <div role="progressbar" aria-label="Scenario progress" aria-valuemin={0} aria-valuemax={session.length} aria-valuenow={idx + 1} className="flex h-1 shrink-0 overflow-hidden rounded-full bg-muted">{session.map((item, index) => <span key={item.id} className={cn("h-full flex-1", index <= idx && "bg-action")} />)}</div>
-            {clip.steps.length > 1 && <p className="shrink-0 text-xs text-muted-foreground">Step {stepIndex + 1} of {clip.steps.length}</p>}
-            <div className={cn("grid min-h-0 flex-1 gap-3", showLegend && "md:grid-cols-[minmax(0,1fr)_170px]")}>
+            <div role="progressbar" aria-label="Scenario progress" aria-valuemin={0} aria-valuemax={session.length} aria-valuenow={idx + 1} className="h-1 w-full shrink-0 overflow-hidden rounded-full bg-muted"><span className="block h-full rounded-full bg-action transition-all" style={{ width: `${(idx + 1) / session.length * 100}%` }} /></div>
+                        <div className={cn("grid min-h-0 flex-1 gap-3", showLegend && "md:grid-cols-[minmax(0,1fr)_170px]")}>
               <div key={clip.id} data-signal-active={signaling && signalSide !== null} className="simulation-signal-video relative min-h-0 overflow-hidden rounded-2xl bg-muted">
                 <video ref={videoRef} src={clip.videoUrl} autoPlay muted playsInline preload="auto"
                   onPlaying={() => setHasPlayed(true)} onLoadedData={() => setLoaded(true)} onCanPlay={() => { if (phaseRef.current === "playing") resumeVideo(); }}
                   onTimeUpdate={event => { if (event.currentTarget.currentTime >= clip.pauseAt) beginDecision(); }}
                   onEnded={holdFinalFrame} onError={() => setVideoError(true)} className="absolute inset-0 h-full w-full object-contain" />
+                {phase === "decision" && <div aria-hidden="true" className="sim-freeze-overlay pointer-events-none absolute inset-0" />}
                 {signalSide && <div aria-hidden="true" data-direction={signalSide} className="simulation-signal-glow pointer-events-none absolute inset-0 rounded-[inherit]" />}
                 {(!loaded || videoError || needsPlay) && phase === "playing" && <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-card/80">{videoError ? <><p className="text-sm">Unable to load this clip.</p><Button onClick={() => { setVideoError(false); videoRef.current?.load(); }}>Retry</Button></> : needsPlay ? <Button onClick={resumeVideo}><Play />Play clip</Button> : <LoaderCircle className="h-8 w-8 animate-spin motion-reduce:animate-none" aria-label="Loading clip" />}</div>}
                 <span className="pointer-events-none absolute left-3 top-3 inline-flex max-w-[calc(100%-1.5rem)] items-center gap-2 rounded-full border border-border bg-primary-foreground px-3 py-1.5 text-xs font-semibold text-action shadow-sm" aria-label={`Intent: ${clip.intent}`}>
@@ -259,16 +261,15 @@ function SimulationPage() {
               </div>
               {showLegend && <aside aria-label="Action legend" className="hidden h-full min-h-0 rounded-2xl bg-card p-3 md:flex md:items-center"><ActionLegend /></aside>}
             </div>
-            {timed && <div role="progressbar" aria-label="Decision time remaining" aria-valuemin={0} aria-valuemax={2.5} aria-valuenow={phase === "playing" ? 2.5 : phase === "feedback" ? 0 : remaining / 1000} className="flex h-1 shrink-0 overflow-hidden rounded-full bg-muted"><span className={cn("h-full transition-[flex-grow] duration-75", remaining > 1000 ? "bg-action" : "bg-destructive/60")} style={{ flexGrow: phase === "playing" ? DECISION_MS : phase === "feedback" ? 0 : remaining }} /><span style={{ flexGrow: phase === "playing" ? 0 : phase === "feedback" ? DECISION_MS : DECISION_MS - remaining }} /></div>}
+            {timed && phase === "decision" && <div role="progressbar" aria-label="Decision time remaining" aria-valuemin={0} aria-valuemax={2.5} aria-valuenow={phase === "playing" ? 2.5 : phase === "feedback" ? 0 : remaining / 1000} className="flex h-1 shrink-0 overflow-hidden rounded-full bg-muted"><span className={cn("h-full transition-[flex-grow] duration-75", remaining > 1000 ? "bg-action" : "bg-destructive/60")} style={{ flexGrow: phase === "playing" ? DECISION_MS : phase === "feedback" ? 0 : remaining }} /><span style={{ flexGrow: phase === "playing" ? 0 : phase === "feedback" ? DECISION_MS : DECISION_MS - remaining }} /></div>}
             <div className="shrink-0 basis-[192px] sm:basis-[168px]">
               {phase === "feedback" && feedback ? <div ref={feedbackPanel} role="status" className="flex h-full flex-col gap-2 rounded-2xl border border-border/60 bg-card p-3 sm:p-4">
-                <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2"><h2 className={cn("font-display text-base font-bold", feedback.correct ? "text-success" : "text-destructive")}>{feedback.selectedAction === null ? "No decision made" : feedback.correct ? "Correct" : "Incorrect"}</h2>{feedback.reactionMs !== null && <span className="text-xs text-muted-foreground">Avg. {(feedback.reactionMs / 1000).toFixed(1)}s</span>}</div>
-                <div className="flex flex-wrap gap-3 text-xs font-semibold">{clip.steps.map((id, index) => { const recorded = feedback.steps?.[index]; return <span key={index} className={cn("inline-flex items-center gap-1", recorded?.correct ? "text-success" : "text-destructive")}>{index > 0 && "Then "}{clip.actions.find(a => a.id === id)?.label}{recorded?.correct ? <Check className="size-3.5" /> : <X className="size-3.5" />}</span>; })}</div>
+                <FeedbackResult steps={clip.steps} decision={feedback} />
                 <p className="text-xs leading-relaxed text-muted-foreground sm:text-sm">{clip.explanation}</p>
                 <Button onClick={goNext} className="mt-auto h-9 shrink-0 self-end rounded-full">Next scenario<ArrowRight /></Button>
               </div> : <div ref={decisionPanel} className="flex h-full flex-col gap-2">
-                <div><p className="text-sm font-semibold">{stepIndex === 0 ? "What do you do?" : "Then what?"}</p><p className="text-xs text-muted-foreground">{clip.subtitle}</p></div>
-                <TooltipProvider delayDuration={150}><div className="grid grid-cols-3 gap-3">{clip.actions.map(action => { const Icon = icons[action.icon]; if (!Icon) return null; return <Tooltip key={action.id}><TooltipTrigger asChild><span className="block"><Button variant="secondary" disabled={phase !== "decision"} onClick={() => answer(action.id)} aria-label={action.label} className={cn("h-[72px] w-full min-w-0 rounded-2xl border border-border", phase === "playing" && "opacity-40")}><Icon className="size-8" /></Button></span></TooltipTrigger><TooltipContent>{action.label}</TooltipContent></Tooltip>; })}</div></TooltipProvider>
+                <div className="min-h-[40px]">{phase === "decision" && <>{stepIndex > 0 && <p className="text-xs font-semibold text-success">Correct. Now choose your next action.</p>}<p className="text-sm font-semibold">{stepIndex === 0 ? "What do you do?" : "Then what do you do?"}{clip.steps.length > 1 && <span className="ml-2 text-xs font-normal text-muted-foreground">Step {stepIndex + 1} of {clip.steps.length}</span>}</p></>}</div>
+                <TooltipProvider delayDuration={150}><div key={`${phase}-${stepIndex}`} className={cn("sim-action-row grid grid-cols-3 gap-3 rounded-2xl", phase === "decision" && "sim-action-row-live")}>{STANDARD_ACTIONS.map(action => { const Icon = icons[action.icon]; if (!Icon) return null; const done = stepRecords.current.some(r => r.correct && r.selectedAction === action.id) && phase === "decision"; return <Tooltip key={action.id}><TooltipTrigger asChild><span className="block"><button type="button" disabled={phase !== "decision"} onClick={() => answer(action.id)} aria-label={action.label} data-done={done || undefined} className="sim-action-button"><Icon className="size-9" strokeWidth={2.5} />{done && <span className="sim-action-check" aria-hidden="true"><Check className="size-3" strokeWidth={3} /></span>}</button></span></TooltipTrigger><TooltipContent>{action.label}</TooltipContent></Tooltip>; })}</div></TooltipProvider>
               </div>}
             </div>
           </div>
@@ -277,4 +278,21 @@ function SimulationPage() {
       <Dialog open={mobileLegend} onOpenChange={setMobileLegend}><DialogContent><DialogHeader><DialogTitle>Action legend</DialogTitle></DialogHeader><ActionLegend /></DialogContent></Dialog>
     </div>
   );
+}
+
+function Chip({ chip, label, Icon }: { chip: ResultChip; label: string; Icon?: typeof ArrowUp }) {
+  return <span className={cn("inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-semibold", chip.tone === "success" ? "border-success/40 bg-success/10 text-success" : "border-destructive/40 bg-destructive/10 text-destructive")}>{Icon && <Icon className="size-3.5" strokeWidth={2.5} />}{label}{chip.mark === "check" && <Check className="size-3.5" />}{chip.mark === "cross" && <X className="size-3.5" />}</span>;
+}
+
+function ChipRow({ chips }: { chips: ResultChip[] }) {
+  return <span className="inline-flex flex-wrap items-center gap-1.5">{chips.map((chip, i) => { const action = STANDARD_ACTIONS.find(a => a.id === chip.action); return <span key={i} className="inline-flex items-center gap-1.5">{i > 0 && <ArrowRight className="size-3 text-muted-foreground" aria-label="then" />}<Chip chip={chip} label={action?.label ?? chip.action} Icon={action ? icons[action.icon] : undefined} /></span>; })}</span>;
+}
+
+function FeedbackResult({ steps, decision }: { steps: string[]; decision: ScenarioDecision }) {
+  const view = scenarioResultView(steps, decision);
+  return <div className="flex flex-col gap-1.5">
+    <h2 className={cn("font-display text-base font-bold", view.heading === "Correct" ? "text-success" : "text-destructive")}>{view.heading}</h2>
+    {view.chosen.length > 0 && <div className="flex flex-wrap items-center gap-x-3 gap-y-1"><ChipRow chips={view.chosen} />{view.heading === "Correct" && <span className="text-xs text-muted-foreground">{view.chosen.map(c => c.reactionMs === null ? "" : `Decided in ${(c.reactionMs / 1000).toFixed(1)}s`).filter(Boolean).join(" · ")}</span>}</div>}
+    {view.correctAnswer && <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground"><span>Correct answer:</span><ChipRow chips={view.correctAnswer} /></div>}
+  </div>;
 }
