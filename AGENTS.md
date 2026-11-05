@@ -31,3 +31,4 @@
 - Derive order email totals, masked card labels and receipt links from confirmed Stripe checkout/charge data; require matching payment environment and persist the upgrade before sending.
 
 - Propagate canonical authored concept IDs through bank variations, exam selection and Hub progress so phrasing or option edits cannot duplicate concepts or change scoring identity.
+- Queue study answers by owner, attempt and version in browser storage; replay through an authenticated allowlisted raw POST sharing the existing atomic scoring helper, and gate results on confirmed draining to preserve limits and recovery.

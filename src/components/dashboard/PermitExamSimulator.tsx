@@ -31,7 +31,7 @@ export function PermitExamSimulator({ userId }: { userId: string }) {
   const [running, setRunning] = useState(false);
   const pack = getStatePack(state);
   const stats = examHistoryStats(history, pack.rules.name);
-  if (running && attempt) { const rules=getStatePack(attempt.state).rules; return <ExamRunner key={attempt.id} attempt={attempt} state={attempt.state} count={rules.questionsCount} minCorrect={rules.minCorrectToPass} passPct={rules.passingScorePct} isPro={isPro} onUpgrade={unlockPro} onExit={() => setRunning(false)} onRestart={() => void begin()} onAnswer={async (answer) => {const row = await store.answer({id:attempt.id,version:attempt.version,answer}); if(!row) throw new Error('Unable to save'); setAttempt(row);}} />; }
+  if (running && attempt) { const rules=getStatePack(attempt.state).rules; return <ExamRunner key={attempt.id} attempt={attempt} state={attempt.state} count={rules.questionsCount} minCorrect={rules.minCorrectToPass} passPct={rules.passingScorePct} isPro={isPro} onUpgrade={unlockPro} onExit={() => setRunning(false)} onRestart={() => void begin()} saveError={store.error} onFinish={store.finish} onAnswer={(answer,version) => store.answer({id:attempt.id,version,answer})} />; }
   const recentRows = history
     .filter(row => row.state === null || row.state === pack.rules.name)
     .sort((a, b) => b.created_at.localeCompare(a.created_at))
@@ -56,13 +56,13 @@ export function PermitExamSimulator({ userId }: { userId: string }) {
   </div>;
 }
 
-function ExamRunner({ attempt, state, count, minCorrect, passPct, isPro, onUpgrade, onExit, onRestart, onAnswer }: { attempt: StudyAttempt; state: string; count: number; minCorrect: number; passPct: number; isPro: boolean; onUpgrade: () => void; onExit: () => void; onRestart: () => void; onAnswer: (answer: number) => Promise<void> }) {
+function ExamRunner({ attempt, state, count, minCorrect, passPct, isPro, onUpgrade, onExit, onRestart, onAnswer, onFinish, saveError }: { attempt: StudyAttempt; state: string; count: number; minCorrect: number; passPct: number; isPro: boolean; onUpgrade: () => void; onExit: () => void; onRestart: () => void; onAnswer: (answer: number,version:number) => void; onFinish:()=>Promise<boolean>; saveError:string|null }) {
   const questions = attempt.payload as ExamQuestion[];
   const [answers, setAnswers] = useState<(number | null)[]>(() => Array.from({length:questions.length}, (_,i) => (attempt.answers[i] as number|undefined) ?? null));
   const [idx, setIdx] = useState(() => Math.min(attempt.version,questions.length-1));
   const [done, setDone] = useState(attempt.completed);
-  const [saving, setSaving] = useState(false);
-  const [saveError, setSaveError] = useState(false);
+  const [finishing,setFinishing]=useState(false);
+  const finishLock=useRef(false);
   const answersRef = useRef(answers);
 
   const submitLock = useRef(false);
@@ -72,21 +72,19 @@ function ExamRunner({ attempt, state, count, minCorrect, passPct, isPro, onUpgra
   const answered = answers.filter(answer => answer !== null).length;
   const correctCount = answers.filter((answer, index) => answer !== null && answer === questions[index]?.correct).length;
   const chosen = answers[idx] ?? null;
-  const locked = saving;
+  const locked = false;
   const isLast = idx === questions.length - 1;
-  const choose = useCallback(async (answer: number) => {
-    if (done || saving || submitLock.current || answersRef.current[idx] !== null) return;
-    submitLock.current=true; setSaving(true); setSaveError(false);
+  const choose = useCallback((answer: number) => {
+    if (done || answersRef.current[idx] !== null) return;
     const next=[...answersRef.current]; next[idx]=answer; answersRef.current=next; setAnswers(next);
-    try {await onAnswer(answer); if(idx===questions.length-1) setDone(true);}
-    catch {setSaveError(true);}
-    finally {setSaving(false);submitLock.current=false;}
-  }, [idx,done,saving,onAnswer,questions.length]);
-  const retry = async () => { const answer=answersRef.current[idx]; if(answer===null || answer===undefined || saving) return; setSaving(true); try {await onAnswer(answer);setSaveError(false);if(isLast)setDone(true);} catch {setSaveError(true);}finally{setSaving(false);} };
-  const advance = useCallback(() => {
-    if (answersRef.current[idx] === null || saving || saveError) return;
-    if (isLast) setDone(true); else setIdx(value => value + 1);
-  }, [idx, isLast, saving, saveError]);
+    onAnswer(answer,idx);
+  }, [idx,done,onAnswer]);
+  const advance = useCallback(async () => {
+    if (answersRef.current[idx] === null || finishLock.current) return;
+    if (!isLast) {setIdx(value=>value+1);return;}
+    finishLock.current=true;const timer=setTimeout(()=>setFinishing(true),500);
+    try{if(await onFinish())setDone(true);}finally{clearTimeout(timer);setFinishing(false);finishLock.current=false;}
+  }, [idx,isLast,onFinish]);
   useEffect(() => {
     const handler = (event: KeyboardEvent) => {
       const target = event.target;
@@ -120,8 +118,8 @@ function ExamRunner({ attempt, state, count, minCorrect, passPct, isPro, onUpgra
       {chosen !== null && <div className="study-feedback" aria-live="polite">
         <p className={cn("text-sm font-semibold", chosen === q.correct ? "text-success" : "text-destructive")}>{chosen === q.correct ? "Correct" : "Incorrect"}</p>
         <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{q.explanation.replace(/\s*Source:.*$/s, "").split(/(?<=[.!?])\s+/).slice(0, 2).join(" ")}</p>
-        {saveError && <p role="alert" className="mt-3 text-sm text-destructive">Your attempt could not be saved. Please try again.</p>}
-        <div className="study-next"><Button onClick={saveError ? () => void retry() : advance} disabled={saving} className="h-11 rounded-full">{saveError ? "Retry save" : saving ? "Saving answer…" : isLast ? "See results" : "Next question"}<ArrowRight /></Button></div>
+        {saveError && <p role="alert" className="mt-3 text-sm text-destructive">{saveError}</p>}
+        <div className="study-next"><Button onClick={()=>void advance()} disabled={finishing} className="h-11 rounded-full">{finishing ? "Finishing up…" : isLast ? "See results" : "Next question"}<ArrowRight /></Button></div>
       </div>}
     </Card> : null}
   </StudyQuestionFrame>;

@@ -36,7 +36,7 @@ export function TestHubDashboard({ initialTopic, userId }: { initialTopic?: Pill
 
   if (active && attempt) return <QuizRunner key={attempt.id} mode={active} banks={banks} missed={missed} progress={progress}
     attempt={attempt} isPro={isPro} stateName={attempt.state} onExit={() => setActive(null)} onUpgrade={unlockPro}
-    onRestart={() => void begin(active)} onAnswer={async (answer) => {const row=await store.answer({id:attempt.id,version:attempt.version,answer});if(!row)throw new Error('Unable to save');setAttempt(row);}} />;
+    onRestart={() => void begin(active)} saveError={store.error} onFinish={store.finish} onAnswer={(answer,version)=>store.answer({id:attempt.id,version,answer})} />;
 
   return <div className="w-full space-y-4">
     {store.error && <p role="alert" className="text-sm text-destructive">{store.error}</p>}
@@ -80,39 +80,28 @@ function Meter({ value, className }: { value: number; className?: string }) {
   return <div className={cn("h-1 w-full rounded-full bg-muted overflow-hidden", className)} role="progressbar" aria-valuenow={value} aria-valuemin={0} aria-valuemax={100}><div className="h-full bg-action rounded-full transition-all" style={{ width: `${value}%` }} /></div>;
 }
 
-function QuizRunner({ mode, banks, missed, progress, stateName, isPro, onUpgrade, onExit, attempt, onRestart, onAnswer }: {
+function QuizRunner({ mode, banks, missed, progress, stateName, isPro, onUpgrade, onExit, attempt, onRestart, onAnswer, onFinish, saveError }: {
   mode: PillarId | "review"; banks: Record<PillarId, HubQuestion[]>; missed: HubQuestion[]; progress: TopicProgress[];
   stateName: string; isPro: boolean; onUpgrade: () => void; onExit: () => void; attempt:StudyAttempt;
-  onRestart:()=>void; onAnswer:(answer:number)=>Promise<void>;
+  onRestart:()=>void; onAnswer:(answer:number,version:number)=>void; onFinish:()=>Promise<boolean>; saveError:string|null;
 }) {
   const questions=attempt.payload as HubQuestion[];
   const [idx,setIdx]=useState(()=>Math.min(attempt.version,questions.length-1));
   const [picked,setPicked]=useState<number|null>(null);
   const [score,setScore]=useState(()=>attempt.answers.filter((a,i)=>a===questions[i]?.correct).length);
   const [done,setDone]=useState(attempt.completed);
-  const [saving, setSaving] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const busy = useRef(false);
-  const [saved, setSaved] = useState(false);
+  const [finishing,setFinishing]=useState(false);
+  const busy=useRef(false);
+  const answeredIndex=useRef(-1);
   const [before, setBefore] = useState(() => mode === "review" ? 0 : topicStats(progress.find(p => p.topic === mode) ?? emptyTopic(mode), banks[mode].length).mastery);
   const q = questions[idx];
   const reveal = picked !== null;
-  const locked = saving;
+
   const title = mode === "review" ? "Review missed questions" : PILLAR_META[mode].title;
 
-  const persistAnswer = async (i: number) => {
-    if (!q || busy.current) return;
-    busy.current = true; setSaving(true); setError(null);
-    try {
-      await onAnswer(i);
-      setSaved(true); if(idx===questions.length-1) setDone(true);
-    } catch { setError("Your progress could not be saved. Please try again."); }
-    finally { busy.current = false; setSaving(false); }
-  };
-  const choose = (i: number) => {
-    if (!q || reveal || busy.current || locked || i < 0 || i >= q.options.length) return;
-    setPicked(i); if (i === q.correct) setScore(s => s + 1);
-    void persistAnswer(i);
+  const choose = (i:number)=>{
+    if(!q||reveal||answeredIndex.current===idx||i<0||i>=q.options.length)return;
+    answeredIndex.current=idx;setPicked(i);if(i===q.correct)setScore(s=>s+1);onAnswer(i,idx);
   };
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -122,15 +111,14 @@ function QuizRunner({ mode, banks, missed, progress, stateName, isPro, onUpgrade
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   });
-  const advance = async () => {
-    if (!saved || busy.current) return;
-    if (idx + 1 < questions.length) {
-      setIdx(i => i + 1); setPicked(null); setSaved(false); setError(null); return;
-    }
-    setDone(true);
+  const advance=async()=>{
+    if(!reveal||busy.current)return;
+    if(idx+1<questions.length){setIdx(i=>i+1);setPicked(null);return;}
+    busy.current=true;const timer=setTimeout(()=>setFinishing(true),500);
+    try{if(await onFinish())setDone(true);}finally{clearTimeout(timer);setFinishing(false);busy.current=false;}
   };
   const restart = () => {if(isPro)onRestart();else onUpgrade();};
-  const back = <Button variant="ghost" className="text-muted-foreground px-0 hover:bg-transparent" onClick={onExit} disabled={saving}><ArrowLeft className="h-4 w-4" />Back to Hub</Button>;
+  const back = <Button variant="ghost" className="text-muted-foreground px-0 hover:bg-transparent" onClick={onExit} disabled={finishing}><ArrowLeft className="h-4 w-4" />Back to Hub</Button>;
 
   if (done || !q) return <div className="max-w-2xl mx-auto w-full space-y-4">{back}<Card className="bg-card rounded-[28px] border-border/60 shadow-md p-4 sm:p-6 text-center">
     <h2 className="font-display font-bold text-lg">{title}</h2>
@@ -158,8 +146,8 @@ function QuizRunner({ mode, banks, missed, progress, stateName, isPro, onUpgrade
         </Button>)}
       </div>
       {reveal && <div className="study-feedback" aria-live="polite"><p className={cn("font-semibold mb-2", picked === q.correct ? "text-success" : "text-destructive")}>{picked === q.correct ? "Correct" : "Incorrect"}</p><p className="text-sm leading-relaxed">{q.explanation}</p>
-        {error && <p role="alert" className="text-destructive text-sm mt-3">{error}</p>}
-        <div className="study-next">{error && !saved && picked !== null ? <Button className={actionClass} onClick={() => void persistAnswer(picked)} disabled={saving}>Retry save</Button> : <Button className={actionClass} onClick={() => void advance()} disabled={saving || !saved}>{saving ? "Saving…" : idx + 1 === questions.length ? "See results" : "Next question"}</Button>}</div>
+        {saveError && <p role="status" className="text-destructive text-sm mt-3">{saveError}</p>}
+        <div className="study-next"><Button className={actionClass} onClick={()=>void advance()} disabled={finishing}>{finishing ? "Finishing up…" : idx+1===questions.length ? "See results" : "Next question"}</Button></div>
       </div>}
     </Card>}
   </StudyQuestionFrame>;

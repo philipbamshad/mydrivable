@@ -61,8 +61,8 @@ function SimulationPage() {
       primary: a.score === null ? "—" : `${a.score}% accuracy`,
       secondary: a.average_reaction === null ? "—" : `${a.average_reaction.toFixed(1)}s avg. reaction`,
     }));
-  const [savingDecision,setSavingDecision]=useState(false);
-  const [pendingDecision,setPendingDecision]=useState<ScenarioDecision[]|null>(null);
+  const [finishing,setFinishing]=useState(false);
+  const finishLock=useRef(false);
   const [skipInstructions, setSkipInstructions] = useState(false);
   const [showLegend, setShowLegend] = useState(true);
   const [mobileLegend, setMobileLegend] = useState(false);
@@ -105,7 +105,7 @@ function SimulationPage() {
     setAttempt(row);setHasPlayed(false);
     setSession(row.payload as SimulationClip[]);
     setIdx(Math.min(row.version,row.payload.length-1)); setStepIndex(0); stepRecords.current=[]; answerLock.current=false;
-    setDecisions(row.answers as ScenarioDecision[]);setFeedback(null);setPendingDecision(null);
+    setDecisions(row.answers as ScenarioDecision[]);setFeedback(null);
     setVideoError(false);setLoaded(false);setNeedsPlay(false);
     scroller.current?.scrollTo({top:0});changePhase(row.completed?"results":"playing");
   };
@@ -113,10 +113,10 @@ function SimulationPage() {
     if(access === "locked" || access === "resume" || skipInstructions) void start(); else changePhase("instructions");
   };
   const exit = () => { videoRef.current?.pause(); changePhase("ready"); setSession([]); setDecisions([]); scroller.current?.scrollTo({ top: 0 }); };
-  const goNext = () => {
-    if (phaseRef.current !== "feedback" || savingDecision || pendingDecision) return;
+  const goNext = async () => {
+    if (phaseRef.current !== "feedback" || finishLock.current) return;
     scroller.current?.scrollTo({ top: 0 });
-    if (idx === session.length - 1) { changePhase("results"); return; }
+    if (idx === session.length - 1) { finishLock.current=true;const timer=setTimeout(()=>setFinishing(true),500);try{if(await store.finish())changePhase("results");}finally{clearTimeout(timer);setFinishing(false);finishLock.current=false;}return; }
     setHasPlayed(false);
     setIdx((value) => value + 1); setStepIndex(0); stepRecords.current = []; answerLock.current = false; setFeedback(null); setVideoError(false); setLoaded(false); setNeedsPlay(false); changePhase("playing");
   };
@@ -136,14 +136,6 @@ function SimulationPage() {
     decisionStart.current = performance.now(); setRemaining(DECISION_MS); changePhase("decision");
   }, [changePhase]);
 
-  const persistDecision=useCallback(async(records:ScenarioDecision[])=>{
-    if(!attempt)return;
-    setSavingDecision(true);setPendingDecision(records);
-    const row=await store.answer({id:attempt.id,version:attempt.version,timed,steps:records.map(r=>({action:r.selectedAction as 'go'|'yield'|'stop'|null,elapsed:r.reactionMs ?? DECISION_MS}))});
-    if(row){setAttempt(row);setDecisions(row.answers as ScenarioDecision[]);setPendingDecision(null);}
-    setSavingDecision(false);
-  },[attempt,timed,store.answer]);
-
   const answer = useCallback((actionId: string | null) => {
     if (phaseRef.current !== "decision" || !clip) return;
     if (answerLock.current) return;
@@ -159,8 +151,9 @@ function SimulationPage() {
     }
     changePhase("feedback");
     const scenario = finishScenario(clip.steps, records);
-    setFeedback(scenario);void persistDecision(records);
-  }, [clip, stepIndex, timed, changePhase, persistDecision]);
+    setFeedback(scenario);setDecisions(previous=>[...previous,scenario]);
+    if(attempt)store.answer({id:attempt.id,version:idx,timed,steps:records.map(r=>({action:r.selectedAction as "go"|"yield"|"stop"|null,elapsed:r.reactionMs ?? DECISION_MS}))});
+  }, [clip, stepIndex, timed, changePhase, attempt, idx, store.answer]);
 
   useEffect(() => { answerLock.current = false; }, [stepIndex]);
 
@@ -300,7 +293,7 @@ function SimulationPage() {
                 <FeedbackResult steps={clip.steps} decision={feedback} />
                 <p className="text-xs leading-relaxed text-muted-foreground sm:text-sm">{clip.explanation}</p>
                 {store.error && <p role="alert" className="text-xs text-destructive">{store.error}</p>}
-                <Button disabled={savingDecision} onClick={()=>pendingDecision ? void persistDecision(pendingDecision) : goNext()} className="mt-auto h-9 shrink-0 self-end rounded-full">{savingDecision ? "Saving…" : pendingDecision ? "Retry save" : "Next scenario"}<ArrowRight /></Button>
+                <Button disabled={finishing} onClick={()=>void goNext()} className="mt-auto h-9 shrink-0 self-end rounded-full">{finishing ? "Finishing up…" : "Next scenario"}<ArrowRight /></Button>
               </div> : <div ref={decisionPanel} className="flex h-full flex-col gap-2">
                 <div className="min-h-[40px]">{phase === "decision" && <>{stepIndex > 0 && <p className="text-xs font-semibold text-success">Correct. Now choose your next action.</p>}<p className="text-sm font-semibold">{stepIndex === 0 ? "What do you do?" : "Then what do you do?"}{clip.steps.length > 1 && <span className="ml-2 text-xs font-normal text-muted-foreground">Step {stepIndex + 1} of {clip.steps.length}</span>}</p></>}</div>
                 <TooltipProvider delayDuration={150}><div key={`${phase}-${stepIndex}`} className={cn("sim-action-row grid grid-cols-3 gap-3 rounded-2xl", phase === "decision" && "sim-action-row-live")}>{STANDARD_ACTIONS.map(action => { const Icon = icons[action.icon]; if (!Icon) return null; const done = stepRecords.current.some(r => r.correct && r.selectedAction === action.id) && phase === "decision"; return <Tooltip key={action.id}><TooltipTrigger asChild><span className="block"><Button type="button" variant="outline" disabled={phase !== "decision"} onClick={() => answer(action.id)} aria-label={action.label} data-action={action.id} data-done={done || undefined} className="sim-action-button"><Icon className="size-9" strokeWidth={2.5} />{done && <span className="sim-action-check" aria-hidden="true"><Check className="size-3" strokeWidth={3} /></span>}</Button></span></TooltipTrigger><TooltipContent>{action.label}</TooltipContent></Tooltip>; })}</div></TooltipProvider>
