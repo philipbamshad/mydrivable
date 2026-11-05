@@ -442,15 +442,6 @@ export type Database = {
     }
     Functions: {
       consume_ai_coach_credit: { Args: never; Returns: number }
-      delete_email: {
-        Args: { message_id: number; queue_name: string }
-        Returns: boolean
-      }
-      email_queue_dispatch: { Args: never; Returns: undefined }
-      enqueue_email: {
-        Args: { payload: Json; queue_name: string }
-        Returns: number
-      }
       is_allowlisted: { Args: never; Returns: boolean }
       join_waitlist_checked: {
         Args: { p_email: string; p_visitor_hash: string }
@@ -458,23 +449,6 @@ export type Database = {
           result: string
           signup_id: string
           signup_time: string
-        }[]
-      }
-      move_to_dlq: {
-        Args: {
-          dlq_name: string
-          message_id: number
-          payload: Json
-          source_queue: string
-        }
-        Returns: number
-      }
-      read_email_batch: {
-        Args: { batch_size: number; queue_name: string; vt: number }
-        Returns: {
-          message: Json
-          msg_id: number
-          read_ct: number
         }[]
       }
     }
