@@ -1,5 +1,10 @@
 # Design improvements
 
+# Progress colors and restricted badges
+- [ ] Restrict Pro badges to Free locked/limited features, preserving sidebar plan and homepage pricing.
+- [ ] Shared accessible blue progress/highlight/sidebar tokens without changing button or feedback colors.
+- [ ] Verify Pro and Free screens and color contrast.
+
 # Instant durable study answers
 - [x] Immediate feedback and usable Next controls in exam, Hub and simulation.
 - [x] Persistent owner-scoped queue, three retries, entry replay and authenticated keepalive with idempotent version checks; offline browser test retained two answers and replay cleared both.

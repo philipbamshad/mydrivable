@@ -18,6 +18,7 @@ import { scenarioResultView, type ResultChip } from "@/data/simulation-result";
 import "@/components/simulation/simulation-actions.css";
 import { useStudyAttempts } from "@/lib/use-study-attempt";
 import { attemptAccess, simulationHistoryStats, type StudyAttempt } from "@/lib/study-attempt";
+import { RestrictedProBadge } from "@/components/dashboard/RestrictedProBadge";
 import { AttemptLock } from "@/components/dashboard/AttemptLock";
 import { RecentResultsCard, type RecentResultRow } from "@/components/dashboard/RecentResultsCard";
 import { useUserProfile } from "@/lib/user-profile";
@@ -40,7 +41,7 @@ const icons: Partial<Record<ActionIcon, typeof ArrowUp>> = ACTION_ICONS;
 const cardClass = "rounded-[28px] border border-border/60 bg-card p-4 sm:p-8 shadow-lg";
 
 function StatTile({ label, value }: { label: string; value: string | number }) {
-  return <div className="flex h-[120px] flex-col items-center justify-center rounded-3xl bg-muted px-2 text-center"><p className="text-xs uppercase text-muted-foreground">{label}</p><p className="mt-1 whitespace-nowrap font-display text-xl font-bold tabular-nums sm:text-4xl">{value}</p></div>;
+  return <div className="flex h-[120px] flex-col items-center justify-center rounded-3xl bg-muted px-2 text-center"><p className="text-xs uppercase text-muted-foreground">{label}</p><p className={cn("mt-1 whitespace-nowrap font-display text-xl font-bold tabular-nums sm:text-4xl", (label === "Best accuracy" || label === "Correct decisions") && "text-progress-text")}>{value}</p></div>;
 }
 
 function SimulationPage() {
@@ -229,7 +230,7 @@ function SimulationPage() {
             <div className={cardClass}>
               <div className="flex items-center gap-4">
                 <div className="grid h-12 w-12 shrink-0 place-items-center rounded-[18px] border border-border bg-muted text-foreground sm:h-14 sm:w-14"><Video className="h-6 w-6" /></div>
-                <div className="flex flex-wrap items-center gap-2"><h2 className="font-display text-lg font-bold sm:text-xl">Real-World Driving Scenarios</h2><span className="rounded-full border border-border bg-muted px-2 py-0.5 text-xs font-semibold text-foreground">Pro</span></div>
+                <div className="flex flex-wrap items-center gap-2"><h2 className="font-display text-lg font-bold sm:text-xl">Real-World Driving Scenarios</h2><RestrictedProBadge restricted={access === "locked"}/></div>
               </div>
               <div className="mt-5 grid grid-cols-3 gap-3"><StatTile label="Decision time" value="2.5 sec"/><StatTile label="Best accuracy" value={historyStats.best===null ? "—" : `${historyStats.best}%`}/><StatTile label="Avg. reaction" value={historyStats.reaction===null ? "—" : `${historyStats.reaction.toFixed(1)}s`}/></div>
               <p className="mt-5 text-sm leading-relaxed text-muted-foreground">Real driving decisions happen in a split second. Covers intersections, turns, right-of-way, and lane changes.</p>
@@ -270,7 +271,7 @@ function SimulationPage() {
         ) : clip ? (
           <div data-scenario={clip.id} data-phase={phase} data-step={stepIndex + 1} className="mt-4 flex min-h-0 flex-1 flex-col gap-2">
             <div className="grid shrink-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-2 text-xs text-muted-foreground"><span>{clip.title}</span><div className="hidden items-center gap-2 md:flex"><Switch id="hide-legend" checked={!showLegend} onCheckedChange={hidden => { setShowLegend(!hidden); localStorage.setItem("drivable.simulation.hide-legend", String(hidden)); }} /><label htmlFor="hide-legend">Hide legend</label></div></div>
-            <div role="progressbar" aria-label="Scenario progress" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round((idx+1)/session.length*100)} className="h-1 w-full shrink-0 overflow-hidden rounded-full bg-muted"><span className="block h-full rounded-full bg-action transition-all" style={{ width: `${(idx + 1) / session.length * 100}%` }} /></div>
+            <div role="progressbar" aria-label="Scenario progress" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round((idx+1)/session.length*100)} className="h-1 w-full shrink-0 overflow-hidden rounded-full bg-muted"><span className="block h-full rounded-full bg-progress transition-all" style={{ width: `${(idx + 1) / session.length * 100}%` }} /></div>
                         <div className={cn("grid min-h-0 flex-1 gap-3", showLegend && "md:grid-cols-[minmax(0,1fr)_170px]")}>
               <div key={clip.id} data-signal-active={signaling && signalSide !== null} className="simulation-signal-video relative min-h-0 overflow-hidden rounded-2xl bg-muted">
                 <video ref={videoRef} src={clip.videoUrl} autoPlay muted playsInline preload="auto"
@@ -287,7 +288,7 @@ function SimulationPage() {
               </div>
               {showLegend && <aside aria-label="Action legend" className="hidden h-full min-h-0 rounded-2xl bg-card p-3 md:flex md:items-center"><ActionLegend /></aside>}
             </div>
-            {timed && <div role="progressbar" aria-hidden={phase !== "decision" || undefined} data-visible={phase === "decision"} aria-label="Decision time remaining" aria-valuemin={0} aria-valuemax={2.5} aria-valuenow={remaining / 1000} className={cn("flex h-1 shrink-0 overflow-hidden rounded-full bg-muted", phase !== "decision" && "invisible")}><span className={cn("h-full transition-[flex-grow] duration-75", remaining > 1000 ? "bg-action" : "bg-destructive/60")} style={{ flexGrow: remaining }} /><span style={{ flexGrow: DECISION_MS - remaining }} /></div>}
+            {timed && <div role="progressbar" aria-hidden={phase !== "decision" || undefined} data-visible={phase === "decision"} aria-label="Decision time remaining" aria-valuemin={0} aria-valuemax={2.5} aria-valuenow={remaining / 1000} className={cn("flex h-1 shrink-0 overflow-hidden rounded-full bg-muted", phase !== "decision" && "invisible")}><span className={cn("h-full transition-[flex-grow] duration-75", "bg-progress")} style={{ flexGrow: remaining }} /><span style={{ flexGrow: DECISION_MS - remaining }} /></div>}
             <div className="shrink-0 basis-[192px] sm:basis-[168px]">
               {phase === "feedback" && feedback ? <div ref={feedbackPanel} role="status" className="flex h-full flex-col gap-2 rounded-2xl border border-border/60 bg-card p-3 sm:p-4">
                 <FeedbackResult steps={clip.steps} decision={feedback} />

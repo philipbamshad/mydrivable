@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { RestrictedProBadge } from "./RestrictedProBadge";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Check, X, TrafficCone, GitFork, Beer, Gauge, RefreshCw, Lock, BookOpen, Target } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -45,11 +46,11 @@ export function TestHubDashboard({ initialTopic, userId }: { initialTopic?: Pill
       <Card className="bg-card rounded-[28px] border-border/60 p-4 sm:p-6 flex flex-col gap-3 shadow-md">
         <div className="flex items-center gap-2"><Target className="h-5 w-5" /><h2 className="font-display font-bold">Recommended for you</h2></div>
         <p className="font-semibold">{PILLAR_META[weakest].title}</p>
-        <p className="text-sm text-muted-foreground">Mastery {topicStats(progress.find(p => p.topic === weakest) ?? emptyTopic(weakest), banks[weakest].length).mastery}%</p>
+        <p className="text-sm text-progress-text">Mastery {topicStats(progress.find(p => p.topic === weakest) ?? emptyTopic(weakest), banks[weakest].length).mastery}%</p>
         <Button className={cn(actionClass, "mt-auto h-11")} disabled={store.busy} onClick={() => void begin(weakest)}>Practice now</Button>
       </Card>
       <Card className="bg-card rounded-[28px] border-border/60 p-4 sm:p-6 flex flex-col gap-3 shadow-md">
-        <div className="flex items-center gap-2"><BookOpen className="h-5 w-5" /><h2 className="font-display font-bold">Review missed questions</h2></div>
+        <div className="flex items-center gap-2"><BookOpen className="h-5 w-5" /><h2 className="font-display font-bold">Review missed questions</h2><RestrictedProBadge restricted={true}/></div>
         <p className="font-semibold">{missed.length} {missed.length === 1 ? "question" : "questions"}</p>
         <p className="text-sm text-muted-foreground">{missed.length ? "Your missed questions, across all topics." : "No missed questions to review."}</p>
         <Button variant="outline" className="mt-auto rounded-full h-11" disabled={isPro && !missed.length || store.busy} onClick={() => void begin("review")}>{!isPro && <Lock/>}{isPro ? "Review questions" : "Upgrade to Pro"}</Button>
@@ -64,10 +65,10 @@ export function TestHubDashboard({ initialTopic, userId }: { initialTopic?: Pill
         return <Card key={topic} className="bg-card rounded-[28px] border-border/60 p-4 sm:p-6 shadow-md flex flex-col gap-4">
           <div className="flex items-center gap-3">
             <span className="grid h-12 w-12 place-items-center rounded-[18px] border border-border bg-muted shrink-0"><Icon className="w-5 h-5" /></span>
-            <div className="min-w-0"><div className="flex items-center flex-wrap gap-2"><h3 className="font-display text-base font-bold">{PILLAR_META[topic].title}</h3><Badge className="bg-muted text-foreground border-border">Pro</Badge></div><p className="text-sm text-muted-foreground mt-1">{banks[topic].length} questions</p></div>
+            <div className="min-w-0"><div className="flex items-center flex-wrap gap-2"><h3 className="font-display text-base font-bold">{PILLAR_META[topic].title}</h3><RestrictedProBadge restricted={locked}/></div><p className="text-sm text-muted-foreground mt-1">{banks[topic].length} questions</p></div>
           </div>
-          <div className="space-y-2"><div className="flex items-center justify-between gap-2 text-sm"><span>Mastery {stats.mastery}%</span>{stats.mastered ? <Badge variant="outline" className="text-success border-success/30"><Check className="h-3 w-3 mr-1" />Mastered</Badge> : stats.needsWork ? <Badge variant="outline" className="text-muted-foreground">Needs work</Badge> : null}</div><Meter value={stats.mastery} /></div>
-          <p className="text-sm text-muted-foreground">Last score <span className="text-foreground font-semibold">{stats.lastScore === null ? "—" : `${stats.lastScore}%`}</span></p>
+          <div className="space-y-2"><div className="flex items-center justify-between gap-2 text-sm"><span className="text-progress-text">Mastery {stats.mastery}%</span>{stats.mastered ? <Badge variant="outline" className="text-success border-success/30"><Check className="h-3 w-3 mr-1" />Mastered</Badge> : stats.needsWork ? <Badge variant="outline" className="text-destructive border-destructive/30 bg-destructive/10">Needs work</Badge> : null}</div><Meter value={stats.mastery} /></div>
+          <p className="text-sm text-muted-foreground">Last score <span className="text-progress-text font-semibold">{stats.lastScore === null ? "—" : `${stats.lastScore}%`}</span></p>
           {locked && <AttemptLock onUpgrade={unlockPro}/>}
           <Button disabled={store.busy} onClick={() => void begin(topic)} className={cn(actionClass, "w-full h-11 mt-auto font-semibold")}>{locked ? "View past results" : access === "resume" ? "Resume your free attempt" : stats.practiced ? "Continue" : "Start Test"}</Button>
         </Card>;
@@ -77,7 +78,7 @@ export function TestHubDashboard({ initialTopic, userId }: { initialTopic?: Pill
 }
 
 function Meter({ value, className }: { value: number; className?: string }) {
-  return <div className={cn("h-1 w-full rounded-full bg-muted overflow-hidden", className)} role="progressbar" aria-valuenow={value} aria-valuemin={0} aria-valuemax={100}><div className="h-full bg-action rounded-full transition-all" style={{ width: `${value}%` }} /></div>;
+  return <div className={cn("h-1 w-full rounded-full bg-muted overflow-hidden", className)} role="progressbar" aria-valuenow={value} aria-valuemin={0} aria-valuemax={100}><div className="h-full bg-progress rounded-full transition-all" style={{ width: `${value}%` }} /></div>;
 }
 
 function QuizRunner({ mode, banks, missed, progress, stateName, isPro, onUpgrade, onExit, attempt, onRestart, onAnswer, onFinish, saveError }: {
@@ -122,9 +123,9 @@ function QuizRunner({ mode, banks, missed, progress, stateName, isPro, onUpgrade
 
   if (done || !q) return <div className="max-w-2xl mx-auto w-full space-y-4">{back}<Card className="bg-card rounded-[28px] border-border/60 shadow-md p-4 sm:p-6 text-center">
     <h2 className="font-display font-bold text-lg">{title}</h2>
-    <p className="text-5xl font-display font-bold mt-4">{questions.length ? Math.round(score / questions.length * 100) : 0}%</p>
+    <p className="text-5xl font-display font-bold mt-4 text-progress-text">{questions.length ? Math.round(score / questions.length * 100) : 0}%</p>
     <p className="text-muted-foreground mt-2">{score} / {questions.length} correct</p>
-    {mode !== "review" && <p className="mt-4 font-medium">Mastery {before}% → {topicStats(progress.find(p => p.topic === mode) ?? emptyTopic(mode), banks[mode].length).mastery}%</p>}
+    {mode !== "review" && <p className="mt-4 font-medium text-progress-text">Mastery {before}% → {topicStats(progress.find(p => p.topic === mode) ?? emptyTopic(mode), banks[mode].length).mastery}%</p>}
     <div className="flex flex-wrap justify-center gap-3 mt-6"><Button className={actionClass} onClick={restart} disabled={mode === "review" && !missed.length}><RefreshCw className="h-4 w-4" />{isPro ? "Practice again" : "Upgrade to Pro"}</Button><Button variant="outline" className="rounded-full" onClick={onExit}>Back to Hub</Button></div>
     {!isPro && <AttemptLock onUpgrade={onUpgrade}/>}
   </Card></div>;
