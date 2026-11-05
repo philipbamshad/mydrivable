@@ -13,6 +13,7 @@ import { decisionSummary, finishScenario, recordDecision, stepProgress, type Sce
 import type { StudyAttempt } from './study-attempt';
 import { uniqueQuestionSession } from './question-session';
 import { permitRules } from './permit-rules';
+import { withHistoricalExamAnswers } from './exam-missed';
 export type StudyAnswerInput = {id:string;version:number;answer?:number;steps?:{action:'go'|'yield'|'stop'|null;elapsed:number}[];timed?:boolean};
 
 const feature = z.enum(['exam','signs','intersections','substances','speed','simulation','review']);
@@ -37,7 +38,10 @@ export const startStudyAttempt = createServerFn({method:'POST'}).middleware([req
       if(proError || !pro) throw new Error('Review missed questions is Pro only.');
       const {data:rows,error}=await context.supabase.from('test_hub_progress').select('*').eq('user_id',context.userId).eq('state',state);
       if(error) throw new Error('Unable to load missed questions.');
-      const missed=missedQuestions((rows??[]).map(r=>({topic:r.topic,questions:r.questions,lastScore:r.last_score}) as unknown as TopicProgress));
+      const {data:exams,error:examError}=await context.supabase.from('study_attempts').select('*').eq('user_id',context.userId).eq('feature','exam').eq('state',state);
+      if(examError) throw new Error('Unable to load missed exam questions.');
+      const merged=withHistoricalExamAnswers((rows??[]).map(r=>({state:r.state,progress:{topic:r.topic,questions:r.questions,lastScore:r.last_score} as unknown as TopicProgress})),(exams??[]) as unknown as StudyAttempt[]);
+      const missed=missedQuestions(merged.map(r=>r.progress));
       payload=uniqueQuestionSession(missed,missed.length).map(q=>shuffleAnswers(q));
     } else payload=uniqueQuestionSession(buildPillarBanks(state)[data.feature],8).map(q=>shuffleAnswers(hubQuestion(q,data.feature as HubQuestion['topic'])));
     if(!payload.length) throw new Error('No questions available to review.');
