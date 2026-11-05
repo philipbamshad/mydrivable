@@ -1,5 +1,13 @@
 # Design improvements
 
+# November private-beta fixes
+- [ ] Coach driving-test coverage, newest-message scrolling and solid header.
+- [ ] Correct permit age, unique sessions, balanced plausible choices and changed-question list; exam misses in Hub review.
+- [ ] Neutral octagonal simulation controls, mobile stats/toggle and matching progress bars/tab titles.
+- [ ] Admin waitlist count/disabled launch control; confirmed account deletion and App email.
+- [ ] Homepage beta badge, concise feature heading, your-state wording and Log in link.
+- [ ] Run rule tests and authenticated desktop/mobile checks.
+
 # Pro Pass receipt update and sandbox test
 - [x] Add actual paid amount, safe card label and optional official Stripe receipt; send only on confirmed success.
 - [x] Test $9 sandbox payment with pm_card_visa through the real Stripe success webhook; verify sent email, receipt and Pro UI, then restore Free without deleting Stripe test payment. Inbox arrival cannot be observed.
