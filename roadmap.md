@@ -1,9 +1,9 @@
 # Design improvements
 
 # Permit and driving prep plans
-- [ ] Update simulation counts/statistics, branding, homepage plans and existing App emails.
-- [ ] Enforce five daily AI questions and one reserved, resumable free attempt per exam, Hub topic and simulation.
-- [ ] Add the chosen allowlisted Free test account and verify Free/Pro limits and resume flows.
+- [x] Update simulation counts/statistics, branding, homepage plans and existing welcome/waitlist/order App emails; launch campaign remains skipped by prior user choice.
+- [x] Enforce five daily AI questions and one reserved, resumable free attempt per exam, Hub topic and simulation; server-authored scoring and atomic topic progress.
+- [x] Add philipbamshad+free@gmail.com without Pro; verify sixth AI endpoint denial/new-local-day allowance, Free full-length exam/all topics/simulation completion locks and refresh resume, direct-write refusal, owner repeated Pro starts and email rendering.
 
 # Waitlist App emails
 - [x] Save validated signups through a protected server action with duplicate, honeypot and three-per-hour visitor checks.

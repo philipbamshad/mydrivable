@@ -1,17 +1,15 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, ArrowRight, Lock, RefreshCw, Timer, Check } from "lucide-react";
+import { ArrowLeft, ArrowRight, RefreshCw, Timer, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useUserProfile } from "@/lib/user-profile";
 import { getStatePack } from "@/data/dmv";
 import { PILLAR_META } from "@/data/dmv/practice-bank";
-import { shuffleAnswers } from "@/data/dmv/question-generator";
-import { pickUnseenQuestions } from "@/lib/seen-questions";
-import { buildExamPool, examSummary, examHistoryStats, mayAnswerExam, EXAM_FREE_LIMIT, type ExamQuestion } from "@/lib/mock-exam";
+import { examSummary, examHistoryStats, type ExamQuestion } from "@/lib/mock-exam";
 import { examHistoryOptions } from "@/lib/mock-exam.functions";
 import { ExamQuestionVisual } from "./ExamQuestionVisual";
 import { useStudyAttempts } from "@/lib/use-study-attempt";
@@ -29,7 +27,6 @@ export function PermitExamSimulator({ userId }: { userId: string }) {
   const access = attemptAccess(isPro, freeAttempt);
   const begin = async () => { const row = await store.start("exam"); if(row) {setAttempt(row); setRunning(true);} };
   const { data: history } = useSuspenseQuery(examHistoryOptions(userId));
-  const queryClient = useQueryClient();
   const [running, setRunning] = useState(false);
   const pack = getStatePack(state);
   const stats = examHistoryStats(history, pack.rules.name);

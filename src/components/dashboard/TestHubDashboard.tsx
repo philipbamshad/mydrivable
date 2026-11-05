@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
-import { useServerFn } from "@tanstack/react-start";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -9,14 +8,12 @@ import { cn } from "@/lib/utils";
 import { useUserProfile } from "@/lib/user-profile";
 import { StudyQuestionFrame } from "./StudyQuestionFrame";
 import { HubQuestionVisual } from "./HubQuestionVisual";
-import { shuffleAnswers } from "@/data/dmv/question-generator";
 import { buildPillarBanks, PILLAR_META, type PillarId } from "@/data/dmv/practice-bank";
-import { pickUnseenQuestions } from "@/lib/seen-questions";
-import { HUB_TOPICS, HUB_FREE_LIMIT, hubQuestion, emptyTopic, topicStats, weakestTopic, missedQuestions, mayAnswerHub, type HubQuestion, type TopicProgress } from "@/lib/test-hub";
+import { HUB_TOPICS, hubQuestion, emptyTopic, topicStats, weakestTopic, missedQuestions, type HubQuestion, type TopicProgress } from "@/lib/test-hub";
 import { useStudyAttempts } from "@/lib/use-study-attempt";
 import { attemptAccess, type StudyAttempt, type StudyFeature } from "@/lib/study-attempt";
 import { AttemptLock } from "./AttemptLock";
-import { hubProgressOptions, saveHubProgress } from "@/lib/test-hub.functions";
+import { hubProgressOptions } from "@/lib/test-hub.functions";
 
 const ICONS = { signs: TrafficCone, intersections: GitFork, substances: Beer, speed: Gauge };
 const actionClass = "bg-action text-action-foreground hover:bg-action-hover rounded-full";
@@ -27,17 +24,6 @@ export function TestHubDashboard({ initialTopic, userId }: { initialTopic?: Pill
   const [attempt,setAttempt]=useState<StudyAttempt|null>(null);
   const begin=async (topic:StudyFeature) => { if(topic === "review" && !isPro) {unlockPro();return;} const row=await store.start(topic);if(row){setAttempt(row);setActive(row.feature as PillarId|"review");} };
   const { data: rows } = useSuspenseQuery(hubProgressOptions(userId));
-  const queryClient = useQueryClient();
-  const save = useServerFn(saveHubProgress);
-  const mutation = useMutation({
-    mutationFn: (variables: { data: SaveInput & { state: string } }) => save(variables),
-    onSuccess: (progress, variables) => {
-      queryClient.setQueryData(hubProgressOptions(userId).queryKey, (old: typeof rows | undefined) => [
-        ...(old ?? []).filter(row => row.state !== variables.data.state || row.progress.topic !== progress.topic),
-        { state: variables.data.state, progress },
-      ]);
-    },
-  });
   const progress = HUB_TOPICS.map(topic => rows.find(row => row.state === state && row.progress.topic === topic)?.progress ?? emptyTopic(topic));
   const [active, setActive] = useState<PillarId | "review" | null>(null);
   const missed = missedQuestions(progress);
@@ -94,7 +80,6 @@ function Meter({ value, className }: { value: number; className?: string }) {
   return <div className={cn("h-1.5 rounded-full bg-muted overflow-hidden", className)} role="progressbar" aria-valuenow={value} aria-valuemin={0} aria-valuemax={100}><div className="h-full bg-action rounded-full transition-all" style={{ width: `${value}%` }} /></div>;
 }
 
-type SaveInput = { topic: PillarId; answer?: { question: HubQuestion; correct: boolean }; score?: number };
 function QuizRunner({ mode, banks, missed, progress, stateName, isPro, onUpgrade, onExit, attempt, onRestart, onAnswer }: {
   mode: PillarId | "review"; banks: Record<PillarId, HubQuestion[]>; missed: HubQuestion[]; progress: TopicProgress[];
   stateName: string; isPro: boolean; onUpgrade: () => void; onExit: () => void; attempt:StudyAttempt;
@@ -108,7 +93,6 @@ function QuizRunner({ mode, banks, missed, progress, stateName, isPro, onUpgrade
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const busy = useRef(false);
-  const charged = useRef(false);
   const [saved, setSaved] = useState(false);
   const [before, setBefore] = useState(() => mode === "review" ? 0 : topicStats(progress.find(p => p.topic === mode) ?? emptyTopic(mode), banks[mode].length).mastery);
   const q = questions[idx];
@@ -141,7 +125,7 @@ function QuizRunner({ mode, banks, missed, progress, stateName, isPro, onUpgrade
   const advance = async () => {
     if (!saved || busy.current) return;
     if (idx + 1 < questions.length) {
-      setIdx(i => i + 1); setPicked(null); setSaved(false); charged.current = false; setError(null); return;
+      setIdx(i => i + 1); setPicked(null); setSaved(false); setError(null); return;
     }
     setDone(true);
   };

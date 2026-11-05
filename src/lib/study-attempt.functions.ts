@@ -6,7 +6,7 @@ import { getStatePack } from '@/data/dmv';
 import { buildExamPool, type ExamQuestion } from './mock-exam';
 import { buildPillarBanks } from '@/data/dmv/practice-bank';
 import { shuffleAnswers } from '@/data/dmv/question-generator';
-import { answerProgress, emptyTopic, hubQuestion, missedQuestions, type HubQuestion, type TopicProgress } from './test-hub';
+import { hubQuestion, missedQuestions, type HubQuestion, type TopicProgress } from './test-hub';
 import { createSimulationSession, type SimulationClip } from '@/data/simulation-session';
 import { SIMULATION_CLIPS } from '@/data/simulation-clips';
 import { decisionSummary, finishScenario, recordDecision, stepProgress, type ScenarioDecision } from '@/data/simulation-game';
