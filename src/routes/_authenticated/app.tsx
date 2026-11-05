@@ -5,7 +5,7 @@ import { ThemeProvider } from "@/lib/theme";
 import { useEffect } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { syncAccount } from "@/lib/email-prefs.functions";
-import {resumeAnswers,leaveAnswers} from "@/lib/answer-queue.client";
+import {resumeAnswers,leaveAnswers} from "@/lib/answer-queue-browser";
 import { PaymentTestModeBanner } from "@/components/payments/PaymentTestModeBanner";
 
 export const Route = createFileRoute("/_authenticated/app")({

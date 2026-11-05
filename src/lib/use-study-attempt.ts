@@ -1,7 +1,7 @@
 import {useServerFn} from '@tanstack/react-start';
 import {useQuery,useQueryClient} from '@tanstack/react-query';
 import {useCallback,useState,useSyncExternalStore} from 'react';
-import {enqueueAnswer,flushAnswers,answerFailure,subscribeAnswers,latestSavedAnswer,queuedAttempt} from './answer-queue.client';
+import {enqueueAnswer,flushAnswers,answerFailure,subscribeAnswers,latestSavedAnswer,queuedAttempt} from './answer-queue-browser';
 import {startStudyAttempt,studyAttemptsOptions} from './study-attempt.functions';
 import type {StudyAnswerInput} from './study-attempt.functions';
 import type {StudyAttempt,StudyFeature} from './study-attempt';
