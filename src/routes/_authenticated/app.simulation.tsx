@@ -261,7 +261,7 @@ function SimulationPage() {
               </div>
               {showLegend && <aside aria-label="Action legend" className="hidden h-full min-h-0 rounded-2xl bg-card p-3 md:flex md:items-center"><ActionLegend /></aside>}
             </div>
-            {timed && phase === "decision" && <div role="progressbar" aria-label="Decision time remaining" aria-valuemin={0} aria-valuemax={2.5} aria-valuenow={phase === "playing" ? 2.5 : phase === "feedback" ? 0 : remaining / 1000} className="flex h-1 shrink-0 overflow-hidden rounded-full bg-muted"><span className={cn("h-full transition-[flex-grow] duration-75", remaining > 1000 ? "bg-action" : "bg-destructive/60")} style={{ flexGrow: phase === "playing" ? DECISION_MS : phase === "feedback" ? 0 : remaining }} /><span style={{ flexGrow: phase === "playing" ? 0 : phase === "feedback" ? DECISION_MS : DECISION_MS - remaining }} /></div>}
+            {timed && phase === "decision" && <div role="progressbar" aria-label="Decision time remaining" aria-valuemin={0} aria-valuemax={2.5} aria-valuenow={remaining / 1000} className="flex h-1 shrink-0 overflow-hidden rounded-full bg-muted"><span className={cn("h-full transition-[flex-grow] duration-75", remaining > 1000 ? "bg-action" : "bg-destructive/60")} style={{ flexGrow: remaining }} /><span style={{ flexGrow: DECISION_MS - remaining }} /></div>}
             <div className="shrink-0 basis-[192px] sm:basis-[168px]">
               {phase === "feedback" && feedback ? <div ref={feedbackPanel} role="status" className="flex h-full flex-col gap-2 rounded-2xl border border-border/60 bg-card p-3 sm:p-4">
                 <FeedbackResult steps={clip.steps} decision={feedback} />
