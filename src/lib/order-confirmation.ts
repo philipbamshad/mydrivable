@@ -3,7 +3,7 @@ export function isConfirmedPayment(session: { mode?: string; payment_status?: st
   return session.mode === 'payment' && session.payment_status === 'paid' && session.livemode === (environment === 'live')
 }
 
-export function orderConfirmationDetails(session: { id: string; amount_total?: number | null; currency?: string | null; created: number }, charge: { created?: number; receipt_url?: string | null; payment_method_details?: { card?: { brand?: string; last4?: string } | null } | null }) {
+export function orderConfirmationDetails(session: { id: string; amount_total?: number | null; currency?: string | null; created: number }, charge: { created?: number; receipt_url?: string | null; payment_method_details?: { card?: { brand?: string | null; last4?: string | null } | null } | null }) {
   const card = charge.payment_method_details?.card
   const brands: Record<string, string> = { visa: 'Visa', mastercard: 'Mastercard', amex: 'American Express', discover: 'Discover', diners: 'Diners Club', jcb: 'JCB', unionpay: 'UnionPay' }
   return {
