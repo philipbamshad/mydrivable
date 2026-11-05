@@ -468,43 +468,6 @@ function Features() {
                 </div>
               )}
 
-              {f.visual === "state" && (
-                <div className="relative mx-auto w-full max-w-[340px] overflow-hidden rounded-2xl bg-white dark:bg-[#22262a] p-5 shadow-[0_18px_40px_-30px_rgba(15,23,42,0.5)] transition-transform duration-500 group-hover:scale-[1.02]">
-                  <div className="pointer-events-none absolute inset-0 -translate-x-full overflow-hidden rounded-2xl group-hover:animate-[featureShimmer_0.9s_ease_forwards]">
-                    <div className="h-full w-full bg-gradient-to-r from-transparent via-white/35 to-transparent" />
-                  </div>
-                  <div className="relative flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-semibold text-[#0f172a] dark:text-[#f3f4f6]">DMV Target Date</p>
-                      <p className="mt-1 text-[11px] text-[#1f2b4d]/55 dark:text-[#9ca3af]/75">Personalized to California</p>
-                    </div>
-                    <span className="feature-float inline-flex items-center gap-1 rounded-md bg-[#0f172a] px-2.5 py-1 text-[10px] font-semibold text-white">
-                      <MapPin className="h-3 w-3" />
-                      CA DMV
-                    </span>
-                  </div>
-                  <div className="relative mt-5 flex items-center gap-3 rounded-xl bg-[#f4f5f7] dark:bg-[#1c1f22] p-3 transition-colors duration-500 group-hover:bg-[#e8eaed] dark:group-hover:bg-[#2a2e33]">
-                    <div className="grid h-10 w-10 place-items-center rounded-lg bg-[#1e40af]/10 text-[#1e40af] dark:text-[#7ea6ff]">
-                      <Calendar className="h-5 w-5" />
-                    </div>
-                    <div>
-                      <p className="text-xs font-semibold text-[#0f172a] dark:text-[#f3f4f6]">August 30, 2026</p>
-                      <p className="text-[10px] text-[#1f2b4d]/55 dark:text-[#9ca3af]/75">Target exam date</p>
-                    </div>
-                  </div>
-                  <div className="relative mt-4 grid grid-cols-3 gap-2">
-                    {["Signs", "Rules", "Safety"].map((t) => (
-                      <div
-                        key={t}
-                        className="rounded-lg bg-[#f4f5f7] dark:bg-[#1c1f22] px-2 py-2 text-center text-[10px] font-semibold text-[#1f2b4d]/70 dark:text-[#d1d5db]/80 transition-colors duration-500 group-hover:bg-[#e8eaed] dark:group-hover:bg-[#2a2e33]"
-                      >
-                        {t}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
               <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#f4f5f7] dark:from-[#1c1f22] to-transparent transition-colors duration-500 group-hover:from-[#eef0f4] dark:group-hover:from-[#22262a]" />
             </div>
 
