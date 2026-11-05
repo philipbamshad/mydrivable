@@ -24,6 +24,7 @@ import {
   CalendarDays,
   ChevronLeft,
   ChevronRight,
+  Trash2,
 } from "lucide-react";
 import {
   Popover,
@@ -241,6 +242,7 @@ export function ThreadSidebar() {
     { label: "DMV target date", icon: CalendarDays, section: "date" },
     { label: "Email reminders", icon: CalendarDays, section: "email" },
     { label: "Pro Pass", icon: Check, section: "membership" },
+    { label: "Delete account", icon: Trash2, section: "delete" },
   ];
 
   const createUserFooter = (surface: "desktop" | "mobile") => {

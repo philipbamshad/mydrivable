@@ -77,10 +77,8 @@ export const answerStudyAttempt=createServerFn({method:'POST'}).middleware([requ
       answer=data.answer;
       const answers=[...(attempt.answers as number[]),answer];
       score=Math.round(answers.filter((a,i)=>a===(attempt.payload[i] as ExamQuestion).correct).length/answers.length*100);
-      if(attempt.feature!=='exam') {
-        const question=q as HubQuestion;
-        hub={topic:question.topic,question,correct:answer===question.correct};
-      }
+      const question=hubQuestion(q, q.topic);
+      hub={topic:question.topic,question,correct:answer===question.correct};
     }
     const {supabaseAdmin}=await import('@/integrations/supabase/client.server');
     const {data:saved,error:saveError}=await supabaseAdmin.rpc('commit_study_answer',{p_id:attempt.id,p_user:context.userId,p_version:attempt.version,p_answer:JSON.parse(JSON.stringify(answer)),p_score:score,p_reaction:reaction ?? 0,p_hub:hub?JSON.parse(JSON.stringify(hub)):undefined});

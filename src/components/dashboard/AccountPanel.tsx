@@ -16,12 +16,34 @@ import { TargetDatePicker } from "@/components/dashboard/TargetDatePicker";
 import { useTheme } from "@/lib/theme";
 import { EmailRemindersCard } from "@/components/dashboard/EmailRemindersCard";
 
+import { useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
+import { deleteAccount } from "@/lib/account.functions";
+import { supabase } from "@/integrations/supabase/client";
+import { Input } from "@/components/ui/input";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+
 export type AccountSection = "theme" | "state" | "date" | "email" | "membership" | "delete";
 
 export function AccountPanel({ section }: { section?: AccountSection } = {}) {
   const show = (k: AccountSection) => !section || section === k;
   const { state, setState, isPro, openCheckout, targetDate, setTargetDate } = useUserProfile();
   const { theme } = useTheme();
+  const removeAccount = useServerFn(deleteAccount);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [confirmation, setConfirmation] = useState("");
+  const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
+  const confirmDelete = async () => {
+    if (confirmation !== "DELETE" || deleting) return;
+    setDeleting(true); setDeleteError(null);
+    try {
+      const result = await removeAccount({ data: { confirmation: "DELETE" } });
+      await supabase.auth.signOut();
+      toast.success(result.emailSent ? "Account deleted. A confirmation email has been sent." : "Account deleted. The confirmation email could not be sent.");
+      window.location.assign("/");
+    } catch { setDeleteError("Unable to finish account deletion. Please try again."); setDeleting(false); }
+  };
 
   const onChangeState = (next: string) => {
     setState(next);
@@ -144,15 +166,18 @@ export function AccountPanel({ section }: { section?: AccountSection } = {}) {
 <Card className="p-5">
         <h3 className="font-semibold">Delete my account</h3>
         <p className="mt-1 text-sm text-muted-foreground">
-          Request permanent deletion of your account, chat history, and study progress. We process requests within 30 days.
+          Permanently delete your account, chat history, and study progress. This cannot be undone.
         </p>
-        <Button asChild variant="outline" className="mt-3 border-destructive/40 text-destructive hover:bg-destructive/10">
-          <a href="mailto:support@mydrivable.com?subject=Account%20deletion%20request&body=Please%20delete%20my%20Drivable%20account%20and%20all%20associated%20data.%20My%20account%20email%20is%3A%20">
-            Request account deletion
-          </a>
-        </Button>
+        <Button onClick={() => setDeleteOpen(true)} variant="outline" className="mt-3 border-destructive/40 text-destructive hover:bg-destructive/10">Delete account</Button>
       </Card>
       )}
+      <Dialog open={deleteOpen} onOpenChange={open => { if (!deleting) { setDeleteOpen(open); setConfirmation(""); setDeleteError(null); } }}>
+        <DialogContent><DialogHeader><DialogTitle>Delete account?</DialogTitle><DialogDescription>This permanently removes your account and all study data. Type DELETE to confirm.</DialogDescription></DialogHeader>
+          <Input aria-label="Deletion confirmation" value={confirmation} onChange={e => setConfirmation(e.target.value)} disabled={deleting} />
+          {deleteError && <p role="alert" className="text-sm text-destructive">{deleteError}</p>}
+          <div className="flex justify-end gap-2"><Button variant="outline" disabled={deleting} onClick={() => setDeleteOpen(false)}>Cancel</Button><Button variant="destructive" disabled={confirmation !== "DELETE" || deleting} onClick={() => void confirmDelete()}>{deleting ? "Deleting…" : "Permanently delete account"}</Button></div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

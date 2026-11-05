@@ -54,6 +54,7 @@ export const runReminderJobNow = createServerFn({ method: 'POST' })
   })
 
 const TESTABLE_TEMPLATES = [
+  'account-deleted',
   'waitlist-confirmation',
   'new-waitlist-signup',
   'order-confirmation',
@@ -97,4 +98,15 @@ export const getAdminStatus = createServerFn({ method: 'GET' })
   .handler(async ({ context }) => {
     const { data: admin } = await context.supabase.rpc('is_admin')
     return { admin: admin === true }
+  })
+
+export const getWaitlistCount = createServerFn({ method: 'GET' })
+  .middleware([requireAllowlisted])
+  .handler(async ({ context }) => {
+    const { data: admin } = await context.supabase.rpc('is_admin')
+    if (admin !== true) throw new Error('Forbidden')
+    const { supabaseAdmin } = await import('@/integrations/supabase/client.server')
+    const { count, error } = await supabaseAdmin.from('waitlist').select('id', { count: 'exact', head: true })
+    if (error) throw new Error('Unable to load waitlist count.')
+    return { count: count ?? 0 }
   })

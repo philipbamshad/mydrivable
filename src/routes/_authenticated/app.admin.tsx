@@ -3,7 +3,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { getAdminStatus, runReminderJobNow, sendTestEmails } from "@/lib/email-prefs.functions";
+import { getAdminStatus, getWaitlistCount, runReminderJobNow, sendTestEmails } from "@/lib/email-prefs.functions";
 import { PageShell } from "@/components/dashboard/PageShell";
 import type { ReminderRun } from "@/lib/reminders.server";
 
@@ -21,6 +21,7 @@ export const Route = createFileRoute("/_authenticated/app/admin")({
     const { admin } = await getAdminStatus();
     if (!admin) throw redirect({ to: "/app" });
   },
+  loader: () => getWaitlistCount(),
   component: AdminPage,
 });
 
@@ -52,6 +53,7 @@ function EmailTestsCard() {
 }
 
 function AdminPage() {
+  const { count } = Route.useLoaderData();
   const run = useServerFn(runReminderJobNow);
   const [busy, setBusy] = useState(false);
   const [result, setResult] = useState<ReminderRun | null>(null);
@@ -61,6 +63,11 @@ function AdminPage() {
     try { setResult(await run()); } catch (e) { setError(e instanceof Error ? e.message : "Job failed"); } finally { setBusy(false); }
   };
   return <PageShell title="Admin">
+    <Card className="mb-6 max-w-xl space-y-4 p-6">
+      <h2 className="font-semibold">Waitlist</h2><p className="text-3xl font-bold tabular-nums">{count}</p>
+      <Button disabled>Send launch email to waitlist</Button>
+      <p className="text-sm text-muted-foreground">Sign-ups are locked. Launch announcements require a dedicated marketing email service.</p>
+    </Card>
     <Card className="max-w-xl space-y-4 p-6">
       <div><h2 className="font-semibold">Test date reminders</h2>
         <p className="mt-1 text-sm text-muted-foreground">Runs the same job as the hourly schedule, without waiting for 9 AM.</p></div>

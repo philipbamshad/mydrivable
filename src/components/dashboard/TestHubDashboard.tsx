@@ -77,7 +77,7 @@ export function TestHubDashboard({ initialTopic, userId }: { initialTopic?: Pill
 }
 
 function Meter({ value, className }: { value: number; className?: string }) {
-  return <div className={cn("h-1.5 rounded-full bg-muted overflow-hidden", className)} role="progressbar" aria-valuenow={value} aria-valuemin={0} aria-valuemax={100}><div className="h-full bg-action rounded-full transition-all" style={{ width: `${value}%` }} /></div>;
+  return <div className={cn("h-1 w-full rounded-full bg-muted overflow-hidden", className)} role="progressbar" aria-valuenow={value} aria-valuemin={0} aria-valuemax={100}><div className="h-full bg-action rounded-full transition-all" style={{ width: `${value}%` }} /></div>;
 }
 
 function QuizRunner({ mode, banks, missed, progress, stateName, isPro, onUpgrade, onExit, attempt, onRestart, onAnswer }: {
