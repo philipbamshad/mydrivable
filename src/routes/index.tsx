@@ -4,10 +4,12 @@ import { supabase } from "@/integrations/supabase/client";
 import logo from "@/assets/drivable-logo.png";
 import {
   ArrowRight,
-  Calendar,
+  ArrowUp,
   Check,
   MapPin,
   Menu,
+  Octagon,
+  Triangle,
   X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
