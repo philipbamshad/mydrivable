@@ -23,6 +23,8 @@
 - Use fixed semantic simulation actions with pure timing and scenario data; instruction and legend preferences are browser-only presentation state.
 - Author simulation steps in scenario data; aggregate scenario correctness across every required step and reaction averages across individual decisions. Active study layouts share a viewport-bounded question frame so feedback stays visible.
 - Resolve Coach jurisdiction from the authenticated profile and consume free usage through the owner-scoped atomic RPC; client request state and browser counters are never authoritative.
+- Reserve study sessions atomically in study_attempts; service-only versioned answer commits score the server-authored payload and write history/progress together, preventing duplicate Free slots and answer edits while preserving resume state.
+- Read AI allowance from the database local-day RPC; legacy browser counters never gate practice or reset daily credits.
 - Supply missing resolved CSS defaults through the Vite compatibility plugin so the preview stylesheet compiler receives the same configuration shape as production.
 - Private beta: app access is gated by the database allowlist (is_allowlisted RPC) in the _authenticated route, every server function via requireAllowlisted, /api/chat, and restrictive RLS on user tables; the client check alone is never trusted.
 - Public waitlist joins use a same-origin server function and service-only atomic database RPC for duplicate/visitor checks; sends use the existing authenticated App email route with narrowly scoped server credentials so browser callers cannot bypass signup checks.
