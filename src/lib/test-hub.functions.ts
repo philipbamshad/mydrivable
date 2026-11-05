@@ -3,6 +3,8 @@ import { queryOptions } from "@tanstack/react-query";
 import { z } from "zod";
 import { requireAllowlisted } from "@/lib/allowlist-middleware";
 import { answerProgress, emptyTopic, type TopicProgress, type HubQuestion } from "./test-hub";
+import { withHistoricalExamAnswers } from "./exam-missed";
+import type { StudyAttempt } from "./study-attempt";
 
 const topicSchema = z.enum(["signs", "intersections", "substances", "speed"]);
 export const getHubProgress = createServerFn({ method: "GET" })
@@ -10,9 +12,11 @@ export const getHubProgress = createServerFn({ method: "GET" })
   .handler(async ({ context }): Promise<{ state: string; progress: TopicProgress }[]> => {
     const { data, error } = await context.supabase.from("test_hub_progress").select("state, topic, questions, last_score, best_score").eq("user_id", context.userId);
     if (error) throw new Error("Unable to load practice progress.");
-    return (data ?? []).map(row => ({ state: row.state, progress: {
+    const { data: attempts, error: attemptsError } = await context.supabase.from("study_attempts").select("*").eq("user_id", context.userId).eq("feature", "exam");
+    if (attemptsError) throw new Error("Unable to load missed exam questions.");
+    return withHistoricalExamAnswers((data ?? []).map(row => ({ state: row.state, progress: {
       topic: topicSchema.parse(row.topic), questions: row.questions as unknown as TopicProgress["questions"], lastScore: row.last_score, bestScore: row.best_score,
-    } }));
+    } })), (attempts ?? []) as unknown as StudyAttempt[]);
   });
 
 export const hubProgressOptions = (userId: string) => queryOptions({
