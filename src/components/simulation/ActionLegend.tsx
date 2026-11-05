@@ -16,6 +16,6 @@ const meanings = {
 export function ActionLegend() {
   return <dl className="space-y-5">{STANDARD_ACTIONS.map(action => {
     const Icon = ACTION_ICONS[action.icon as keyof typeof ACTION_ICONS];
-    return <div key={action.id} className="flex items-start gap-3"><Icon className="mt-0.5 h-6 w-6 shrink-0 text-action" aria-hidden="true" /><div><dt className="text-sm font-semibold">{action.label}</dt><dd className="mt-1 text-xs leading-relaxed text-muted-foreground">{meanings[action.id as keyof typeof meanings]}</dd></div></div>;
+    return <div key={action.id} className="flex items-start gap-3"><Icon className="sim-action-ic mt-0.5 h-6 w-6 shrink-0" data-action={action.id} aria-hidden="true" /><div><dt className="text-sm font-semibold">{action.label}</dt><dd className="mt-1 text-xs leading-relaxed text-muted-foreground">{meanings[action.id as keyof typeof meanings]}</dd></div></div>;
   })}</dl>;
 }
