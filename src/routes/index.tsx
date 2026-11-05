@@ -377,7 +377,41 @@ function Features() {
                 </div>
               )}
 
-              {f.visual === "driving" && <div className="mx-auto flex h-full max-w-[340px] flex-col justify-center gap-4 rounded-2xl bg-card p-5 text-foreground"><p className="font-semibold">Driving Test Simulation</p><div className="h-1 rounded-full bg-muted"><div className="h-full w-2/3 rounded-full bg-action" /></div><p className="text-sm text-muted-foreground">Intersections · Turns · Right-of-way · Lane changes</p><div className="flex justify-around text-action"><ArrowRight className="size-9"/><Check className="size-9"/></div></div>}
+              {f.visual === "driving" && (
+                <div className="mx-auto flex h-full w-full max-w-[340px] flex-col justify-center gap-4">
+                  <div className="relative overflow-hidden rounded-2xl shadow-[0_18px_40px_-30px_rgba(15,23,42,0.6)] transition-transform duration-500 group-hover:scale-[1.02]">
+                    <img
+                      src={heroStill}
+                      alt="Driving simulation: approaching a green light before a right turn"
+                      className="block w-full"
+                    />
+                    <div
+                      aria-hidden
+                      className="hero-signal-glow pointer-events-none absolute inset-0 rounded-2xl"
+                    />
+                    <span className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-[#0f172a]/85 px-3 py-1 text-[11px] font-semibold text-white backdrop-blur-sm">
+                      <ArrowRight className="h-3 w-3 text-[#ffa500]" />
+                      Turning right
+                    </span>
+                  </div>
+                  <div className="flex justify-center gap-2">
+                    {[
+                      { id: "go", label: "Go", Icon: ArrowUp, color: "#16a34a" },
+                      { id: "yield", label: "Yield", Icon: Triangle, color: "#d97706" },
+                      { id: "stop", label: "Stop", Icon: Octagon, color: "#dc2626" },
+                    ].map(({ id, label, Icon, color }) => (
+                      <span
+                        key={id}
+                        className="inline-flex items-center gap-1.5 rounded-full border bg-white px-3 py-1.5 text-xs font-semibold text-[#1f2b4d]/85 shadow-sm dark:bg-[#22262a] dark:text-[#d1d5db]/85"
+                        style={{ borderColor: `${color}55` }}
+                      >
+                        <Icon className="h-3.5 w-3.5" style={{ color }} />
+                        {label}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
               {f.visual === "coach" && (
                 <div className="mx-auto w-full max-w-[340px] space-y-3">
                   <div className="feature-float relative ml-auto w-fit max-w-[80%] overflow-hidden rounded-2xl rounded-br-md bg-[#0f172a] px-4 py-2.5 text-sm text-white shadow-[0_18px_40px_-30px_rgba(15,23,42,0.6)] transition-transform duration-500 group-hover:translate-x-1">
