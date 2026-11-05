@@ -2,6 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import logo from "@/assets/drivable-logo.png";
+import heroStill from "@/assets/hero-sim-still.jpg";
 import {
   ArrowRight,
   ArrowUp,
@@ -342,6 +343,11 @@ function Features() {
       </div>
 
       <div ref={grid} className="mx-auto mt-14 grid w-full max-w-6xl gap-6 md:grid-cols-2">
+        <style>{`
+          @keyframes heroSignalBlink { 0%, 100% { opacity: 0.12; } 50% { opacity: 0.42; } }
+          .hero-signal-glow { background: linear-gradient(to right, rgba(255,165,0,0) 82%, #ffa500 100%); animation: heroSignalBlink 0.8s ease-in-out infinite; }
+          @media (prefers-reduced-motion: reduce) { .hero-signal-glow { animation: none; opacity: 0.3; } }
+        `}</style>
         {features.map((f, i) => (
           <div
             key={f.title}
@@ -350,7 +356,7 @@ function Features() {
           >
             <div className="relative h-[260px] overflow-hidden rounded-[24px] px-6 pt-8">
               {f.visual === "simulator" && (
-                <div className="mx-auto w-full max-w-[340px] space-y-3">
+                <div className="mx-auto flex h-full w-full max-w-[340px] flex-col justify-center space-y-3">
                   {[
                     { label: "Question 12 of 46", tag: "Signs" },
                     { label: "Question 13 of 46", tag: "Right of way" },
@@ -413,7 +419,7 @@ function Features() {
                 </div>
               )}
               {f.visual === "coach" && (
-                <div className="mx-auto w-full max-w-[340px] space-y-3">
+                <div className="mx-auto flex h-full w-full max-w-[340px] flex-col justify-center space-y-3">
                   <div className="feature-float relative ml-auto w-fit max-w-[80%] overflow-hidden rounded-2xl rounded-br-md bg-[#0f172a] px-4 py-2.5 text-sm text-white shadow-[0_18px_40px_-30px_rgba(15,23,42,0.6)] transition-transform duration-500 group-hover:translate-x-1">
                     <div className="pointer-events-none absolute inset-0 -translate-x-full overflow-hidden rounded-2xl rounded-br-md group-hover:animate-[featureShimmer_0.9s_ease_forwards]">
                       <div className="h-full w-full bg-gradient-to-r from-transparent via-white/20 to-transparent" />
