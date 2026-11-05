@@ -22,7 +22,7 @@ export function RecentResultsCard({ rows, emptyText = "No attempts yet" }: { row
             <li key={row.id} className="flex items-center justify-between gap-3 py-3 first:pt-0 last:pb-0">
               <span className="text-sm text-muted-foreground">{row.date}</span>
               <span className="flex items-center gap-3 text-sm">
-                <span className="font-semibold tabular-nums">{row.primary}</span>
+                <span className="font-semibold tabular-nums text-progress-text">{row.primary}</span>
                 <span className={cn("font-medium", row.tone === "success" && "text-success", row.tone === "destructive" && "text-destructive", !row.tone && "text-muted-foreground")}>{row.secondary}</span>
               </span>
             </li>
