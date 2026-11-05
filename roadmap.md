@@ -1,5 +1,13 @@
 # Design improvements
 
+# Checkout and first-sign-in fixes
+- [ ] Repair embedded checkout; test sandbox purchase/Pro/email and live load without payment.
+- [ ] Required first-sign-in state and age setup; optional test date, saved and used throughout.
+- [ ] Restriction-only badges, unattempted topic labels, primary locked-screen upgrade and no duplicates.
+- [ ] Include historical exam misses in review with accurate counts; simulation header Upgrade.
+- [ ] Fix mobile settings/account/sign-out and remove sign-out clipboard behavior.
+- [ ] Verify Free/Pro desktop/mobile flows and relevant tests.
+
 # Homepage menu and beta access
 - [x] Remove homepage Log in link; retain waitlist and /auth sign-in.
 - [x] Add ngfinanceai@gmail.com to app allowlist without new admin sections.
