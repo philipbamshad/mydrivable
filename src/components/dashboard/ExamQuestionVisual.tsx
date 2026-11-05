@@ -1,28 +1,48 @@
 import { SignVisual } from "./SignVisual";
-import type { ExamQuestion } from "@/lib/mock-exam";
+import { questionVisual, type QuestionVisual } from "@/lib/question-visual";
+import type { SignSpec } from "./SignVisual";
 
-export function ExamQuestionVisual({ question }: { question: ExamQuestion }) {
-  const text = question.q.toLowerCase();
-  // Explicit sign artwork always wins over words such as crosswalk in its prompt.
-  if (question.sign || /\bstop sign\b|octagon/.test(text)) return <div className="exam-road-visual mb-5 grid h-44 place-items-center rounded-2xl bg-muted" role="img" aria-label={/\bstop sign\b|octagon/.test(text) ? "Stop sign" : "Road sign"}><SignVisual s={question.sign ?? { shape: "octagon", fill: "var(--exam-road-red)", stroke: "var(--exam-road-white)", letters: "STOP", textColor: "var(--exam-road-white)" }} size={140} /></div>;
-  const signal = !/sign.*(?:says|means)|'no turn on red'|"no turn on red"/.test(text) && /signal|traffic light|green arrow|red arrow|yellow arrow|flashing .*light|light turns|walking person/.test(text);
-  const marking = /curb|lane line|yellow line|white line|parallel yellow|pavement|sharrow|bike lane|bicycle lane|crosswalk|limit line|lane marking/.test(text);
-  const sign = /sign|octagon|inverted.*triangle/.test(text);
-  if (!signal && !marking && !sign && !question.sign) return null;
-  const color = /green/.test(text) ? "var(--exam-road-green)" : /yellow/.test(text) ? "var(--exam-road-yellow)" : /white/.test(text) ? "var(--exam-road-white)" : "var(--exam-road-red)";
-  const signSpec = question.sign ?? {
-    shape: /stop|octagon/.test(text) ? "octagon" as const : /yield|triangle/.test(text) ? "triangle-down" as const : /pentagon|school zone/.test(text) ? "pentagon" as const : /pennant/.test(text) ? "pennant" as const : /diamond|warning|merge|pedestrian|deer|curving|slippery/.test(text) ? "diamond" as const : /circle|do not enter|no left/.test(text) ? "circle" as const : "rect" as const,
-    fill: /green guide/.test(text) ? "var(--exam-road-green)" : /blue/.test(text) ? "var(--exam-road-blue)" : /brown/.test(text) ? "var(--exam-road-brown)" : /orange|construction|work.zone/.test(text) ? "var(--exam-road-orange)" : /yellow|diamond|warning|merge|deer|slippery|pennant/.test(text) ? "var(--exam-road-yellow)" : /stop|red|do not enter/.test(text) ? "var(--exam-road-red)" : "var(--exam-road-white)",
-    stroke: "var(--exam-road-ink)", textColor: /stop|do not enter|green guide/.test(text) ? "var(--exam-road-white)" : "var(--exam-road-ink)",
-    letters: /stop|octagon/.test(text) ? "STOP" : /yield|triangle/.test(text) ? "YIELD" : /do not enter/.test(text) ? "DO NOT ENTER" : /no left/.test(text) ? "↰" : /merge/.test(text) ? "↗" : /crossroad|intersection/.test(text) ? "+" : /pedestrian|school/.test(text) ? "PED XING" : /deer/.test(text) ? "DEER XING" : /orange|work.zone/.test(text) ? "SLOW" : /green guide/.test(text) ? "EXIT →" : question.q.match(/['"]([^'"]+)['"]/)?.[1].toUpperCase() ?? (/railroad|\brr\b/.test(text) ? "RR" : ""),
-    bar: /do not enter/.test(text),
-  };
-  return <div className="exam-road-visual mb-5 grid h-44 place-items-center rounded-2xl bg-muted" role="img" aria-label={signal ? "Traffic signal illustration" : marking ? "Road marking illustration" : "Road sign illustration"}>
-    {signal ? <svg viewBox="0 0 240 150" className="h-36 w-60" aria-hidden="true">
-      {/railroad/.test(text) ? <><rect x="30" y="45" width="180" height="65" rx="12" fill="var(--exam-road-ink)" /><circle cx="75" cy="77" r="23" fill="var(--exam-road-red)" /><circle cx="165" cy="77" r="23" fill="var(--exam-road-red)" /></> : <><rect x="93" y="4" width="54" height="142" rx="12" fill="var(--exam-road-ink)" />{[27, 75, 123].map((y, i) => <circle key={y} cx="120" cy={y} r="18" fill={/not working|malfunction/.test(text) || /arrow/.test(text) ? "var(--exam-road-off)" : i === (/green/.test(text) ? 2 : /yellow/.test(text) ? 1 : 0) ? color : "var(--exam-road-off)"} />)}{/arrow/.test(text) && <path d={`M130 ${/green/.test(text) ? 123 : /yellow/.test(text) ? 75 : 27}H110m0 0l8-8m-8 8l8 8`} stroke={color} strokeWidth="4" fill="none" />}{/walking person|pedestrian/.test(text) && <text x="120" y="130" textAnchor="middle" fontSize="27" fill="var(--exam-road-white)">{/hand|don't walk/.test(text) ? "✋" : "🚶"}</text>}</>}
-    </svg> : marking ? <svg viewBox="0 0 260 150" className="h-36 w-64" aria-hidden="true">
-      <rect x="10" y="5" width="240" height="140" rx="8" fill="var(--exam-road-asphalt)" />
-      {/curb/.test(text) ? <path d="M30 120H230" stroke={color} strokeWidth="18" /> : /crosswalk|limit line/.test(text) ? <>{[45, 80, 115, 150, 185].map(x => <rect key={x} x={x} y="45" width="18" height="75" fill="var(--exam-road-white)" />)}<path d="M25 25H235" stroke="var(--exam-road-white)" strokeWidth="7" /></> : <><path d="M120 10V140" stroke={/white|bike|bicycle|sharrow/.test(text) ? "var(--exam-road-white)" : "var(--exam-road-yellow)"} strokeWidth="5" strokeDasharray={/broken|dashed/.test(text) ? "16 12" : undefined} />{/double|parallel/.test(text) && <path d="M132 10V140" stroke="var(--exam-road-yellow)" strokeWidth="5" />}{/bike|bicycle|sharrow/.test(text) && <><circle cx="185" cy="100" r="12" fill="none" stroke="var(--exam-road-white)" strokeWidth="3" /><circle cx="225" cy="100" r="12" fill="none" stroke="var(--exam-road-white)" strokeWidth="3" /><path d="M185 100l15-25 12 25h-27l12-18h15l13 18M193 73h15M216 70h9" fill="none" stroke="var(--exam-road-white)" strokeWidth="3" /></>}</>}
-    </svg> : <SignVisual s={signSpec} size={140} />}
+const R = {
+  red: "var(--exam-road-red)", yellow: "var(--exam-road-yellow)", green: "var(--exam-road-green)", white: "var(--exam-road-white)",
+  blue: "var(--exam-road-blue)", ink: "var(--exam-road-ink)", off: "var(--exam-road-off)", asphalt: "var(--exam-road-asphalt)", orange: "var(--exam-road-orange)",
+};
+
+function Signal({ v }: { v: Extract<QuestionVisual, { kind: "signal" }> }) {
+  if (v.rail) return <svg viewBox="0 0 160 160"><path d="M80 70V156" stroke={R.ink} strokeWidth="6" /><g stroke={R.white} strokeWidth="10"><path d="M35 10L125 60M125 10L35 60" /></g><g stroke={R.ink} strokeWidth="2"><path d="M35 10L125 60M125 10L35 60" /></g><rect x="30" y="80" width="100" height="40" rx="8" fill={R.ink} /><circle cx="55" cy="100" r="15" fill={R.red} /><circle cx="105" cy="100" r="15" fill={R.off} /></svg>;
+  if (v.ped) return <svg viewBox="0 0 160 160"><rect x="25" y="15" width="110" height="130" rx="12" fill={R.ink} />{v.ped === "hand"
+    ? <path d="M66 112V70a6 6 0 0 1 12 0V60a6 6 0 0 1 12 0v6a6 6 0 0 1 12 0v40c0 12-8 18-18 18h-6c-8 0-12-6-14-12l-8-20a6 6 0 0 1 10-4z" fill={R.orange} />
+    : <g fill={R.white}><circle cx="82" cy="45" r="9" /><path d="M74 58h14l8 26-5 2-6-14-2 20 10 26-7 3-10-24-8 24-7-3 8-27 2-17-6 10-6-3z" /></g>}</svg>;
+  const lens = ["red", "yellow", "green"] as const;
+  return <svg viewBox="0 0 160 160"><rect x="53" y="4" width="54" height="152" rx="12" fill={R.ink} />{lens.map((color, i) => {
+    const on = v.lit === color; const cy = 30 + i * 50;
+    if (on && (v.arrow || v.bike)) return <g key={color}><circle cx="80" cy={cy} r="19" fill={R.off} />{v.arrow
+      ? <path d={`M93 ${cy}H68m0 0l9-9m-9 9l9 9`} stroke={R[color]} strokeWidth="6" fill="none" strokeLinecap="round" />
+      : <g stroke={R[color]} strokeWidth="3" fill="none"><circle cx="70" cy={cy + 5} r="6" /><circle cx="90" cy={cy + 5} r="6" /><path d={`M70 ${cy + 5}l7-12 6 12h-13m7-12h8l5 12`} /></g>}</g>;
+    return <circle key={color} cx="80" cy={cy} r="19" fill={on ? R[color] : R.off} />;
+  })}</svg>;
+}
+
+function Marking({ v }: { v: Extract<QuestionVisual, { kind: "marking" }> }) {
+  return <svg viewBox="0 0 260 150"><rect x="10" y="5" width="240" height="140" rx="8" fill={R.asphalt} />
+    {v.variant === "curb" ? <><rect x="10" y="112" width="240" height="18" fill={R[v.color]} /></>
+      : v.variant === "crosswalk" ? <>{[45, 80, 115, 150, 185].map(x => <rect key={x} x={x} y="45" width="18" height="75" fill={R.white} />)}<path d="M25 25H235" stroke={R.white} strokeWidth="7" /></>
+      : v.variant === "exit-arrow" ? <><path d="M130 10V140" stroke={R.white} strokeWidth="5" strokeDasharray="16 12" /><path d="M80 125L170 40M150 38h22v22" stroke={R.white} strokeWidth="9" fill="none" /></>
+      : v.variant === "bike" ? <><path d="M90 10V140" stroke={R.white} strokeWidth="5" /><g stroke={R.white} strokeWidth="4" fill="none"><circle cx="150" cy="95" r="16" /><circle cx="200" cy="95" r="16" /><path d="M150 95l20-32 14 32h-34l16-24h20l14 24" /></g></>
+      : <><path d="M120 10V140" stroke={R[v.color]} strokeWidth="5" strokeDasharray={v.dashed ? "16 12" : undefined} />{v.double && <path d="M132 10V140" stroke={R[v.color]} strokeWidth="5" />}</>}
+  </svg>;
+}
+
+function Prohibited({ inner }: { inner: "left" | "u" }) {
+  return <svg viewBox="0 0 160 160"><rect x="3" y="3" width="154" height="154" rx="8" fill={R.white} stroke={R.ink} strokeWidth="3" />
+    <circle cx="80" cy="80" r="57" fill="none" stroke={R.red} strokeWidth="12" />
+    {inner === "u" ? <path d="M105 118V65a25 25 0 0 0-50 0v35m-12-15l12 15 12-15" fill="none" stroke={R.ink} strokeWidth="9" /> : <path d="M108 118V78H50m16-18L48 78l18 18" fill="none" stroke={R.ink} strokeWidth="9" />}
+    <path d="M40 40L120 120" stroke={R.red} strokeWidth="12" /></svg>;
+}
+
+export function ExamQuestionVisual({ question }: { question: { q: string; sign?: SignSpec } }) {
+  const v = questionVisual(question);
+  if (!v) return null;
+  return <div className="exam-road-visual question-visual" role="img" aria-label={v.label}>
+    {v.kind === "sign" ? <SignVisual s={v.spec} size={140} /> : v.kind === "prohibited" ? <Prohibited inner={v.inner} /> : v.kind === "signal" ? <Signal v={v} /> : <Marking v={v} />}
   </div>;
 }
