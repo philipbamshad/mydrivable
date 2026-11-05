@@ -145,7 +145,12 @@ async function handleCheckoutSessionCompleted(session: any, env: StripeEnv) {
       templateName: "order-confirmation",
       recipientEmail: email,
       idempotencyKey: `order-confirmation-${session.id}`,
-      templateData: { name, appUrl: "https://mydrivable.com/app" },
+      templateData: {
+        name,
+        appUrl: "https://mydrivable.com/app",
+        orderDate: new Date((session.created ?? Date.now() / 1000) * 1000).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }),
+        orderNumber: `DRV-${session.id.slice(-8).toUpperCase()}`,
+      },
     });
   } catch (err) {
     console.error("Failed to enqueue Pro Pass confirmation email", err);
