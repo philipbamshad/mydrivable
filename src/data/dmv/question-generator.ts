@@ -213,7 +213,7 @@ const RULE_TEMPLATES: Template[] = [
   {
     conceptId: "RULE_TEMPLATES-032", q: "Where the posted rule requires three feet of passing clearance, how much space must you give a bicyclist?", options: ["One foot of clearance","Three feet","Two feet of clearance","Four feet of clearance"], correct: 1, explanation: "3-foot passing laws are on the books in 33+ states; the remainder require a 'safe distance'." },
   {
-    conceptId: "RULE_TEMPLATES-033", q: "When backing up safely, you should…", options: ["Use mirrors only", "Turn your head and look back", "Reverse quickly to clear", "Trust the backup camera alone"], correct: 1, explanation: "Turn your head and look — cameras and mirrors have blind spots." },
+    conceptId: "RULE_TEMPLATES-033", q: "When backing up safely, you should…", options: ["Use only the side mirrors","Turn and look behind you","Watch only the rearview mirror","Use only the reversing camera"], correct: 1, explanation: "Turn your head and look — cameras and mirrors have blind spots." },
   {
     conceptId: "RULE_TEMPLATES-034", q: "A yellow traffic light means…", options: ["Continue if you are near the limit line","Stop if safe","Stop only when cross traffic begins moving","Continue whenever no pedestrians are present"], correct: 1, explanation: "Yellow = stop if you can do so safely; do NOT accelerate to beat it." },
   {

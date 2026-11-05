@@ -350,7 +350,7 @@ const TEMPLATES: Template[] = [
     conceptId: "TEMPLATES-031",
     pillar: "substances",
     q: "Where should a rear-facing child safety seat be placed relative to an active front passenger airbag?",
-    options: ["In front only on short trips","In front if tightly secured","Never in front of an active airbag","In front if the seat belt fits"],
+    options: ["In front if tightly secured","In front if the seat belt fits","Never before an active airbag","In front only on short trips"],
     correct: 2,
     explanation:
       "Under general federal guidance and most state codes, a child weighing less than 20 pounds should not ride in a front seat with an active passenger air bag.",
@@ -533,7 +533,7 @@ const TEMPLATES: Template[] = [
     conceptId: "TEMPLATES-050",
     pillar: "speed",
     q: "When may you pass on the right?",
-    options: ["Only after the other driver waves","In a lawful lane; stay on the road","Whenever a shoulder is paved","Whenever the traffic lane stops"],
+    options: ["Only after the other driver waves","In a lawful lane; stay on road","Whenever a paved shoulder is clear","Whenever the traffic lane stops"],
     correct: 1,
     explanation:
       "Passing on the right is legal when the road has two or more lanes in your direction and it is safe, or when a driver ahead is signaling and turning left, so long as you stay on the paved roadway.",

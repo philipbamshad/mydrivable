@@ -535,10 +535,10 @@
   {
     "q": "Backing up safely you should…",
     "options": [
-      "Use mirrors only",
-      "Turn your head and look back",
-      "Reverse fast to clear",
-      "Trust the backup camera alone"
+      "Use only the side mirrors",
+      "Turn and look behind you",
+      "Watch only the rearview mirror",
+      "Use only the reversing camera"
     ],
     "correct": 1,
     "explanation": "Always turn your head and look — camera/mirrors have blind spots.",
