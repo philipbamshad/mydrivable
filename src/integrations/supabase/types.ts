@@ -405,6 +405,7 @@ export type Database = {
       }
       test_hub_progress: {
         Row: {
+          best_score: number | null
           last_score: number | null
           questions: Json
           state: string
@@ -413,6 +414,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          best_score?: number | null
           last_score?: number | null
           questions?: Json
           state: string
@@ -421,6 +423,7 @@ export type Database = {
           user_id: string
         }
         Update: {
+          best_score?: number | null
           last_score?: number | null
           questions?: Json
           state?: string
