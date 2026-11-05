@@ -43,14 +43,15 @@ function buildStateFactQuestions(r: StateRules): Question[] {
     .map((n) => `${n}%`);
   const bacAdultOptions = ["0.05%", "0.08%", "0.10%", "0.15%"];
   const bacUnder21Options = ["0.00%", "0.01%", "0.02%", "0.05%"];
-  const ageOptions = [14, 15, 16, 17].map((n) => `${n}`);
+  const ageLabel = (age: number) => age % 1 === 0.5 ? `${Math.floor(age)}½` : String(age);
+  const ageOptions = [...new Set([14, r.permitMinAge, 16, 17])].map(ageLabel);
 
   const passingIdx = pctOptions.indexOf(`${r.passingScorePct}%`);
   const bacAdultIdx = bacAdultOptions.indexOf(`${r.bacAdult.toFixed(2)}%`);
   const bacUnder21Idx = bacUnder21Options.indexOf(
     `${r.bacUnder21.toFixed(2)}%`,
   );
-  const permitAgeIdx = ageOptions.indexOf(`${Math.floor(r.permitMinAge)}`);
+  const permitAgeIdx = ageOptions.indexOf(ageLabel(r.permitMinAge));
 
   const out: Question[] = [];
 

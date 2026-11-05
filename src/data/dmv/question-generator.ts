@@ -21,7 +21,7 @@ function interp(text: string, r: StateRules): string {
     .replace(/\{bacAdult\}/g, r.bacAdult.toFixed(2))
     .replace(/\{bacU21\}/g, r.bacUnder21.toFixed(2))
     .replace(/\{bacCDL\}/g, r.bacCommercial.toFixed(2))
-    .replace(/\{permitAge\}/g, String(r.permitMinAge))
+    .replace(/\{permitAge\}/g, r.permitMinAge % 1 === 0.5 ? `${Math.floor(r.permitMinAge)}½` : String(r.permitMinAge))
     .replace(/\{provisionalAge\}/g, String(r.provisionalMinAge))
     .replace(/\{fullAge\}/g, String(r.fullLicenseMinAge))
     .replace(/\{supervisedHours\}/g, String(r.supervisedHoursRequired))
