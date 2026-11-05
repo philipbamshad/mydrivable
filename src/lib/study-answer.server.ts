@@ -12,7 +12,7 @@ export async function commitAnswer(data:StudyAnswerInput,client:SupabaseClient<D
     const attempt=row as unknown as StudyAttempt;
     if(attempt.version>data.version) {
       const saved=attempt.answers[data.version];
-      const same=typeof saved==='number' ? saved===data.answer : data.steps && saved && saved.selectedActions?.every((action,index)=>action===data.steps?.[index]?.action);
+      const same=typeof saved==='number' ? saved===data.answer : data.steps && saved && (saved.steps ?? [saved]).length===data.steps.length && (saved.steps ?? [saved]).every((step,index)=>step.selectedAction===(data.timed!==false && (data.steps?.[index]?.elapsed ?? 0)>=2500 ? null : data.steps?.[index]?.action));
       if(same) return attempt;
       throw new Error('Answer already committed.');
     }
@@ -44,7 +44,11 @@ export async function commitAnswer(data:StudyAnswerInput,client:SupabaseClient<D
     }
     const {supabaseAdmin}=await import('@/integrations/supabase/client.server');
     const {data:saved,error:saveError}=await supabaseAdmin.rpc('commit_study_answer',{p_id:attempt.id,p_user:userId,p_version:attempt.version,p_answer:JSON.parse(JSON.stringify(answer)),p_score:score,p_reaction:reaction ?? 0,p_hub:hub?JSON.parse(JSON.stringify(hub)):undefined});
-    if(saveError) throw new Error('Unable to save your answer. Please retry or reload.');
+    if(saveError) {
+      const {data:latest}=await client.from('study_attempts').select('*').eq('id',data.id).eq('user_id',userId).single();
+      if(latest && latest.version>data.version) return commitAnswer(data,client,userId);
+      throw new Error('Unable to save your answer. Please retry or reload.');
+    }
     return saved as unknown as StudyAttempt;
 
 }
