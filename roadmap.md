@@ -1,9 +1,9 @@
 # Design improvements
 
 # Progress colors and restricted badges
-- [ ] Restrict Pro badges to Free locked/limited features, preserving sidebar plan and homepage pricing.
-- [ ] Shared accessible blue progress/highlight/sidebar tokens without changing button or feedback colors.
-- [ ] Verify Pro and Free screens and color contrast.
+- [x] Restrict Pro badges to Free locked/limited features, preserving sidebar plan and homepage pricing.
+- [x] Shared blue progress/highlight/sidebar tokens; navy buttons and green/red answer states unchanged.
+- [x] Checked Coach, exam, Hub, simulation and Admin with owner Pro and Free test sessions; no Pro feature badges for Pro, lock+Pro only at restrictions for Free. Blue text contrast 4.65–7.44:1; 97 tests passed.
 
 # Instant durable study answers
 - [x] Immediate feedback and usable Next controls in exam, Hub and simulation.
