@@ -49,7 +49,8 @@ export function questionVisual(question: { q: string; sign?: SignSpec }): Questi
 
   // Pavement markings
   if (/arrow on the pavement/.test(t)) return { kind: "marking", label: "Diagonal arrow pavement marking", variant: "exit-arrow", color: "white" };
-  if (/color curb|painted curb|(?:red|yellow|white|green|blue) curb/.test(t)) {
+  if (/what color curb/.test(t)) return null;
+  if (/painted curb|(?:red|yellow|white|green|blue) curb/.test(t)) {
     const color = /green/.test(t) ? "green" : /yellow/.test(t) ? "yellow" : /blue/.test(t) ? "blue" : /white/.test(t) ? "white" : "red";
     return { kind: "marking", label: `${color} curb`, variant: "curb", color };
   }
