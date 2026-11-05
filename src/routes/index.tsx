@@ -158,7 +158,6 @@ function Nav() {
 
 
         <div className="flex items-center gap-2">
-          <Button asChild variant="link" className="px-2 text-sm text-muted-foreground"><Link to="/auth">Log in</Link></Button>
           <button type="button" onClick={openWaitlist}
             className={`${BTN_PRIMARY} group hidden sm:inline-flex px-5 py-2.5 text-sm`}
           >
