@@ -64,3 +64,13 @@
 - [x] Add saved per-topic mastery, last scores, recommendations and missed-question tracking.
 - [x] Upgrade practice feedback, visuals, keyboard answers and mastery results within existing Hub style.
 - [x] Test mastery/missed-question/free-limit rules and verify signed-in practice, persistence and review.
+
+# Spacing and layout pass
+- [ ] Content-height question cards, single-column answers, right-aligned Next, 4px progress bars (exam + Hub).
+- [ ] Sign images: contained 160/120px boxes; every sign shows its real symbol.
+- [ ] App-wide spacing scale, 900px max width, check all pages at 1440/1280/768/375.
+
+# Simulation look and clarity
+- [ ] Solid action buttons (octagon Stop), freeze-only prompt/countdown/step label, 10% freeze overlay.
+- [ ] Two-step check badge and "Correct. Now choose your next action."; result chips per step; timeout never marks correct answers ✕.
+- [ ] Update How it works text/icon and full-width progress bar; test all 6 scenarios timed/untimed.
