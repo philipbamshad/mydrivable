@@ -23,8 +23,10 @@ import { template as newWaitlistSignupTemplate } from './new-waitlist-signup'
 import { template as welcomeTemplate } from './welcome'
 import { template as testIn7DaysTemplate } from './test-in-7-days'
 import { template as testTomorrowTemplate } from './test-tomorrow'
+import { template as launchAnnouncementTemplate } from './launch-announcement'
 
 export const TEMPLATES: Record<string, TemplateEntry> = {
+  'launch-announcement': launchAnnouncementTemplate,
   'order-confirmation': orderConfirmationTemplate,
   'waitlist-confirmation': waitlistConfirmationTemplate,
   'new-waitlist-signup': newWaitlistSignupTemplate,
