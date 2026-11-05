@@ -45,7 +45,7 @@ export function TestHubDashboard({ initialTopic, userId }: { initialTopic?: Pill
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <Card className="bg-card rounded-[28px] border-border/60 p-4 sm:p-6 flex flex-col gap-3 shadow-md">
         <div className="flex items-center gap-2"><Target className="h-5 w-5" /><h2 className="font-display font-bold">Recommended for you</h2></div>
-        <p className="font-semibold">{PILLAR_META[weakest].title}</p>
+        <p className="font-semibold">{PILLAR_META[weakest].title} <RestrictedProBadge restricted={attemptAccess(isPro,store.attempts.find(a=>a.feature===weakest && a.free_slot)) === "locked"}/></p>
         <p className="text-sm text-progress-text">Mastery {topicStats(progress.find(p => p.topic === weakest) ?? emptyTopic(weakest), banks[weakest].length).mastery}%</p>
         <Button className={cn(actionClass, "mt-auto h-11")} disabled={store.busy} onClick={() => void begin(weakest)}>Practice now</Button>
       </Card>
