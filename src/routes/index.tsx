@@ -2,12 +2,15 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import logo from "@/assets/drivable-logo.png";
+import heroStill from "@/assets/hero-sim-still.jpg";
 import {
   ArrowRight,
-  Calendar,
+  ArrowUp,
   Check,
   MapPin,
   Menu,
+  Octagon,
+  Triangle,
   X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -228,7 +231,7 @@ function Hero() {
       <div className="relative mx-auto max-w-5xl">
         <h1 className="fade-in-up relative font-display text-5xl font-bold leading-tight tracking-tight sm:text-7xl">
           Drivable,{" "}
-          <span className="hero-serif-gradient">Master Your Permit and Driving Test</span>
+          <span className="hero-serif-gradient">Master the Road</span>
         </h1>
       </div>
 
@@ -313,13 +316,8 @@ function Features() {
     },
     {
       title: "Targeted Section Quizzes",
-      body: "Drill road signs, intersections, speed limits and substance laws",
+      body: "Drill road signs, intersections, speed limits and substance laws. Your study plan adapts to your state and DMV test date.",
       visual: "quizzes",
-    },
-    {
-      title: "Tailored To Your Test Date and State",
-      body: "Save your DMV target date and select your state for state-specific practice.",
-      visual: "state",
     },
     { title: "Driving Test Simulation", body: "Watch real driving situations and make the right call in a split second.", visual: "driving" },
   ];
@@ -334,17 +332,22 @@ function Features() {
           State-Specific DMV Prep
         </div>
         <h2 className="mt-8 text-3xl font-semibold sm:text-5xl">
-          Everything Between You and a{" "}
+          Four focused tools, one outcome:{" "}
           <span className="text-primary font-medium">
-            Real License
+            pass on the first try.
           </span>
         </h2>
         <p className="mx-auto mt-6 max-w-xl text-lg text-[#1f2b4d]/70 dark:text-[#d1d5db]/80">
-          Five focused tools for your permit test and driving test.
+          Four focused tools for your permit test and driving test.
         </p>
       </div>
 
       <div ref={grid} className="mx-auto mt-14 grid w-full max-w-6xl gap-6 md:grid-cols-2">
+        <style>{`
+          @keyframes heroSignalBlink { 0%, 100% { opacity: 0.12; } 50% { opacity: 0.42; } }
+          .hero-signal-glow { background: linear-gradient(to right, rgba(255,165,0,0) 82%, #ffa500 100%); animation: heroSignalBlink 0.8s ease-in-out infinite; }
+          @media (prefers-reduced-motion: reduce) { .hero-signal-glow { animation: none; opacity: 0.3; } }
+        `}</style>
         {features.map((f, i) => (
           <div
             key={f.title}
@@ -353,7 +356,7 @@ function Features() {
           >
             <div className="relative h-[260px] overflow-hidden rounded-[24px] px-6 pt-8">
               {f.visual === "simulator" && (
-                <div className="mx-auto w-full max-w-[340px] space-y-3">
+                <div className="mx-auto flex h-full w-full max-w-[340px] flex-col justify-center space-y-3">
                   {[
                     { label: "Question 12 of 46", tag: "Signs" },
                     { label: "Question 13 of 46", tag: "Right of way" },
@@ -380,9 +383,43 @@ function Features() {
                 </div>
               )}
 
-              {f.visual === "driving" && <div className="mx-auto flex h-full max-w-[340px] flex-col justify-center gap-4 rounded-2xl bg-card p-5 text-foreground"><p className="font-semibold">Driving Test Simulation</p><div className="h-1 rounded-full bg-muted"><div className="h-full w-2/3 rounded-full bg-action" /></div><p className="text-sm text-muted-foreground">Intersections · Turns · Right-of-way · Lane changes</p><div className="flex justify-around text-action"><ArrowRight className="size-9"/><Check className="size-9"/></div></div>}
+              {f.visual === "driving" && (
+                <div className="mx-auto flex h-full w-full max-w-[340px] flex-col justify-center gap-4">
+                  <div className="relative overflow-hidden rounded-2xl shadow-[0_18px_40px_-30px_rgba(15,23,42,0.6)] transition-transform duration-500 group-hover:scale-[1.02]">
+                    <img
+                      src={heroStill}
+                      alt="Driving simulation: approaching a green light before a right turn"
+                      className="block w-full"
+                    />
+                    <div
+                      aria-hidden
+                      className="hero-signal-glow pointer-events-none absolute inset-0 rounded-2xl"
+                    />
+                    <span className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-[#0f172a]/85 px-3 py-1 text-[11px] font-semibold text-white backdrop-blur-sm">
+                      <ArrowRight className="h-3 w-3 text-[#ffa500]" />
+                      Turning right
+                    </span>
+                  </div>
+                  <div className="flex justify-center gap-2">
+                    {[
+                      { id: "go", label: "Go", Icon: ArrowUp, color: "#16a34a" },
+                      { id: "yield", label: "Yield", Icon: Triangle, color: "#d97706" },
+                      { id: "stop", label: "Stop", Icon: Octagon, color: "#dc2626" },
+                    ].map(({ id, label, Icon, color }) => (
+                      <span
+                        key={id}
+                        className="inline-flex items-center gap-1.5 rounded-full border bg-white px-3 py-1.5 text-xs font-semibold text-[#1f2b4d]/85 shadow-sm dark:bg-[#22262a] dark:text-[#d1d5db]/85"
+                        style={{ borderColor: `${color}55` }}
+                      >
+                        <Icon className="h-3.5 w-3.5" style={{ color }} />
+                        {label}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
               {f.visual === "coach" && (
-                <div className="mx-auto w-full max-w-[340px] space-y-3">
+                <div className="mx-auto flex h-full w-full max-w-[340px] flex-col justify-center space-y-3">
                   <div className="feature-float relative ml-auto w-fit max-w-[80%] overflow-hidden rounded-2xl rounded-br-md bg-[#0f172a] px-4 py-2.5 text-sm text-white shadow-[0_18px_40px_-30px_rgba(15,23,42,0.6)] transition-transform duration-500 group-hover:translate-x-1">
                     <div className="pointer-events-none absolute inset-0 -translate-x-full overflow-hidden rounded-2xl rounded-br-md group-hover:animate-[featureShimmer_0.9s_ease_forwards]">
                       <div className="h-full w-full bg-gradient-to-r from-transparent via-white/20 to-transparent" />
@@ -437,44 +474,9 @@ function Features() {
                 </div>
               )}
 
-              {f.visual === "state" && (
-                <div className="relative mx-auto w-full max-w-[340px] overflow-hidden rounded-2xl bg-white dark:bg-[#22262a] p-5 shadow-[0_18px_40px_-30px_rgba(15,23,42,0.5)] transition-transform duration-500 group-hover:scale-[1.02]">
-                  <div className="pointer-events-none absolute inset-0 -translate-x-full overflow-hidden rounded-2xl group-hover:animate-[featureShimmer_0.9s_ease_forwards]">
-                    <div className="h-full w-full bg-gradient-to-r from-transparent via-white/35 to-transparent" />
-                  </div>
-                  <div className="relative flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-semibold text-[#0f172a] dark:text-[#f3f4f6]">DMV Target Date</p>
-                      <p className="mt-1 text-[11px] text-[#1f2b4d]/55 dark:text-[#9ca3af]/75">Personalized to California</p>
-                    </div>
-                    <span className="feature-float inline-flex items-center gap-1 rounded-md bg-[#0f172a] px-2.5 py-1 text-[10px] font-semibold text-white">
-                      <MapPin className="h-3 w-3" />
-                      CA DMV
-                    </span>
-                  </div>
-                  <div className="relative mt-5 flex items-center gap-3 rounded-xl bg-[#f4f5f7] dark:bg-[#1c1f22] p-3 transition-colors duration-500 group-hover:bg-[#e8eaed] dark:group-hover:bg-[#2a2e33]">
-                    <div className="grid h-10 w-10 place-items-center rounded-lg bg-[#1e40af]/10 text-[#1e40af] dark:text-[#7ea6ff]">
-                      <Calendar className="h-5 w-5" />
-                    </div>
-                    <div>
-                      <p className="text-xs font-semibold text-[#0f172a] dark:text-[#f3f4f6]">August 30, 2026</p>
-                      <p className="text-[10px] text-[#1f2b4d]/55 dark:text-[#9ca3af]/75">Target exam date</p>
-                    </div>
-                  </div>
-                  <div className="relative mt-4 grid grid-cols-3 gap-2">
-                    {["Signs", "Rules", "Safety"].map((t) => (
-                      <div
-                        key={t}
-                        className="rounded-lg bg-[#f4f5f7] dark:bg-[#1c1f22] px-2 py-2 text-center text-[10px] font-semibold text-[#1f2b4d]/70 dark:text-[#d1d5db]/80 transition-colors duration-500 group-hover:bg-[#e8eaed] dark:group-hover:bg-[#2a2e33]"
-                      >
-                        {t}
-                      </div>
-                    ))}
-                  </div>
-                </div>
+              {f.visual !== "driving" && (
+                <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#f4f5f7] dark:from-[#1c1f22] to-transparent transition-colors duration-500 group-hover:from-[#eef0f4] dark:group-hover:from-[#22262a]" />
               )}
-
-              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#f4f5f7] dark:from-[#1c1f22] to-transparent transition-colors duration-500 group-hover:from-[#eef0f4] dark:group-hover:from-[#22262a]" />
             </div>
 
             <div className="px-6 pb-6 pt-6">
