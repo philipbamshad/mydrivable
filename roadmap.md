@@ -66,11 +66,11 @@
 - [x] Test mastery/missed-question/free-limit rules and verify signed-in practice, persistence and review.
 
 # Spacing and layout pass
-- [ ] Content-height question cards, single-column answers, right-aligned Next, 4px progress bars (exam + Hub).
-- [ ] Sign images: contained 160/120px boxes; every sign shows its real symbol.
-- [ ] App-wide spacing scale, 900px max width, check all pages at 1440/1280/768/375.
+- [x] Content-height question cards, single-column answers, right-aligned Next, 4px progress bars (exam + Hub).
+- [x] Sign images: contained 160/120px boxes; every sign shows its real symbol.
+- [ ] App-wide spacing audit of AI Coach, settings, homepage at all four sizes (question pages and simulation checked).
 
 # Simulation look and clarity
-- [ ] Solid action buttons (octagon Stop), freeze-only prompt/countdown/step label, 10% freeze overlay.
-- [ ] Two-step check badge and "Correct. Now choose your next action."; result chips per step; timeout never marks correct answers ✕.
-- [ ] Update How it works text/icon and full-width progress bar; test all 6 scenarios timed/untimed.
+- [x] Solid action buttons (octagon Stop), freeze-only prompt/countdown/step label, 10% freeze overlay.
+- [x] Two-step check badge and "Correct. Now choose your next action."; result chips per step; timeout never marks correct answers ✕.
+- [x] Update How it works text/icon and full-width progress bar; test all 6 scenarios timed/untimed.
