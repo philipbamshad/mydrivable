@@ -198,7 +198,7 @@ function SimulationPage() {
     <div ref={scroller} className={cn("h-full min-h-0 bg-secondary/40 text-foreground", active ? "overflow-hidden" : "overflow-y-auto overscroll-contain")} style={tabGlowStyle} aria-label="Driving Test Simulation">
       <div className={cn("mx-auto flex w-full max-w-6xl flex-col p-4 sm:p-6", active ? "h-full min-h-0" : "min-h-full")}>
         <header className="mb-6 grid shrink-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-2 pl-14 md:pl-0">
-          {phase !== "ready" && <Button variant="ghost" onClick={exit} className="order-2 h-8 px-0 text-xs text-muted-foreground"><ArrowLeft />Exit<span className="hidden sm:inline">&nbsp;simulation</span></Button>}
+          {phase !== "ready" && <Button variant="ghost" onClick={exit} className="order-2 h-8 px-0 text-xs text-muted-foreground"><ArrowLeft /><span className="sm:hidden">Exit</span><span className="hidden sm:inline">Exit simulation</span></Button>}
           <h1 className="min-w-0 truncate font-display text-lg font-bold sm:text-xl">Driving Test Simulation</h1>
         </header>
         {phase === "ready" ? (
