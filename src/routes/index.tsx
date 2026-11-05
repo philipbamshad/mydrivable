@@ -228,7 +228,7 @@ function Hero() {
       <div className="relative mx-auto max-w-5xl">
         <h1 className="fade-in-up relative font-display text-5xl font-bold leading-tight tracking-tight sm:text-7xl">
           Drivable,{" "}
-          <span className="hero-serif-gradient">Master Your Permit and Driving Test</span>
+          <span className="hero-serif-gradient">Master the Road</span>
         </h1>
       </div>
 
@@ -313,13 +313,8 @@ function Features() {
     },
     {
       title: "Targeted Section Quizzes",
-      body: "Drill road signs, intersections, speed limits and substance laws",
+      body: "Drill road signs, intersections, speed limits and substance laws. Your study plan adapts to your state and DMV test date.",
       visual: "quizzes",
-    },
-    {
-      title: "Tailored To Your Test Date and State",
-      body: "Save your DMV target date and select your state for state-specific practice.",
-      visual: "state",
     },
     { title: "Driving Test Simulation", body: "Watch real driving situations and make the right call in a split second.", visual: "driving" },
   ];
@@ -334,13 +329,13 @@ function Features() {
           State-Specific DMV Prep
         </div>
         <h2 className="mt-8 text-3xl font-semibold sm:text-5xl">
-          Everything Between You and a{" "}
+          Four focused tools, one outcome:{" "}
           <span className="text-primary font-medium">
-            Real License
+            pass on the first try.
           </span>
         </h2>
         <p className="mx-auto mt-6 max-w-xl text-lg text-[#1f2b4d]/70 dark:text-[#d1d5db]/80">
-          Five focused tools for your permit test and driving test.
+          Four focused tools for your permit test and driving test.
         </p>
       </div>
 
