@@ -47,28 +47,28 @@ export function TestHubDashboard({ initialTopic, userId }: { initialTopic?: Pill
     onAnswered={topic => bumpFreeUsage(`pillar:${topic}`)}
     onSave={data => mutation.mutateAsync({ data: { state, ...data } })} />;
 
-  return <div className="max-w-5xl mx-auto space-y-5 w-full">
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <Card className="bg-card rounded-[28px] border-border/60 p-5 flex flex-col gap-3 shadow-md">
+  return <div className="max-w-[900px] mx-auto space-y-4 w-full">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <Card className="bg-card rounded-[28px] border-border/60 p-4 sm:p-6 flex flex-col gap-3 shadow-md">
         <div className="flex items-center gap-2"><Target className="h-5 w-5" /><h2 className="font-display font-bold">Recommended for you</h2></div>
         <p className="font-semibold">{PILLAR_META[weakest].title}</p>
         <p className="text-sm text-muted-foreground">Mastery {topicStats(progress.find(p => p.topic === weakest) ?? emptyTopic(weakest), banks[weakest].length).mastery}%</p>
         <Button className={cn(actionClass, "mt-auto h-11")} onClick={() => setActive(weakest)}>Practice now</Button>
       </Card>
-      <Card className="bg-card rounded-[28px] border-border/60 p-5 flex flex-col gap-3 shadow-md">
+      <Card className="bg-card rounded-[28px] border-border/60 p-4 sm:p-6 flex flex-col gap-3 shadow-md">
         <div className="flex items-center gap-2"><BookOpen className="h-5 w-5" /><h2 className="font-display font-bold">Review missed questions</h2></div>
         <p className="font-semibold">{missed.length} {missed.length === 1 ? "question" : "questions"}</p>
         <p className="text-sm text-muted-foreground">{missed.length ? "Your missed questions, across all topics." : "No missed questions to review."}</p>
         <Button variant="outline" className="mt-auto rounded-full h-11" disabled={!missed.length} onClick={() => setActive("review")}>Review questions</Button>
       </Card>
     </div>
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
       {HUB_TOPICS.map(topic => {
         const Icon = ICONS[topic];
         const stats = topicStats(progress.find(p => p.topic === topic) ?? emptyTopic(topic), banks[topic].length);
         const remaining = Math.max(0, HUB_FREE_LIMIT - (freeUsage.pillars[topic] ?? 0));
         const locked = !isPro && !remaining;
-        return <Card key={topic} className="bg-card rounded-[28px] border-border/60 p-5 shadow-md flex flex-col gap-4">
+        return <Card key={topic} className="bg-card rounded-[28px] border-border/60 p-4 sm:p-6 shadow-md flex flex-col gap-4">
           <div className="flex items-center gap-3">
             <span className="grid h-12 w-12 place-items-center rounded-[18px] border border-border bg-muted shrink-0"><Icon className="w-5 h-5" /></span>
             <div className="min-w-0"><div className="flex items-center flex-wrap gap-2"><h3 className="font-display text-base font-bold">{PILLAR_META[topic].title}</h3><Badge className="bg-muted text-foreground border-border">Pro</Badge></div><p className="text-sm text-muted-foreground mt-1">{Math.min(8, banks[topic].length)} questions</p></div>
@@ -151,7 +151,7 @@ function QuizRunner({ mode, banks, missed, progress, stateName, isPro, usage, on
   };
   const back = <Button variant="ghost" className="text-muted-foreground px-0 hover:bg-transparent" onClick={onExit} disabled={saving}><ArrowLeft className="h-4 w-4" />Back to Hub</Button>;
 
-  if (done || !q) return <div className="max-w-2xl mx-auto w-full space-y-4">{back}<Card className="bg-card rounded-[28px] border-border/60 shadow-md p-7 text-center">
+  if (done || !q) return <div className="max-w-2xl mx-auto w-full space-y-4">{back}<Card className="bg-card rounded-[28px] border-border/60 shadow-md p-4 sm:p-6 text-center">
     <h2 className="font-display font-bold text-lg">{title}</h2>
     <p className="text-5xl font-display font-bold mt-4">{questions.length ? Math.round(score / questions.length * 100) : 0}%</p>
     <p className="text-muted-foreground mt-2">{score} / {questions.length} correct</p>
@@ -162,7 +162,7 @@ function QuizRunner({ mode, banks, missed, progress, stateName, isPro, usage, on
   return <StudyQuestionFrame>
     <div className="study-question-meta flex items-center justify-between gap-3">{back}<span className="text-xs text-muted-foreground text-right">{title} · {idx + 1} / {questions.length}</span></div>
     <Meter className="study-progress" value={(idx + (reveal ? 1 : 0)) / questions.length * 100} />
-    {locked && !reveal ? <Card className="bg-card rounded-[28px] border-border/60 p-7 text-center space-y-4"><Lock className="h-6 w-6 mx-auto" /><h2 className="font-bold">Free limit reached · {PILLAR_META[q.topic].title}</h2><p className="text-sm text-muted-foreground">You've answered your 10 free lifetime questions for this section.</p><Button className={actionClass} onClick={onUpgrade}>Get Pro Pass — $9</Button>{mode === "review" && idx + 1 < questions.length && <Button variant="outline" className="rounded-full ml-2" onClick={() => { setQuestions(list => list.filter((_, i) => i !== idx)); }}>Skip section</Button>}</Card> : <Card className="study-question-card bg-card border-border/60 shadow-md rounded-[28px]">
+    {locked && !reveal ? <Card className="bg-card rounded-[28px] border-border/60 p-4 sm:p-6 text-center space-y-4"><Lock className="h-6 w-6 mx-auto" /><h2 className="font-bold">Free limit reached · {PILLAR_META[q.topic].title}</h2><p className="text-sm text-muted-foreground">You've answered your 10 free lifetime questions for this section.</p><Button className={actionClass} onClick={onUpgrade}>Get Pro Pass — $9</Button>{mode === "review" && idx + 1 < questions.length && <Button variant="outline" className="rounded-full ml-2" onClick={() => { setQuestions(list => list.filter((_, i) => i !== idx)); }}>Skip section</Button>}</Card> : <Card className="study-question-card bg-card border-border/60 shadow-md rounded-[28px]">
       <HubQuestionVisual question={q} />
       <h3 className="font-display text-lg font-semibold">{q.q}</h3>
       <div className="study-answers">

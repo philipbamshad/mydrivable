@@ -16,7 +16,7 @@ import { examHistoryOptions } from "@/lib/mock-exam.functions";
 import { ExamQuestionVisual } from "./ExamQuestionVisual";
 import { StudyQuestionFrame } from "./StudyQuestionFrame";
 
-const card = "bg-card rounded-[28px] border border-border/60 p-5 sm:p-7 shadow-lg";
+const card = "bg-card rounded-[28px] border border-border/60 p-4 sm:p-6 shadow-lg";
 
 export function PermitExamSimulator({ userId }: { userId: string }) {
   const { isPro, unlockPro, state, freeUsage, bumpFreeUsage, recordQuizScore } = useUserProfile();
@@ -30,7 +30,7 @@ export function PermitExamSimulator({ userId }: { userId: string }) {
     await queryClient.invalidateQueries({ queryKey: ["mock-exam-history", userId] });
   };
   if (running) return <ExamRunner key={state} state={pack.rules.name} count={pack.rules.questionsCount} minCorrect={pack.rules.minCorrectToPass} passPct={pack.rules.passingScorePct} isPro={isPro} used={freeUsage.exam} onAnswered={() => bumpFreeUsage("exam")} onUpgrade={unlockPro} onExit={() => setRunning(false)} onComplete={complete} />;
-  return <div className="mx-auto w-full max-w-3xl space-y-5">
+  return <div className="mx-auto w-full max-w-3xl space-y-4">
     <Card className={card}>
       <div className="flex items-center gap-4"><div className="grid h-12 w-12 shrink-0 place-items-center rounded-[18px] border border-border bg-muted sm:h-14 sm:w-14"><Timer className="h-6 w-6" /></div><div className="min-w-0"><div className="flex flex-wrap items-center gap-2"><h3 className="font-display text-lg font-bold sm:text-xl">{pack.rules.name} DMV Permit Exam</h3><Badge className="border border-border bg-muted text-foreground">{isPro ? "Pro" : "Free preview"}</Badge></div><p className="mt-2 text-sm leading-relaxed text-muted-foreground">Matches the real {pack.rules.name} DMV knowledge test: {pack.rules.questionsCount} questions, {pack.rules.minCorrectToPass} correct to pass.</p></div></div>
       <div className="mt-6 grid grid-cols-2 gap-3"><Stat label="Questions" value={String(pack.rules.questionsCount)} /><Stat label="Pass score" value={`${pack.rules.passingScorePct}%`} /></div>
@@ -91,7 +91,7 @@ function ExamRunner({ state, count, minCorrect, passPct, isPro, used, onAnswered
     const next = buildSet(); const blank = Array(next.length).fill(null);
     setQuestions(next); setAnswers(blank); answersRef.current = blank; setIdx(0); setDone(false); setSaveError(false);
   };
-  if (done) return <div className="mx-auto w-full max-w-3xl space-y-5">
+  if (done) return <div className="mx-auto w-full max-w-3xl space-y-4">
     <Card className={card}>
       <div className="text-center"><h2 className={cn("font-display text-4xl font-bold sm:text-5xl", summary.passed ? "text-success" : "text-destructive")}>{summary.passed ? "Passed" : "Not passed"}</h2><p className="mt-3 font-display text-2xl font-semibold">{summary.correct} / {questions.length} · {summary.pct}%</p></div>
       <div className="relative mt-6"><Meter pct={summary.pct} success={summary.passed} /><span className="absolute -top-1 h-4 w-0.5 bg-foreground" style={{ left: `${passPct}%` }} /><p className="mt-2 text-right text-xs text-muted-foreground">Pass line: {passPct}%</p></div>
