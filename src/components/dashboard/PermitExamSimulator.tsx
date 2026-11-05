@@ -14,68 +14,69 @@ import { pickUnseenQuestions } from "@/lib/seen-questions";
 import { buildExamPool, examSummary, examHistoryStats, mayAnswerExam, EXAM_FREE_LIMIT, type ExamQuestion } from "@/lib/mock-exam";
 import { examHistoryOptions } from "@/lib/mock-exam.functions";
 import { ExamQuestionVisual } from "./ExamQuestionVisual";
+import { useStudyAttempts } from "@/lib/use-study-attempt";
+import { attemptAccess, type StudyAttempt } from "@/lib/study-attempt";
+import { AttemptLock } from "./AttemptLock";
 import { StudyQuestionFrame } from "./StudyQuestionFrame";
 
 const card = "bg-card rounded-[28px] border border-border/60 p-4 sm:p-6 shadow-lg";
 
 export function PermitExamSimulator({ userId }: { userId: string }) {
-  const { isPro, unlockPro, state, freeUsage, bumpFreeUsage, recordQuizScore } = useUserProfile();
+  const { isPro, unlockPro, state } = useUserProfile();
+  const store = useStudyAttempts(userId);
+  const [attempt, setAttempt] = useState<StudyAttempt | null>(null);
+  const freeAttempt = store.attempts.find(a => a.feature === "exam" && a.free_slot);
+  const access = attemptAccess(isPro, freeAttempt);
+  const begin = async () => { const row = await store.start("exam"); if(row) {setAttempt(row); setRunning(true);} };
   const { data: history } = useSuspenseQuery(examHistoryOptions(userId));
   const queryClient = useQueryClient();
   const [running, setRunning] = useState(false);
   const pack = getStatePack(state);
   const stats = examHistoryStats(history, pack.rules.name);
-  const complete = async (pct: number) => {
-    await recordQuizScore(pct, "mock", pack.rules.name);
-    await queryClient.invalidateQueries({ queryKey: ["mock-exam-history", userId] });
-  };
-  if (running) return <ExamRunner key={state} state={pack.rules.name} count={pack.rules.questionsCount} minCorrect={pack.rules.minCorrectToPass} passPct={pack.rules.passingScorePct} isPro={isPro} used={freeUsage.exam} onAnswered={() => bumpFreeUsage("exam")} onUpgrade={unlockPro} onExit={() => setRunning(false)} onComplete={complete} />;
+  if (running && attempt) { const rules=getStatePack(attempt.state).rules; return <ExamRunner key={attempt.id} attempt={attempt} state={attempt.state} count={rules.questionsCount} minCorrect={rules.minCorrectToPass} passPct={rules.passingScorePct} isPro={isPro} onUpgrade={unlockPro} onExit={() => setRunning(false)} onRestart={() => void begin()} onAnswer={async (answer) => {const row = await store.answer({id:attempt.id,version:attempt.version,answer}); if(!row) throw new Error('Unable to save'); setAttempt(row);}} />; }
   return <div className="mx-auto w-full max-w-3xl space-y-4">
     <Card className={card}>
       <div className="flex items-center gap-4"><div className="grid h-12 w-12 shrink-0 place-items-center rounded-[18px] border border-border bg-muted sm:h-14 sm:w-14"><Timer className="h-6 w-6" /></div><div className="min-w-0"><div className="flex flex-wrap items-center gap-2"><h3 className="font-display text-lg font-bold sm:text-xl">{pack.rules.name} DMV Permit Exam</h3><Badge className="border border-border bg-muted text-foreground">{isPro ? "Pro" : "Free preview"}</Badge></div><p className="mt-2 text-sm leading-relaxed text-muted-foreground">Matches the real {pack.rules.name} DMV knowledge test: {pack.rules.questionsCount} questions, {pack.rules.minCorrectToPass} correct to pass.</p></div></div>
       <div className="mt-6 grid grid-cols-2 gap-3"><Stat label="Questions" value={String(pack.rules.questionsCount)} /><Stat label="Pass score" value={`${pack.rules.passingScorePct}%`} /></div>
       <div className="mt-3 grid grid-cols-3 gap-3"><Stat label="Best score" value={stats.best === null ? "—" : `${stats.best}%`} /><Stat label="Last score" value={stats.last === null ? "—" : `${stats.last}%`} /><Stat label="Attempts" value={stats.attempts === null ? "—" : String(stats.attempts)} /></div>
-      <Button onClick={() => isPro || freeUsage.exam < EXAM_FREE_LIMIT ? setRunning(true) : unlockPro()} className="mt-6 h-12 w-full rounded-full text-base font-semibold">{!isPro && freeUsage.exam >= EXAM_FREE_LIMIT ? <><Lock />Unlock with Pro Pass</> : "Start full-length exam"}</Button>
+      <Button disabled={store.busy} onClick={() => void begin()} className="mt-6 h-12 w-full rounded-full text-base font-semibold">{access === 'resume' ? 'Resume your free attempt' : access === 'locked' ? 'View past results' : 'Start full-length exam'}</Button>
+      {access === 'locked' && <AttemptLock onUpgrade={unlockPro}/>}
+      {store.error && <p role="alert" className="mt-3 text-sm text-destructive">{store.error}</p>}
     </Card>
-    {!isPro && <p className="text-center text-xs text-muted-foreground">{Math.max(0, EXAM_FREE_LIMIT - freeUsage.exam)} of {EXAM_FREE_LIMIT} free lifetime exam questions left. Upgrade for unlimited practice.</p>}
   </div>;
 }
 
-function ExamRunner({ state, count, minCorrect, passPct, isPro, used, onAnswered, onUpgrade, onExit, onComplete }: { state: string; count: number; minCorrect: number; passPct: number; isPro: boolean; used: number; onAnswered: () => void; onUpgrade: () => void; onExit: () => void; onComplete: (pct: number) => Promise<void> }) {
-  const buildSet = () => pickUnseenQuestions("exam:full", state, buildExamPool(state), count).map(q => shuffleAnswers(q) as ExamQuestion);
-  const [questions, setQuestions] = useState(buildSet);
-  const [answers, setAnswers] = useState<(number | null)[]>(() => Array(count).fill(null));
-  const [idx, setIdx] = useState(0);
-  const [done, setDone] = useState(false);
+function ExamRunner({ attempt, state, count, minCorrect, passPct, isPro, onUpgrade, onExit, onRestart, onAnswer }: { attempt: StudyAttempt; state: string; count: number; minCorrect: number; passPct: number; isPro: boolean; onUpgrade: () => void; onExit: () => void; onRestart: () => void; onAnswer: (answer: number) => Promise<void> }) {
+  const questions = attempt.payload as ExamQuestion[];
+  const [answers, setAnswers] = useState<(number | null)[]>(() => Array.from({length:questions.length}, (_,i) => (attempt.answers[i] as number|undefined) ?? null));
+  const [idx, setIdx] = useState(() => Math.min(attempt.version,questions.length-1));
+  const [done, setDone] = useState(attempt.completed);
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState(false);
   const answersRef = useRef(answers);
-  const usedRef = useRef(used);
+
   const submitLock = useRef(false);
-  useEffect(() => { usedRef.current = used; }, [used]);
+
   const q = questions[idx];
   const summary = examSummary(questions, answers, minCorrect);
   const answered = answers.filter(answer => answer !== null).length;
   const correctCount = answers.filter((answer, index) => answer !== null && answer === questions[index]?.correct).length;
   const chosen = answers[idx] ?? null;
-  const locked = chosen === null && !mayAnswerExam(isPro, used, null);
+  const locked = saving;
   const isLast = idx === questions.length - 1;
-  const choose = useCallback((answer: number) => {
-    if (done || saving || answersRef.current[idx] !== null || !mayAnswerExam(isPro, usedRef.current, null)) return;
-    const next = [...answersRef.current]; next[idx] = answer; answersRef.current = next; setAnswers(next);
-    usedRef.current += 1; onAnswered();
-  }, [idx, isPro, done, saving, onAnswered]);
-  const submit = useCallback(async () => {
-    if (submitLock.current) return;
-    submitLock.current = true; setSaving(true); setSaveError(false);
-    try { await onComplete(examSummary(questions, answersRef.current, minCorrect).pct); setDone(true); }
-    catch { setSaveError(true); }
-    finally { setSaving(false); submitLock.current = false; }
-  }, [onComplete, questions, minCorrect]);
+  const choose = useCallback(async (answer: number) => {
+    if (done || saving || submitLock.current || answersRef.current[idx] !== null) return;
+    submitLock.current=true; setSaving(true); setSaveError(false);
+    const next=[...answersRef.current]; next[idx]=answer; answersRef.current=next; setAnswers(next);
+    try {await onAnswer(answer); if(idx===questions.length-1) setDone(true);}
+    catch {setSaveError(true);}
+    finally {setSaving(false);submitLock.current=false;}
+  }, [idx,done,saving,onAnswer,questions.length]);
+  const retry = async () => { const answer=answersRef.current[idx]; if(answer===null || answer===undefined || saving) return; setSaving(true); try {await onAnswer(answer);setSaveError(false);if(isLast)setDone(true);} catch {setSaveError(true);}finally{setSaving(false);} };
   const advance = useCallback(() => {
-    if (answersRef.current[idx] === null || saving) return;
-    if (isLast) void submit(); else setIdx(value => value + 1);
-  }, [idx, isLast, saving, submit]);
+    if (answersRef.current[idx] === null || saving || saveError) return;
+    if (isLast) setDone(true); else setIdx(value => value + 1);
+  }, [idx, isLast, saving, saveError]);
   useEffect(() => {
     const handler = (event: KeyboardEvent) => {
       const target = event.target;
@@ -87,16 +88,14 @@ function ExamRunner({ state, count, minCorrect, passPct, isPro, used, onAnswered
     };
     window.addEventListener("keydown", handler); return () => window.removeEventListener("keydown", handler);
   }, [q, idx, done, choose, advance]);
-  const restart = () => {
-    const next = buildSet(); const blank = Array(next.length).fill(null);
-    setQuestions(next); setAnswers(blank); answersRef.current = blank; setIdx(0); setDone(false); setSaveError(false);
-  };
+  const restart = () => { if(isPro) onRestart(); else onUpgrade(); };
   if (done) return <div className="mx-auto w-full max-w-3xl space-y-4">
     <Card className={card}>
       <div className="text-center"><h2 className={cn("font-display text-4xl font-bold sm:text-5xl", summary.passed ? "text-success" : "text-destructive")}>{summary.passed ? "Passed" : "Not passed"}</h2><p className="mt-3 font-display text-2xl font-semibold">{summary.correct} / {questions.length} · {summary.pct}%</p></div>
       <div className="relative mt-6"><Meter pct={summary.pct} success={summary.passed} /><span className="absolute -top-1 h-4 w-0.5 bg-foreground" style={{ left: `${passPct}%` }} /><p className="mt-2 text-right text-xs text-muted-foreground">Pass line: {passPct}%</p></div>
       <section className="mt-7"><h3 className="font-display text-lg font-bold">By topic</h3><div className="mt-3 divide-y divide-border">{summary.topics.map(topic => <div key={topic.topic} className="py-4"><div className="flex flex-wrap items-center justify-between gap-3"><div className="flex flex-wrap items-center gap-2"><span className="text-sm font-semibold">{PILLAR_META[topic.topic].title}</span>{topic.needsWork && <Badge className="border border-destructive/30 bg-destructive/10 text-destructive">Needs work</Badge>}</div><span className="text-sm tabular-nums">{topic.pct === null ? "—" : `${topic.pct}%`}</span></div><div className="mt-2"><Meter pct={topic.pct ?? 0} success={!topic.needsWork} /></div>{topic.needsWork && <Button variant="secondary" asChild className="mt-3 rounded-full"><Link to="/app" search={{ tab: "test-hub", topic: topic.topic }}>Practice this<ArrowRight /></Link></Button>}</div>)}</div></section>
-      <div className="mt-6 flex flex-col gap-3 sm:flex-row"><Button onClick={restart} className="h-12 flex-1 rounded-full"><RefreshCw />Retake exam</Button><Button variant="secondary" asChild className="h-12 flex-1 rounded-full"><Link to="/app" search={{ tab: "chat" }}>Back to dashboard</Link></Button></div>
+      <div className="mt-6 flex flex-col gap-3 sm:flex-row"><Button onClick={restart} className="h-12 flex-1 rounded-full"><RefreshCw />{isPro ? "Retake exam" : "Upgrade to Pro"}</Button><Button variant="secondary" asChild className="h-12 flex-1 rounded-full"><Link to="/app" search={{ tab: "chat" }}>Back to dashboard</Link></Button></div>
+      {!isPro && <AttemptLock onUpgrade={onUpgrade}/>}
     </Card>
   </div>;
   return <StudyQuestionFrame>
@@ -108,12 +107,11 @@ function ExamRunner({ state, count, minCorrect, passPct, isPro, used, onAnswered
         const isCorrect = index === q.correct; const picked = chosen === index; const revealed = chosen !== null;
         return <Button key={index} variant="secondary" onClick={() => choose(index)} disabled={locked || revealed} aria-pressed={picked} className={cn("h-auto min-h-14 justify-start whitespace-normal rounded-2xl border-2 px-4 py-3 text-left text-sm leading-relaxed disabled:opacity-100", !revealed && "border-transparent", revealed && isCorrect && "border-success/60 bg-success/10 text-foreground", revealed && picked && !isCorrect && "border-destructive/60 bg-destructive/10 text-foreground", revealed && !picked && !isCorrect && "border-transparent opacity-60")}><span className="shrink-0 text-xs text-muted-foreground">{index + 1}</span><span>{option}</span>{revealed && isCorrect && <Check className="ml-auto text-success" />}</Button>;
       })}</div>
-      {locked && <div className="mt-5 border-t border-border pt-4"><p className="text-sm text-muted-foreground">You've used your 20 free lifetime exam questions.</p><Button onClick={onUpgrade} className="mt-3 rounded-full"><Lock />Get Pro Pass — $9</Button></div>}
       {chosen !== null && <div className="study-feedback" aria-live="polite">
         <p className={cn("text-sm font-semibold", chosen === q.correct ? "text-success" : "text-destructive")}>{chosen === q.correct ? "Correct" : "Incorrect"}</p>
         <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{q.explanation.replace(/\s*Source:.*$/s, "").split(/(?<=[.!?])\s+/).slice(0, 2).join(" ")}</p>
         {saveError && <p role="alert" className="mt-3 text-sm text-destructive">Your attempt could not be saved. Please try again.</p>}
-        <div className="study-next"><Button onClick={advance} disabled={saving} className="h-11 rounded-full">{saving ? "Saving attempt…" : isLast ? "See results" : "Next question"}<ArrowRight /></Button></div>
+        <div className="study-next"><Button onClick={saveError ? () => void retry() : advance} disabled={saving} className="h-11 rounded-full">{saveError ? "Retry save" : saving ? "Saving answer…" : isLast ? "See results" : "Next question"}<ArrowRight /></Button></div>
       </div>}
     </Card> : null}
   </StudyQuestionFrame>;

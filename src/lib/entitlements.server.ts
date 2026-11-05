@@ -7,7 +7,7 @@ import type { Database } from "@/integrations/supabase/types";
  * so a modified client or a direct API call cannot bypass the paywall.
  */
 
-export const FREE_CHAT_LIFETIME_LIMIT = 5;
+export const FREE_CHAT_DAILY_LIMIT = 5;
 
 type AnyClient = SupabaseClient<Database>;
 
@@ -50,14 +50,11 @@ async function readFreeUsage(
   userId: string,
 ): Promise<FreeUsageShape> {
   const { data, error } = await supabase
-    .from("ai_coach_usage")
-    .select("used")
-    .eq("user_id", userId)
-    .maybeSingle();
+    .rpc("get_daily_coach_used");
 
   if (error) throw new Error("Unable to load AI question usage.");
   return {
-    chat: toInt(data?.used), exam: 0, pillars: {},
+    chat: toInt(data), exam: 0, pillars: {},
   };
 }
 
@@ -67,7 +64,7 @@ export type ChatQuota =
 
 /**
  * Authoritative free tier check for the AI chat endpoint. Pro users pass
- * through untouched; free users consume one lifetime credit per accepted call
+ * through untouched; free users consume one daily credit per accepted call
  * and the counter is written server side so it cannot be rolled back by the
  * browser.
  */
@@ -79,16 +76,16 @@ export async function consumeChatCredit(
     return { allowed: true, isPro: true, used: 0 };
   }
 
-  const { data: used, error } = await supabase.rpc("consume_ai_coach_credit");
+  const { data: used, error } = await supabase.rpc("consume_daily_coach_credit");
   if (error) throw new Error("Unable to save AI question usage. Please try again.");
   if (used === null) {
     const usage = await readFreeUsage(supabase, userId);
     return {
       allowed: false,
       reason:
-        "You have used all 5 free lifetime AI Coach questions. Upgrade to the Pro Pass for unlimited chat.",
+        "You've used your 5 free questions today. They reset at midnight, or upgrade to Pro for unlimited questions.",
       used: usage.chat,
-      limit: FREE_CHAT_LIFETIME_LIMIT,
+      limit: FREE_CHAT_DAILY_LIMIT,
     };
   }
 

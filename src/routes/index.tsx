@@ -17,26 +17,26 @@ import { US_STATES } from "@/lib/user-profile";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Drivable, Master Your Permit" },
+      { title: "Drivable | Permit & Driving Test Prep" },
       {
         name: "description",
         content:
-          "Prepare for your permit test with state-specific practice, full-length mock exams, and handbook-based explanations.",
+          "Prepare for your permit test and your driving test with state-specific practice, full-length mock exams, a real-world driving simulation, and an AI coach built on your official DMV handbook.",
       },
-      { property: "og:title", content: "Drivable, Master Your Permit" },
+      { property: "og:title", content: "Drivable | Permit & Driving Test Prep" },
       {
         property: "og:description",
         content:
-          "Prepare for your permit test with state-specific practice, full-length mock exams, and handbook-based explanations.",
+          "Prepare for your permit test and your driving test with state-specific practice, full-length mock exams, a real-world driving simulation, and an AI coach built on your official DMV handbook.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { property: "og:url", content: "https://mydrivable.com/" },
-      { name: "twitter:title", content: "Drivable, Master Your Permit" },
+      { name: "twitter:title", content: "Drivable | Permit & Driving Test Prep" },
       {
         name: "twitter:description",
         content:
-          "Prepare for your permit test with state-specific practice, full-length mock exams, and handbook-based explanations.",
+          "Prepare for your permit test and your driving test with state-specific practice, full-length mock exams, a real-world driving simulation, and an AI coach built on your official DMV handbook.",
       },
     ],
     links: [{ rel: "canonical", href: "https://mydrivable.com/" }],
@@ -51,7 +51,7 @@ export const Route = createFileRoute("/")({
           logo: "https://mydrivable.com/favicon.png",
           email: "support@mydrivable.com",
           description:
-            "Prepare for your permit test with state-specific practice, full-length mock exams, and handbook-based explanations.",
+            "Prepare for your permit test and your driving test with state-specific practice, full-length mock exams, a real-world driving simulation, and an AI coach built on your official DMV handbook.",
         }),
       },
       {
@@ -228,13 +228,12 @@ function Hero() {
       <div className="relative mx-auto max-w-5xl">
         <h1 className="fade-in-up relative font-display text-5xl font-bold leading-tight tracking-tight sm:text-7xl">
           Drivable,{" "}
-          <span className="hero-serif-gradient">Master Your Permit</span>
+          <span className="hero-serif-gradient">Master Your Permit and Driving Test</span>
         </h1>
       </div>
 
       <p className="fade-in-up relative mx-auto mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-        Prepare for your permit test with state-specific practice, full-length mock exams,
-        and handbook-based explanations.
+        Prepare for your permit test and your driving test with state-specific practice, full-length mock exams, a real-world driving simulation, and an AI coach built on your official DMV handbook.
       </p>
 
       <div className="fade-in-up relative mt-8 flex flex-wrap items-center justify-center gap-3" style={{ "--reveal-delay": "160ms" } as React.CSSProperties}>
@@ -308,7 +307,7 @@ function Features() {
       visual: "simulator",
     },
     {
-      title: "AI Permit Coach",
+      title: "AI Coach",
       body: "Handbook-based explanations for your Active state",
       visual: "coach",
     },
@@ -322,6 +321,7 @@ function Features() {
       body: "Save your DMV target date and select your state for state-specific practice.",
       visual: "state",
     },
+    { title: "Driving Test Simulation", body: "Watch real driving situations and make the right call in a split second.", visual: "driving" },
   ];
 
   const grid = useReveal<HTMLDivElement>();
@@ -340,7 +340,7 @@ function Features() {
           </span>
         </h2>
         <p className="mx-auto mt-6 max-w-xl text-lg text-[#1f2b4d]/70 dark:text-[#d1d5db]/80">
-          Focused practice for your written permit test.
+          Five focused tools for your permit test and driving test.
         </p>
       </div>
 
@@ -380,6 +380,7 @@ function Features() {
                 </div>
               )}
 
+              {f.visual === "driving" && <div className="mx-auto flex h-full max-w-[340px] flex-col justify-center gap-4 rounded-2xl bg-card p-5 text-foreground"><p className="font-semibold">Driving Test Simulation</p><div className="h-1 rounded-full bg-muted"><div className="h-full w-2/3 rounded-full bg-action" /></div><p className="text-sm text-muted-foreground">Intersections · Turns · Right-of-way · Lane changes</p><div className="flex justify-around text-action"><ArrowRight className="size-9"/><Check className="size-9"/></div></div>}
               {f.visual === "coach" && (
                 <div className="mx-auto w-full max-w-[340px] space-y-3">
                   <div className="feature-float relative ml-auto w-fit max-w-[80%] overflow-hidden rounded-2xl rounded-br-md bg-[#0f172a] px-4 py-2.5 text-sm text-white shadow-[0_18px_40px_-30px_rgba(15,23,42,0.6)] transition-transform duration-500 group-hover:translate-x-1">
@@ -492,17 +493,18 @@ function Features() {
 
 function Pricing() {
   const proFeatures = [
-    "Full-length state-specific Mock Permit Exam simulator",
-    "Unlimited AI Coach chat with state-specific study guidance",
-    "Growing question bank built from the official DMV handbook",
-    "Sign recognition drills baked into the quiz hub",
+    "Unlimited AI Coach chat synced to your DMV handbook",
+    "Unlimited full-length state-specific Mock Permit Exams",
+    "Unlimited practice in all 4 Permit Test Hub topics, including Review missed questions",
+    "Unlimited Driving Test Simulation",
     "All 50 state rule packs",
     "Pay once, use forever, no recurring fees",
   ];
-
   const freeFeatures = [
-"Limited AI coach chat (5 lifetime questions max)",
-    "Limited practice tests (20 exam questions & 10 questions per quiz section max)",
+    "5 AI coach questions per day",
+    "1 full-length mock permit exam",
+    "1 practice test per topic",
+    "1 driving test simulation run",
   ];
 
   return (

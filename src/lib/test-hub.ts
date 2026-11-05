@@ -2,7 +2,7 @@ import type { PillarId, PracticeQuestion } from "@/data/dmv/practice-bank";
 import { directQuestion } from "./mock-exam";
 
 export const HUB_TOPICS: PillarId[] = ["signs", "intersections", "substances", "speed"];
-export const HUB_FREE_LIMIT = 10;
+export const HUB_FREE_LIMIT = 1;
 export type HubQuestion = PracticeQuestion & { topic: PillarId; key: string };
 export type QuestionProgress = { question: HubQuestion; correct: boolean; everCorrect?: boolean; missed: boolean; recovery: number };
 export type TopicProgress = { topic: PillarId; questions: Record<string, QuestionProgress>; lastScore: number | null };

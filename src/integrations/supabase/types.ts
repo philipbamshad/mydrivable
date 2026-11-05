@@ -29,6 +29,24 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_daily_usage: {
+        Row: {
+          local_day: string
+          used: number
+          user_id: string
+        }
+        Insert: {
+          local_day: string
+          used?: number
+          user_id: string
+        }
+        Update: {
+          local_day?: string
+          used?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       app_admins: {
         Row: {
           created_at: string
@@ -265,6 +283,54 @@ export type Database = {
         }
         Relationships: []
       }
+      study_attempts: {
+        Row: {
+          answers: Json
+          average_reaction: number | null
+          completed: boolean
+          created_at: string
+          feature: string
+          free_slot: boolean
+          id: string
+          payload: Json
+          score: number | null
+          state: string
+          updated_at: string
+          user_id: string
+          version: number
+        }
+        Insert: {
+          answers?: Json
+          average_reaction?: number | null
+          completed?: boolean
+          created_at?: string
+          feature: string
+          free_slot: boolean
+          id?: string
+          payload: Json
+          score?: number | null
+          state: string
+          updated_at?: string
+          user_id: string
+          version?: number
+        }
+        Update: {
+          answers?: Json
+          average_reaction?: number | null
+          completed?: boolean
+          created_at?: string
+          feature?: string
+          free_slot?: boolean
+          id?: string
+          payload?: Json
+          score?: number | null
+          state?: string
+          updated_at?: string
+          user_id?: string
+          version?: number
+        }
+        Relationships: []
+      }
       subscriptions: {
         Row: {
           cancel_at_period_end: boolean | null
@@ -486,7 +552,43 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      coach_local_day: { Args: { p_user: string }; Returns: string }
+      commit_study_answer: {
+        Args: {
+          p_answer: Json
+          p_hub?: Json
+          p_id: string
+          p_reaction: number
+          p_score: number
+          p_user: string
+          p_version: number
+        }
+        Returns: {
+          answers: Json
+          average_reaction: number | null
+          completed: boolean
+          created_at: string
+          feature: string
+          free_slot: boolean
+          id: string
+          payload: Json
+          score: number | null
+          state: string
+          updated_at: string
+          user_id: string
+          version: number
+        }
+        SetofOptions: {
+          from: "*"
+          to: "study_attempts"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       consume_ai_coach_credit: { Args: never; Returns: number }
+      consume_daily_coach_credit: { Args: never; Returns: number }
+      get_daily_coach_used: { Args: never; Returns: number }
+      has_pro_access: { Args: { p_user: string }; Returns: boolean }
       is_admin: { Args: never; Returns: boolean }
       is_allowlisted: { Args: never; Returns: boolean }
       join_waitlist_checked: {
@@ -496,6 +598,35 @@ export type Database = {
           signup_id: string
           signup_time: string
         }[]
+      }
+      reserve_study_attempt: {
+        Args: {
+          p_feature: string
+          p_payload: Json
+          p_state: string
+          p_user: string
+        }
+        Returns: {
+          answers: Json
+          average_reaction: number | null
+          completed: boolean
+          created_at: string
+          feature: string
+          free_slot: boolean
+          id: string
+          payload: Json
+          score: number | null
+          state: string
+          updated_at: string
+          user_id: string
+          version: number
+        }
+        SetofOptions: {
+          from: "*"
+          to: "study_attempts"
+          isOneToOne: true
+          isSetofReturn: false
+        }
       }
     }
     Enums: {

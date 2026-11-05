@@ -19,9 +19,9 @@ export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
       { title: "Sign In | Drivable" },
-      { name: "description", content: "Sign in to Drivable to start studying for your DMV permit written exam." },
+      { name: "description", content: "Sign in to Drivable for permit and driving test preparation." },
       { property: "og:title", content: "Sign in, Drivable" },
-      { property: "og:description", content: "Sign in to Drivable to start studying for your DMV permit written exam." },
+      { property: "og:description", content: "Sign in to Drivable for permit and driving test preparation." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { property: "og:url", content: "https://mydrivable.com/auth" },
@@ -271,7 +271,7 @@ function AuthPage() {
           <div className="text-center">
             <h1 className="font-display text-2xl font-bold tracking-tight">Drivable, Sign In</h1>
             <p className="text-xs text-muted-foreground mt-1 uppercase tracking-normal">
-              Permit
+              Permit &amp; Driving Test Prep
             </p>
           </div>
         </Link>
@@ -446,7 +446,7 @@ function AuthPage() {
               Inside Drivable
             </p>
             <h2 className="font-display text-2xl font-bold tracking-tight mt-2">
-              Everything you need to pass the written permit exam.
+              Prepare for your permit test and your driving test.
             </h2>
           </div>
 
@@ -495,6 +495,7 @@ function AuthPage() {
             </div>
           </div>
 
+          <div className="rounded-[28px] border border-border/60 bg-card/70 p-5 shadow-lg"><p className="text-sm font-semibold">Driving Test Simulation</p><p className="mt-2 text-sm text-muted-foreground">Watch real driving situations and make the right call in a split second.</p></div>
           {/* Tailored preview */}
           <div className="flex items-center gap-3 rounded-[28px] border border-border/60 bg-card/70 p-5 backdrop-blur-md shadow-lg">
             <div className="flex-1">

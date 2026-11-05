@@ -35,10 +35,10 @@ describe("Permit Test Hub rules", () => {
   it("recommends the weakest topic", () => {
     expect(weakestTopic([answerProgress(emptyTopic("signs"), question, true), emptyTopic("speed")])).toBe("speed");
   });
-  it("retains the 10 lifetime questions per section in review and regular practice", () => {
-    expect(mayAnswerHub(false, 9)).toBe(true);
-    expect(mayAnswerHub(false, 10)).toBe(false);
-    expect(mayAnswerHub(true, 10)).toBe(true);
+  it("permits one free attempt per topic and unlimited Pro attempts", () => {
+    expect(mayAnswerHub(false, 0)).toBe(true);
+    expect(mayAnswerHub(false, 1)).toBe(false);
+    expect(mayAnswerHub(true, 100)).toBe(true);
   });
   it("retains identity across shuffled positions and distinguishes sign images", () => {
     expect(hubQuestion({ ...question, options: ["Go", "Stop"], correct: 1 }, "signs").key).toBe(question.key);

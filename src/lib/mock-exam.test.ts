@@ -14,11 +14,11 @@ describe("mock exam rules", () => {
     expect(examSummary(questions, [0, 0, 0, 1, 1], 4).topics[0]).toMatchObject({ pct: 60, needsWork: true });
     expect(examSummary(questions, [0, 0, 0, 0, 1], 4).topics[0]).toMatchObject({ pct: 80, needsWork: false });
   });
-  it("keeps the 20-question lifetime limit and does not recharge changed answers", () => {
-    expect(mayAnswerExam(false, 19, null)).toBe(true);
-    expect(mayAnswerExam(false, 20, null)).toBe(false);
-    expect(mayAnswerExam(false, 20, 0)).toBe(true);
-    expect(mayAnswerExam(true, 20, null)).toBe(true);
+  it("permits one free attempt and unlimited Pro attempts", () => {
+    expect(mayAnswerExam(false, 0, null)).toBe(true);
+    expect(mayAnswerExam(false, 1, null)).toBe(false);
+    expect(mayAnswerExam(false, 1, 0)).toBe(true);
+    expect(mayAnswerExam(true, 100, null)).toBe(true);
   });
   it("aggregates every saved attempt, in time order, scoped to state", () => {
     const rows = [{ id: "a", score_pct: 91, state: "California", created_at: "2026-10-01" }, { id: "b", score_pct: 87, state: "California", created_at: "2026-10-02" }, { id: "c", score_pct: 100, state: "Texas", created_at: "2026-10-03" }];

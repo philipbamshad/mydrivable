@@ -49,16 +49,14 @@ export function ChatWindow({
   const { state: userState, isPro, openCheckout, freeUsage, refreshFreeUsage } =
     useUserProfile();
 
-  // Free tier lifetime usage tracker. Bypassed entirely for Pro Pass.
-  // Counter persists via the profile provider (localStorage + user_profiles
-  // row) so the limit is permanent across refresh, logout, and devices.
-  const FREE_LIFETIME_LIMIT = 5;
+  // Daily usage is read from the authoritative server allowance.
+  const FREE_DAILY_LIMIT = 5;
   // The counter itself is incremented by the /api/chat handler, which is the
   // authoritative gate; the client only reads it back for display.
   const freeUsed = freeUsage.chat;
 
-  const limitReached = !isPro && freeUsed >= FREE_LIFETIME_LIMIT;
-  const remaining = Math.max(0, FREE_LIFETIME_LIMIT - freeUsed);
+  const limitReached = !isPro && freeUsed >= FREE_DAILY_LIMIT;
+  const remaining = Math.max(0, FREE_DAILY_LIMIT - freeUsed);
 
   const transport = useMemo(
     () =>
@@ -138,13 +136,13 @@ export function ChatWindow({
         <Lock className="h-4 w-4 text-foreground" />
       </div>
       <p className="mx-auto max-w-sm text-sm font-semibold text-foreground leading-snug">
-        You've used your 5 free lifetime AI questions. Upgrade to Pro Pass to continue studying.
+        You've used your 5 free questions today. They reset at midnight, or upgrade to Pro for unlimited questions.
       </p>
       <Button
         onClick={() => openCheckout()}
         className="mt-4 press rounded-2xl px-6 py-4 text-sm font-semibold"
       >
-        Get Pro Pass — $9
+        Upgrade to Pro
       </Button>
     </div>
   );
@@ -164,7 +162,7 @@ export function ChatWindow({
           <AttachButton />
           <PromptInputTextarea
             ref={textareaRef}
-            placeholder="Ask Drivable AI anything about your permit test..."
+            placeholder="Ask about your permit or driving test..."
             disabled={isBusy}
             className="max-h-36 min-h-12 flex-1 resize-none border-0 bg-transparent px-2 py-2.5 text-base shadow-none outline-none ring-0 focus:outline-none focus-visible:ring-0"
           />
@@ -184,7 +182,7 @@ export function ChatWindow({
       </PromptInput>
       {!isPro && (
         <p className="text-xs text-muted-foreground mt-2 text-center">
-          {`${remaining} of ${FREE_LIFETIME_LIMIT} free lifetime AI questions left. Upgrade for unlimited chat.`}
+          {`${remaining} of ${FREE_DAILY_LIMIT} free AI questions left today. Reset at midnight.`}
         </p>
       )}
     </>

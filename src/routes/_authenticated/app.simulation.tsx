@@ -16,6 +16,9 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { ActionLegend, ACTION_ICONS, STANDARD_ACTIONS } from "@/components/simulation/ActionLegend";
 import { scenarioResultView, type ResultChip } from "@/data/simulation-result";
 import "@/components/simulation/simulation-actions.css";
+import { useStudyAttempts } from "@/lib/use-study-attempt";
+import { attemptAccess, simulationHistoryStats, type StudyAttempt } from "@/lib/study-attempt";
+import { AttemptLock } from "@/components/dashboard/AttemptLock";
 import { useUserProfile } from "@/lib/user-profile";
 
 export const Route = createFileRoute("/_authenticated/app/simulation")({
@@ -41,6 +44,14 @@ function StatTile({ label, value }: { label: string; value: string | number }) {
 
 function SimulationPage() {
   const { isPro, hydrating, openCheckout } = useUserProfile();
+  const {user}=Route.useRouteContext();
+  const store=useStudyAttempts(user.id);
+  const [attempt,setAttempt]=useState<StudyAttempt|null>(null);
+  const freeAttempt=store.attempts.find(a=>a.feature==="simulation" && a.free_slot);
+  const access=attemptAccess(isPro,freeAttempt);
+  const historyStats=simulationHistoryStats(store.attempts);
+  const [savingDecision,setSavingDecision]=useState(false);
+  const [pendingDecision,setPendingDecision]=useState<ScenarioDecision[]|null>(null);
   const [skipInstructions, setSkipInstructions] = useState(false);
   const [showLegend, setShowLegend] = useState(true);
   const [mobileLegend, setMobileLegend] = useState(false);
@@ -78,21 +89,21 @@ function SimulationPage() {
   const signaling = signalIsActive(hasPlayed, phase);
 
   const changePhase = useCallback((value: Phase) => { phaseRef.current = value; setPhase(value); }, []);
-  const start = () => {
-    if (!isPro) { openCheckout(); return; }
-    setHasPlayed(false);
-    setSession(createSimulationSession(SIMULATION_CLIPS));
-    setIdx(0); setStepIndex(0); stepRecords.current = []; answerLock.current = false; setDecisions([]); setFeedback(null);
-    setVideoError(false); setLoaded(false); setNeedsPlay(false);
-    scroller.current?.scrollTo({ top: 0 }); changePhase("playing");
+  const start = async () => {
+    const row=await store.start("simulation"); if(!row)return;
+    setAttempt(row);setHasPlayed(false);
+    setSession(row.payload as SimulationClip[]);
+    setIdx(Math.min(row.version,row.payload.length-1)); setStepIndex(0); stepRecords.current=[]; answerLock.current=false;
+    setDecisions(row.answers as ScenarioDecision[]);setFeedback(null);setPendingDecision(null);
+    setVideoError(false);setLoaded(false);setNeedsPlay(false);
+    scroller.current?.scrollTo({top:0});changePhase(row.completed?"results":"playing");
   };
   const requestStart = () => {
-    if (!isPro) { openCheckout(); return; }
-    if (skipInstructions) start(); else changePhase("instructions");
+    if(access === "locked" || access === "resume" || skipInstructions) void start(); else changePhase("instructions");
   };
   const exit = () => { videoRef.current?.pause(); changePhase("ready"); setSession([]); setDecisions([]); scroller.current?.scrollTo({ top: 0 }); };
   const goNext = () => {
-    if (phaseRef.current !== "feedback") return;
+    if (phaseRef.current !== "feedback" || savingDecision || pendingDecision) return;
     scroller.current?.scrollTo({ top: 0 });
     if (idx === session.length - 1) { changePhase("results"); return; }
     setHasPlayed(false);
@@ -114,6 +125,14 @@ function SimulationPage() {
     decisionStart.current = performance.now(); setRemaining(DECISION_MS); changePhase("decision");
   }, [changePhase]);
 
+  const persistDecision=useCallback(async(records:ScenarioDecision[])=>{
+    if(!attempt)return;
+    setSavingDecision(true);setPendingDecision(records);
+    const row=await store.answer({id:attempt.id,version:attempt.version,timed,steps:records.map(r=>({action:r.selectedAction as 'go'|'yield'|'stop'|null,elapsed:r.reactionMs ?? DECISION_MS}))});
+    if(row){setAttempt(row);setDecisions(row.answers as ScenarioDecision[]);setPendingDecision(null);}
+    setSavingDecision(false);
+  },[attempt,timed,store.answer]);
+
   const answer = useCallback((actionId: string | null) => {
     if (phaseRef.current !== "decision" || !clip) return;
     if (answerLock.current) return;
@@ -129,8 +148,8 @@ function SimulationPage() {
     }
     changePhase("feedback");
     const scenario = finishScenario(clip.steps, records);
-    setDecisions(items => [...items, scenario]); setFeedback(scenario);
-  }, [clip, stepIndex, timed, changePhase]);
+    setFeedback(scenario);void persistDecision(records);
+  }, [clip, stepIndex, timed, changePhase, persistDecision]);
 
   useEffect(() => { answerLock.current = false; }, [stepIndex]);
 
@@ -208,11 +227,13 @@ function SimulationPage() {
                 <div className="grid h-12 w-12 shrink-0 place-items-center rounded-[18px] border border-border bg-muted text-foreground sm:h-14 sm:w-14"><Video className="h-6 w-6" /></div>
                 <div className="flex flex-wrap items-center gap-2"><h2 className="font-display text-lg font-bold sm:text-xl">Real-World Driving Scenarios</h2><span className="rounded-full border border-border bg-muted px-2 py-0.5 text-xs font-semibold text-foreground">Pro</span></div>
               </div>
-              <div className="mt-5 grid grid-cols-2 gap-3"><StatTile label="Scenarios" value={SIMULATION_CLIPS.length} /><StatTile label="Decision time" value="2.5 sec" /></div>
-              <p className="mt-5 text-sm leading-relaxed text-muted-foreground">Real driving decisions happen in a split second. Watch each scenario and react before time runs out.</p>
+              <div className="mt-5 grid grid-cols-3 gap-3"><StatTile label="Decision time" value="2.5 sec"/><StatTile label="Best accuracy" value={historyStats.best===null ? "—" : `${historyStats.best}%`}/><StatTile label="Avg. reaction" value={historyStats.reaction===null ? "—" : `${historyStats.reaction.toFixed(1)}s`}/></div>
+              <p className="mt-5 text-sm leading-relaxed text-muted-foreground">Real driving decisions happen in a split second. Covers intersections, turns, right-of-way, and lane changes.</p>
               <div className="mt-5 flex items-center justify-between gap-4"><label htmlFor="timed-mode" className="text-sm font-medium">Timed mode</label><Switch id="timed-mode" checked={timed} onCheckedChange={setTimed} className="data-[state=checked]:bg-action" /></div>
               <Button variant="link" onClick={() => changePhase("instructions")} className="mt-3 h-9 px-0 text-sm">How it works</Button>
-              <Button disabled={hydrating} onClick={requestStart} className="mt-3 h-12 w-full rounded-full text-base font-semibold"><Play />Start simulation</Button>
+              {access==="locked" && <AttemptLock onUpgrade={openCheckout}/>}
+              {store.error && <p role="alert" className="mt-3 text-sm text-destructive">{store.error}</p>}
+              <Button disabled={hydrating || store.busy} onClick={requestStart} className="mt-3 h-12 w-full rounded-full text-base font-semibold"><Play />{access==="resume" ? "Resume your free attempt" : access==="locked" ? "View past results" : "Start simulation"}</Button>
             </div>
           </div>
         ) : phase === "instructions" ? (
@@ -222,12 +243,12 @@ function SimulationPage() {
             <p className="mb-5 text-sm text-muted-foreground">Some scenarios need two actions. If your first choice is right, it's marked with a check. Then choose your next action.</p>
             <ActionLegend />
             <div className="mt-7 flex items-center gap-3"><Checkbox id="skip-instructions" checked={skipInstructions} onCheckedChange={checked => { const value = checked === true; setSkipInstructions(value); localStorage.setItem("drivable.simulation.skip-instructions", String(value)); }} /><label htmlFor="skip-instructions" className="text-sm">Don't show again</label></div>
-            <Button onClick={start} className="mt-5 h-12 w-full rounded-full">I'm ready<ArrowRight /></Button>
+            <Button disabled={store.busy} onClick={()=>void start()} className="mt-5 h-12 w-full rounded-full">I'm ready<ArrowRight /></Button>
           </div>
         ) : phase === "results" ? (
           <div className={cn(cardClass, "mx-auto w-full max-w-3xl")}>
             <h2 className="font-display text-xl font-bold sm:text-2xl">Simulation complete</h2>
-            <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3"><StatTile label="Accuracy" value={`${summary.accuracy}%`} /><StatTile label="Avg. reaction time" value={summary.averageReaction === null ? "—" : `${summary.averageReaction.toFixed(1)}s`} /><StatTile label="Scenarios" value={`${summary.completed} / ${session.length}`} /></div>
+            <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2"><StatTile label="Correct decisions" value={`${summary.accuracy}%`} /><StatTile label="Avg. reaction time" value={summary.averageReaction === null ? "—" : `${summary.averageReaction.toFixed(1)}s`} /></div>
             <section className="mt-7"><h3 className="font-display text-lg font-semibold">Review missed scenarios</h3>
               {summary.missed.length === 0 ? <p className="mt-3 text-sm text-muted-foreground">No missed scenarios.</p> : <ul className="mt-4 divide-y divide-border">
                 {summary.missed.map((decision) => {
@@ -239,12 +260,12 @@ function SimulationPage() {
                 })}
               </ul>}
             </section>
-            <div className="mt-6 flex flex-col gap-3 sm:flex-row"><Button onClick={start} className="h-12 flex-1 rounded-full"><RotateCcw />Try again</Button><Button variant="secondary" asChild className="h-12 flex-1 rounded-full"><Link to="/app">Back to dashboard</Link></Button></div>
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row"><Button disabled={store.busy} onClick={()=>isPro ? void start() : openCheckout()} className="h-12 flex-1 rounded-full"><RotateCcw />{isPro ? "Try again" : "Upgrade to Pro"}</Button><Button variant="secondary" asChild className="h-12 flex-1 rounded-full"><Link to="/app">Back to dashboard</Link></Button></div>
           </div>
         ) : clip ? (
           <div data-scenario={clip.id} data-phase={phase} data-step={stepIndex + 1} className="flex min-h-0 flex-1 flex-col gap-2">
-            <div className="grid shrink-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-2 text-xs text-muted-foreground"><span>Scenario {idx + 1} of {session.length} · {clip.title}</span><div className="hidden items-center gap-2 md:flex"><Switch id="hide-legend" checked={!showLegend} onCheckedChange={hidden => { setShowLegend(!hidden); localStorage.setItem("drivable.simulation.hide-legend", String(hidden)); }} /><label htmlFor="hide-legend">Hide legend</label></div></div>
-            <div role="progressbar" aria-label="Scenario progress" aria-valuemin={0} aria-valuemax={session.length} aria-valuenow={idx + 1} className="h-1 w-full shrink-0 overflow-hidden rounded-full bg-muted"><span className="block h-full rounded-full bg-action transition-all" style={{ width: `${(idx + 1) / session.length * 100}%` }} /></div>
+            <div className="grid shrink-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-2 text-xs text-muted-foreground"><span>{clip.title}</span><div className="hidden items-center gap-2 md:flex"><Switch id="hide-legend" checked={!showLegend} onCheckedChange={hidden => { setShowLegend(!hidden); localStorage.setItem("drivable.simulation.hide-legend", String(hidden)); }} /><label htmlFor="hide-legend">Hide legend</label></div></div>
+            <div role="progressbar" aria-label="Scenario progress" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round((idx+1)/session.length*100)} className="h-1 w-full shrink-0 overflow-hidden rounded-full bg-muted"><span className="block h-full rounded-full bg-action transition-all" style={{ width: `${(idx + 1) / session.length * 100}%` }} /></div>
                         <div className={cn("grid min-h-0 flex-1 gap-3", showLegend && "md:grid-cols-[minmax(0,1fr)_170px]")}>
               <div key={clip.id} data-signal-active={signaling && signalSide !== null} className="simulation-signal-video relative min-h-0 overflow-hidden rounded-2xl bg-muted">
                 <video ref={videoRef} src={clip.videoUrl} autoPlay muted playsInline preload="auto"
@@ -266,10 +287,11 @@ function SimulationPage() {
               {phase === "feedback" && feedback ? <div ref={feedbackPanel} role="status" className="flex h-full flex-col gap-2 rounded-2xl border border-border/60 bg-card p-3 sm:p-4">
                 <FeedbackResult steps={clip.steps} decision={feedback} />
                 <p className="text-xs leading-relaxed text-muted-foreground sm:text-sm">{clip.explanation}</p>
-                <Button onClick={goNext} className="mt-auto h-9 shrink-0 self-end rounded-full">Next scenario<ArrowRight /></Button>
+                {store.error && <p role="alert" className="text-xs text-destructive">{store.error}</p>}
+                <Button disabled={savingDecision} onClick={()=>pendingDecision ? void persistDecision(pendingDecision) : goNext()} className="mt-auto h-9 shrink-0 self-end rounded-full">{savingDecision ? "Saving…" : pendingDecision ? "Retry save" : "Next scenario"}<ArrowRight /></Button>
               </div> : <div ref={decisionPanel} className="flex h-full flex-col gap-2">
                 <div className="min-h-[40px]">{phase === "decision" && <>{stepIndex > 0 && <p className="text-xs font-semibold text-success">Correct. Now choose your next action.</p>}<p className="text-sm font-semibold">{stepIndex === 0 ? "What do you do?" : "Then what do you do?"}{clip.steps.length > 1 && <span className="ml-2 text-xs font-normal text-muted-foreground">Step {stepIndex + 1} of {clip.steps.length}</span>}</p></>}</div>
-                <TooltipProvider delayDuration={150}><div key={`${phase}-${stepIndex}`} className={cn("sim-action-row grid grid-cols-3 gap-3 rounded-2xl", phase === "decision" && "sim-action-row-live")}>{STANDARD_ACTIONS.map(action => { const Icon = icons[action.icon]; if (!Icon) return null; const done = stepRecords.current.some(r => r.correct && r.selectedAction === action.id) && phase === "decision"; return <Tooltip key={action.id}><TooltipTrigger asChild><span className="block"><button type="button" disabled={phase !== "decision"} onClick={() => answer(action.id)} aria-label={action.label} data-action={action.id} data-done={done || undefined} className="sim-action-button"><Icon className="size-9" strokeWidth={2.5} />{done && <span className="sim-action-check" aria-hidden="true"><Check className="size-3" strokeWidth={3} /></span>}</button></span></TooltipTrigger><TooltipContent>{action.label}</TooltipContent></Tooltip>; })}</div></TooltipProvider>
+                <TooltipProvider delayDuration={150}><div key={`${phase}-${stepIndex}`} className={cn("sim-action-row grid grid-cols-3 gap-3 rounded-2xl", phase === "decision" && "sim-action-row-live")}>{STANDARD_ACTIONS.map(action => { const Icon = icons[action.icon]; if (!Icon) return null; const done = stepRecords.current.some(r => r.correct && r.selectedAction === action.id) && phase === "decision"; return <Tooltip key={action.id}><TooltipTrigger asChild><span className="block"><Button type="button" variant="outline" disabled={phase !== "decision"} onClick={() => answer(action.id)} aria-label={action.label} data-action={action.id} data-done={done || undefined} className="sim-action-button"><Icon className="size-9" strokeWidth={2.5} />{done && <span className="sim-action-check" aria-hidden="true"><Check className="size-3" strokeWidth={3} /></span>}</Button></span></TooltipTrigger><TooltipContent>{action.label}</TooltipContent></Tooltip>; })}</div></TooltipProvider>
               </div>}
             </div>
           </div>

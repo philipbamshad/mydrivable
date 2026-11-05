@@ -2,7 +2,7 @@ import { getStatePack, type Question } from "@/data/dmv";
 import { buildPillarBanks, type PillarId } from "@/data/dmv/practice-bank";
 import type { SignSpec } from "@/components/dashboard/SignVisual";
 
-export const EXAM_FREE_LIMIT = 20;
+export const EXAM_FREE_LIMIT = 1;
 export const TOPICS: PillarId[] = ["signs", "intersections", "substances", "speed"];
 export type ExamQuestion = Question & { topic: PillarId; sign?: SignSpec };
 export type ExamHistoryRow = { id: string; score_pct: number; state: string | null; created_at: string };

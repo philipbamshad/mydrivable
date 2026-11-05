@@ -5,10 +5,10 @@ import { ActionButton, WaitlistEmailLayout, greyBox, noteStyle, waitlistTextStyl
 interface OrderConfirmationProps { name?: string; appUrl?: string; orderDate?: string; orderNumber?: string }
 
 const UNLOCKED = [
-  'Full-length state-specific mock permit exam',
-  'Unlimited AI coach',
-  'All 4 practice topics',
-  'Driving test simulation',
+  'Unlimited full-length state-specific Mock Permit Exams',
+  'Unlimited AI Coach chat synced to your DMV handbook',
+  'Unlimited practice in all 4 Permit Test Hub topics, including Review missed questions',
+  'Unlimited Driving Test Simulation',
   'All 50 state rule packs',
 ]
 const row = { fontSize: '14px', lineHeight: '22px', color: '#334155', margin: 0 }
