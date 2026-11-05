@@ -1,5 +1,10 @@
 # Design improvements
 
+# Homepage menu and beta access
+- [x] Remove homepage Log in link; retain waitlist and /auth sign-in.
+- [x] Add ngfinanceai@gmail.com to app allowlist without new admin sections.
+- [ ] Send Invite auth email: blocked because this email already has a confirmed account; invitation service returned email_exists. Existing account can sign in.
+
 # Progress colors and restricted badges
 - [x] Restrict Pro badges to Free locked/limited features, preserving sidebar plan and homepage pricing.
 - [x] Shared blue progress/highlight/sidebar tokens; navy buttons and green/red answer states unchanged.
