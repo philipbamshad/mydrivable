@@ -24,14 +24,14 @@ type TabId = "test-hub" | "state-exam" | "chat";
 export const Route = createFileRoute("/_authenticated/app/")({
   head: () => ({
     meta: [
-      { title: "Permit Practice | Drivable" },
+      { title: "Drivable | Permit & Driving Test Prep" },
       {
         name: "description",
         content:
-          "Track permit readiness, run mock written exams, and chat with your AI permit coach.",
+          "Prepare for permit and driving tests with mock exams, topic practice, driving simulation and your AI coach.",
       },
-      { property: "og:title", content: "Permit Practice | Drivable" },
-      { property: "og:description", content: "Practice mock permit exams, section quizzes, and study with your AI permit coach." },
+      { property: "og:title", content: "Drivable | Permit & Driving Test Prep" },
+      { property: "og:description", content: "Prepare for permit and driving tests with mock exams, topic practice, driving simulation and your AI coach." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "robots", content: "noindex" },

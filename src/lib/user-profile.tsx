@@ -146,7 +146,7 @@ function mergeFreeUsage(a: FreeUsage, b: FreeUsage): FreeUsage {
     pillars[k] = Math.max(pillars[k] ?? 0, v);
   }
   return {
-    chat: Math.max(a.chat, b.chat),
+    chat: b.chat,
     exam: Math.max(a.exam, b.exam),
     pillars,
   };
@@ -607,26 +607,16 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
   // re reads the authoritative counter instead of incrementing it locally.
   const refreshFreeUsage = useCallback(async () => {
     if (!userId) return;
-    const { data } = await supabase
-      .from("user_profiles")
-      .select("free_usage")
-      .eq("user_id", userId)
-      .maybeSingle();
-    const raw = (data?.free_usage ?? null) as Partial<FreeUsage> | null;
-    if (!raw) return;
-    const local = readLocalFreeUsage();
-    // Lifetime counters can only ever go up, so every merge takes the max on
-    // each key. That keeps the free tier lock permanent across devices,
-    // refreshes, and days: it is never reset daily, only lifted by Pro Pass.
-    const remote: FreeUsage = {
-      chat: Number(raw.chat ?? 0) || 0,
-      exam: Number(raw.exam ?? 0) || 0,
-      pillars: (raw.pillars ?? {}) as Record<string, number>,
-    };
-    const merged = mergeFreeUsage(local, remote);
-    writeLocalFreeUsage(merged);
-    setProfile((p) => ({ ...p, freeUsage: merged }));
+    const { data, error } = await supabase.rpc("get_daily_coach_used");
+    if (!error) setProfile(p => ({ ...p, freeUsage: { ...p.freeUsage, chat: data ?? 0 } }));
   }, [userId]);
+  useEffect(() => {
+    void refreshFreeUsage();
+    const interval = setInterval(() => void refreshFreeUsage(), 15000);
+    const onFocus = () => void refreshFreeUsage();
+    window.addEventListener('focus', onFocus);
+    return () => { clearInterval(interval); window.removeEventListener('focus', onFocus); };
+  }, [refreshFreeUsage]);
 
   // Error boundary reset must never wipe lifetime free usage counters.
   const reset = useCallback(
