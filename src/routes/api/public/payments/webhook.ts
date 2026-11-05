@@ -138,10 +138,10 @@ async function handleCheckoutSessionCompleted(session: any, env: StripeEnv) {
     const name =
       meta.full_name || meta.name || meta.first_name || email.split("@")[0];
 
-    const { enqueueTransactionalEmail } = await import(
+    const { sendLoggedTemplateEmail } = await import(
       "@/lib/email/send-transactional.server"
     );
-    await enqueueTransactionalEmail({
+    await sendLoggedTemplateEmail({
       templateName: "order-confirmation",
       recipientEmail: email,
       idempotencyKey: `order-confirmation-${session.id}`,
