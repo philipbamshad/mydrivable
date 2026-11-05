@@ -1,5 +1,9 @@
 # Design improvements
 
+# Pro Pass receipt update and sandbox test
+- [ ] Add actual paid amount, safe card label and optional official Stripe receipt; send only on confirmed success.
+- [ ] Test $9 sandbox purchase and template Send test; verify upgrade/email, then restore test account to Free without deleting Stripe test payment.
+
 # Permit and driving prep plans
 - [x] Update simulation counts/statistics, branding, homepage plans and existing welcome/waitlist/order App emails; launch campaign remains skipped by prior user choice.
 - [x] Enforce five daily AI questions and one reserved, resumable free attempt per exam, Hub topic and simulation; server-authored scoring and atomic topic progress.

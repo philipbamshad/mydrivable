@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { createClient } from "@supabase/supabase-js";
-import { type StripeEnv, verifyWebhook } from "@/lib/stripe.server";
+import { type StripeEnv, createStripeClient, verifyWebhook } from "@/lib/stripe.server";
+import { isConfirmedPayment, orderConfirmationDetails } from "@/lib/order-confirmation";
 
 let _supabase: ReturnType<typeof createClient<any>> | null = null;
 function getSupabase() {
@@ -96,8 +97,7 @@ async function handleSubscriptionDeleted(subscription: any, env: StripeEnv) {
 async function handleCheckoutSessionCompleted(session: any, env: StripeEnv) {
   // Only handle one-time payment sessions here. Subscription sessions
   // are covered by customer.subscription.* events.
-  if (session.mode !== "payment") return;
-  if (session.payment_status !== "paid") return;
+  if (!isConfirmedPayment(session, env)) return;
   const userId = session.metadata?.userId;
   if (!userId) {
     console.error("No userId in checkout session metadata");
@@ -105,7 +105,7 @@ async function handleCheckoutSessionCompleted(session: any, env: StripeEnv) {
   }
   const priceId = session.metadata?.priceId || "pro_pass_lifetime_9";
   const productId = session.metadata?.productId || "pro_pass";
-  await getSupabase().from("subscriptions").upsert(
+  const { error: upgradeError } = await getSupabase().from("subscriptions").upsert(
     {
       user_id: userId,
       stripe_subscription_id: session.id,
@@ -121,9 +121,19 @@ async function handleCheckoutSessionCompleted(session: any, env: StripeEnv) {
     },
     { onConflict: "stripe_subscription_id" },
   );
+  if (upgradeError) throw upgradeError;
 
   // Fire the Pro Pass order confirmation email once the profile is upgraded.
   try {
+    const stripe = createStripeClient(env);
+    const intentId = typeof session.payment_intent === 'string' ? session.payment_intent : session.payment_intent?.id;
+    if (!intentId) throw new Error('Paid checkout has no payment intent');
+    const intent = await stripe.paymentIntents.retrieve(intentId, { expand: ['latest_charge'] });
+    if (intent.status !== 'succeeded') return;
+    const charge = typeof intent.latest_charge === 'string'
+      ? await stripe.charges.retrieve(intent.latest_charge)
+      : intent.latest_charge;
+    if (!charge || !charge.paid) throw new Error('Payment has no successful charge');
     const supabase = getSupabase();
     const { data: userLookup } = await supabase.auth.admin.getUserById(userId);
     const email =
@@ -148,12 +158,11 @@ async function handleCheckoutSessionCompleted(session: any, env: StripeEnv) {
       templateData: {
         name,
         appUrl: "https://mydrivable.com/app",
-        orderDate: new Date((session.created ?? Date.now() / 1000) * 1000).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }),
-        orderNumber: `DRV-${session.id.slice(-8).toUpperCase()}`,
+        ...orderConfirmationDetails(session, charge),
       },
     });
   } catch (err) {
-    console.error("Failed to enqueue Pro Pass confirmation email", err);
+    console.error("Failed to send Pro Pass confirmation email", err);
   }
 }
 
@@ -171,6 +180,7 @@ async function handleWebhook(req: Request, env: StripeEnv) {
       await handleSubscriptionDeleted(event.data.object, env);
       break;
     case "checkout.session.completed":
+    case "checkout.session.async_payment_succeeded":
       await handleCheckoutSessionCompleted(event.data.object, env);
       break;
     default:

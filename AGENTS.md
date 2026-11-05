@@ -28,3 +28,4 @@
 - Supply missing resolved CSS defaults through the Vite compatibility plugin so the preview stylesheet compiler receives the same configuration shape as production.
 - Private beta: app access is gated by the database allowlist (is_allowlisted RPC) in the _authenticated route, every server function via requireAllowlisted, /api/chat, and restrictive RLS on user tables; the client check alone is never trusted.
 - Public waitlist joins use a same-origin server function and service-only atomic database RPC for duplicate/visitor checks; sends use the existing authenticated App email route with narrowly scoped server credentials so browser callers cannot bypass signup checks.
+- Derive order email totals, masked card labels and receipt links from confirmed Stripe checkout/charge data; require matching payment environment and persist the upgrade before sending.
