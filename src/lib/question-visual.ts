@@ -49,12 +49,12 @@ export function questionVisual(question: { q: string; sign?: SignSpec }): Questi
 
   // Pavement markings
   if (/arrow on the pavement/.test(t)) return { kind: "marking", label: "Diagonal arrow pavement marking", variant: "exit-arrow", color: "white" };
-  if (/curb/.test(t)) {
+  if (/color curb|painted curb|(?:red|yellow|white|green|blue) curb/.test(t)) {
     const color = /green/.test(t) ? "green" : /yellow/.test(t) ? "yellow" : /blue/.test(t) ? "blue" : /white/.test(t) ? "white" : "red";
     return { kind: "marking", label: `${color} curb`, variant: "curb", color };
   }
-  if (/crosswalk|limit line/.test(t)) return { kind: "marking", label: "Crosswalk markings", variant: "crosswalk", color: "white" };
-  if (/sharrow|bike lane|bicycle lane/.test(t)) return { kind: "marking", label: "Bike lane marking", variant: "bike", color: "white" };
+  if (/crosswalk marking|crosswalk lines/.test(t)) return { kind: "marking", label: "Crosswalk markings", variant: "crosswalk", color: "white" };
+  if (/sharrow|bike lane marking/.test(t)) return { kind: "marking", label: "Bike lane marking", variant: "bike", color: "white" };
   if (/lane line|yellow line|white line|parallel yellow|lane marking|pavement/.test(t)) {
     return { kind: "marking", label: "Lane line markings", variant: "line", color: /white/.test(t) ? "white" : "yellow", dashed: /broken|dashed/.test(t), double: /double|parallel/.test(t) };
   }
@@ -76,16 +76,16 @@ export function questionVisual(question: { q: string; sign?: SignSpec }): Questi
   if (/purple/.test(t)) return { kind: "sign", label: "Electronic toll lane sign", spec: { shape: "rect", fill: C.purple, stroke: C.ink, textColor: C.white, letters: "TOLL TAG\nONLY" } };
   if (/truck route|black truck/.test(t)) return reg("Truck route sign", "ROUTE 99", C.white, C.ink, "truck");
   if (/pennant/.test(t)) return { kind: "sign", label: "No passing zone sign", spec: { shape: "pennant", fill: C.yellow, stroke: C.ink, textColor: C.ink, letters: "NO\nPASSING\nZONE" } };
-  if (/pentagon|school zone|school crossing/.test(t)) return { kind: "sign", label: "School zone sign", spec: { shape: "pentagon", fill: C.school, stroke: C.ink, symbol: "school" } };
+  if (/pentagon/.test(t)) return { kind: "sign", label: "School zone sign", spec: { shape: "pentagon", fill: C.school, stroke: C.ink, symbol: "school" } };
 
   // Warning signs
-  if (/orange|construction|work.zone/.test(t)) return { kind: "sign", label: "Work zone sign", spec: { shape: "diamond", fill: C.orange, stroke: C.ink, textColor: C.ink, letters: /reading slow/.test(t) ? "SLOW" : "ROAD\nWORK\nAHEAD" } };
-  if (/merg|arrow joining/.test(t)) return warn("Merge warning sign", "merge");
+  if (/orange (?:sign|diamond)|construction signs/.test(t)) return { kind: "sign", label: "Work zone sign", spec: { shape: "diamond", fill: C.orange, stroke: C.ink, textColor: C.ink, letters: /reading slow/.test(t) ? "SLOW" : "ROAD\nWORK\nAHEAD" } };
+  if (/arrow joining|merge sign/.test(t)) return warn("Merge warning sign", "merge");
   if (/'\+'|crossroad/.test(t)) return warn("Crossroad warning sign", "crossroad");
   if (/curving arrow/.test(t)) return warn("Curve warning sign with advisory speed", "curve-speed");
-  if (/deer/.test(t)) return warn("Deer crossing sign", "deer");
+  if (/deer silhouette|deer crossing sign/.test(t)) return warn("Deer crossing sign", "deer");
   if (/truck on a downgrade/.test(t)) return warn("Steep grade sign", "truck-grade");
-  if (/slippery/.test(t)) return warn("Slippery When Wet sign", "slippery");
+  if (/slippery when wet/.test(t)) return warn("Slippery When Wet sign", "slippery");
   if (/two-way/.test(t)) return warn("Two-Way Traffic sign", "two-way");
   if (/roundabout ahead/.test(t)) return warn("Roundabout Ahead sign", "roundabout");
   if (/dead end/.test(t)) return warn("Dead End sign", undefined, "DEAD\nEND");
