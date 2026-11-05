@@ -1,9 +1,9 @@
 # Design improvements
 
 # Instant durable study answers
-- [ ] Immediate feedback and usable Next controls in exam, Hub and simulation.
-- [ ] Persistent owner-scoped queue, retries, entry replay and authenticated keepalive with idempotent commits.
-- [ ] Confirmed completion, batched cache refresh, regression tests and measured click-to-Next latency.
+- [x] Immediate feedback and usable Next controls in exam, Hub and simulation.
+- [x] Persistent owner-scoped queue, three retries, entry replay and authenticated keepalive with idempotent version checks; offline browser test retained two answers and replay cleared both.
+- [x] Confirmed completion and end-only cache refresh; latency with one-second saves: exam 5.3ms, Hub 5.5ms, simulation 18.7ms. Existing atomic mastery/scoring writes remain in the single background commit.
 
 # November private-beta fixes
 - [x] Coach driving-test coverage, newest-message scrolling and solid header.
