@@ -1,12 +1,13 @@
 # Design improvements
 
 # Checkout and first-sign-in fixes
-- [ ] Repair embedded checkout; test sandbox purchase/Pro/email and live load without payment.
-- [ ] Required first-sign-in state and age setup; optional test date, saved and used throughout.
-- [ ] Restriction-only badges, unattempted topic labels, primary locked-screen upgrade and no duplicates.
-- [ ] Include historical exam misses in review with accurate counts; simulation header Upgrade.
-- [ ] Fix mobile settings/account/sign-out and remove sign-out clipboard behavior.
-- [ ] Verify Free/Pro desktop/mobile flows and relevant tests.
+- [x] Stable router-aware embedded checkout with explicit errors and validated inputs; sandbox and published live forms load. Original Seroval failure was not reproduced before edits.
+- [ ] Sandbox purchase/Pro/email verification: Stripe form did not complete automated submission; no new confirmed payment or email. Recipient inbox delivery requires user confirmation.
+- [x] Required first-sign-in state and age setup; optional test date, saved and used throughout. Verified adult California server-authored exam has 36 questions and existing attempts retain their format.
+- [x] Restriction-only badges, unattempted topic labels, primary locked-screen upgrade and removed duplicate results upgrades.
+- [x] Include historical exam misses in both review count and playable review payload without resurrecting recovered identities; simulation header Upgrade.
+- [x] Mobile settings/account/sign-out work through one independent panel; cache cleared and navigation replaced. Instrumented Free/Pro sign-out produced zero clipboard writes; none existed in source.
+- [x] Free/Pro exam, Hub and simulation desktop/mobile checks; Pro practice answer persisted and adult exam started. All 102 tests pass and build OK. Nothing published.
 
 # Homepage menu and beta access
 - [x] Remove homepage Log in link; retain waitlist and /auth sign-in.
