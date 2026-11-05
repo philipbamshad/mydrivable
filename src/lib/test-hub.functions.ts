@@ -31,7 +31,7 @@ export const saveHubProgress = createServerFn({ method: "POST" })
     score: z.number().int().min(0).max(100).optional(),
   }).parse(input))
   .handler(async ({ data, context }): Promise<TopicProgress> => {
-    const { data: row, error } = await context.supabase.from("test_hub_progress").select("questions, last_score").eq("user_id", context.userId).eq("state", data.state).eq("topic", data.topic).maybeSingle();
+    const { data: row, error } = await context.supabase.from("test_hub_progress").select("questions, last_score, best_score").eq("user_id", context.userId).eq("state", data.state).eq("topic", data.topic).maybeSingle();
     if (error) throw new Error("Unable to save practice progress.");
     let progress: TopicProgress = row ? { topic: data.topic, questions: row.questions as unknown as TopicProgress["questions"], lastScore: row.last_score, bestScore: row.best_score } : emptyTopic(data.topic);
     if (data.answer) progress = answerProgress(progress, data.answer.question, data.answer.correct);
