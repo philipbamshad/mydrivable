@@ -35,7 +35,8 @@ export function topicStats(progress: TopicProgress, totalQuestions = Object.keys
   const everCorrect = totalQuestions ? Math.min(100, Math.round(entries.filter(q => q.everCorrect ?? q.correct).length / totalQuestions * 100)) : 0;
   // Mastery never drops below the user's best score for the topic.
   const mastery = Math.max(everCorrect, progress.bestScore ?? 0);
-  return { mastery, practiced: entries.length > 0, needsWork: mastery < 80, mastered: mastery === 100, lastScore: progress.lastScore };
+  const practiced = entries.length > 0 || progress.lastScore !== null;
+  return { mastery, practiced, needsWork: practiced && mastery < 80, mastered: mastery === 100, lastScore: progress.lastScore };
 }
 
 export function weakestTopic(progress: TopicProgress[], totals?: Partial<Record<PillarId, number>>): PillarId {

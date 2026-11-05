@@ -53,7 +53,7 @@ export function TestHubDashboard({ initialTopic, userId }: { initialTopic?: Pill
         <div className="flex items-center gap-2"><BookOpen className="h-5 w-5" /><h2 className="font-display font-bold">Review missed questions</h2><RestrictedProBadge restricted={true}/></div>
         <p className="font-semibold">{missed.length} {missed.length === 1 ? "question" : "questions"}</p>
         <p className="text-sm text-muted-foreground">{missed.length ? "Your missed questions, across all topics." : "No missed questions to review."}</p>
-        <Button variant="outline" className="mt-auto rounded-full h-11" disabled={isPro && !missed.length || store.busy} onClick={() => void begin("review")}>{!isPro && <Lock/>}{isPro ? "Review questions" : "Upgrade to Pro"}</Button>
+        <Button variant={isPro ? "outline" : "default"} className="mt-auto rounded-full h-11" disabled={isPro && !missed.length || store.busy} onClick={() => void begin("review")}>{!isPro && <Lock/>}{isPro ? "Review questions" : "Upgrade to Pro"}</Button>
       </Card>
     </div>
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -67,10 +67,10 @@ export function TestHubDashboard({ initialTopic, userId }: { initialTopic?: Pill
             <span className="grid h-12 w-12 place-items-center rounded-[18px] border border-border bg-muted shrink-0"><Icon className="w-5 h-5" /></span>
             <div className="min-w-0"><div className="flex items-center flex-wrap gap-2"><h3 className="font-display text-base font-bold">{PILLAR_META[topic].title}</h3><RestrictedProBadge restricted={locked}/></div><p className="text-sm text-muted-foreground mt-1">{banks[topic].length} questions</p></div>
           </div>
-          <div className="space-y-2"><div className="flex items-center justify-between gap-2 text-sm"><span className="text-progress-text">Mastery {stats.mastery}%</span>{stats.mastered ? <Badge variant="outline" className="text-success border-success/30"><Check className="h-3 w-3 mr-1" />Mastered</Badge> : stats.needsWork ? <Badge variant="outline" className="text-destructive border-destructive/30 bg-destructive/10">Needs work</Badge> : null}</div><Meter value={stats.mastery} /></div>
+          <div className="space-y-2"><div className="flex items-center justify-between gap-2 text-sm"><span className="text-progress-text">Mastery {stats.mastery}%</span>{!stats.practiced ? <Badge variant="outline">Not started</Badge> : stats.mastered ? <Badge variant="outline" className="text-success border-success/30"><Check className="h-3 w-3 mr-1" />Mastered</Badge> : stats.needsWork ? <Badge variant="outline" className="text-destructive border-destructive/30 bg-destructive/10">Needs work</Badge> : null}</div><Meter value={stats.mastery} /></div>
           <p className="text-sm text-muted-foreground">Last score <span className="text-progress-text font-semibold">{stats.lastScore === null ? "—" : `${stats.lastScore}%`}</span></p>
           {locked && <AttemptLock onUpgrade={unlockPro}/>}
-          <Button disabled={store.busy} onClick={() => void begin(topic)} className={cn(actionClass, "w-full h-11 mt-auto font-semibold")}>{locked ? "View past results" : access === "resume" ? "Resume your free attempt" : stats.practiced ? "Continue" : "Start Test"}</Button>
+          <Button variant={locked ? "secondary" : "default"} disabled={store.busy} onClick={() => void begin(topic)} className={cn(!locked && actionClass, "w-full h-11 mt-auto font-semibold rounded-full")}>{locked ? "View past results" : access === "resume" ? "Resume your free attempt" : stats.practiced ? "Continue" : "Start Test"}</Button>
         </Card>;
       })}
     </div>
@@ -127,7 +127,6 @@ function QuizRunner({ mode, banks, missed, progress, stateName, isPro, onUpgrade
     <p className="text-muted-foreground mt-2">{score} / {questions.length} correct</p>
     {mode !== "review" && <p className="mt-4 font-medium text-progress-text">Mastery {before}% → {topicStats(progress.find(p => p.topic === mode) ?? emptyTopic(mode), banks[mode].length).mastery}%</p>}
     <div className="flex flex-wrap justify-center gap-3 mt-6"><Button className={actionClass} onClick={restart} disabled={mode === "review" && !missed.length}><RefreshCw className="h-4 w-4" />{isPro ? "Practice again" : "Upgrade to Pro"}</Button><Button variant="outline" className="rounded-full" onClick={onExit}>Back to Hub</Button></div>
-    {!isPro && <AttemptLock onUpgrade={onUpgrade}/>}
   </Card></div>;
 
   return <StudyQuestionFrame>
