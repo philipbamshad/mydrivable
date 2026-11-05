@@ -1,22 +1,18 @@
-/* Traffic-light accents, scoped to the simulation's own classes. */
-.sim-action-button, .sim-action-ic { --sim-accent: oklch(0.55 0.15 152); }
+/* Neutral action styling shared by every simulation control and legend. */
+.sim-action-button, .sim-action-ic { --sim-accent: var(--action); }
 .sim-action-ic { color: var(--sim-accent); }
-.sim-action-button[data-action="go"], .sim-action-ic[data-action="go"] { --sim-accent: oklch(0.55 0.15 152); }
-.sim-action-button[data-action="yield"], .sim-action-ic[data-action="yield"] { --sim-accent: oklch(0.66 0.13 70); }
-.sim-action-button[data-action="stop"], .sim-action-ic[data-action="stop"] { --sim-accent: oklch(0.55 0.20 25); }
-.dark .sim-action-button[data-action="go"], .dark .sim-action-ic[data-action="go"] { --sim-accent: oklch(0.74 0.15 152); }
-.dark .sim-action-button[data-action="yield"], .dark .sim-action-ic[data-action="yield"] { --sim-accent: oklch(0.80 0.14 80); }
-.dark .sim-action-button[data-action="stop"], .dark .sim-action-ic[data-action="stop"] { --sim-accent: oklch(0.72 0.17 25); }
-
+.simulation-toggle { box-sizing: border-box; width: 36px; height: 20px; padding: 0; border: 2px solid transparent; background: var(--muted); }
+.simulation-toggle[data-state="checked"] { background: var(--action); }
+.simulation-toggle > span { width: 16px; height: 16px; background: var(--action-foreground); }
 .sim-action-button {
   position: relative; display: flex; width: 100%; height: 72px; align-items: center; justify-content: center;
-  border-radius: 16px; background: color-mix(in oklab, var(--sim-accent) 10%, var(--card)); color: #1E293B; border: 1.5px solid color-mix(in oklab, var(--sim-accent) 40%, var(--card));
+  border-radius: 16px; background: var(--card); color: var(--sim-accent); border: 1.5px solid var(--sim-accent);
   box-shadow: 0 1px 3px rgb(15 23 42 / 0.08), 0 1px 2px rgb(15 23 42 / 0.06);
   transition: background-color 150ms, border-color 150ms, transform 100ms;
 }
 .dark .sim-action-button { color: var(--foreground); }
 .sim-action-button > svg:first-child { color: var(--sim-accent); }
-.sim-action-button:not(:disabled):hover { background: color-mix(in oklab, var(--sim-accent) 16%, var(--card)); border-color: color-mix(in oklab, var(--sim-accent) 55%, var(--card)); }
+.sim-action-button:not(:disabled):hover { background: var(--muted); border-color: var(--sim-accent); }
 .sim-action-button:not(:disabled):active { transform: scale(0.97); }
 .sim-action-button:focus-visible { outline: none; box-shadow: 0 0 0 3px rgb(30 41 59 / 0.55); }
 .sim-action-button:disabled { opacity: 0.6; cursor: default; }

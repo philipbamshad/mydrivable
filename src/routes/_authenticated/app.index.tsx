@@ -22,21 +22,24 @@ import type { PillarId } from "@/data/dmv/practice-bank";
 type TabId = "test-hub" | "state-exam" | "chat";
 
 export const Route = createFileRoute("/_authenticated/app/")({
-  head: () => ({
+  head: ({ matches }) => {
+    const tab = matches[matches.length - 1]?.search?.tab;
+    const title = `${tab === "state-exam" ? "Mock Permit Exam" : tab === "test-hub" ? "Permit Test Hub" : "AI Coach"} | Drivable`;
+    return ({
     meta: [
-      { title: "Drivable | Permit & Driving Test Prep" },
+      { title },
       {
         name: "description",
         content:
           "Prepare for permit and driving tests with mock exams, topic practice, driving simulation and your AI coach.",
       },
-      { property: "og:title", content: "Drivable | Permit & Driving Test Prep" },
+      { property: "og:title", content: title },
       { property: "og:description", content: "Prepare for permit and driving tests with mock exams, topic practice, driving simulation and your AI coach." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "robots", content: "noindex" },
     ],
-  }),
+  }); },
   validateSearch: (
     s: Record<string, unknown>,
   ): { tab?: TabId; checkout?: string; intent?: string; topic?: PillarId } => {
@@ -95,7 +98,7 @@ function AppDashboard() {
   return (
     <div className="flex flex-col h-full">
       <Tabs value={tab} onValueChange={(v) => setTab(v as TabId)} className="flex flex-col h-full">
-        <header className="mx-auto w-full max-w-[960px] pl-14 pr-4 pt-6 md:px-8">
+        <header className="relative z-10 shrink-0 bg-background mx-auto w-full max-w-[960px] pl-14 pr-4 pt-6 md:px-8">
           <div className="flex items-center justify-between gap-3">
             <div className="min-w-0">
               <h1 className="font-display font-bold text-xl leading-tight truncate">

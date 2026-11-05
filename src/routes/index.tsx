@@ -158,6 +158,7 @@ function Nav() {
 
 
         <div className="flex items-center gap-2">
+          <Button asChild variant="link" className="px-2 text-sm text-muted-foreground"><Link to="/auth">Log in</Link></Button>
           <button type="button" onClick={openWaitlist}
             className={`${BTN_PRIMARY} group hidden sm:inline-flex px-5 py-2.5 text-sm`}
           >
@@ -219,8 +220,7 @@ function Hero() {
   return (
     <section className="relative flex min-h-[min(680px,76svh)] flex-col items-center justify-center px-6 py-16 text-center sm:py-20">
       <div className="mx-auto mb-6 flex max-w-2xl flex-wrap items-center justify-center gap-x-3 gap-y-1 text-sm">
-        <span className="font-bold text-primary">Updated for 2026</span>
-        <span className="hidden text-muted-foreground sm:inline">Full-length state-specific Mock Permit Exam simulator, now live</span>
+        <span className="font-bold text-primary">Now in private beta. Join the waitlist.</span>
       </div>
 
       <div aria-hidden className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
@@ -311,7 +311,7 @@ function Features() {
     },
     {
       title: "AI Coach",
-      body: "Handbook-based explanations for your Active state",
+      body: "Handbook-based explanations for your state",
       visual: "coach",
     },
     {
@@ -337,9 +337,7 @@ function Features() {
             pass on the first try.
           </span>
         </h2>
-        <p className="mx-auto mt-6 max-w-xl text-lg text-[#1f2b4d]/70 dark:text-[#d1d5db]/80">
-          Four focused tools for your permit test and driving test.
-        </p>
+
       </div>
 
       <div ref={grid} className="mx-auto mt-14 grid w-full max-w-6xl gap-6 md:grid-cols-2">
