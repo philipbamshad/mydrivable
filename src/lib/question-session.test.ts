@@ -24,3 +24,7 @@ it('recognizes different phrasings of the permit age and octagonal stop sign', (
   const q = { q: "What is the minimum age to apply for a learner's permit?", options: ['14', '15½', '16', '17'], correct: 1 }
   expect(uniqueQuestionSession([q, { ...q, q: "During your morning drive, the minimum age for a learner permit is…" }], 2)).toHaveLength(1)
 })
+it('keeps separately authored flashing yellow meanings in one concept family', () => {
+  const q = { conceptId: 'flashing-yellow', q: 'A flashing yellow light means…', options: ['Stop', 'Proceed carefully'], correct: 1 }
+  expect(uniqueQuestionSession([q, { ...q, conceptId: 'BASELINE-007', q: 'What should you do at a flashing yellow signal?' }], 2)).toHaveLength(1)
+})

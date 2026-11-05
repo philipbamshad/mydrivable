@@ -16,6 +16,8 @@ it("keeps all state question choices distinct with one keyed answer", () => {
     const banks = buildPillarBanks(state);
     for (const q of [...getStatePack(state).questions, ...Object.values(banks).flat()]) {
       expect(q.correct, q.q).toBeGreaterThanOrEqual(0);
+      expect(q.options.length, `${state}: ${q.q}`).toBeLessThanOrEqual(4);
+      expect(q.options.some(o => /[{}]/.test(o)), `${state}: ${q.q}`).toBe(false);
       expect(q.correct, q.q).toBeLessThan(q.options.length);
       expect(new Set(q.options).size, `${state}: ${q.q}`).toBe(q.options.length);
     }
