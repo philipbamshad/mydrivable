@@ -274,11 +274,12 @@ function SimulationPage() {
             <div className="grid shrink-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-2 text-xs text-muted-foreground"><span>{clip.title}</span><div className="hidden items-center gap-2 md:flex"><Switch id="hide-legend" checked={!showLegend} onCheckedChange={hidden => { setShowLegend(!hidden); localStorage.setItem("drivable.simulation.hide-legend", String(hidden)); }} /><label htmlFor="hide-legend">Hide legend</label></div></div>
             <div role="progressbar" aria-label="Scenario progress" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round((idx+1)/session.length*100)} className="h-1 w-full shrink-0 overflow-hidden rounded-full bg-muted"><span className="block h-full rounded-full bg-progress transition-all" style={{ width: `${(idx + 1) / session.length * 100}%` }} /></div>
                         <div className={cn("grid min-h-0 flex-1 gap-3", showLegend && "md:grid-cols-[minmax(0,1fr)_170px]")}>
-              <div key={clip.id} data-signal-active={signaling && signalSide !== null} className="simulation-signal-video relative min-h-0 overflow-hidden rounded-2xl bg-muted">
+              <div className="simulation-video-space min-h-0 min-w-0">
+              <div key={clip.id} data-signal-active={signaling && signalSide !== null} className="simulation-video-frame simulation-signal-video relative overflow-hidden rounded-2xl bg-muted">
                 <video ref={videoRef} src={clip.videoUrl} autoPlay muted playsInline preload="auto"
                   onPlaying={() => setHasPlayed(true)} onLoadedData={() => setLoaded(true)} onCanPlay={() => { if (phaseRef.current === "playing") resumeVideo(); }}
                   onTimeUpdate={event => { if (event.currentTarget.currentTime >= clip.pauseAt) beginDecision(); }}
-                  onEnded={holdFinalFrame} onError={() => setVideoError(true)} className="absolute inset-0 h-full w-full object-contain" />
+                  onEnded={holdFinalFrame} onError={() => setVideoError(true)} className="absolute inset-0 h-full w-full object-cover" />
                 {phase === "decision" && <div aria-hidden="true" className="sim-freeze-overlay pointer-events-none absolute inset-0" />}
                 {signalSide && <div aria-hidden="true" data-direction={signalSide} className="simulation-signal-glow pointer-events-none absolute inset-0 rounded-[inherit]" />}
                 {(!loaded || videoError || needsPlay) && phase === "playing" && <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-card/80">{videoError ? <><p className="text-sm">Unable to load this clip.</p><Button onClick={() => { setVideoError(false); videoRef.current?.load(); }}>Retry</Button></> : needsPlay ? <Button onClick={resumeVideo}><Play />Play clip</Button> : <LoaderCircle className="h-8 w-8 animate-spin motion-reduce:animate-none" aria-label="Loading clip" />}</div>}
@@ -286,6 +287,7 @@ function SimulationPage() {
                   {signalSide === "left" ? <ArrowLeft aria-hidden="true" className="simulation-signal-arrow h-4 w-4 shrink-0" /> : signalSide === "right" ? <ArrowRight aria-hidden="true" className="simulation-signal-arrow h-4 w-4 shrink-0" /> : <ArrowUp aria-hidden="true" className="h-4 w-4 shrink-0" />}{clip.intent}
                 </span>
                 <Button variant="secondary" size="icon" aria-label="Show action legend" title="Action legend" onClick={() => setMobileLegend(true)} className="absolute bottom-3 right-3 h-10 w-10 rounded-full md:hidden"><CircleHelp /></Button>
+              </div>
               </div>
               {showLegend && <aside aria-label="Action legend" className="hidden h-full min-h-0 rounded-2xl bg-card p-3 md:flex md:items-center"><ActionLegend /></aside>}
             </div>

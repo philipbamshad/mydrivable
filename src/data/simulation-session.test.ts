@@ -21,6 +21,13 @@ describe("simulation session rules", () => {
     expect(first.map((clip) => clip.id).sort()).toEqual(SIMULATION_CLIPS.map((clip) => clip.id).sort());
   });
 
+  it("includes every authored scenario, including later additions, without a fixed limit", () => {
+    const expanded = [...SIMULATION_CLIPS, { ...SIMULATION_CLIPS[0], id: "future-scenario" }];
+    const session = createSimulationSession(expanded, () => 0.5);
+    expect(session).toHaveLength(expanded.length);
+    expect(session.map(clip => clip.id).sort()).toEqual(expanded.map(clip => clip.id).sort());
+  });
+
   it("keeps the specified action order and original indices across starts", () => {
     for (const clip of createSimulationSession(SIMULATION_CLIPS, () => 0)) {
       const original = SIMULATION_CLIPS.find((source) => source.id === clip.id);
@@ -39,7 +46,7 @@ describe("simulation session rules", () => {
   });
 
   it("uses the requested freeze points", () => {
-    expect(SIMULATION_CLIPS.map((clip) => clip.pauseAt)).toEqual([3.5, 1.5, 2, 4.5, 4.5, 1.5, 1.5, 0.75, 1.5, 3]);
+    expect(SIMULATION_CLIPS.map((clip) => clip.pauseAt)).toEqual([3.5, 1.5, 2, 4.5, 4.5, 1.5, 1.0, 0.75, 1.3, 3]);
   });
 
   it.each([
