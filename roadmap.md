@@ -2,7 +2,7 @@
 
 # Pedestrian crosswalk simulation
 - [x] Add uploaded clip with Stop as its single required action and the supplied explanation; freeze at 1.5 seconds while the pedestrian remains in the lane.
-- [ ] Verify playback, randomized session inclusion, and Stop scoring.
+- [x] Verified authenticated randomized-session playback freezes at 1.53 seconds with the pedestrian still in the lane; Stop produces Correct and the supplied explanation. All 40 simulation tests pass and build OK.
 
 # Complimentary tester access
 - [x] Add hpaul2029@bwscampus.com to existing app access allowlist, without admin privileges.
