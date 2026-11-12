@@ -1,9 +1,9 @@
 # Design improvements
 
 # Simulation video layout
-- [ ] Replace four uploaded scenes, preserve explanations and steps, and apply requested freeze times.
-- [ ] Keep the video frame exactly 16:9 within available space, with overlays attached to its edges.
-- [ ] Verify all current scenarios on desktop/mobile and test that newly authored scenarios are included in full sessions.
+- [x] Replace four uploaded scenes, preserve explanations and steps, and apply requested freeze times.
+- [x] Keep the video frame exactly 16:9 within available space, with overlays attached to its edges.
+- [x] Completed all ten scenarios at 1280×720 and 390×844: no letterboxing, frame/glow edges match, feedback and Next fit without scrolling, saved results appear, no runtime errors. All 45 simulation tests pass, including future-scenario inclusion; build OK.
 
 # Solid-green left-turn simulation
 - [x] Add uploaded clip with Turning left intent/glow, single Yield decision and supplied explanation; freeze at 0.75 seconds before the line with the first car approaching.
