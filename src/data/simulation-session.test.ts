@@ -38,7 +38,7 @@ describe("simulation session rules", () => {
   });
 
   it("uses the requested freeze points", () => {
-    expect(SIMULATION_CLIPS.map((clip) => clip.pauseAt)).toEqual([3.5, 1.5, 2, 4.5, 4.5, 1.5, 1.5, 0.75]);
+    expect(SIMULATION_CLIPS.map((clip) => clip.pauseAt)).toEqual([3.5, 1.5, 2, 4.5, 4.5, 1.5, 1.5, 0.75, 1.5]);
   });
 
   it.each([
