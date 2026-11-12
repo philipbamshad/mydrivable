@@ -5,6 +5,7 @@ import leftTurnArrow from "@/assets/left-turn-green-arrow.webm.asset.json";
 import rightTurnGreen from "@/assets/right-turn-on-green.webm.asset.json";
 import rightTurnRed from "@/assets/right-turn-on-red.webm.asset.json";
 import pedestrianCrosswalk from "@/assets/pedestrian-crosswalk.webm.asset.json";
+import leftTurnSolidGreen from "@/assets/left-turn-solid-green.webm.asset.json";
 import type { SimulationClip } from "./simulation-session";
 
 const actions = [
@@ -79,5 +80,14 @@ export const SIMULATION_CLIPS: SimulationClip[] = [
     correctAction: "stop",
     steps: ["stop"],
     explanation: "A pedestrian is in the crosswalk. Stop and wait until they’ve finished crossing and it’s safe before you go.",
+  },
+  {
+    id: "left-turn-solid-green", videoUrl: leftTurnSolidGreen.url, pauseAt: 0.75,
+    title: "Left turn on solid green", intent: "Turning left", intentIcon: "left",
+    subtitle: "Turning left · solid green · oncoming traffic",
+    actions,
+    correctAction: "yield",
+    steps: ["yield"],
+    explanation: "The light is solid green with no arrow, so this is not a protected turn. Yield to oncoming traffic and turn only when there’s a safe gap.",
   },
 ];
