@@ -1,9 +1,24 @@
 import { describe, expect, it } from "vitest";
 import { scenarioResultView } from "./simulation-result";
 import { recordDecision, finishScenario } from "./simulation-game";
+import { SIMULATION_CLIPS } from "./simulation-clips";
 
 const steps = ["stop", "yield"];
 describe("scenario result view", () => {
+  it.each([
+    ["stop-sign-right-of-way", ["stop", "yield"]],
+    ["stop-sign-approach", ["stop", "yield"]],
+    ["right-turn-on-red", ["stop", "yield"]],
+    ["flashing-red-light", ["stop", "go"]],
+    ["lane-change", ["yield", "go"]],
+  ])("retains every correct action for missed %s", (id, required) => {
+    const clip = SIMULATION_CLIPS.find(clip => clip.id === id);
+    if (!clip) throw new Error(`Missing scenario ${id}`);
+    const wrong = clip.steps[0] === "go" ? "stop" : "go";
+    const view = scenarioResultView(clip.steps, finishScenario(clip.steps, [recordDecision(clip.id, wrong, clip.steps[0], 500, true)]));
+    expect(view.correctAnswer?.map(chip => chip.action)).toEqual(required);
+    expect(view.chosen.map(chip => chip.action)).toEqual([wrong]);
+  });
   it("timeout says No decision made and never marks correct answers with a cross", () => {
     const view = scenarioResultView(steps, finishScenario(steps, [recordDecision("s", null, "stop", 3000, true)]));
     expect(view.heading).toBe("No decision made");

@@ -1,5 +1,9 @@
 # Design improvements
 
+# Simulation missed-scenario review
+- [x] Show all authored correct steps, recorded choices/timeouts, and the correct-scenario summary; reuse shared octagonal Stop icons everywhere.
+- [ ] Verify signed-in results on desktop/mobile and run simulation tests.
+
 # Simulation video layout
 - [x] Replace four uploaded scenes, preserve explanations and steps, and apply requested freeze times.
 - [x] Keep the video frame exactly 16:9 within available space, with overlays attached to its edges.

@@ -13,6 +13,7 @@
 - Keep study navigation and page-heading labels identical, with active-page emphasis rather than permanent promotional marks.
 - Create simulation sessions with the pure session shuffler, retaining authored action order and original indices to preserve scoring; replay retains the current session.
 - Keep simulation decision timing/results in a pure tested module and stable action IDs through session shuffling; use existing semantic app styles without changing global styles or sibling tabs.
+- Derive missed-scenario review sequences and choices from the shared result helper and render the shared action icons, so multi-step answers and Stop shapes stay consistent with live feedback.
 - Serve simulation uploads as CDN-backed WebM assets so autoplay and ended events work in Chromium as well as other modern browsers.
 - Fit the simulation's 16:9 frame using its available container width and height; anchor overlays to that frame so controls and feedback remain visible without letterboxing.
 - Keep intent, subtitle and freeze time in each simulation scenario definition so presentation and review use the same source; hold the final frame when an unchanged video ends before its configured freeze time.

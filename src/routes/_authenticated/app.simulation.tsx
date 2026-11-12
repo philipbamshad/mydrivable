@@ -257,13 +257,17 @@ function SimulationPage() {
             <h2 className="font-display text-xl font-bold sm:text-2xl">Simulation complete</h2>
             <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2"><StatTile label="Correct decisions" value={`${summary.accuracy}%`} /><StatTile label="Avg. reaction time" value={summary.averageReaction === null ? "—" : `${summary.averageReaction.toFixed(1)}s`} /></div>
             <section className="mt-7"><h3 className="font-display text-lg font-semibold">Review missed scenarios</h3>
+              <p className="mt-2 text-sm text-muted-foreground">You got {decisions.length - summary.missed.length} of {decisions.length} correct</p>
               {summary.missed.length === 0 ? <p className="mt-3 text-sm text-muted-foreground">No missed scenarios.</p> : <ul className="mt-4 divide-y divide-border">
                 {summary.missed.map((decision) => {
                   const source = session.find((item) => item.id === decision.scenarioId);
                   if (!source) return null;
-                  const correct = source.actions.find((action) => action.id === source.correctAction);
-                  const Icon = correct ? icons[correct.icon] : undefined;
-                  return <li key={source.id} className="grid gap-4 py-5 first:pt-0 sm:grid-cols-[144px_1fr]"><div className="w-36"><ScenarioThumbnail clip={source} thumbnail={decision.thumbnail} /></div><div><h4 className="text-sm font-bold">{source.title}</h4><p className="mt-1 flex items-center gap-2 text-sm font-semibold text-success">{Icon && <Icon className="h-5 w-5" />}Correct action: {correct?.label}</p><p className="mt-2 text-sm leading-relaxed text-muted-foreground">{source.explanation}</p></div></li>;
+                  const view = scenarioResultView(source.steps, decision);
+                  return <li key={source.id} className="grid gap-4 py-5 first:pt-0 sm:grid-cols-[144px_1fr]"><div className="w-36"><ScenarioThumbnail clip={source} thumbnail={decision.thumbnail} /></div><div><h4 className="text-sm font-bold">{source.title}</h4>
+                    <div className="mt-2 flex flex-wrap items-center gap-2 text-sm font-semibold text-success"><span>Correct actions:</span><ChipRow chips={view.correctAnswer ?? []} /></div>
+                    {view.chosen.length > 0 && <div className="mt-2 flex flex-wrap items-center gap-2 text-sm font-semibold text-destructive"><span>You chose:</span><ChipRow chips={view.chosen.map(chip => ({ ...chip, tone: "destructive", mark: "none" }))} /></div>}
+                    {view.heading === "No decision made" && <p className="mt-2 text-sm font-semibold text-destructive">No decision made{view.chosen.length > 0 ? ` (step ${view.chosen.length + 1})` : ""}</p>}
+                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{source.explanation}</p></div></li>;
                 })}
               </ul>}
             </section>
