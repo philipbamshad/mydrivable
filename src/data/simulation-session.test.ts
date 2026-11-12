@@ -9,6 +9,7 @@ describe("simulation session rules", () => {
       "stop-sign-approach", "stop-sign-right-of-way", "lane-change",
       "pedestrian-crosswalk",
       "left-turn-solid-green",
+      "flashing-red-light",
     ]);
   });
 
@@ -71,6 +72,7 @@ describe("simulation session rules", () => {
     ["right-turn-on-green", ["go"]],
     ["pedestrian-crosswalk", ["stop"]],
     ["left-turn-solid-green", ["yield"]],
+    ["flashing-red-light", ["stop", "go"]],
   ])("uses the required steps for %s", (id, steps) => {
     expect(SIMULATION_CLIPS.find(clip => clip.id === id)?.steps).toEqual(steps);
   });

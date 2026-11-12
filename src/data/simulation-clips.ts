@@ -5,6 +5,7 @@ import leftTurnArrow from "@/assets/left-turn-green-arrow.webm.asset.json";
 import rightTurnGreen from "@/assets/right-turn-on-green.webm.asset.json";
 import rightTurnRed from "@/assets/right-turn-on-red.webm.asset.json";
 import pedestrianCrosswalk from "@/assets/pedestrian-crosswalk.webm.asset.json";
+import flashingRedLight from "@/assets/flashing-red-light.webm.asset.json";
 import leftTurnSolidGreen from "@/assets/left-turn-solid-green.webm.asset.json";
 import type { SimulationClip } from "./simulation-session";
 
@@ -89,5 +90,14 @@ export const SIMULATION_CLIPS: SimulationClip[] = [
     correctAction: "yield",
     steps: ["yield"],
     explanation: "The light is solid green with no arrow, so this is not a protected turn. Yield to oncoming traffic and turn only when there’s a safe gap.",
+  },
+  {
+    id: "flashing-red-light", videoUrl: flashingRedLight.url, pauseAt: 1.5,
+    title: "Flashing red light", intent: "Going straight", intentIcon: "go",
+    subtitle: "Going straight · flashing red light",
+    actions,
+    correctAction: "stop",
+    steps: ["stop", "go"],
+    explanation: "A flashing red light works like a stop sign. Come to a complete stop, then go when it’s safe. The intersection is clear, so you can proceed.",
   },
 ];
