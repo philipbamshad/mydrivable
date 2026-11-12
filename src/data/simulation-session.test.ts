@@ -9,6 +9,7 @@ describe("simulation session rules", () => {
       "stop-sign-approach", "stop-sign-right-of-way", "lane-change",
       "pedestrian-crosswalk",
       "left-turn-solid-green",
+      "flashing-red-light",
     ]);
   });
 
@@ -37,7 +38,7 @@ describe("simulation session rules", () => {
   });
 
   it("uses the requested freeze points", () => {
-    expect(SIMULATION_CLIPS.map((clip) => clip.pauseAt)).toEqual([3.5, 1.5, 2, 4.5, 4.5, 1.5, 1.5, 0.75]);
+    expect(SIMULATION_CLIPS.map((clip) => clip.pauseAt)).toEqual([3.5, 1.5, 2, 4.5, 4.5, 1.5, 1.5, 0.75, 1.5]);
   });
 
   it.each([
@@ -71,6 +72,7 @@ describe("simulation session rules", () => {
     ["right-turn-on-green", ["go"]],
     ["pedestrian-crosswalk", ["stop"]],
     ["left-turn-solid-green", ["yield"]],
+    ["flashing-red-light", ["stop", "go"]],
   ])("uses the required steps for %s", (id, steps) => {
     expect(SIMULATION_CLIPS.find(clip => clip.id === id)?.steps).toEqual(steps);
   });
