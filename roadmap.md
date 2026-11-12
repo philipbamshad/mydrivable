@@ -2,7 +2,7 @@
 
 # Solid-green left-turn simulation
 - [x] Add uploaded clip with Turning left intent/glow, single Yield decision and supplied explanation; freeze at 0.75 seconds before the line with the first car approaching.
-- [ ] Verify authenticated playback, left-edge signal, and Yield feedback.
+- [x] Authenticated playback froze at 0.78 seconds with first car approaching; Yield showed Correct and the supplied explanation. Intent helper assigns left-edge signal; all 42 simulation tests pass and build OK.
 
 # Pedestrian crosswalk simulation
 - [x] Add uploaded clip with Stop as its single required action and the supplied explanation; freeze at 1.5 seconds while the pedestrian remains in the lane.
