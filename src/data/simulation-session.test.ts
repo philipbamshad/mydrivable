@@ -7,6 +7,7 @@ describe("simulation session rules", () => {
     expect(SIMULATION_CLIPS.map((clip) => clip.id)).toEqual([
       "right-turn-on-green", "left-turn-green-arrow", "right-turn-on-red",
       "stop-sign-approach", "stop-sign-right-of-way", "lane-change",
+      "pedestrian-crosswalk",
     ]);
   });
 
@@ -34,8 +35,8 @@ describe("simulation session rules", () => {
     expect(SIMULATION_CLIPS).toEqual(before);
   });
 
-  it("uses the six requested freeze points", () => {
-    expect(SIMULATION_CLIPS.map((clip) => clip.pauseAt)).toEqual([3.5, 1.5, 2, 4.5, 4.5, 1.5]);
+  it("uses the requested freeze points", () => {
+    expect(SIMULATION_CLIPS.map((clip) => clip.pauseAt)).toEqual([3.5, 1.5, 2, 4.5, 4.5, 1.5, 1.5]);
   });
 
   it.each([
@@ -45,6 +46,7 @@ describe("simulation session rules", () => {
     ["stop-sign-approach", ["go", "yield", "stop"], "stop"],
     ["stop-sign-right-of-way", ["go", "yield", "stop"], "stop"],
     ["lane-change", ["go", "yield", "stop"], "yield"],
+    ["pedestrian-crosswalk", ["go", "yield", "stop"], "stop"],
   ])("preserves authored actions and scoring for %s", (id, actions, correct) => {
     const clip = SIMULATION_CLIPS.find((source) => source.id === id);
     expect(clip?.actions.map((action) => action.id)).toEqual(actions);
@@ -65,6 +67,7 @@ describe("simulation session rules", () => {
     ["lane-change", ["yield", "go"]],
     ["left-turn-green-arrow", ["go"]],
     ["right-turn-on-green", ["go"]],
+    ["pedestrian-crosswalk", ["stop"]],
   ])("uses the required steps for %s", (id, steps) => {
     expect(SIMULATION_CLIPS.find(clip => clip.id === id)?.steps).toEqual(steps);
   });

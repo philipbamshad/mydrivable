@@ -4,6 +4,7 @@ import laneChange from "@/assets/lane-change.webm.asset.json";
 import leftTurnArrow from "@/assets/left-turn-green-arrow.webm.asset.json";
 import rightTurnGreen from "@/assets/right-turn-on-green.webm.asset.json";
 import rightTurnRed from "@/assets/right-turn-on-red.webm.asset.json";
+import pedestrianCrosswalk from "@/assets/pedestrian-crosswalk.webm.asset.json";
 import type { SimulationClip } from "./simulation-session";
 
 const actions = [
@@ -69,5 +70,14 @@ export const SIMULATION_CLIPS: SimulationClip[] = [
     correctAction: "yield",
     steps: ["yield", "go"],
     explanation: "First signal, check your mirrors, and look over your shoulder at your blind spot. Once there's a safe gap, change lanes smoothly.",
+  },
+  {
+    id: "pedestrian-crosswalk", videoUrl: pedestrianCrosswalk.url, pauseAt: 1.5,
+    title: "Pedestrian in the crosswalk", intent: "Going straight", intentIcon: "go",
+    subtitle: "Going straight · pedestrian in your lane",
+    actions,
+    correctAction: "stop",
+    steps: ["stop"],
+    explanation: "A pedestrian is in the crosswalk. Stop and wait until they’ve finished crossing and it’s safe before you go.",
   },
 ];
