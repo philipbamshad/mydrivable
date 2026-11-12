@@ -1,5 +1,9 @@
 # Design improvements
 
+# Solid-green left-turn simulation
+- [x] Add uploaded clip with Turning left intent/glow, single Yield decision and supplied explanation; freeze at 0.75 seconds before the line with the first car approaching.
+- [ ] Verify authenticated playback, left-edge signal, and Yield feedback.
+
 # Pedestrian crosswalk simulation
 - [x] Add uploaded clip with Stop as its single required action and the supplied explanation; freeze at 1.5 seconds while the pedestrian remains in the lane.
 - [x] Verified authenticated randomized-session playback freezes at 1.53 seconds with the pedestrian still in the lane; Stop produces Correct and the supplied explanation. All 40 simulation tests pass and build OK.
