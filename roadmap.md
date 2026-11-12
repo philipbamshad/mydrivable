@@ -1,5 +1,10 @@
 # Design improvements
 
+# Complimentary tester access
+- [x] Add hpaul2029@bwscampus.com to existing app access allowlist, without admin privileges.
+- [ ] Grant and verify lifetime complimentary Pro without a payment or order confirmation.
+- [ ] Invite auth email: account already exists and is confirmed; cannot invite it as a new account.
+
 # Checkout and first-sign-in fixes
 - [x] Stable router-aware embedded checkout with explicit errors and validated inputs; sandbox and published live forms load. Original Seroval failure was not reproduced before edits.
 - [ ] Sandbox purchase/Pro/email verification: Stripe form did not complete automated submission; no new confirmed payment or email. Recipient inbox delivery requires user confirmation.

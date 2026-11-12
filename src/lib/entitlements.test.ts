@@ -22,4 +22,10 @@ describe("AI Coach daily limit", () => {
     const pro={from:()=>chain,rpc:async()=>{throw new Error('Pro must not consume a free credit');}} as unknown as SupabaseClient<Database>;
     expect(await consumeChatCredit(pro,'user')).toMatchObject({allowed:true,isPro:true,used:0});
   });
+  it("complimentary lifetime tester access bypasses the daily Coach cap without a Stripe customer", async () => {
+    const row = { status: 'active', current_period_end: null, product_id: 'complimentary_tester', price_id: 'complimentary_pro_lifetime', stripe_customer_id: '' };
+    const chain = { select: () => chain, eq: () => chain, order: () => chain, limit: () => chain, maybeSingle: async () => ({ data: row, error: null }) };
+    const tester = { from: () => chain, rpc: async () => { throw new Error('Complimentary Pro must not consume a free credit'); } } as unknown as SupabaseClient<Database>;
+    expect(await consumeChatCredit(tester, '3d67fe46-a72a-4d59-9abf-314db94507b1')).toEqual({ allowed: true, isPro: true, used: 0 });
+  });
 });
