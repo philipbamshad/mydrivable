@@ -1,5 +1,9 @@
 # Design improvements
 
+# Pedestrian crosswalk simulation
+- [x] Add uploaded clip with Stop as its single required action and the supplied explanation; freeze at 1.5 seconds while the pedestrian remains in the lane.
+- [ ] Verify playback, randomized session inclusion, and Stop scoring.
+
 # Complimentary tester access
 - [x] Add hpaul2029@bwscampus.com to existing app access allowlist, without admin privileges.
 - [x] Grant lifetime complimentary Pro, marked separately from sales with no Stripe customer/payment; zero order confirmations. Authenticated app checks returned allowlisted=true and Pro=true; 12 relevant tests passed. First-sign-in setup awaits the tester's own state/age answers; no profile answers were invented.

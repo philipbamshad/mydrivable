@@ -10,9 +10,9 @@ describe("simulation turn signals", () => {
   ])("maps %s to %s automatically", (intent, direction) => {
     expect(signalDirection(intent)).toBe(direction);
   });
-  it("assigns the requested edges to all six scenarios", () => {
+  it("assigns the requested edges to all scenarios", () => {
     expect(SIMULATION_CLIPS.map(clip => signalDirection(clip.intent))).toEqual([
-      "right", "left", "right", null, null, "left",
+      "right", "left", "right", null, null, "left", null,
     ]);
   });
   it("waits for actual playback", () => {
