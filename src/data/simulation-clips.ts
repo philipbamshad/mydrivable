@@ -7,6 +7,7 @@ import rightTurnRed from "@/assets/right-turn-on-red.webm.asset.json";
 import pedestrianCrosswalk from "@/assets/pedestrian-crosswalk.webm.asset.json";
 import flashingRedLight from "@/assets/flashing-red-light.webm.asset.json";
 import leftTurnSolidGreen from "@/assets/left-turn-solid-green.webm.asset.json";
+import noTurnOnRed from "@/assets/no-turn-on-red.webm.asset.json";
 import type { SimulationClip } from "./simulation-session";
 
 const actions = [
@@ -99,5 +100,14 @@ export const SIMULATION_CLIPS: SimulationClip[] = [
     correctAction: "stop",
     steps: ["stop", "go"],
     explanation: "A flashing red light works like a stop sign. Come to a complete stop, then go when it’s safe. The intersection is clear, so you can proceed.",
+  },
+  {
+    id: "no-turn-on-red", videoUrl: noTurnOnRed.url, pauseAt: 3.0,
+    title: "No turn on red", intent: "Turning right", intentIcon: "right",
+    subtitle: "Turning right · red light · No Turn on Red sign",
+    actions,
+    correctAction: "stop",
+    steps: ["stop"],
+    explanation: "Right turns on red are normally allowed after a full stop, but this sign prohibits it. Stop at the limit line and wait for a green light before turning.",
   },
 ];
