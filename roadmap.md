@@ -2,8 +2,8 @@
 
 # Complimentary tester access
 - [x] Add hpaul2029@bwscampus.com to existing app access allowlist, without admin privileges.
-- [ ] Grant and verify lifetime complimentary Pro without a payment or order confirmation.
-- [ ] Invite auth email: account already exists and is confirmed; cannot invite it as a new account.
+- [x] Grant lifetime complimentary Pro, marked separately from sales with no Stripe customer/payment; zero order confirmations. Authenticated app checks returned allowlisted=true and Pro=true; 12 relevant tests passed. First-sign-in setup awaits the tester's own state/age answers; no profile answers were invented.
+- [ ] Invite auth email is blocked: this account already exists and is confirmed; it can sign in at /auth instead of creating a new account.
 
 # Checkout and first-sign-in fixes
 - [x] Stable router-aware embedded checkout with explicit errors and validated inputs; sandbox and published live forms load. Original Seroval failure was not reproduced before edits.
