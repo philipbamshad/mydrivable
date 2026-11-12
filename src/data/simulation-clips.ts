@@ -4,10 +4,10 @@ import laneChange from "@/assets/lane-change.webm.asset.json";
 import leftTurnArrow from "@/assets/left-turn-green-arrow.webm.asset.json";
 import rightTurnGreen from "@/assets/right-turn-on-green.webm.asset.json";
 import rightTurnRed from "@/assets/right-turn-on-red.webm.asset.json";
-import pedestrianCrosswalk from "@/assets/pedestrian-crosswalk.webm.asset.json";
-import flashingRedLight from "@/assets/flashing-red-light.webm.asset.json";
-import leftTurnSolidGreen from "@/assets/left-turn-solid-green.webm.asset.json";
-import noTurnOnRed from "@/assets/no-turn-on-red.webm.asset.json";
+import pedestrianCrosswalk from "@/assets/pedestrian-crosswalk-wide.webm.asset.json";
+import flashingRedLight from "@/assets/flashing-red-light-wide.webm.asset.json";
+import leftTurnSolidGreen from "@/assets/left-turn-solid-green-wide.webm.asset.json";
+import noTurnOnRed from "@/assets/no-turn-on-red-wide.webm.asset.json";
 import type { SimulationClip } from "./simulation-session";
 
 const actions = [
@@ -75,7 +75,7 @@ export const SIMULATION_CLIPS: SimulationClip[] = [
     explanation: "First signal, check your mirrors, and look over your shoulder at your blind spot. Once there's a safe gap, change lanes smoothly.",
   },
   {
-    id: "pedestrian-crosswalk", videoUrl: pedestrianCrosswalk.url, pauseAt: 1.5,
+    id: "pedestrian-crosswalk", videoUrl: pedestrianCrosswalk.url, pauseAt: 1.0,
     title: "Pedestrian in the crosswalk", intent: "Going straight", intentIcon: "go",
     subtitle: "Going straight · pedestrian in your lane",
     actions,
@@ -93,7 +93,7 @@ export const SIMULATION_CLIPS: SimulationClip[] = [
     explanation: "The light is solid green with no arrow, so this is not a protected turn. Yield to oncoming traffic and turn only when there’s a safe gap.",
   },
   {
-    id: "flashing-red-light", videoUrl: flashingRedLight.url, pauseAt: 1.5,
+    id: "flashing-red-light", videoUrl: flashingRedLight.url, pauseAt: 1.3,
     title: "Flashing red light", intent: "Going straight", intentIcon: "go",
     subtitle: "Going straight · flashing red light",
     actions,

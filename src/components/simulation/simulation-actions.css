@@ -1,4 +1,6 @@
 /* Neutral action styling shared by every simulation control and legend. */
+.simulation-video-space { container-type: size; display: grid; place-items: center; }
+.simulation-video-frame { width: min(100cqw, calc(100cqh * 16 / 9)); aspect-ratio: 16 / 9; }
 .sim-action-button, .sim-action-ic { --sim-accent: var(--action); }
 .sim-action-ic { color: var(--sim-accent); }
 .simulation-toggle { box-sizing: border-box; width: 36px; height: 20px; padding: 0; border: 2px solid transparent; background: var(--muted); }

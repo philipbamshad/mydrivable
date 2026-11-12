@@ -1,5 +1,10 @@
 # Design improvements
 
+# Simulation video layout
+- [x] Replace four uploaded scenes, preserve explanations and steps, and apply requested freeze times.
+- [x] Keep the video frame exactly 16:9 within available space, with overlays attached to its edges.
+- [x] Completed all ten scenarios at 1280×720 and 390×844: no letterboxing, frame/glow edges match, feedback and Next fit without scrolling, saved results appear, no runtime errors. All 45 simulation tests pass, including future-scenario inclusion; build OK.
+
 # Solid-green left-turn simulation
 - [x] Add uploaded clip with Turning left intent/glow, single Yield decision and supplied explanation; freeze at 0.75 seconds before the line with the first car approaching.
 - [x] Authenticated playback froze at 0.78 seconds with first car approaching; Yield showed Correct and the supplied explanation. Intent helper assigns left-edge signal; all 42 simulation tests pass and build OK.
