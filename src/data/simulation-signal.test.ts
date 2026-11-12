@@ -12,7 +12,7 @@ describe("simulation turn signals", () => {
   });
   it("assigns the requested edges to all scenarios", () => {
     expect(SIMULATION_CLIPS.map(clip => signalDirection(clip.intent))).toEqual([
-      "right", "left", "right", null, null, "left", null, "left", null,
+      "right", "left", "right", null, null, "left", null, "left", null, "right",
     ]);
   });
   it("waits for actual playback", () => {
