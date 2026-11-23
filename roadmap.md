@@ -1,5 +1,8 @@
 # Design improvements
 
+# Homepage testimonial
+- [x] Add a "From a learner" testimonial section between features and pricing: five amber stars, Hudson P. quote in an Instrument Serif Italic quote-mark style, "Individual results vary." note; white card with soft shadow, verified at 1280px and 390px, build OK.
+
 # Sidebar simulation label
 - [x] Rename sidebar row to "Driving Test Sim" with a smaller Beta pill; label and pill fit one line with no truncation at 1280px and 390px, pill vertically centered. Page title stays "Driving Test Simulation".
 

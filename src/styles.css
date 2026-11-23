@@ -74,6 +74,7 @@
   --color-marketing-green: var(--marketing-green);
   --color-marketing-amber: var(--marketing-amber);
   --color-marketing-red: var(--marketing-red);
+  --color-marketing-star: var(--marketing-star);
 }
 
 /* ===== Light mode (canonical) — minimalist AI aesthetic ===== */
@@ -84,6 +85,7 @@
   --marketing-green: #15803d;
   --marketing-amber: #b45309;
   --marketing-red: #dc2626;
+  --marketing-star: #F59E0B;
   --marketing-shadow: 0 18px 40px -24px rgb(15 23 42 / 0.3);
   --radius: 0.75rem;
   --progress-blue: #2563eb;
@@ -802,6 +804,13 @@
   background-clip: text;
   color: transparent;
   padding-right: 0.08em;
+}
+
+/* Quote marks only: italic serif accent used by the homepage testimonial. */
+@utility quote-serif {
+  font-family: "Instrument Serif", ui-serif, Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
 }
 
 /* Driving game tokens and effects are isolated to this tab. */

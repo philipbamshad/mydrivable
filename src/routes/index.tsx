@@ -7,6 +7,7 @@ import {
   Check,
   Menu,
   X,
+  Star,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BetaBadge } from "@/components/marketing/BetaBadge";
@@ -113,6 +114,7 @@ function Landing() {
       <Hero />
       <StatesMarquee />
       <Features />
+      <Testimonials />
       <Pricing />
       <CTA />
       <Footer />
@@ -301,6 +303,52 @@ function Features() {
       </div>)}
     </div>
   </section>;
+}
+
+
+function Testimonials() {
+  const ref = useReveal<HTMLElement>();
+  return (
+    <section
+      ref={ref}
+      aria-labelledby="testimonial-heading"
+      className="marketing-lane-divider px-4 py-16 sm:px-6 sm:py-20 lg:px-8"
+    >
+      <div className="mx-auto max-w-3xl">
+        <h2 id="testimonial-heading" className="sr-only">
+          What learners say
+        </h2>
+        <div className="text-center">
+          <p className="marketing-section-label">From a learner</p>
+        </div>
+        <figure className="reveal mt-8 rounded-[32px] border border-border/60 bg-card p-6 text-center shadow-[var(--marketing-shadow)] sm:mt-10 sm:p-12">
+          <div
+            className="flex items-center justify-center gap-1"
+            role="img"
+            aria-label="Rated 5 out of 5 stars"
+          >
+            {Array.from({ length: 5 }).map((_, i) => (
+              <Star key={i} className="size-4 shrink-0 fill-marketing-star text-marketing-star sm:size-5" aria-hidden="true" />
+            ))}
+          </div>
+          <blockquote className="mt-6 text-[19px] leading-relaxed text-card-foreground sm:mt-8 sm:text-[26px] sm:leading-[1.5]">
+            <span className="quote-serif mr-1 align-text-bottom text-4xl leading-none text-marketing-star/40 sm:text-5xl">
+              {"\u201C"}
+            </span>
+            The only way I studied for my permit test was using this website. I did not use anything else and studied with this for a couple of days, and I passed. I highly recommend using this to study, in my opinion it is the best way out there.
+            <span className="quote-serif ml-1 align-text-bottom text-4xl leading-none text-marketing-star/40 sm:text-5xl">
+              {"\u201D"}
+            </span>
+          </blockquote>
+          <figcaption className="mt-6 sm:mt-8">
+            <p className="font-semibold text-card-foreground">Hudson P.</p>
+            <p className="mt-1 text-sm text-muted-foreground">Passed his permit test</p>
+          </figcaption>
+        </figure>
+        <p className="mt-6 text-center text-xs text-muted-foreground">Individual results vary.</p>
+      </div>
+    </section>
+  );
 }
 
 
