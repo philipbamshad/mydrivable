@@ -12,7 +12,7 @@ import { SIMULATION_CLIPS } from '@/data/simulation-clips';
 import { decisionSummary, finishScenario, recordDecision, stepProgress, type ScenarioDecision } from '@/data/simulation-game';
 import type { StudyAttempt } from './study-attempt';
 import { uniqueQuestionSession } from './question-session';
-import { permitRules } from './permit-rules';
+import { permitRules, studySetupReady } from './permit-rules';
 import { withHistoricalExamAnswers } from './exam-missed';
 export type StudyAnswerInput = {id:string;version:number;answer?:number;steps?:{action:'go'|'yield'|'stop'|null;elapsed:number}[];timed?:boolean};
 
@@ -28,7 +28,7 @@ export const startStudyAttempt = createServerFn({method:'POST'}).middleware([req
   .inputValidator((input:unknown)=>z.object({feature}).parse(input))
   .handler(async ({context,data}) => {
     const {data:profile,error:profileError} = await context.supabase.from('user_profiles').select('active_state,under_18,onboarding_completed_at').eq('user_id',context.userId).single();
-    if(profileError || !profile.active_state || !profile.onboarding_completed_at) throw new Error('Complete your setup before practicing.');
+    if(profileError || !studySetupReady(profile.active_state,Boolean(profile.onboarding_completed_at))) throw new Error('Complete your setup before practicing.');
     const state = profile.active_state;
     let payload: unknown[];
     if(data.feature==='simulation') payload=createSimulationSession(SIMULATION_CLIPS);

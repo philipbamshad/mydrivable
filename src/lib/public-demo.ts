@@ -11,4 +11,3 @@ export const DEMO_PRACTICE = getStatePack('California').questions.slice(0,5).map
 export const DEMO_SIGNS: PracticeQuestion[] = buildPillarBanks('California').signs.filter(q=>q.sign).slice(0,5).map(canonical);
 export const DEMO_SCENARIO = SIMULATION_CLIPS.find(clip=>clip.id === 'pedestrian-crosswalk');
 export function demoAnswerCorrect(question: Question, answer: number) { return answer === question.correct; }
-export function setupReady(state: string, completed: boolean) { return Boolean(state) && completed; }

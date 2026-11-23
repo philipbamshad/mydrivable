@@ -71,6 +71,13 @@
       "when": 1795412625789,
       "tag": "0009_open_public_authenticated_access",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1795413000483,
+      "tag": "0010_retire_public_waitlist_submissions",
+      "breakpoints": true
     }
   ]
 }

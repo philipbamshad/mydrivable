@@ -144,10 +144,12 @@
 - [x] Campaign copy: recorded approval of all six pictures; drafted and length-checked three text options for separate approval.
 
 # Public launch and demo
-- [ ] Open public free signup and authenticated app access; preserve owner-only progress, Pro limits and admin permissions.
-- [ ] Remove onboarding age question; retain saved age formats for existing users.
-- [ ] Simplify homepage and add simulation Beta labels.
-- [ ] Add database-free five-tab California demo.
-- [ ] Verify signup/setup and demo desktop/mobile.
+- [x] Open public free signup and authenticated app access; preserve owner-only progress, Pro limits and admin permissions.
+- [x] Remove onboarding age question; retain saved age formats for existing users.
+- [x] Simplify homepage and add simulation Beta labels.
+- [x] Add database-free five-tab California demo.
+- [x] Verify signup/setup and demo desktop/mobile.
 - [ ] Launch announcement: blocked — Lovable App emails do not permit bulk product announcements.
 - [x] Record full campaign-copy approval; hold waitlist copy since new launch brief changes the offer.
+
+Verification: actual public signup returned 200 with an active session; non-admin Free account saved state-only setup, started exam, saved an answer and resumed question 2. All five demo tabs passed at 1296×811 and 390×844 without horizontal overflow or runtime errors. Simulation freezes at 1.0s. All 120 tests pass. Nothing published; launch email unsent.

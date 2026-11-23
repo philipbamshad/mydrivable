@@ -1,3 +1,4 @@
+import { studySetupReady } from "@/lib/permit-rules";
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 import { ThreadSidebar } from "@/components/chat/ThreadSidebar";
 import { UserProfileProvider, useUserProfile } from "@/lib/user-profile";
@@ -43,7 +44,7 @@ function AppLayout() {
 function SetupContent() {
   const { hydrating, onboardingCompleted, state } = useUserProfile();
   if (hydrating) return null;
-  if (!onboardingCompleted || !state) return <StateOnboardingDialog />;
+  if (!studySetupReady(state,onboardingCompleted)) return <StateOnboardingDialog />;
   return <Outlet />;
 }
 
