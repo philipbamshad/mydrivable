@@ -138,3 +138,5 @@
 - [x] Solid action buttons (octagon Stop), freeze-only prompt/countdown/step label, 10% freeze overlay.
 - [x] Two-step check badge and "Correct. Now choose your next action."; result chips per step; timeout never marks correct answers ✕.
 - [x] Update How it works text/icon and full-width progress bar; test all 6 scenarios timed/untimed.
+
+- [x] Ad images: added approved headlines to A/B/C square + 9:16 versions; inspected all six, retained clean originals; finished artwork awaits approval.
