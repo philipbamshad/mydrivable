@@ -10,7 +10,7 @@ export function completedDemoTabs(raw: string | null): DemoTab[] {
     return Array.isArray(value) ? DEMO_TABS.filter(tab => value.includes(tab)) : [];
   } catch { return []; }
 }
-export function demoResults(questions: readonly PracticeQuestion[], answers: readonly number[]) {
+export function demoResults<Q extends PracticeQuestion>(questions: readonly Q[], answers: readonly number[]) {
   return {
     correct: questions.filter((q, index) => answers[index] === q.correct).length,
     total: questions.length,
@@ -27,7 +27,7 @@ export function demoProgress(banks: Record<ScoredDemoTab, readonly (PracticeQues
   const scores = tabs.map(tab => {
     const r = demoResults(banks[tab], records[tab] ?? []);
     correct += r.correct; total += r.total;
-    for (const m of r.missed) { const t = (m.question as { topic: string }).topic; if (!topics.includes(t)) topics.push(t); }
+    for (const m of r.missed) { const t = m.question.topic; if (!topics.includes(t)) topics.push(t); }
     return { tab, correct: r.correct, total: r.total, percent: r.total ? Math.round(r.correct / r.total * 100) : 0 };
   });
   return { accuracy: total ? Math.round(correct / total * 100) : null, correct, total, scores, topics };
