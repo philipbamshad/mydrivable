@@ -1,5 +1,13 @@
 # Design improvements
 
+# Navigation, question variety and demo polish
+- [x] Fit sidebar labels and center homepage navigation; desktop center differs by less than 0.01px, mobile menu verified.
+- [x] Add rotating hero previews with manual stop, equal-height centered feature cards, complete simulation preview, section spacing and brand accents.
+- [x] Prevent duplicate question IDs/text and prefer less-recent questions across study tools; all state pools tested, saved 46-question exam and fresh 8-question quiz checked.
+- [x] Normalize saved missed identities, retain miss counts/dates and unique review totals; existing duplicate text groups now zero, repeated review misses increment 1→2→3→4→5 without duplicate entries.
+- [x] Add demo results, missed explanations, local completion marks and untried-tab links; all five tabs completed on desktop/mobile and persisted after reload.
+- [x] Verify signed-in study flows and layouts at 1440/1214/768/390/320px; 131 tests pass, preview build OK, no signed-in runtime errors. Nothing published.
+
 # Public launch and demo
 - [x] Public signup and authenticated access open; owner-only policies, Free limits, Pro/payment logic preserved.
 - [x] State/date-only setup; saved legacy exam formats retained; signup age/terms notice added. Real disposable signup returned 200 and reached /app after setup.

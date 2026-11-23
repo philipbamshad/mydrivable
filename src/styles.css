@@ -901,6 +901,12 @@
 .simulation-game .drive-flash { display: none; }
 
 /* Homepage-only details; study surfaces retain their existing theme. */
+.marketing-section-label { display: inline-flex; align-items: center; border-radius: 999px; background: var(--marketing-blue-tint); color: var(--marketing-label-ink); padding: 6px 12px; font-size: 12px; font-weight: 600; }
+:root { --marketing-label-ink: #1E40AF; }
+.marketing-feature-grid { justify-content: center; }
+.marketing-preview-fade { animation: marketing-preview-fade 350ms ease-in-out; }
+@keyframes marketing-preview-fade { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .marketing-preview-fade { animation: none; } }
 .marketing-feature { border-top: 3px solid var(--primary); box-shadow: var(--marketing-shadow); }
 .marketing-feature:hover { box-shadow: 0 22px 42px -20px color-mix(in srgb, var(--foreground) 28%, transparent); }
 .marketing-feature[data-feature-tone="green"] { border-top-color: var(--marketing-green); }

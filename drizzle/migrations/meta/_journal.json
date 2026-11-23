@@ -71,6 +71,41 @@
       "when": 1795413381513,
       "tag": "0009_public_launch_owner_access",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1795414879777,
+      "tag": "0010_unique_missed_question_tracking",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1795414902210,
+      "tag": "0011_count_every_study_miss",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1795415215354,
+      "tag": "0012_preserve_miss_counts_on_upsert",
+      "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1795415355736,
+      "tag": "0013_merge_legacy_question_text_identities",
+      "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1795415428762,
+      "tag": "0014_consolidate_unkeyed_legacy_misses",
+      "breakpoints": true
     }
   ]
 }

@@ -129,7 +129,7 @@ export function ThreadSidebar() {
             </p>
             <p className="text-sm font-semibold mt-0.5 flex items-center gap-2 pointer-events-none">
               <span className="w-1.5 h-1.5 rounded-full bg-foreground" />
-              <span className="truncate">{targetLabel}</span>
+              <span className="min-w-0 whitespace-normal break-words">{targetLabel}</span>
             </p>
           </Button>
         </PopoverTrigger>
@@ -176,7 +176,7 @@ export function ThreadSidebar() {
             </p>
             <p className="text-sm font-semibold mt-0.5 flex items-center gap-2 pointer-events-none">
               <span className="w-1.5 h-1.5 rounded-full bg-foreground" />
-              <span className="truncate">{userState || "Not set"}</span>
+              <span className="min-w-0 whitespace-normal break-words">{userState || "Not set"}</span>
             </p>
           </Button>
         </PopoverTrigger>
@@ -212,7 +212,7 @@ export function ThreadSidebar() {
                       active && "bg-secondary text-foreground font-medium",
                     )}
                   >
-                    <span className="truncate">{s}</span>
+                    <span className="min-w-0 whitespace-normal">{s}</span>
                     {active && <Check className="w-4 h-4 text-foreground shrink-0" />}
                   </Button>
                 );
@@ -278,9 +278,9 @@ export function ThreadSidebar() {
             {initial}
           </span>
           {!isCollapsed && (
-            <span className="flex items-baseline gap-1.5 min-w-0">
-              <span className="text-sm font-semibold truncate leading-tight">{displayName}</span>
-              <span className="text-xs text-muted-foreground truncate leading-tight">
+            <span className="flex flex-wrap items-baseline gap-1.5 min-w-0">
+              <span className="min-w-0 whitespace-normal break-words text-sm font-semibold leading-tight">{displayName}</span>
+              <span className="shrink-0 text-xs text-muted-foreground leading-tight">
                 · {planLabel}
               </span>
             </span>
@@ -312,7 +312,7 @@ export function ThreadSidebar() {
               onClick={() => openSettingsSection(undefined)}
               className="w-full rounded-xl px-2.5 py-2 text-left hover:bg-muted transition-colors press"
             >
-              <p className="text-sm font-semibold truncate">{displayName}</p>
+              <p className="whitespace-normal break-words text-sm font-semibold">{displayName}</p>
               <p className="text-xs text-muted-foreground">{planLabel} plan</p>
             </button>
             <div className="h-px bg-border my-1" />
@@ -390,8 +390,8 @@ export function ThreadSidebar() {
                 <Icon className="w-4 h-4 shrink-0" />
                 <span
                   className={cn(
-                    "truncate transition-all duration-300",
-                    isCollapsed ? "w-0 opacity-0" : "flex-1",
+                    "min-w-0 whitespace-normal transition-all duration-300",
+                    isCollapsed ? "w-0 overflow-hidden opacity-0" : "flex-1",
                   )}
                 >
                   {label}
@@ -407,18 +407,18 @@ export function ThreadSidebar() {
               pathname === "/app/simulation" && "nav-link-active",
               isCollapsed && "justify-center px-0",
             )}
-            aria-label="Driving Test Simulation"
+            aria-label="Driving Sim"
             aria-current={pathname === "/app/simulation" ? "page" : undefined}
-            title={isCollapsed ? "Driving Test Simulation" : undefined}
+            title={isCollapsed ? "Driving Sim" : undefined}
           >
             <Video className="w-4 h-4 shrink-0" />
             <span
               className={cn(
-                "truncate transition-all duration-300",
-                isCollapsed ? "w-0 opacity-0" : "flex-1",
+                "min-w-0 whitespace-nowrap transition-all duration-300",
+                isCollapsed ? "w-0 overflow-hidden opacity-0" : "flex-1",
               )}
             >
-              Driving Test Simulation
+              Driving Sim
             </span>
             {!isCollapsed && <BetaBadge />}
           </Link>

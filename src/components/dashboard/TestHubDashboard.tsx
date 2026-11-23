@@ -96,6 +96,7 @@ function QuizRunner({ mode, banks, missed, progress, stateName, isPro, onUpgrade
   const answeredIndex=useRef(-1);
   const [before, setBefore] = useState(() => mode === "review" ? 0 : topicStats(progress.find(p => p.topic === mode) ?? emptyTopic(mode), banks[mode].length).mastery);
   const q = questions[idx];
+  const missRecord = mode === 'review' && q ? progress.find(p => p.topic === q.topic)?.questions[q.key] : undefined;
   const reveal = picked !== null;
 
   const title = mode === "review" ? "Review missed questions" : PILLAR_META[mode].title;
@@ -135,6 +136,7 @@ function QuizRunner({ mode, banks, missed, progress, stateName, isPro, onUpgrade
     {<Card className="study-question-card bg-card border-border/60 shadow-md rounded-[28px]">
       <HubQuestionVisual question={q} />
       <h3 className="font-display text-lg font-semibold">{q.q}</h3>
+      {missRecord && <p className="text-xs text-muted-foreground">Missed {missRecord.missedCount ?? 1} {(missRecord.missedCount ?? 1) === 1 ? 'time' : 'times'}{missRecord.lastMissedAt ? ` · Last missed ${new Date(missRecord.lastMissedAt).toLocaleDateString()}` : ''}</p>}
       <div className="study-answers">
         {q.options.map((option, i) => <Button key={i} variant="outline" disabled={reveal} onClick={() => choose(i)} aria-pressed={picked === i}
           className={cn("h-auto min-h-16 whitespace-normal text-left justify-between p-4 rounded-xl font-medium disabled:opacity-100",

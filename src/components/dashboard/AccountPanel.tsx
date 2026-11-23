@@ -123,7 +123,7 @@ export function AccountPanel({ section }: { section?: AccountSection } = {}) {
             </span>
             <div className="min-w-0">
               <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground">Membership</p>
-              <h3 className="font-display text-lg font-bold truncate">
+              <h3 className="whitespace-normal font-display text-lg font-bold">
                 {isPro ? "Pro Pass · Lifetime" : "Free Tier · Onboarding"}
               </h3>
               <div className="flex items-center gap-2 mt-1">

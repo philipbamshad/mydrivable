@@ -7,6 +7,7 @@ it('provides five real California practice questions', () => {
 it('provides five distinct sign questions with existing visuals', () => {
   expect(DEMO_SIGNS).toHaveLength(5);
   expect(new Set(DEMO_SIGNS.map(q => JSON.stringify(q.sign))).size).toBe(5);
+  expect(new Set(DEMO_SIGNS.map(q => q.q)).size).toBe(5);
   for (const q of DEMO_SIGNS) expect(q.options[q.correct]).toBeTruthy();
 });
 it('offers one existing Stop scenario without saves, credits or live AI', () => {

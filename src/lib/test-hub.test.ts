@@ -1,8 +1,38 @@
 import { describe, it, expect } from "vitest";
-import { answerProgress, emptyTopic, hubQuestion, topicStats, weakestTopic, missedQuestions, mayAnswerHub } from "./test-hub";
+import { answerProgress, emptyTopic, hubQuestion, topicStats, weakestTopic, missedQuestions, mayAnswerHub, normalizeTopicProgress } from "./test-hub";
 
 const question = hubQuestion({ q: "During your morning drive, what does a red light mean?", options: ["Stop", "Go"], correct: 0, explanation: "Stop at the limit line." }, "signs");
 describe("Permit Test Hub rules", () => {
+  it("merges identical text with older different choices into one missed entry", () => {
+    const alternate = hubQuestion({...question,options:['Stop completely','Keep driving']},'signs');
+    const normalized = normalizeTopicProgress({...emptyTopic('signs'),questions:{[question.key]:{question,correct:false,missed:true,recovery:0},[alternate.key]:{question:alternate,correct:false,missed:true,recovery:0}}});
+    expect(Object.keys(normalized.questions)).toHaveLength(1);
+    expect(missedQuestions([normalized])).toHaveLength(1);
+  });
+  it("merges identical legacy text without a concept ID into the current canonical question", () => {
+    const current = hubQuestion({...question,conceptId:'stop-light'},'signs');
+    const normalized = normalizeTopicProgress({...emptyTopic('signs'),questions:{[question.key]:{question,correct:false,missed:true,recovery:0},[current.key]:{question:current,correct:true,everCorrect:true,missed:false,recovery:0}}});
+    expect(Object.keys(normalized.questions)).toEqual([current.key]);
+    expect(missedQuestions([normalized])).toHaveLength(0);
+    expect(Object.values(normalized.questions)[0]?.everCorrect).toBe(true);
+  });
+  it("updates the same missed ID once, counting misses and retaining the latest missed date", () => {
+    const first = answerProgress(emptyTopic('signs'),question,false,'2026-11-20T10:00:00Z');
+    const second = answerProgress(first,question,false,'2026-11-23T10:00:00Z');
+    expect(missedQuestions([second])).toHaveLength(1);
+    expect(second.questions[question.key]).toMatchObject({missedCount:2,lastMissedAt:'2026-11-23T10:00:00Z'});
+    const correct = answerProgress(second,question,true,'2026-11-23T11:00:00Z');
+    expect(correct.questions[question.key]).toMatchObject({missedCount:2,lastMissedAt:'2026-11-23T10:00:00Z'});
+  });
+  it("consolidates legacy duplicate IDs while preserving canonical recovered status and mastery", () => {
+    const canonical = hubQuestion({...question,conceptId:'flashing-yellow'},'signs');
+    const alias = {...canonical,conceptId:'TEMPLATES-006',key:'old-key'};
+    const recovered = {...canonical,conceptId:'railroad-flashing-red'};
+    const normalized = normalizeTopicProgress({...emptyTopic('signs'),questions:{'old-key':{question:alias,correct:false,missed:true,recovery:0,missedCount:2},[hubQuestion(recovered,'signs').key]:{question:recovered,correct:true,everCorrect:true,missed:false,recovery:0,missedCount:1}}});
+    expect(Object.keys(normalized.questions)).toHaveLength(1);
+    expect(missedQuestions([normalized])).toHaveLength(0);
+    expect(Object.values(normalized.questions)[0]).toMatchObject({everCorrect:true,missedCount:2});
+  });
   it("does not label an unattempted topic as needing work", () => {
     expect(topicStats(emptyTopic("signs"), 8)).toMatchObject({ practiced: false, needsWork: false });
   });

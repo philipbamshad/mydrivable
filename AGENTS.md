@@ -10,7 +10,7 @@
 <!-- LOVABLE:END -->
 
 - Use the shared Button component and semantic action/status tokens for changed controls so contrast and states remain consistent across themes.
-- Keep study navigation and page-heading labels identical, with active-page emphasis rather than permanent promotional marks.
+- Keep study navigation and page-heading labels identical except the compact “Driving Sim” sidebar label retains “Driving Test Simulation” as its page title; emphasize only the active page.
 - Create simulation sessions with the pure session shuffler, retaining authored action order and original indices to preserve scoring; replay retains the current session.
 - Keep simulation decision timing/results in a pure tested module and stable action IDs through session shuffling; use existing semantic app styles without changing global styles or sibling tabs.
 - Derive missed-scenario review sequences and choices from the shared result helper and render the shared action icons, so multi-step answers and Stop shapes stay consistent with live feedback.
@@ -38,3 +38,7 @@
 - Public demo uses browser-local state and existing authored questions/media only; never reserve attempts, call live AI or write progress, so it cannot consume free allowances.
 - Scope hero-specific simulation preview scenes and signal styles through an opt-in prop so shared feature previews and live simulation remain unchanged.
 - Merge legacy exam answers only for identities missing from Hub progress, preserving recovered misses and canonical question counts.
+- Select exam/Hub sessions with the tested ID/text/concept deduplicator and owner-scoped recent attempt payloads, so question variety is shared across tools without browser-authoritative history.
+- Normalize Hub progress keys before legacy merges and on database writes; keep database concept aliases aligned with canonicalConcept, and preserve miss counts/dates across upserts and recovery.
+- Keep public demo completion/answers browser-local through the tested demo-results helper; every tab has an explicit completion screen, with no live AI or study writes.
+- Share authored marketing examples in ProductPreview; isolate its five-second rotation and manual-stop state from feature previews and study sessions.

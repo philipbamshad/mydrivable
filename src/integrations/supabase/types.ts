@@ -561,6 +561,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      canonical_study_concept: { Args: { concept: string }; Returns: string }
       coach_local_day: { Args: { p_user: string }; Returns: string }
       commit_study_answer: {
         Args: {
@@ -608,6 +609,10 @@ export type Database = {
           signup_id: string
           signup_time: string
         }[]
+      }
+      normalize_study_progress: {
+        Args: { fallback_date: string; items: Json; topic_name: string }
+        Returns: Json
       }
       reserve_study_attempt: {
         Args: {

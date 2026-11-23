@@ -98,9 +98,9 @@ function AppDashboard() {
     <div className="flex flex-col h-full">
       <Tabs value={tab} onValueChange={(v) => setTab(v as TabId)} className="flex flex-col h-full">
         <header className="relative z-10 shrink-0 bg-background mx-auto w-full max-w-[960px] pl-14 pr-4 pt-6 md:px-8">
-          <div className="flex items-center justify-between gap-3">
+          <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
             <div className="min-w-0">
-              <h1 className="font-display font-bold text-xl leading-tight truncate">
+              <h1 className="whitespace-normal font-display font-bold text-xl leading-tight">
                 {TABS.find((t) => t.id === tab)?.label}
               </h1>
             </div>

@@ -12,6 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { BetaBadge } from "@/components/marketing/BetaBadge";
 import { SimulationPreview } from "@/components/marketing/SimulationPreview";
+import { ProductPreview, PracticePreview, CoachPreview } from "@/components/marketing/ProductPreview";
 import { DEMO_SIGNS } from "@/lib/demo";
 import { SignVisual } from "@/components/dashboard/SignVisual";
 import { US_STATES } from "@/lib/user-profile";
@@ -132,7 +133,7 @@ function Nav() {
   return (
     <header className="sticky top-4 z-50 px-4">
       <div
-        className={`nav-float mx-auto flex max-w-5xl items-center justify-between rounded-full border bg-white/85 px-3 py-2 backdrop-blur-xl dark:bg-[#1c1f22]/90 ${
+        className={`nav-float marketing-top-nav mx-auto grid max-w-5xl grid-cols-[minmax(0,1fr)_auto] items-center rounded-full border bg-card/85 px-3 py-2 backdrop-blur-xl lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] ${
           scrolled
             ? "border-[#1e40af]/20 shadow-[0_18px_44px_-24px_rgba(30,64,175,0.42)] dark:border-white/10 dark:shadow-[0_18px_44px_-24px_rgba(0,0,0,0.8)]"
             : "border-[#1e40af]/10 shadow-[0_8px_24px_-20px_rgba(30,64,175,0.28)] dark:border-white/10 dark:shadow-[0_8px_24px_-20px_rgba(0,0,0,0.7)]"
@@ -140,7 +141,7 @@ function Nav() {
       >
 
 
-        <Link to="/" className="flex items-center gap-2 pl-2">
+        <Link to="/" className="flex min-w-0 items-center gap-2 justify-self-start pl-2">
           <img src={logo} alt="Drivable logo" className="h-9 w-9 logo-mask" />
           <span className="hidden text-[15px] font-semibold tracking-normal text-[#0f172a] sm:inline dark:text-[#f3f4f6]">
             Drivable
@@ -148,17 +149,17 @@ function Nav() {
 
         </Link>
 
-        <nav className="hidden items-center gap-7 text-[15px] font-medium text-[#1f2b4d]/70 sm:flex dark:text-[#d1d5db]/80">
-          <a href="#features" className="transition hover:text-[#0f172a] dark:hover:text-white">Features</a>
-          <a href="#states" className="transition hover:text-[#0f172a] dark:hover:text-white">States</a>
-          <a href="#pricing" className="transition hover:text-[#0f172a] dark:hover:text-white">Pricing</a>
+        <nav aria-label="Homepage" className="hidden items-center justify-center gap-7 whitespace-nowrap text-sm font-medium text-muted-foreground lg:flex">
+          <a href="#features" className="transition hover:text-foreground">Features</a>
+          <a href="#states" className="transition hover:text-foreground">States</a>
+          <a href="#pricing" className="transition hover:text-foreground">Pricing</a>
           <Link to="/demo" className="text-muted-foreground hover:text-foreground">Try demo</Link>
         </nav>
 
 
-        <div className="flex items-center gap-2"><Button asChild variant="ghost" className="hidden sm:inline-flex"><Link to="/auth">Sign in</Link></Button>
+        <div className="flex shrink-0 items-center justify-self-end gap-2"><Button asChild variant="ghost" className="hidden lg:inline-flex"><Link to="/auth">Sign in</Link></Button>
           <Button asChild
-            className={`${BTN_PRIMARY} group hidden sm:inline-flex px-5 py-2.5 text-sm`}
+            className={`${BTN_PRIMARY} group hidden lg:inline-flex px-5 py-2.5 text-sm`}
           >
             <Link to="/auth" search={{mode:"sign-up"}}>Get started
             <span className="grid h-6 w-6 place-items-center rounded-full bg-primary-foreground/15 transition-transform duration-300 group-hover:translate-x-0.5">
@@ -172,7 +173,7 @@ function Nav() {
             type="button"
             aria-label={open ? "Close menu" : "Open menu"}
             onClick={() => setOpen((v) => !v)}
-            className="sm:hidden h-11 w-11 rounded-full border border-border bg-card text-foreground dark:bg-[#2a2e33] dark:text-[#f3f4f6]"
+            className="lg:hidden h-11 w-11 rounded-full border border-border bg-card text-foreground"
           >
 
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -182,7 +183,7 @@ function Nav() {
 
 
       {open && (
-        <div className="sm:hidden mx-auto mt-2 max-w-5xl rounded-2xl border border-[#1e40af]/18 bg-[#f4f7fd]/95 p-4 backdrop-blur-xl shadow-[0_20px_50px_-20px_rgba(30,64,175,0.14)] dark:border-white/10 dark:bg-[#1c1f22]/95 dark:shadow-[0_20px_50px_-20px_rgba(0,0,0,0.8)]">
+        <div className="lg:hidden mx-auto mt-2 max-w-5xl rounded-2xl border border-[#1e40af]/18 bg-[#f4f7fd]/95 p-4 backdrop-blur-xl shadow-[0_20px_50px_-20px_rgba(30,64,175,0.14)] dark:border-white/10 dark:bg-[#1c1f22]/95 dark:shadow-[0_20px_50px_-20px_rgba(0,0,0,0.8)]">
           <nav className="flex flex-col text-base font-medium text-[#1f2b4d]/85 dark:text-[#e5e7eb]">
 
             {[
@@ -231,7 +232,7 @@ function Hero() {
         <Button asChild variant="outline" className={`${BTN_SECONDARY} h-auto px-7 py-4 text-base`}><Link to="/demo">Try demo</Link></Button>
       </div>
       <p className="relative mt-5 max-w-2xl text-xs leading-relaxed text-muted-foreground">Built from the official California DMV handbook · Free plan available · Pro is $9 once</p>
-      <div className="relative mt-8 w-full max-w-lg"><div className="mb-3 flex items-center justify-center gap-2 text-xs font-semibold text-muted-foreground">Driving Test Simulation <BetaBadge /></div><SimulationPreview leftTurn /></div>
+      <ProductPreview />
     </section>
   );
 }
@@ -242,7 +243,7 @@ function StatesMarquee() {
   return (
     <section id="states" className="border-y border-[#1e40af]/12 dark:border-white/[0.08] bg-[#1e40af]/[0.035] dark:bg-white/[0.03] py-16 backdrop-blur-sm">
       <div className="mx-auto max-w-6xl px-6 text-center">
-        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#1e40af] dark:text-[#7ea6ff]/80 dark:text-[#7ea6ff]">
+        <p className="marketing-section-label mb-6">
           All 50 States · Grounded in Official DMV Handbooks
         </p>
         <h2 className="mb-10 text-3xl font-semibold tracking-normal sm:text-4xl">
@@ -264,9 +265,9 @@ function StatesMarquee() {
           {loop.map((s, i) => (
             <span
               key={`${s}-${i}`}
-              className="inline-flex items-center gap-1.5 rounded-full border border-[#1e40af]/18 dark:border-white/10 bg-white/75 dark:bg-[#1c1f22]/75 px-3.5 py-1.5 text-[13px] font-medium text-[#1f2b4d]/85 dark:text-[#d1d5db]/80 backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5 hover:border-[#1e40af]/35 hover:bg-white dark:hover:bg-[#2a2e33] hover:text-[#0f172a] dark:text-[#f3f4f6] dark:hover:text-white"
+              className={`inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-[13px] font-medium transition-colors hover:bg-primary/10 ${s === "California" ? "border-primary bg-primary/10 text-primary" : "border-border bg-card/75 text-muted-foreground hover:text-foreground"}`}
             >
-              <MapPin className="h-3 w-3 text-[#1e40af] dark:text-[#7ea6ff]" />
+              {s === "California" && <MapPin className="h-3 w-3 shrink-0" />}
               {s}
             </span>
           ))}
@@ -289,16 +290,16 @@ function Features() {
   const grid=useReveal<HTMLDivElement>();
   const roadSign=DEMO_SIGNS.find(q=>q.sign?.shape==="diamond")?.sign ?? DEMO_SIGNS[0]?.sign;
   return <section id="features" className="marketing-lane-divider px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
-    <div className="mx-auto max-w-3xl text-center"><p className="text-sm font-semibold text-primary">State-Specific DMV Prep</p><h2 className="mt-8 text-3xl font-semibold sm:text-5xl">Four focused tools, one outcome: <span className="hero-serif-gradient">pass on the first try.</span></h2></div>
-    <div ref={grid} className="mx-auto mt-14 grid w-full max-w-6xl gap-6 md:grid-cols-2">
+    <div className="mx-auto max-w-3xl text-center"><p className="marketing-section-label">State-Specific DMV Prep</p><h2 className="mt-8 text-3xl font-semibold sm:text-5xl">Four focused tools, one goal: <span className="hero-serif-gradient">test-day ready.</span></h2></div>
+    <div ref={grid} className="marketing-feature-grid mx-auto mt-12 grid w-full max-w-6xl auto-rows-fr gap-6 md:grid-cols-2">
       {features.map(f=><div key={f.title} data-feature-tone={f.tone} className="reveal marketing-feature group flex h-full flex-col overflow-hidden rounded-[32px] bg-secondary p-4 transition-all duration-200 hover:-translate-y-1">
-        <div className="relative flex h-[260px] items-center justify-center overflow-hidden rounded-[24px] px-4 sm:px-6">
-          {f.visual==="simulator" && <div className="w-full max-w-[340px] rounded-lg bg-card p-5 shadow-sm"><div className="flex items-center justify-between gap-2 text-xs text-muted-foreground"><span>California · 12 / 46</span><span className="rounded-full bg-success/10 px-2 py-1 font-semibold text-success">Correct</span></div><p className="mt-4 text-sm font-semibold">A solid green arrow means…</p><p className="mt-3 rounded-lg border border-success/40 bg-success/10 p-3 text-sm text-success"><Check className="mr-2 inline size-4" />Make the protected turn</p><p className="mt-3 text-xs leading-relaxed text-muted-foreground">Turn in the arrow's direction when the path is clear.</p></div>}
-          {f.visual==="coach" && <div className="w-full max-w-[340px] space-y-3 text-sm"><div className="ml-auto max-w-[85%] rounded-lg bg-marketing-navy p-4 text-marketing-white">Why did I miss this sign question?</div><div className="max-w-[90%] rounded-lg bg-card p-4 shadow-sm"><p className="font-semibold text-success">AI Coach</p><p className="mt-2 leading-relaxed text-muted-foreground">A yellow diamond warns of conditions ahead. Follow any posted speed limit.</p></div></div>}
+        <div className="relative flex h-[280px] shrink-0 items-center justify-center rounded-[24px] px-4 sm:px-6">
+          {f.visual==="simulator" && <div className="w-full max-w-[340px]"><PracticePreview /></div>}
+          {f.visual==="coach" && <div className="w-full max-w-[340px]"><CoachPreview /></div>}
           {f.visual==="quizzes" && <div className="exam-road-visual flex w-full max-w-[340px] items-center gap-4 rounded-lg bg-card p-5 shadow-sm">{roadSign && <SignVisual s={roadSign} size={100} />}<div><p className="text-sm font-semibold">Signs &amp; Markings</p><p className="mt-2 text-xs text-muted-foreground">Recognize the sign.<br />Know the next move.</p><span className="mt-3 inline-block rounded-full bg-marketing-amber/10 px-2 py-1 text-xs font-medium text-marketing-amber">Road signs</span></div></div>}
-          {f.visual==="driving" && <SimulationPreview />}
+          {f.visual==="driving" && <div className="w-full max-w-[340px]"><SimulationPreview /></div>}
         </div>
-        <div className="flex flex-1 flex-col px-6 pb-6 pt-6"><h3 className="font-display text-2xl font-semibold lg:text-[28px]">{f.title}{f.visual==="driving" && <span className="ml-2"><BetaBadge /></span>}</h3><p className="mt-4 text-base leading-relaxed text-muted-foreground lg:text-lg">{f.body}</p><Button asChild variant="link" className="mt-auto h-auto justify-start px-0 pt-5 text-primary"><Link to="/auth" search={{mode:"sign-up"}}>Start practicing<ArrowRight className="size-4" /></Link></Button></div>
+        <div className="flex flex-1 flex-col px-4 pb-4 pt-6 sm:px-6 sm:pb-6"><h3 className="font-display text-2xl font-semibold lg:text-[28px]">{f.title}{f.visual==="driving" && <span className="ml-2"><BetaBadge /></span>}</h3><p className="mt-4 text-base leading-relaxed text-muted-foreground lg:text-lg">{f.body}</p><Button asChild variant="link" className="mt-auto h-auto justify-start px-0 pb-0 pt-6 text-primary"><Link to="/auth" search={{mode:"sign-up"}}>Start practicing<ArrowRight className="size-4" /></Link></Button></div>
       </div>)}
     </div>
   </section>;
@@ -321,8 +322,8 @@ function Pricing() {
     "1 driving test simulation run",
   ];
 
-  return <section id="pricing" className="marketing-pricing-band marketing-lane-divider px-6 py-28">
-    <div className="mx-auto mb-14 max-w-3xl text-center"><p className="text-sm font-semibold text-marketing-white/70">Two Plans</p><h2 className="mt-6 text-3xl font-semibold sm:text-5xl">Pick Your <span className="hero-serif-gradient marketing-band-serif">Lane</span></h2><p className="mt-4 text-marketing-white/70">Practice at no cost, or unlock everything with one payment.</p></div>
+  return <section id="pricing" className="marketing-pricing-band marketing-lane-divider px-4 py-16 sm:px-6 sm:py-20">
+    <div className="mx-auto mb-14 max-w-3xl text-center"><p className="marketing-section-label">Two Plans</p><h2 className="mt-6 text-3xl font-semibold sm:text-5xl">Pick Your <span className="hero-serif-gradient marketing-band-serif">Lane</span></h2><p className="mt-4 text-marketing-white/70">Practice at no cost, or unlock everything with one payment.</p></div>
     <div className="mx-auto grid max-w-5xl gap-6 md:grid-cols-2">
       {[{name:"Free Pass",price:"$0",period:"forever free",description:"Kick the tires and study the basics, no card required.",items:freeFeatures,pro:false},{name:"Pro Pass",price:"$9",period:"one-time",description:"Pay once. Lifetime access to everything Drivable builds.",items:proFeatures,pro:true}].map(plan=><div key={plan.name} className={plan.pro ? "marketing-pro-card lift flex flex-col rounded-[28px] border p-8" : "lift flex flex-col rounded-[28px] border border-border bg-card p-8 text-card-foreground"}>
         <div className="flex items-center justify-between gap-2"><h3 className="text-lg font-medium">{plan.name}</h3>{plan.pro && <span className="rounded-full bg-marketing-white/10 px-3 py-1 text-xs font-semibold">Best value</span>}</div><div className="mt-8 flex items-end gap-2"><span className="font-display text-6xl font-semibold">{plan.price}</span><span className="mb-2 text-sm opacity-75">{plan.period}</span></div><p className="mt-3 text-sm leading-relaxed opacity-75">{plan.description}</p>
@@ -336,7 +337,7 @@ function Pricing() {
 
 function CTA() {
   return (
-    <section className="px-6 pb-24">
+    <section className="px-4 py-16 sm:px-6 sm:py-20">
       <div className="relative mx-auto max-w-5xl overflow-hidden rounded-[36px] border border-[#1e40af]/18 dark:border-white/10 bg-[#1e40af]/[0.035] dark:bg-white/[0.03] p-6 sm:p-16 text-center text-[#0f172a] dark:text-[#f3f4f6] backdrop-blur-xl">
         <h2 className="text-3xl font-semibold sm:text-5xl">
           Prepare With Confidence.
