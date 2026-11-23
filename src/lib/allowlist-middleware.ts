@@ -1,6 +1,11 @@
 import { createMiddleware } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
-/** Legacy export name retained by callers; public app access requires authentication only. */
+/** Signed-in AND on the beta allowlist (checked in the database, never the client). */
 export const requireAllowlisted = createMiddleware({ type: "function" })
-  .middleware([requireSupabaseAuth]);
+  .middleware([requireSupabaseAuth])
+  .server(async ({ next, context }) => {
+    const { data, error } = await context.supabase.rpc("is_allowlisted");
+    if (error || data !== true) throw new Error("This account does not have beta access.");
+    return next();
+  });

@@ -64,20 +64,6 @@
       "when": 1793862247268,
       "tag": "0008_first_sign_in_age_setup",
       "breakpoints": true
-    },
-    {
-      "idx": 9,
-      "version": "7",
-      "when": 1795412625789,
-      "tag": "0009_open_public_authenticated_access",
-      "breakpoints": true
-    },
-    {
-      "idx": 10,
-      "version": "7",
-      "when": 1795413000483,
-      "tag": "0010_retire_public_waitlist_submissions",
-      "breakpoints": true
     }
   ]
 }

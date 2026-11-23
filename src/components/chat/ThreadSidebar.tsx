@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
-import { BetaBadge } from "@/components/marketing/BetaBadge";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -420,7 +419,6 @@ export function ThreadSidebar() {
             >
               Driving Test Simulation
             </span>
-            {!isCollapsed && <BetaBadge/>}
           </Link>
         </nav>
       </div>

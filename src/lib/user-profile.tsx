@@ -78,7 +78,7 @@ type ProfileContextValue = ProfileState & {
   hydrating: boolean;
   setState: (s: string) => void;
   setTargetDate: (d: string | null) => void;
-  completeSetup: (state: string, date: string | null) => Promise<void>;
+  completeSetup: (state: string, date: string | null, under18: boolean) => Promise<void>;
   unlockPro: () => void;
   openCheckout: (priceId?: string) => void;
   recordQuizScore: (pct: number, kind?: "mock" | "pillar", state?: string) => Promise<void>;
@@ -419,12 +419,12 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
     setCheckoutPriceId(priceId || PRO_PASS_PRICE_ID);
   }, []);
   const unlockPro = useCallback(() => openCheckout(), [openCheckout]);
-  const completeSetup = useCallback(async (state: string, date: string | null) => {
+  const completeSetup = useCallback(async (state: string, date: string | null, under18: boolean) => {
     const uid = activeUserRef.current;
     if (!uid || !US_STATES.includes(state)) throw new Error("Select your state.");
-    const { error } = await supabase.from("user_profiles").upsert({ user_id: uid, active_state: state, target_date: date, onboarding_completed_at: new Date().toISOString() }, { onConflict: "user_id" });
+    const { error } = await supabase.from("user_profiles").upsert({ user_id: uid, active_state: state, target_date: date, under_18: under18, onboarding_completed_at: new Date().toISOString() }, { onConflict: "user_id" });
     if (error) throw new Error("Unable to save setup. Please try again.");
-    setProfile(p => ({ ...p, state, targetDate: date, onboardingCompleted: true }));
+    setProfile(p => ({ ...p, state, targetDate: date, under18, onboardingCompleted: true }));
   }, []);
 
   const recordQuizScore = useCallback(

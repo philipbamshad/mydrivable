@@ -1,9 +1,22 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, ClipboardCheck, Signpost, MessageSquare, Video, Check } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { PublicNav } from "@/components/marketing/PublicNav";
-import { BetaBadge } from "@/components/marketing/BetaBadge";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useEffect, useRef, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import logo from "@/assets/drivable-logo.png";
 import heroStill from "@/assets/hero-sim-still.jpg";
+import {
+  ArrowRight,
+  ArrowUp,
+  Check,
+  MapPin,
+  Menu,
+  Octagon,
+  Triangle,
+  X,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { WaitlistDialog, openWaitlist } from "@/components/marketing/WaitlistDialog";
+import { US_STATES } from "@/lib/user-profile";
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -58,33 +71,578 @@ export const Route = createFileRoute("/")({
   component: Landing,
 });
 
+const SHELL = "relative min-h-screen overflow-hidden bg-background text-foreground font-sans";
+const BTN_PRIMARY = "cta-pill";
+const BTN_SECONDARY = "inline-flex items-center justify-center gap-2 rounded-full bg-primary/5 hover:bg-primary/10 border border-primary/25 text-foreground font-semibold transition-colors";
 
-function FreeLink({ label = "Start free" }: {label?: string}) {
-  return <Button asChild className="h-12 rounded-full px-7 text-base"><Link to="/auth" search={{mode:'sign-up'}}>{label}<ArrowRight className="h-4 w-4"/></Link></Button>;
+function useReveal<T extends HTMLElement>() {
+  const ref = useRef<T | null>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            el.setAttribute("data-revealed", "true");
+            io.unobserve(el);
+          }
+        });
+      },
+      { threshold: 0.15 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  return ref;
 }
+
+
+
+
 function Landing() {
-  const features = [
-    { title: 'Practice tests', text: 'State-specific permit questions with clear feedback.', icon: ClipboardCheck },
-    { title: 'Road signs', text: 'Learn the signs, signals, and markings that matter.', icon: Signpost },
-    { title: 'AI tutor', text: 'Understand your mistakes with handbook-based answers.', icon: MessageSquare },
-    { title: 'Simulations', text: 'Make the call in real-world driving scenarios.', icon: Video, beta: true },
-  ];
-  return <div className="min-h-screen bg-background text-foreground"><PublicNav/>
-    <section className="relative isolate flex min-h-[min(550px,65svh)] items-center justify-center overflow-hidden px-4 py-20 text-center sm:px-8">
-      <img src={heroStill} alt="" aria-hidden="true" className="absolute inset-0 -z-20 h-full w-full object-cover" fetchPriority="high"/>
-      <div className="absolute inset-0 -z-10 bg-background/90"/>
-      <div className="mx-auto max-w-5xl"><h1 className="font-display text-4xl font-bold leading-tight sm:text-6xl">Drivable, <span className="hero-serif-gradient">Master the Road</span></h1>
-        <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">Prepare for your permit and driving tests with state-specific practice and clear, handbook-based explanations.</p>
-        <div className="mt-8 flex flex-wrap justify-center gap-3"><FreeLink/><Button asChild variant="outline" className="h-12 rounded-full bg-background px-6 text-base"><Link to="/demo">Try it free – no sign-up</Link></Button></div>
+  const navigate = useNavigate();
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => {
+      if (data.user) navigate({ to: "/app", replace: true });
+    });
+  }, [navigate]);
+
+  return (
+    <div className={SHELL}>
+      <Nav />
+      <Hero />
+      <StatesMarquee />
+      <Features />
+      <Pricing />
+      <CTA />
+      <Footer />
+      <WaitlistDialog />
+    </div>
+  );
+}
+
+function Nav() {
+  const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 12);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+  return (
+    <header className="sticky top-4 z-50 px-4">
+      <div
+        className={`nav-float mx-auto flex max-w-5xl items-center justify-between rounded-full border bg-white/85 px-3 py-2 backdrop-blur-xl dark:bg-[#1c1f22]/90 ${
+          scrolled
+            ? "border-[#1e40af]/20 shadow-[0_18px_44px_-24px_rgba(30,64,175,0.42)] dark:border-white/10 dark:shadow-[0_18px_44px_-24px_rgba(0,0,0,0.8)]"
+            : "border-[#1e40af]/10 shadow-[0_8px_24px_-20px_rgba(30,64,175,0.28)] dark:border-white/10 dark:shadow-[0_8px_24px_-20px_rgba(0,0,0,0.7)]"
+        }`}
+      >
+
+
+        <Link to="/" className="flex items-center gap-2 pl-2">
+          <img src={logo} alt="Drivable logo" className="h-9 w-9 logo-mask" />
+          <span className="hidden text-[15px] font-semibold tracking-normal text-[#0f172a] sm:inline dark:text-[#f3f4f6]">
+            Drivable
+          </span>
+
+        </Link>
+
+        <nav className="hidden items-center gap-7 text-[15px] font-medium text-[#1f2b4d]/70 sm:flex dark:text-[#d1d5db]/80">
+          <a href="#features" className="transition hover:text-[#0f172a] dark:hover:text-white">Features</a>
+          <a href="#states" className="transition hover:text-[#0f172a] dark:hover:text-white">States</a>
+          <a href="#pricing" className="transition hover:text-[#0f172a] dark:hover:text-white">Pricing</a>
+        </nav>
+
+
+        <div className="flex items-center gap-2">
+          <button type="button" onClick={openWaitlist}
+            className={`${BTN_PRIMARY} group hidden sm:inline-flex px-5 py-2.5 text-sm`}
+          >
+            Join the waitlist
+            <span className="grid h-6 w-6 place-items-center rounded-full bg-white/15 transition-transform duration-300 group-hover:translate-x-0.5">
+              <ArrowRight className="h-3.5 w-3.5" />
+            </span>
+          </button>
+          <Button
+            variant="ghost"
+            size="icon"
+            type="button"
+            aria-label={open ? "Close menu" : "Open menu"}
+            onClick={() => setOpen((v) => !v)}
+            className="sm:hidden h-11 w-11 rounded-full border border-border bg-card text-foreground dark:bg-[#2a2e33] dark:text-[#f3f4f6]"
+          >
+
+            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </Button>
+        </div>
+      </div>
+
+
+      {open && (
+        <div className="sm:hidden mx-auto mt-2 max-w-5xl rounded-2xl border border-[#1e40af]/18 bg-[#f4f7fd]/95 p-4 backdrop-blur-xl shadow-[0_20px_50px_-20px_rgba(30,64,175,0.14)] dark:border-white/10 dark:bg-[#1c1f22]/95 dark:shadow-[0_20px_50px_-20px_rgba(0,0,0,0.8)]">
+          <nav className="flex flex-col text-base font-medium text-[#1f2b4d]/85 dark:text-[#e5e7eb]">
+
+            {[
+              ["Features", "#features"],
+              ["States", "#states"],
+              ["Pricing", "#pricing"],
+              
+            ].map(([label, href]) => (
+              <a
+                key={href}
+                href={href}
+                onClick={() => setOpen(false)}
+                className="rounded-lg px-3 py-3 hover:bg-[#1e40af]/8 dark:hover:bg-white/10"
+              >
+
+                {label}
+              </a>
+            ))}
+            <button type="button" onClick={() => { setOpen(false); openWaitlist(); }}
+            
+              className={`${BTN_PRIMARY} mt-2 px-5 py-3 text-sm`}
+            >
+              Join the waitlist <ArrowRight className="h-3.5 w-3.5" />
+            </button>
+
+          </nav>
+        </div>
+      )}
+    </header>
+  );
+}
+
+function Hero() {
+  return (
+    <section className="relative flex min-h-[min(680px,76svh)] flex-col items-center justify-center px-6 py-16 text-center sm:py-20">
+      <div className="mx-auto mb-6 flex max-w-2xl flex-wrap items-center justify-center gap-x-3 gap-y-1 text-sm">
+        <span className="font-bold text-primary">Now in private beta. Join the waitlist.</span>
+      </div>
+
+      <div aria-hidden className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+        <div className="ambient-blob absolute left-[8%] top-[30%] h-[520px] w-[520px] rounded-full bg-accent-coral/40 blur-[120px]" />
+        <div className="ambient-blob-slow absolute right-[6%] top-[40%] h-[560px] w-[560px] rounded-full bg-accent-cyan/25 blur-[120px]" />
+      </div>
+
+      <div className="relative mx-auto max-w-5xl">
+        <h1 className="fade-in-up relative font-display text-5xl font-bold leading-tight tracking-tight sm:text-7xl">
+          Drivable,{" "}
+          <span className="hero-serif-gradient">Master the Road</span>
+        </h1>
+      </div>
+
+      <p className="fade-in-up relative mx-auto mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+        Prepare for your permit test and your driving test with state-specific practice, full-length mock exams, a real-world driving simulation, and an AI coach built on your official DMV handbook.
+      </p>
+
+      <div className="fade-in-up relative mt-8 flex flex-wrap items-center justify-center gap-3" style={{ "--reveal-delay": "160ms" } as React.CSSProperties}>
+        <button type="button" onClick={openWaitlist}
+            className={`${BTN_PRIMARY} px-8 py-4 text-base`}
+        >
+          Join the waitlist
+          <ArrowRight className="h-4 w-4" />
+        </button>
+
+        <a
+          href="#features"
+          className={`${BTN_SECONDARY} px-7 py-4 text-base`}
+        >
+
+          See how it works
+        </a>
       </div>
     </section>
-    <section id="features" className="mx-auto grid max-w-6xl gap-4 px-4 py-12 sm:grid-cols-2 sm:px-8 lg:grid-cols-4">{features.map(({title,text,icon:Icon,beta}) => <div key={title} className="rounded-lg border border-border bg-card p-6"><Icon className="mb-5 h-6 w-6 text-primary"/><h2 className="flex flex-wrap items-center gap-2 font-display text-lg font-semibold">{title}{beta && <BetaBadge/>}</h2><p className="mt-3 text-sm leading-relaxed text-muted-foreground">{text}</p></div>)}</section>
-    <section className="border-y border-border bg-secondary/40 px-4 py-14 sm:px-8"><div className="mx-auto max-w-5xl"><h2 className="text-center font-display text-2xl font-bold">How it works</h2><ol className="mt-8 grid gap-7 sm:grid-cols-3">{['Sign up free','Practice','Pass your permit test'].map((step,i)=><li key={step} className="flex items-center justify-center gap-3"><span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-primary/10 text-sm font-semibold text-primary">{i+1}</span><span className="font-medium">{step}</span></li>)}</ol></div></section>
-    <section id="pricing" className="mx-auto max-w-5xl px-4 py-16 sm:px-8"><h2 className="text-center font-display text-3xl font-bold">Free to start. Pro when you're ready.</h2><div className="mt-9 grid gap-5 sm:grid-cols-2">{[
-      {name:'Free Pass',price:'$0',term:'No card required',features:['5 AI Coach questions per day','1 full-length mock permit exam','1 practice test per topic','1 simulation run (Beta)']},
-      {name:'Pro Pass',price:'$9',term:'One-time payment · lifetime access',features:['Unlimited AI Coach','Unlimited mock permit exams','All Test Hub topics and missed-question review','Unlimited simulations (Beta)']},
-    ].map(plan=><div key={plan.name} className="flex flex-col rounded-lg border border-border bg-card p-6 sm:p-8"><h3 className="font-display text-xl font-semibold">{plan.name}</h3><p className="mt-5 font-display text-4xl font-bold">{plan.price}</p><p className="mt-2 text-sm text-muted-foreground">{plan.term}</p><ul className="mb-7 mt-7 flex-1 space-y-3">{plan.features.map(f=><li key={f} className="flex items-start gap-2 text-sm"><Check className="h-4 w-4 shrink-0 text-primary"/>{f}</li>)}</ul><FreeLink label={plan.name==='Free Pass'?'Start free':'Sign up free'}/></div>)}</div></section>
-    <section className="border-t border-border px-4 py-14 text-center"><FreeLink/></section>
-    <footer className="border-t border-border px-4 py-8 text-sm text-muted-foreground"><div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-5"><p>© {new Date().getFullYear()} Bedford Global · Drivable</p><nav aria-label="Legal" className="flex flex-wrap gap-5"><Link to="/terms">Terms</Link><Link to="/privacy">Privacy</Link><Link to="/refunds">Refunds</Link><Link to="/cookies">Cookies</Link><a href="mailto:support@mydrivable.com">Support</a></nav><p className="w-full text-xs">Not affiliated with any state DMV.</p></div></footer>
-  </div>;
+  );
+}
+
+
+function StatesMarquee() {
+  const loop = [...US_STATES, ...US_STATES];
+  return (
+    <section id="states" className="border-y border-[#1e40af]/12 dark:border-white/[0.08] bg-[#1e40af]/[0.035] dark:bg-white/[0.03] py-16 backdrop-blur-sm">
+      <div className="mx-auto max-w-6xl px-6 text-center">
+        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#1e40af] dark:text-[#7ea6ff]/80 dark:text-[#7ea6ff]">
+          All 50 States · Grounded in Official DMV Handbooks
+        </p>
+        <h2 className="mb-10 text-3xl font-semibold tracking-normal sm:text-4xl">
+          Wherever You Take the Test, We've Got You
+        </h2>
+      </div>
+      <div
+        className="group relative overflow-hidden"
+        style={{
+          maskImage:
+            "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
+          WebkitMaskImage:
+            "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
+        }}
+      >
+        <div
+          className="flex w-max gap-3 [animation:states-marquee_60s_linear_infinite] group-hover:[animation-play-state:paused]"
+        >
+          {loop.map((s, i) => (
+            <span
+              key={`${s}-${i}`}
+              className="inline-flex items-center gap-1.5 rounded-full border border-[#1e40af]/18 dark:border-white/10 bg-white/75 dark:bg-[#1c1f22]/75 px-3.5 py-1.5 text-[13px] font-medium text-[#1f2b4d]/85 dark:text-[#d1d5db]/80 backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5 hover:border-[#1e40af]/35 hover:bg-white dark:hover:bg-[#2a2e33] hover:text-[#0f172a] dark:text-[#f3f4f6] dark:hover:text-white"
+            >
+              <MapPin className="h-3 w-3 text-[#1e40af] dark:text-[#7ea6ff]" />
+              {s}
+            </span>
+          ))}
+        </div>
+        <style>{`@keyframes states-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }`}</style>
+      </div>
+    </section>
+  );
+}
+
+
+
+function Features() {
+  const features = [
+    {
+      title: "Full-Length Mock Permit Exam Simulator",
+      body: "State-accurate exams with the real question count and passing score. Study at your own pace, no timer pressure.",
+      visual: "simulator",
+    },
+    {
+      title: "AI Coach",
+      body: "Handbook-based explanations for your state",
+      visual: "coach",
+    },
+    {
+      title: "Targeted Section Quizzes",
+      body: "Drill road signs, intersections, speed limits and substance laws. Your study plan adapts to your state and DMV test date.",
+      visual: "quizzes",
+    },
+    { title: "Driving Test Simulation", body: "Watch real driving situations and make the right call in a split second.", visual: "driving" },
+  ];
+
+  const grid = useReveal<HTMLDivElement>();
+
+  return (
+    <section id="features" className="px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
+      <div className="mx-auto max-w-3xl text-center">
+        <div className="inline-flex items-center gap-2 rounded-full border border-[#1e40af]/18 dark:border-white/10 bg-[#1e40af]/[0.055] dark:bg-white/[0.05] px-4 py-1.5 text-sm text-[#1f2b4d]/80 dark:text-[#d1d5db]/80 backdrop-blur-xl">
+          <span className="status-dot h-1.5 w-1.5 rounded-full bg-accent-orange" />
+          State-Specific DMV Prep
+        </div>
+        <h2 className="mt-8 text-3xl font-semibold sm:text-5xl">
+          Four focused tools, one outcome:{" "}
+          <span className="text-primary font-medium">
+            pass on the first try.
+          </span>
+        </h2>
+
+      </div>
+
+      <div ref={grid} className="mx-auto mt-14 grid w-full max-w-6xl gap-6 md:grid-cols-2">
+        <style>{`
+          @keyframes heroSignalBlink { 0%, 100% { opacity: 0.12; } 50% { opacity: 0.42; } }
+          .hero-signal-glow { background: linear-gradient(to right, rgba(255,165,0,0) 82%, #ffa500 100%); animation: heroSignalBlink 0.8s ease-in-out infinite; }
+          @media (prefers-reduced-motion: reduce) { .hero-signal-glow { animation: none; opacity: 0.3; } }
+        `}</style>
+        {features.map((f, i) => (
+          <div
+            key={f.title}
+            style={{ transitionDelay: `${i * 120}ms` }}
+            className="reveal group feature-accent flex h-full flex-col overflow-hidden rounded-[32px] bg-[#f4f5f7] dark:bg-[#1c1f22] p-4 transition-all duration-500 hover:-translate-y-1 hover:bg-[#eef0f4] dark:bg-[#2a2e33] dark:hover:bg-[#22262a] hover:shadow-[0_28px_60px_-40px_rgba(15,23,42,0.35)]"
+          >
+            <div className="relative h-[260px] overflow-hidden rounded-[24px] px-6 pt-8">
+              {f.visual === "simulator" && (
+                <div className="mx-auto flex h-full w-full max-w-[340px] flex-col justify-center space-y-3">
+                  {[
+                    { label: "Question 12 of 46", tag: "Signs" },
+                    { label: "Question 13 of 46", tag: "Right of way" },
+                  ].map((q, idx) => (
+                    <div
+                      key={q.label}
+                      className={`relative overflow-hidden rounded-xl bg-white dark:bg-[#22262a] p-4 shadow-[0_18px_40px_-30px_rgba(15,23,42,0.5)] transition-transform duration-500 group-hover:scale-[1.02] ${idx === 0 ? "feature-float" : "feature-float-delay"}`}
+                    >
+                      <div className="pointer-events-none absolute inset-0 -translate-x-full overflow-hidden rounded-xl group-hover:animate-[featureShimmer_0.9s_ease_forwards]">
+                        <div className="h-full w-full bg-gradient-to-r from-transparent via-white/35 to-transparent" />
+                      </div>
+                      <div className="relative flex items-center justify-between">
+                        <p className="text-sm font-semibold text-[#0f172a] dark:text-[#f3f4f6]">{q.label}</p>
+                        <span className="rounded-md bg-[#1e40af]/10 px-2 py-0.5 text-[10px] font-semibold text-[#1e40af] dark:text-[#7ea6ff]">
+                          {q.tag}
+                        </span>
+                      </div>
+                      <div className="relative mt-3 space-y-1.5">
+                        <div className="h-1.5 w-full rounded-full bg-[#eef0f4] dark:bg-[#2a2e33]" />
+                        <div className="h-1.5 w-2/3 rounded-full bg-[#eef0f4] dark:bg-[#2a2e33]" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {f.visual === "driving" && (
+                <div className="mx-auto flex h-full w-full max-w-[340px] flex-col justify-center gap-4">
+                  <div className="relative overflow-hidden rounded-2xl shadow-[0_18px_40px_-30px_rgba(15,23,42,0.6)] transition-transform duration-500 group-hover:scale-[1.02]">
+                    <img
+                      src={heroStill}
+                      alt="Driving simulation: approaching a green light before a right turn"
+                      className="block w-full"
+                    />
+                    <div
+                      aria-hidden
+                      className="hero-signal-glow pointer-events-none absolute inset-0 rounded-2xl"
+                    />
+                    <span className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-[#0f172a]/85 px-3 py-1 text-[11px] font-semibold text-white backdrop-blur-sm">
+                      <ArrowRight className="h-3 w-3 text-[#ffa500]" />
+                      Turning right
+                    </span>
+                  </div>
+                  <div className="flex justify-center gap-2">
+                    {[
+                      { id: "go", label: "Go", Icon: ArrowUp, color: "#16a34a" },
+                      { id: "yield", label: "Yield", Icon: Triangle, color: "#d97706" },
+                      { id: "stop", label: "Stop", Icon: Octagon, color: "#dc2626" },
+                    ].map(({ id, label, Icon, color }) => (
+                      <span
+                        key={id}
+                        className="inline-flex items-center gap-1.5 rounded-full border bg-white px-3 py-1.5 text-xs font-semibold text-[#1f2b4d]/85 shadow-sm dark:bg-[#22262a] dark:text-[#d1d5db]/85"
+                        style={{ borderColor: `${color}55` }}
+                      >
+                        <Icon className="h-3.5 w-3.5" style={{ color }} />
+                        {label}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {f.visual === "coach" && (
+                <div className="mx-auto flex h-full w-full max-w-[340px] flex-col justify-center space-y-3">
+                  <div className="feature-float relative ml-auto w-fit max-w-[80%] overflow-hidden rounded-2xl rounded-br-md bg-[#0f172a] px-4 py-2.5 text-sm text-white shadow-[0_18px_40px_-30px_rgba(15,23,42,0.6)] transition-transform duration-500 group-hover:translate-x-1">
+                    <div className="pointer-events-none absolute inset-0 -translate-x-full overflow-hidden rounded-2xl rounded-br-md group-hover:animate-[featureShimmer_0.9s_ease_forwards]">
+                      <div className="h-full w-full bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+                    </div>
+                    <span className="relative">Why did I miss this sign question?</span>
+                  </div>
+                  <div className="feature-float-delay relative w-fit max-w-[85%] overflow-hidden rounded-2xl rounded-bl-md bg-white dark:bg-[#22262a] px-4 py-3 shadow-[0_18px_40px_-30px_rgba(15,23,42,0.5)] transition-transform duration-500 group-hover:-translate-x-1">
+                    <div className="pointer-events-none absolute inset-0 -translate-x-full overflow-hidden rounded-2xl rounded-bl-md group-hover:animate-[featureShimmer_0.9s_ease_forwards]">
+                      <div className="h-full w-full bg-gradient-to-r from-transparent via-white/45 to-transparent" />
+                    </div>
+                    <p className="relative text-[11px] font-semibold uppercase tracking-wide text-[#10b981]">AI Coach</p>
+                    <p className="relative mt-1 text-sm leading-relaxed text-[#1f2b4d]/80 dark:text-[#d1d5db]/80">
+                      A yellow diamond warns of conditions ahead. Follow any posted speed limit.
+                    </p>
+                  </div>
+                  <div className="feature-float-delay-2 relative ml-auto w-fit overflow-hidden rounded-full bg-white dark:bg-[#22262a] px-3 py-1.5 text-[11px] font-semibold text-[#1f2b4d]/60 dark:text-[#9ca3af]/75 shadow-sm transition-transform duration-500 group-hover:scale-105">
+                    <div className="pointer-events-none absolute inset-0 -translate-x-full overflow-hidden rounded-full group-hover:animate-[featureShimmer_0.9s_ease_forwards]">
+                      <div className="h-full w-full bg-gradient-to-r from-transparent via-white/40 to-transparent" />
+                    </div>
+                    <span className="relative">Typing</span>
+                  </div>
+                </div>
+              )}
+
+              {f.visual === "quizzes" && (
+                <div className="relative mx-auto w-full max-w-[340px] overflow-hidden rounded-2xl bg-white dark:bg-[#22262a] p-5 shadow-[0_18px_40px_-30px_rgba(15,23,42,0.5)] transition-transform duration-500 group-hover:scale-[1.02]">
+                  <div className="pointer-events-none absolute inset-0 -translate-x-full overflow-hidden rounded-2xl group-hover:animate-[featureShimmer_0.9s_ease_forwards]">
+                    <div className="h-full w-full bg-gradient-to-r from-transparent via-white/35 to-transparent" />
+                  </div>
+                  <p className="relative text-sm font-semibold text-[#0f172a] dark:text-[#f3f4f6]">Section Quizzes</p>
+                  <p className="relative mt-1 text-[11px] text-[#1f2b4d]/55 dark:text-[#9ca3af]/75">Pick a pillar and start drilling</p>
+                  <div className="relative mt-4 space-y-3">
+                    {[
+                      { name: "Road Signs", score: "9.1/10" },
+                      { name: "Speed Limits", score: "7.4/10" },
+                      { name: "DUI Laws", score: "6.2/10" },
+                    ].map((row, idx) => (
+                      <div key={row.name}>
+                        <div className="flex items-center justify-between text-[11px]">
+                          <span className="font-medium text-[#1f2b4d]/80 dark:text-[#d1d5db]/80">{row.name}</span>
+                          <span className="font-semibold text-[#0f172a] dark:text-[#f3f4f6]">{row.score}</span>
+                        </div>
+                        <div className="mt-1.5 h-1.5 w-full rounded-full bg-[#eef0f4] dark:bg-[#2a2e33]">
+                          <div
+                            className="feature-progress h-1.5 rounded-full bg-accent-orange"
+                            style={{ width: ["88%", "72%", "58%"][idx] }}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {f.visual !== "driving" && (
+                <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#f4f5f7] dark:from-[#1c1f22] to-transparent transition-colors duration-500 group-hover:from-[#eef0f4] dark:group-hover:from-[#22262a]" />
+              )}
+            </div>
+
+            <div className="px-6 pb-6 pt-6">
+              <h3 className="text-2xl font-semibold tracking-normal text-[#0f172a] dark:text-[#f3f4f6] lg:text-[28px]">
+                {f.title}
+              </h3>
+              <p className="mt-4 text-base leading-relaxed text-muted-foreground lg:text-lg">{f.body}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+
+function Pricing() {
+  const proFeatures = [
+    "Unlimited AI Coach chat synced to your DMV handbook",
+    "Unlimited full-length state-specific Mock Permit Exams",
+    "Unlimited practice in all 4 Permit Test Hub topics, including Review missed questions",
+    "Unlimited Driving Test Simulation",
+    "All 50 state rule packs",
+    "Pay once, use forever, no recurring fees",
+  ];
+  const freeFeatures = [
+    "5 AI coach questions per day",
+    "1 full-length mock permit exam",
+    "1 practice test per topic",
+    "1 driving test simulation run",
+  ];
+
+  return (
+    <section id="pricing" className="px-6 py-28">
+      <div className="mx-auto mb-14 max-w-3xl text-center">
+        <div className="inline-flex items-center gap-2 rounded-full border border-[#1e40af]/18 dark:border-white/10 bg-[#1e40af]/[0.055] dark:bg-white/[0.05] px-4 py-1.5 text-sm text-[#1f2b4d]/80 dark:text-[#d1d5db]/80 backdrop-blur-xl">
+          <span className="status-dot h-1.5 w-1.5 rounded-full bg-[#10b981]" />
+          Two Plans
+        </div>
+        <h2 className="mt-6 text-3xl font-semibold sm:text-5xl">
+          Pick Your{" "}
+          <span className="text-primary font-medium">
+            Lane
+          </span>
+        </h2>
+        <p className="mt-4 text-[#1f2b4d]/70 dark:text-[#d1d5db]/80">Start free, or unlock the full test simulator with one payment.</p>
+      </div>
+
+      <div className="relative mx-auto max-w-5xl">
+        {/* Centered ambient backlight behind the Pro card */}
+        <div
+          aria-hidden
+          className="ambient-blob-slow absolute right-0 top-[calc(50%-260px)] -z-10 h-[520px] w-[520px] rounded-full blur-3xl"
+          style={{
+            background:
+              "radial-gradient(closest-side, rgba(30,64,175,0.35), rgba(30,64,175,0.10) 55%, transparent 75%)",
+          }}
+        />
+
+        <div className="grid gap-6 md:grid-cols-2 md:items-stretch">
+          {/* Free Pass */}
+          <div className="lift relative flex flex-col rounded-[28px] border border-[#1e40af]/18 dark:border-white/10 bg-white/80 dark:bg-[#16191c]/85 p-8 backdrop-blur-xl">
+            <div className="rounded-2xl border border-[#1e40af]/18 dark:border-white/10 bg-[#1e40af]/[0.045] dark:bg-white/[0.04] p-7">
+              <div className="text-lg font-medium text-[#1f2b4d]/90 dark:text-[#d1d5db]/80">Free Pass</div>
+              <div className="mt-8 flex items-end gap-2 text-[#0f172a] dark:text-[#f3f4f6]">
+                <span className="text-6xl font-semibold tracking-normal">$0</span>
+                <span className="mb-2 text-sm text-[#1f2b4d]/85 dark:text-[#d1d5db]/80">forever free</span>
+              </div>
+              <p className="mt-2 text-sm text-[#1f2b4d]/75 dark:text-[#d1d5db]/80">Kick the tires and study the basics, no card required.</p>
+            </div>
+
+            <ul className="mt-7 space-y-3 text-[15px]">
+              {freeFeatures.map((f) => (
+                <li key={f} className="flex items-center gap-3 rounded-lg text-[#1f2b4d]/85 dark:text-[#d1d5db]/80 transition-transform duration-200 hover:-translate-y-1">
+                  <Check className="h-4 w-4 shrink-0 text-[#1f2b4d]/70 dark:text-[#d1d5db]/80" />
+                  {f}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Pro Pass */}
+          <div className="lift relative flex flex-col rounded-[28px] border border-[#3b82f6]/40 bg-white/85 dark:bg-[#16191c]/90 p-8 backdrop-blur-xl shadow-[0_0_60px_-20px_rgba(30,64,175,0.22)]">
+            <span className="bg-accent-orange absolute -top-3 left-1/2 z-10 -translate-x-1/2 rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-white whitespace-nowrap">
+              Pro Pass
+            </span>
+
+            <div className="rounded-2xl border border-[#1e40af]/18 dark:border-white/10 bg-[#1e40af]/[0.045] dark:bg-white/[0.04] p-7">
+              <div className="text-lg font-medium text-[#1f2b4d]/90 dark:text-[#d1d5db]/80">Pro Pass</div>
+              <div className="mt-8 flex items-end gap-2 text-[#0f172a] dark:text-[#f3f4f6]">
+                <span className="text-6xl font-semibold tracking-normal">$9</span>
+                <span className="mb-2 text-sm text-[#1f2b4d]/85 dark:text-[#d1d5db]/80">one-time</span>
+              </div>
+              <p className="mt-2 text-sm text-[#1f2b4d]/75 dark:text-[#d1d5db]/80">Pay once. Lifetime access to everything Drivable builds.</p>
+            </div>
+
+            <ul className="mt-7 space-y-3 text-[15px]">
+              {proFeatures.map((f) => (
+                <li key={f} className="flex items-center gap-3 rounded-lg text-[#1f2b4d]/85 dark:text-[#d1d5db]/80 transition-transform duration-200 hover:-translate-y-1">
+                  <Check className="h-4 w-4 shrink-0 text-[#1e40af] dark:text-[#7ea6ff]" />
+                  {f}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+function CTA() {
+  return (
+    <section className="px-6 pb-24">
+      <div className="relative mx-auto max-w-5xl overflow-hidden rounded-[36px] border border-[#1e40af]/18 dark:border-white/10 bg-[#1e40af]/[0.035] dark:bg-white/[0.03] p-16 text-center text-[#0f172a] dark:text-[#f3f4f6] backdrop-blur-xl">
+        <h2 className="text-3xl font-semibold sm:text-5xl">
+          Prepare With Confidence.
+          <br />
+          <span className="text-primary font-medium">
+            One Topic at a Time.
+          </span>
+        </h2>
+        <p className="mx-auto mt-6 max-w-xl text-[#1f2b4d]/70 dark:text-[#d1d5db]/80">
+          Drivable is in private beta. Join the waitlist to hear when it opens.
+        </p>
+        <button type="button" onClick={openWaitlist}
+            className={`${BTN_PRIMARY} mt-10 px-10 py-5 text-base`}
+        >
+          Join the waitlist
+          <ArrowRight className="h-4 w-4" />
+        </button>
+      </div>
+    </section>
+
+  );
+}
+
+function Footer() {
+  return (
+    <footer className="border-t border-[#1e40af]/12 dark:border-white/[0.08] px-6 py-10 pb-24 text-sm text-[#1f2b4d]/65 dark:text-[#9ca3af]/75 sm:pb-10">
+      <div className="mx-auto flex max-w-6xl flex-col items-center gap-6">
+        <div className="flex flex-col items-center gap-2 text-center">
+          <span className="text-xs uppercase tracking-wider text-[#1f2b4d]/70 dark:text-[#d1d5db]/80">Need help?</span>
+          <a
+            href="mailto:support@mydrivable.com"
+            className="inline-flex min-h-11 items-center rounded-md px-3 py-2 text-[#1f2b4d]/80 dark:text-[#d1d5db]/80 transition hover:text-[#0f172a] dark:text-[#f3f4f6] dark:hover:text-white"
+          >
+            Contact Support: support@mydrivable.com
+          </a>
+        </div>
+        <div className="flex w-full flex-col items-center justify-between gap-4 border-t border-[#1e40af]/12 dark:border-white/[0.08] pt-6 sm:flex-row">
+          <div className="flex items-center gap-2">
+            <img src={logo} alt="" className="h-7 w-7 logo-mask" />
+
+            <span className="font-semibold text-[#0f172a] dark:text-[#f3f4f6]">Drivable</span>
+          </div>
+          <nav aria-label="Legal" className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
+            <Link to="/privacy" className="transition hover:text-[#0f172a] dark:text-[#f3f4f6] dark:hover:text-white">Privacy</Link>
+            <Link to="/terms" className="transition hover:text-[#0f172a] dark:text-[#f3f4f6] dark:hover:text-white">Terms</Link>
+            <Link to="/refunds" className="transition hover:text-[#0f172a] dark:text-[#f3f4f6] dark:hover:text-white">Refunds</Link>
+            <Link to="/cookies" className="transition hover:text-[#0f172a] dark:text-[#f3f4f6] dark:hover:text-white">Cookies</Link>
+          </nav>
+          <div className="flex flex-col items-center gap-1 text-center sm:items-end sm:text-right">
+            <span>© {new Date().getFullYear()} Bedford Global. Drivable is operated by Bedford Global.</span>
+            <span className="text-xs">Not affiliated with any state DMV.</span>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
 }

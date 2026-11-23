@@ -28,13 +28,11 @@
 - Reserve study sessions atomically in study_attempts; service-only versioned answer commits score the server-authored payload and write history/progress together, preventing duplicate Free slots and answer edits while preserving resume state.
 - Read AI allowance from the database local-day RPC; legacy browser counters never gate practice or reset daily credits.
 - Supply missing resolved CSS defaults through the Vite compatibility plugin so the preview stylesheet compiler receives the same configuration shape as production.
-- Public app access requires verified authentication; legacy is_allowlisted and requireAllowlisted names now mean signed-in access, never email membership. Preserve owner-only RLS, separate admin roles and service-only scoring RPCs.
+- Private beta: app access is gated by the database allowlist (is_allowlisted RPC) in the _authenticated route, every server function via requireAllowlisted, /api/chat, and restrictive RLS on user tables; the client check alone is never trusted.
 - Public waitlist joins use a same-origin server function and service-only atomic database RPC for duplicate/visitor checks; sends use the existing authenticated App email route with narrowly scoped server credentials so browser callers cannot bypass signup checks.
 - Derive order email totals, masked card labels and receipt links from confirmed Stripe checkout/charge data; require matching payment environment and persist the upgrade before sending.
 
 - Propagate canonical authored concept IDs through bank variations, exam selection and Hub progress so phrasing or option edits cannot duplicate concepts or change scoring identity.
-- Queue study answers by owner, attempt and version in browser storage; replay through an authenticated raw POST sharing the existing atomic scoring helper, and gate results on confirmed draining to preserve limits and recovery.
-- Gate practice on saved state/setup, not age; retain legacy age-specific exam formats and saved payloads on resume.
+- Queue study answers by owner, attempt and version in browser storage; replay through an authenticated allowlisted raw POST sharing the existing atomic scoring helper, and gate results on confirmed draining to preserve limits and recovery.
+- Gate all app content on saved state and self-reported age-band setup; share permit-format rules between server reservations and UI, retaining the saved payload format on resume.
 - Merge legacy exam answers only for identities missing from Hub progress, preserving recovered misses and canonical question counts.
-
-- Public demo uses deterministic California bank samples and local React state only; never persist demo answers or consume paid services or allowances.

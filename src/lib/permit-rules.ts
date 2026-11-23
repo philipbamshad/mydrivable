@@ -8,5 +8,3 @@ export function permitRules(state: string, under18: boolean | null) {
   }
   return rules;
 }
-/** State and a confirmed setup are required; legacy age is not a gate. */
-export function studySetupReady(state: string | null, completed: boolean) { return Boolean(state) && completed; }

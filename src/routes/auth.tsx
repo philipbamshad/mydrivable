@@ -6,15 +6,15 @@ import { lovable } from "@/integrations/lovable";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { BetaBadge } from "@/components/marketing/BetaBadge";
+import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
 import { Loader2, Eye, EyeOff } from "lucide-react";
 import logo from "@/assets/drivable-logo.png";
 
 export const Route = createFileRoute("/auth")({
-  validateSearch: (s: Record<string, unknown>): { next?: string; mode?: "sign-up" } => {
+  validateSearch: (s: Record<string, unknown>): { next?: string } => {
     const next = typeof s.next === "string" && s.next.startsWith("/") && !s.next.startsWith("//") && !s.next.includes("\\") ? s.next : undefined;
-    return { ...(next ? { next } : {}), ...(s.mode === "sign-up" ? { mode: "sign-up" as const } : {}) };
+    return next ? { next } : {};
   },
   head: () => ({
     meta: [
@@ -77,7 +77,7 @@ function friendlyAuthError(message: string, mode: "sign-in" | "sign-up"): string
 
 function AuthPage() {
   const navigate = useNavigate();
-  const { next, mode: initialMode } = Route.useSearch();
+  const { next } = Route.useSearch();
   const goNext = () => {
     if (next) {
       window.location.assign(next);
@@ -86,7 +86,7 @@ function AuthPage() {
     }
   };
 
-  const [mode, setMode] = useState<"sign-in" | "sign-up">(initialMode ?? "sign-in");
+  const [mode, setMode] = useState<"sign-in" | "sign-up">("sign-in");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -94,7 +94,7 @@ function AuthPage() {
   const [signupSuccess, setSignupSuccess] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<{ email?: string; password?: string }>({});
   const [forgotSent, setForgotSent] = useState(false);
-
+  const [agreed, setAgreed] = useState(false);
 
 
 
@@ -109,6 +109,10 @@ function AuthPage() {
     e.preventDefault();
     setFieldErrors({});
 
+    if (mode === "sign-up" && !agreed) {
+      toast.error("Please confirm you are 13 or older and agree to the Terms and Privacy Policy.");
+      return;
+    }
     const parsed = credentialsSchema.safeParse({ email, password });
     if (!parsed.success) {
       const errs: { email?: string; password?: string } = {};
@@ -129,7 +133,7 @@ function AuthPage() {
         const { data, error } = await supabase.auth.signUp({
           email: parsed.data.email,
           password: parsed.data.password,
-          options: { emailRedirectTo: `${window.location.origin}/auth?next=${encodeURIComponent(returnTo)}` },
+          options: { emailRedirectTo: window.location.origin + returnTo },
         });
         if (error) throw error;
         // Supabase returns a user with an empty identities array when the
@@ -143,7 +147,6 @@ function AuthPage() {
           setLoading(false);
           return;
         }
-        if (data.session) { goNext(); return; }
         setSignupSuccess(true);
         setLoading(false);
         return;
@@ -153,6 +156,13 @@ function AuthPage() {
           password: parsed.data.password,
         });
         if (error) throw error;
+        const { data: allowed } = await supabase.rpc("is_allowlisted");
+        if (allowed !== true) {
+          await supabase.auth.signOut();
+          toast.error("Drivable is in private beta. Join the waitlist on the homepage.");
+          navigate({ to: "/" });
+          return;
+        }
         toast.success("Welcome back.");
       }
       goNext();
@@ -259,7 +269,7 @@ function AuthPage() {
             <img src={logo} alt="Drivable logo" width={56} height={56} className="relative logo-mask" />
           </div>
           <div className="text-center">
-            <h1 className="font-display text-2xl font-bold tracking-tight">Drivable</h1>
+            <h1 className="font-display text-2xl font-bold tracking-tight">Drivable, Sign In</h1>
             <p className="text-xs text-muted-foreground mt-1 uppercase tracking-normal">
               Permit &amp; Driving Test Prep
             </p>
@@ -267,13 +277,12 @@ function AuthPage() {
         </Link>
 
         <div className="glass glow-soft rounded-2xl border border-primary/20 p-6 ">
-          <h2 className="mb-5 font-display text-lg font-semibold">{mode === "sign-in" ? "Sign in" : "Sign up free"}</h2>
-          <div className="mb-5 flex gap-2"><Button variant={mode === "sign-in" ? "default" : "ghost"} onClick={() => {setMode("sign-in");setSignupSuccess(false);}}>Sign in</Button><Button variant={mode === "sign-up" ? "default" : "ghost"} onClick={() => {setMode("sign-up");setSignupSuccess(false);}}>Sign up free</Button></div>
+          <h2 className="mb-5 font-display text-lg font-semibold">Sign in</h2>
 
           {mode === "sign-up" && signupSuccess ? (
             <div className="text-center space-y-5 py-6">
               <p className="text-lg font-medium leading-relaxed">
-                Check your email to confirm your account, then sign in.
+                Account created successfully! Click below to sign in.
               </p>
               <Button
                 type="button"
@@ -350,7 +359,14 @@ function AuthPage() {
                   ) : null}
                 </div>
                 {mode === "sign-up" && (
-                  <p className="text-xs leading-relaxed text-muted-foreground">By signing up, you confirm you're 13 or older and agree to our <Link to="/terms" className="text-primary underline">Terms</Link> and <Link to="/privacy" className="text-primary underline">Privacy Policy</Link>.</p>
+                  <label htmlFor="agree" className="flex items-start gap-2 text-xs leading-relaxed text-muted-foreground">
+                    <Checkbox id="agree" checked={agreed} onCheckedChange={(v) => setAgreed(v === true)} className="mt-0.5" />
+                    <span>
+                      I am 13 or older (under 18 with a parent's permission) and agree to the{" "}
+                      <Link to="/terms" className="text-primary underline">Terms</Link> and{" "}
+                      <Link to="/privacy" className="text-primary underline">Privacy Policy</Link>.
+                    </span>
+                  </label>
                 )}
                 {mode === "sign-in" && (
                   <div className="flex justify-end">
@@ -479,7 +495,7 @@ function AuthPage() {
             </div>
           </div>
 
-          <div className="rounded-[28px] border border-border/60 bg-card/70 p-5 shadow-lg"><p className="flex items-center gap-2 text-sm font-semibold">Driving Test Simulation <BetaBadge/></p><p className="mt-2 text-sm text-muted-foreground">Watch real driving situations and make the right call in a split second.</p></div>
+          <div className="rounded-[28px] border border-border/60 bg-card/70 p-5 shadow-lg"><p className="text-sm font-semibold">Driving Test Simulation</p><p className="mt-2 text-sm text-muted-foreground">Watch real driving situations and make the right call in a split second.</p></div>
           {/* Tailored preview */}
           <div className="flex items-center gap-3 rounded-[28px] border border-border/60 bg-card/70 p-5 backdrop-blur-md shadow-lg">
             <div className="flex-1">

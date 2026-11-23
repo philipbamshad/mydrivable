@@ -1,4 +1,3 @@
-import { BetaBadge } from "@/components/marketing/BetaBadge";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight, ArrowUp, RotateCcw, Play, Video, LoaderCircle, CircleHelp, Check, X } from "lucide-react";
@@ -223,11 +222,10 @@ function SimulationPage() {
     <div ref={scroller} className={cn("h-full min-h-0 bg-secondary/40 text-foreground", active ? "overflow-hidden" : "overflow-y-auto overscroll-contain")} style={tabGlowStyle} aria-label="Driving Test Simulation">
       <div className={cn("mx-auto flex w-full max-w-[960px] flex-col px-4 pb-8 pt-6 md:px-8", active ? "h-full min-h-0" : "min-h-full")}>
         <header className="flex shrink-0 items-center justify-between gap-3 pl-14 md:pl-0">
-          <h1 className="min-w-0 font-display text-xl font-bold leading-tight">Driving Test Simulation <BetaBadge/></h1>
+          <h1 className="min-w-0 truncate font-display text-xl font-bold leading-tight">Driving Test Simulation</h1>
           {!isPro && <Button onClick={() => openCheckout()} className="h-9 shrink-0 rounded-full px-4 text-sm font-semibold md:h-10 md:px-5">Upgrade</Button>}
           {phase !== "ready" && <Button variant="ghost" onClick={exit} className="h-8 shrink-0 px-0 text-xs text-muted-foreground"><ArrowLeft /><span className="sm:hidden">Exit</span><span className="hidden sm:inline">Exit simulation</span></Button>}
         </header>
-        <p className="mt-2 shrink-0 pl-14 text-xs text-muted-foreground md:pl-0">Simulations are in beta. More scenarios are coming soon.</p>
         {phase === "ready" ? (
           <div className="mt-8 w-full space-y-4">
             <div className={cardClass}>
