@@ -1,5 +1,8 @@
 # Design improvements
 
+# Homepage hero cleanup
+- [x] Replace the grey trust line with 5 amber stars plus Hudson P.'s short quote, shorten the paragraph to one sentence, drop the headline ~15% (72→61px desktop), tighten hero spacing (preview card top 514→406px, fully visible at 1226×809 and 390×844), and make both hero buttons the same 56px pill. Nothing below the hero changed.
+
 # Homepage testimonial
 - [x] Add a "From a learner" testimonial section between features and pricing: five amber stars, Hudson P. quote in an Instrument Serif Italic quote-mark style, "Individual results vary." note; white card with soft shadow, verified at 1280px and 390px, build OK.
 

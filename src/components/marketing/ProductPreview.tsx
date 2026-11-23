@@ -21,7 +21,7 @@ export function ProductPreview() {
   }, [manual]);
   const answer = (tab: string) => (i: number) => { setManual(true); setAnswers(a => tab in a ? a : { ...a, [tab]: i }); };
   const sim = DEMO_SCENARIOS[0];
-  return <div className="relative mx-auto mt-8 w-full max-w-lg" onPointerDown={() => setManual(true)} onFocusCapture={() => setManual(true)}>
+  return <div className="relative mx-auto mt-4 w-full max-w-lg" onPointerDown={() => setManual(true)} onFocusCapture={() => setManual(true)}>
     <Tabs value={active} onValueChange={value => { setActive(value); setManual(true); }}>
       <TabsList aria-label="Product preview" className={DEMO_TAB_LIST}><TabsTrigger value="simulation" className={DEMO_TAB}>Driving Sim <BetaBadge /></TabsTrigger><TabsTrigger value="practice" className={DEMO_TAB}>Practice Test</TabsTrigger><TabsTrigger value="coach" className={DEMO_TAB}>AI Coach</TabsTrigger></TabsList>
       <div className="marketing-product-preview mt-3" role="tabpanel" aria-label={active === "simulation" ? "Driving Sim preview" : active === "practice" ? "Practice Test preview" : "AI Coach preview"}>

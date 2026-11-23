@@ -215,24 +215,30 @@ function Nav() {
 
 function Hero() {
   return (
-    <section className="relative flex min-h-[min(680px,76svh)] flex-col items-center justify-center px-6 py-10 text-center sm:py-12">
+    <section className="relative flex min-h-[min(600px,70svh)] flex-col items-center justify-center px-6 pb-10 pt-8 text-center sm:pb-12 sm:pt-10">
       <div className="relative mx-auto max-w-5xl">
-        <h1 className="fade-in-up relative font-display text-5xl font-bold leading-tight tracking-tight sm:text-7xl">
+        <h1 className="fade-in-up relative font-display text-[2.6rem] font-bold leading-[1.15] tracking-tight sm:text-[3.8rem]">
           Drivable,{" "}
           <span className="hero-serif-gradient">Master the Road</span>
         </h1>
       </div>
 
-      <p className="fade-in-up relative mx-auto mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-        Prepare for your permit test and your driving test with state-specific practice, full-length mock exams, a real-world driving simulation, and an AI coach built on your official DMV handbook.
+      <p className="fade-in-up relative mx-auto mt-4 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+        Practice tests, an AI coach and driving simulations, built from your state's official DMV handbook.
       </p>
 
-      <div className="fade-in-up relative mt-8 flex flex-wrap items-center justify-center gap-3" style={{ "--reveal-delay": "160ms" } as React.CSSProperties}>
-        <Button asChild className={`${BTN_PRIMARY} h-auto px-8 py-4 text-base`}><Link to="/auth" search={{mode:"sign-up"}}>Start free<ArrowRight className="h-4 w-4" /></Link></Button>
-
-        <Button asChild variant="outline" className={`${BTN_SECONDARY} h-auto px-7 py-4 text-base`}><Link to="/demo">Try demo</Link></Button>
+      <div className="fade-in-up relative mt-5 flex flex-wrap items-center justify-center gap-3" style={{ "--reveal-delay": "160ms" } as React.CSSProperties}>
+        <Button asChild className={`${BTN_PRIMARY} h-14 rounded-full px-8 text-base`}><Link to="/auth" search={{mode:"sign-up"}}>Start free<ArrowRight className="h-4 w-4" /></Link></Button>
+        <Button asChild variant="outline" className={`${BTN_SECONDARY} h-14 rounded-full px-8 text-base`}><Link to="/demo">Try demo</Link></Button>
       </div>
-      <p className="relative mt-5 max-w-2xl text-xs leading-relaxed text-muted-foreground">Built from official state DMV handbooks · Free plan available · Pro is $9 once</p>
+      <div className="fade-in-up relative mt-3 flex flex-wrap items-center justify-center gap-x-2 gap-y-1" style={{ "--reveal-delay": "240ms" } as React.CSSProperties}>
+        <span className="flex items-center gap-0.5" role="img" aria-label="Rated 5 out of 5 stars">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <Star key={i} className="size-3.5 shrink-0 fill-marketing-star text-marketing-star" aria-hidden="true" />
+          ))}
+        </span>
+        <p className="text-xs text-muted-foreground">“I highly recommend using this to study.” — Hudson P.</p>
+      </div>
       <ProductPreview />
     </section>
   );
