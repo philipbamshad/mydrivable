@@ -420,7 +420,7 @@ export function ThreadSidebar() {
             >
               Driving Test Sim
             </span>
-            {!isCollapsed && <BetaBadge className="px-1.5 py-px text-[9px] leading-3" />}
+            {!isCollapsed && <BetaBadge />}
           </Link>
         </nav>
       </div>
