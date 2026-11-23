@@ -949,3 +949,13 @@
   .marketing-left-turn-preview .marketing-preview-signal-arrow { animation: none; opacity: 1; }
   .marketing-feature, .reveal, .fade-in-up { transition: none; animation: none; transform: none; opacity: 1; }
 }
+.marketing-right-turn-preview {
+  --preview-signal-amber: #F59E0B;
+  --preview-signal-gradient: linear-gradient(to left, var(--preview-signal-amber), transparent 15%);
+}
+.marketing-right-turn-preview .marketing-preview-signal-glow { background: var(--preview-signal-gradient); animation: marketing-preview-signal-edge 1s ease-in-out infinite; }
+.marketing-right-turn-preview .marketing-preview-signal-arrow { color: var(--preview-signal-amber); animation: marketing-preview-signal-arrow 1s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .marketing-right-turn-preview .marketing-preview-signal-glow { animation: none; opacity: 0.4; }
+  .marketing-right-turn-preview .marketing-preview-signal-arrow { animation: none; opacity: 1; }
+}

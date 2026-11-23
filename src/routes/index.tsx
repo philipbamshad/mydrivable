@@ -227,11 +227,11 @@ function Hero() {
       </p>
 
       <div className="fade-in-up relative mt-8 flex flex-wrap items-center justify-center gap-3" style={{ "--reveal-delay": "160ms" } as React.CSSProperties}>
-        <Button asChild className={`${BTN_PRIMARY} h-auto px-8 py-4 text-base`}><Link to="/auth" search={{mode:"sign-up"}}>Get started<ArrowRight className="h-4 w-4" /></Link></Button>
+        <Button asChild className={`${BTN_PRIMARY} h-auto px-8 py-4 text-base`}><Link to="/auth" search={{mode:"sign-up"}}>Start free<ArrowRight className="h-4 w-4" /></Link></Button>
 
         <Button asChild variant="outline" className={`${BTN_SECONDARY} h-auto px-7 py-4 text-base`}><Link to="/demo">Try demo</Link></Button>
       </div>
-      <p className="relative mt-5 max-w-2xl text-xs leading-relaxed text-muted-foreground">Built from the official California DMV handbook · Free plan available · Pro is $9 once</p>
+      <p className="relative mt-5 max-w-2xl text-xs leading-relaxed text-muted-foreground">Built from official state DMV handbooks · Free plan available · Pro is $9 once</p>
       <ProductPreview />
     </section>
   );
