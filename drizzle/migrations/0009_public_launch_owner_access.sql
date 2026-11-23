@@ -1,0 +1,7 @@
+DO $$ DECLARE r record; BEGIN FOR r IN SELECT tablename,policyname,cmd FROM pg_policies WHERE schemaname='public' AND policyname='Allowlist only' LOOP IF r.cmd='SELECT' THEN EXECUTE format('ALTER POLICY %I ON public.%I USING (auth.uid() IS NOT NULL)',r.policyname,r.tablename); ELSE EXECUTE format('ALTER POLICY %I ON public.%I USING (auth.uid() IS NOT NULL) WITH CHECK (auth.uid() IS NOT NULL)',r.policyname,r.tablename); END IF; END LOOP; END $$;
+ALTER POLICY owner_read ON public.ai_daily_usage USING (user_id=auth.uid());
+ALTER POLICY owner_read ON public.study_attempts USING (user_id=auth.uid());
+DO $$ DECLARE r record; BEGIN FOR r IN SELECT p.oid,pg_get_functiondef(p.oid) AS definition FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace WHERE n.nspname='public' AND p.prokind='f' AND p.proname IN ('get_daily_coach_used','consume_daily_coach_credit','delete_own_app_data') LOOP EXECUTE replace(r.definition,'public.is_allowlisted()','(auth.uid() IS NOT NULL)'); END LOOP; END $$;
+COMMENT ON FUNCTION public.is_allowlisted() IS 'DEPRECATED: beta gate retired; retained as authenticated-access compatibility for older deployments.';
+COMMENT ON TABLE public.waitlist IS 'DEPRECATED: public signup replaces waitlist; historical emails retained.';
+COMMENT ON TABLE public.waitlist_submission_windows IS 'DEPRECATED: public signup replaces waitlist collection.';

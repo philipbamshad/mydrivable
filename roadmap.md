@@ -1,5 +1,11 @@
 # Design improvements
 
+# Public launch and demo
+- [x] Public signup and authenticated access open; owner-only policies, Free limits, Pro/payment logic preserved.
+- [x] State/date-only setup; saved legacy exam formats retained; signup age/terms notice added. Real disposable signup returned 200 and reached /app after setup.
+- [x] Homepage section order preserved; requested CTAs, real previews, italic accents, feature colors, navy pricing and Beta labels verified desktop/mobile.
+- [x] All five demo tabs verified at 1440px and 390px; both five-question sets completed, simulation Stop feedback confirmed, no demo writes or live AI calls. Non-allowlisted Free account saved/resumed an exam answer and loaded Hub/simulation. All 117 tests and build pass; no new Stripe purchase or inbox delivery test.
+
 # Simulation missed-scenario review
 - [x] Show all authored correct steps, recorded choices/timeouts, and the correct-scenario summary; reuse shared octagonal Stop icons everywhere.
 - [x] Signed-in ten-scenario run verified complete missed sequences, red choices, timeout, correct count and octagonal icons; desktop/mobile screenshots checked, 50 tests passed, build OK.

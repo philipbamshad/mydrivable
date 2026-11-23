@@ -64,6 +64,13 @@
       "when": 1793862247268,
       "tag": "0008_first_sign_in_age_setup",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1795413381513,
+      "tag": "0009_public_launch_owner_access",
+      "breakpoints": true
     }
   ]
 }

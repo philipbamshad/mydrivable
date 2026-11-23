@@ -10,7 +10,6 @@ export const Route=createFileRoute('/api/public/study/answers')({server:{handler
  if(!url||!key)return new Response('Unavailable',{status:503});
  const client=createClient<Database>(url,key,{global:{headers:{Authorization:`Bearer ${token}`}},auth:{persistSession:false,autoRefreshToken:false}});
  const {data,error}=await client.auth.getUser(token);if(error||!data.user)return new Response('Unauthorized',{status:401});
- const {data:allowed}=await client.rpc('is_allowlisted');if(allowed!==true)return new Response('Forbidden',{status:403});
  const parsed=z.array(studyAnswerSchema).min(1).max(100).safeParse(await request.json().catch(()=>null));
  if(!parsed.success)return new Response('Invalid answers',{status:400});
  const {commitAnswer}=await import('@/lib/study-answer.server');

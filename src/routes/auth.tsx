@@ -6,15 +6,14 @@ import { lovable } from "@/integrations/lovable";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
 import { Loader2, Eye, EyeOff } from "lucide-react";
 import logo from "@/assets/drivable-logo.png";
 
 export const Route = createFileRoute("/auth")({
-  validateSearch: (s: Record<string, unknown>): { next?: string } => {
+  validateSearch: (s: Record<string, unknown>): { next?: string; mode?: "sign-up" } => {
     const next = typeof s.next === "string" && s.next.startsWith("/") && !s.next.startsWith("//") && !s.next.includes("\\") ? s.next : undefined;
-    return next ? { next } : {};
+    return { ...(next ? { next } : {}), ...(s.mode === "sign-up" ? { mode: "sign-up" as const } : {}) };
   },
   head: () => ({
     meta: [
@@ -77,7 +76,7 @@ function friendlyAuthError(message: string, mode: "sign-in" | "sign-up"): string
 
 function AuthPage() {
   const navigate = useNavigate();
-  const { next } = Route.useSearch();
+  const { next, mode: initialMode } = Route.useSearch();
   const goNext = () => {
     if (next) {
       window.location.assign(next);
@@ -86,7 +85,7 @@ function AuthPage() {
     }
   };
 
-  const [mode, setMode] = useState<"sign-in" | "sign-up">("sign-in");
+  const [mode, setMode] = useState<"sign-in" | "sign-up">(initialMode ?? "sign-in");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -94,7 +93,6 @@ function AuthPage() {
   const [signupSuccess, setSignupSuccess] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<{ email?: string; password?: string }>({});
   const [forgotSent, setForgotSent] = useState(false);
-  const [agreed, setAgreed] = useState(false);
 
 
 
@@ -109,10 +107,6 @@ function AuthPage() {
     e.preventDefault();
     setFieldErrors({});
 
-    if (mode === "sign-up" && !agreed) {
-      toast.error("Please confirm you are 13 or older and agree to the Terms and Privacy Policy.");
-      return;
-    }
     const parsed = credentialsSchema.safeParse({ email, password });
     if (!parsed.success) {
       const errs: { email?: string; password?: string } = {};
@@ -133,7 +127,7 @@ function AuthPage() {
         const { data, error } = await supabase.auth.signUp({
           email: parsed.data.email,
           password: parsed.data.password,
-          options: { emailRedirectTo: window.location.origin + returnTo },
+          options: { emailRedirectTo: `${window.location.origin}/auth?next=${encodeURIComponent(returnTo)}` },
         });
         if (error) throw error;
         // Supabase returns a user with an empty identities array when the
@@ -147,6 +141,7 @@ function AuthPage() {
           setLoading(false);
           return;
         }
+        if (data.session) { goNext(); return; }
         setSignupSuccess(true);
         setLoading(false);
         return;
@@ -156,13 +151,6 @@ function AuthPage() {
           password: parsed.data.password,
         });
         if (error) throw error;
-        const { data: allowed } = await supabase.rpc("is_allowlisted");
-        if (allowed !== true) {
-          await supabase.auth.signOut();
-          toast.error("Drivable is in private beta. Join the waitlist on the homepage.");
-          navigate({ to: "/" });
-          return;
-        }
         toast.success("Welcome back.");
       }
       goNext();
@@ -269,7 +257,7 @@ function AuthPage() {
             <img src={logo} alt="Drivable logo" width={56} height={56} className="relative logo-mask" />
           </div>
           <div className="text-center">
-            <h1 className="font-display text-2xl font-bold tracking-tight">Drivable, Sign In</h1>
+            <h1 className="font-display text-2xl font-bold tracking-tight">Drivable, {mode === "sign-up" ? "Get started" : "Sign In"}</h1>
             <p className="text-xs text-muted-foreground mt-1 uppercase tracking-normal">
               Permit &amp; Driving Test Prep
             </p>
@@ -277,12 +265,12 @@ function AuthPage() {
         </Link>
 
         <div className="glass glow-soft rounded-2xl border border-primary/20 p-6 ">
-          <h2 className="mb-5 font-display text-lg font-semibold">Sign in</h2>
+          <h2 className="mb-5 font-display text-lg font-semibold">{mode === "sign-up" ? "Create your account" : "Sign in"}</h2>
 
           {mode === "sign-up" && signupSuccess ? (
             <div className="text-center space-y-5 py-6">
               <p className="text-lg font-medium leading-relaxed">
-                Account created successfully! Click below to sign in.
+                Check your inbox to confirm your email, then sign in to start practicing.
               </p>
               <Button
                 type="button"
@@ -359,14 +347,9 @@ function AuthPage() {
                   ) : null}
                 </div>
                 {mode === "sign-up" && (
-                  <label htmlFor="agree" className="flex items-start gap-2 text-xs leading-relaxed text-muted-foreground">
-                    <Checkbox id="agree" checked={agreed} onCheckedChange={(v) => setAgreed(v === true)} className="mt-0.5" />
-                    <span>
-                      I am 13 or older (under 18 with a parent's permission) and agree to the{" "}
-                      <Link to="/terms" className="text-primary underline">Terms</Link> and{" "}
-                      <Link to="/privacy" className="text-primary underline">Privacy Policy</Link>.
-                    </span>
-                  </label>
+                  <p className="text-xs leading-relaxed text-muted-foreground">
+                    By signing up, you confirm you're 13 or older and agree to our <Link to="/terms" className="text-primary underline">Terms</Link> and <Link to="/privacy" className="text-primary underline">Privacy Policy</Link>.
+                  </p>
                 )}
                 {mode === "sign-in" && (
                   <div className="flex justify-end">
@@ -423,6 +406,9 @@ function AuthPage() {
           )}
         </div>
 
+        <Button variant="link" className="mt-4 w-full" onClick={() => { setMode(mode === "sign-in" ? "sign-up" : "sign-in"); setSignupSuccess(false); setFieldErrors({}); }}>
+          {mode === "sign-in" ? "New to Drivable? Create account" : "Already have an account? Sign in"}
+        </Button>
         <p className="text-center text-xs text-muted-foreground mt-6">
           By continuing, you confirm you are 13 or older and agree to the <Link to="/terms" className="underline">Terms</Link> and <Link to="/privacy" className="underline">Privacy Policy</Link>.
         </p>

@@ -1,10 +1,10 @@
 import { createServerFn } from '@tanstack/react-start'
 import { z } from 'zod'
-import { requireAllowlisted } from './allowlist-middleware'
+import { requireSupabaseAuth } from '@/integrations/supabase/auth-middleware'
 
 /** Saves the browser time zone and sends the welcome email once, after the account's email is confirmed. */
 export const syncAccount = createServerFn({ method: 'POST' })
-  .middleware([requireAllowlisted])
+  .middleware([requireSupabaseAuth])
   .inputValidator(z.object({ timezone: z.string().min(1).max(64) }))
   .handler(async ({ data, context }) => {
     const { safeTimezone } = await import('./reminder-schedule')
@@ -29,14 +29,14 @@ export const syncAccount = createServerFn({ method: 'POST' })
   })
 
 export const getEmailReminders = createServerFn({ method: 'GET' })
-  .middleware([requireAllowlisted])
+  .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     const { data } = await context.supabase.from('user_profiles').select('email_reminders').eq('user_id', context.userId).maybeSingle()
     return { enabled: data?.email_reminders ?? true }
   })
 
 export const setEmailReminders = createServerFn({ method: 'POST' })
-  .middleware([requireAllowlisted])
+  .middleware([requireSupabaseAuth])
   .inputValidator(z.object({ enabled: z.boolean() }))
   .handler(async ({ data, context }) => {
     const { error } = await context.supabase.from('user_profiles').update({ email_reminders: data.enabled }).eq('user_id', context.userId)
@@ -45,7 +45,7 @@ export const setEmailReminders = createServerFn({ method: 'POST' })
   })
 
 export const runReminderJobNow = createServerFn({ method: 'POST' })
-  .middleware([requireAllowlisted])
+  .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     const { data: admin } = await context.supabase.rpc('is_admin')
     if (admin !== true) throw new Error('Forbidden')
@@ -66,7 +66,7 @@ const TESTABLE_TEMPLATES = [
 
 /** Admin-only: sends one app email template (or all of them) to the admin's own inbox for review. */
 export const sendTestEmails = createServerFn({ method: 'POST' })
-  .middleware([requireAllowlisted])
+  .middleware([requireSupabaseAuth])
   .inputValidator(z.object({ templateName: z.enum(TESTABLE_TEMPLATES).optional() }))
   .handler(async ({ data, context }) => {
     const { data: admin } = await context.supabase.rpc('is_admin')
@@ -94,14 +94,14 @@ export const sendTestEmails = createServerFn({ method: 'POST' })
   })
 
 export const getAdminStatus = createServerFn({ method: 'GET' })
-  .middleware([requireAllowlisted])
+  .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     const { data: admin } = await context.supabase.rpc('is_admin')
     return { admin: admin === true }
   })
 
 export const getWaitlistCount = createServerFn({ method: 'GET' })
-  .middleware([requireAllowlisted])
+  .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     const { data: admin } = await context.supabase.rpc('is_admin')
     if (admin !== true) throw new Error('Forbidden')

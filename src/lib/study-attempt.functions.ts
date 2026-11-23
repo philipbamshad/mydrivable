@@ -1,7 +1,7 @@
 import { createServerFn } from '@tanstack/react-start';
 import { queryOptions } from '@tanstack/react-query';
 import { z } from 'zod';
-import { requireAllowlisted } from './allowlist-middleware';
+import { requireSupabaseAuth } from '@/integrations/supabase/auth-middleware';
 import { getStatePack } from '@/data/dmv';
 import { buildExamPool, type ExamQuestion } from './mock-exam';
 import { buildPillarBanks } from '@/data/dmv/practice-bank';
@@ -12,23 +12,23 @@ import { SIMULATION_CLIPS } from '@/data/simulation-clips';
 import { decisionSummary, finishScenario, recordDecision, stepProgress, type ScenarioDecision } from '@/data/simulation-game';
 import type { StudyAttempt } from './study-attempt';
 import { uniqueQuestionSession } from './question-session';
-import { permitRules } from './permit-rules';
+import { permitRules, setupReady } from './permit-rules';
 import { withHistoricalExamAnswers } from './exam-missed';
 export type StudyAnswerInput = {id:string;version:number;answer?:number;steps?:{action:'go'|'yield'|'stop'|null;elapsed:number}[];timed?:boolean};
 
 const feature = z.enum(['exam','signs','intersections','substances','speed','simulation','review']);
 function asAttempt(row: unknown): StudyAttempt { return row as StudyAttempt; }
-export const getStudyAttempts = createServerFn({method:'GET'}).middleware([requireAllowlisted]).handler(async ({context}) => {
+export const getStudyAttempts = createServerFn({method:'GET'}).middleware([requireSupabaseAuth]).handler(async ({context}) => {
   const {data,error} = await context.supabase.from('study_attempts').select('*').eq('user_id',context.userId).order('created_at',{ascending:false});
   if(error) throw new Error('Unable to load saved attempts.');
   return (data ?? []).map(asAttempt);
 });
 export const studyAttemptsOptions = (userId: string) => queryOptions({queryKey:['study-attempts',userId],queryFn:()=>getStudyAttempts()});
-export const startStudyAttempt = createServerFn({method:'POST'}).middleware([requireAllowlisted])
+export const startStudyAttempt = createServerFn({method:'POST'}).middleware([requireSupabaseAuth])
   .inputValidator((input:unknown)=>z.object({feature}).parse(input))
   .handler(async ({context,data}) => {
     const {data:profile,error:profileError} = await context.supabase.from('user_profiles').select('active_state,under_18,onboarding_completed_at').eq('user_id',context.userId).single();
-    if(profileError || !profile.active_state || profile.under_18 === null || !profile.onboarding_completed_at) throw new Error('Complete your setup before practicing.');
+    if(profileError || !setupReady(profile.active_state,profile.onboarding_completed_at)) throw new Error('Complete your setup before practicing.');
     const state = profile.active_state;
     let payload: unknown[];
     if(data.feature==='simulation') payload=createSimulationSession(SIMULATION_CLIPS);
@@ -50,7 +50,7 @@ export const startStudyAttempt = createServerFn({method:'POST'}).middleware([req
     if(error) throw new Error('Unable to reserve your attempt. Please try again.');
     return asAttempt(row);
   });
-export const answerStudyAttempt=createServerFn({method:'POST'}).middleware([requireAllowlisted])
+export const answerStudyAttempt=createServerFn({method:'POST'}).middleware([requireSupabaseAuth])
   .inputValidator((input:unknown)=>z.object({id:z.string().uuid(),version:z.number().int().nonnegative(),answer:z.number().int().min(0).max(3).optional(),steps:z.array(z.object({action:z.enum(['go','yield','stop']).nullable(),elapsed:z.number().min(0).max(86400000)})).min(1).max(2).optional(),timed:z.boolean().optional()}).parse(input))
   .handler(async({data,context})=>{
     const {commitAnswer}=await import('./study-answer.server');

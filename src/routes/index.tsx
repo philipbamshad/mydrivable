@@ -2,19 +2,18 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import logo from "@/assets/drivable-logo.png";
-import heroStill from "@/assets/hero-sim-still.jpg";
 import {
   ArrowRight,
-  ArrowUp,
   Check,
   MapPin,
   Menu,
-  Octagon,
-  Triangle,
   X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { WaitlistDialog, openWaitlist } from "@/components/marketing/WaitlistDialog";
+import { BetaBadge } from "@/components/marketing/BetaBadge";
+import { SimulationPreview } from "@/components/marketing/SimulationPreview";
+import { DEMO_SIGNS } from "@/lib/demo";
+import { SignVisual } from "@/components/dashboard/SignVisual";
 import { US_STATES } from "@/lib/user-profile";
 
 export const Route = createFileRoute("/")({
@@ -117,7 +116,6 @@ function Landing() {
       <Pricing />
       <CTA />
       <Footer />
-      <WaitlistDialog />
     </div>
   );
 }
@@ -154,18 +152,20 @@ function Nav() {
           <a href="#features" className="transition hover:text-[#0f172a] dark:hover:text-white">Features</a>
           <a href="#states" className="transition hover:text-[#0f172a] dark:hover:text-white">States</a>
           <a href="#pricing" className="transition hover:text-[#0f172a] dark:hover:text-white">Pricing</a>
+          <Link to="/demo" className="text-muted-foreground hover:text-foreground">Try demo</Link>
         </nav>
 
 
-        <div className="flex items-center gap-2">
-          <button type="button" onClick={openWaitlist}
+        <div className="flex items-center gap-2"><Button asChild variant="ghost" className="hidden sm:inline-flex"><Link to="/auth">Sign in</Link></Button>
+          <Button asChild
             className={`${BTN_PRIMARY} group hidden sm:inline-flex px-5 py-2.5 text-sm`}
           >
-            Join the waitlist
-            <span className="grid h-6 w-6 place-items-center rounded-full bg-white/15 transition-transform duration-300 group-hover:translate-x-0.5">
+            <Link to="/auth" search={{mode:"sign-up"}}>Get started
+            <span className="grid h-6 w-6 place-items-center rounded-full bg-primary-foreground/15 transition-transform duration-300 group-hover:translate-x-0.5">
               <ArrowRight className="h-3.5 w-3.5" />
             </span>
-          </button>
+            </Link>
+          </Button>
           <Button
             variant="ghost"
             size="icon"
@@ -201,13 +201,9 @@ function Nav() {
                 {label}
               </a>
             ))}
-            <button type="button" onClick={() => { setOpen(false); openWaitlist(); }}
-            
-              className={`${BTN_PRIMARY} mt-2 px-5 py-3 text-sm`}
-            >
-              Join the waitlist <ArrowRight className="h-3.5 w-3.5" />
-            </button>
-
+            <Button asChild variant="ghost" className="justify-start"><Link to="/demo" onClick={() => setOpen(false)}>Try demo</Link></Button>
+            <Button asChild variant="ghost" className="justify-start"><Link to="/auth">Sign in</Link></Button>
+            <Button asChild className={`${BTN_PRIMARY} mt-2 px-5 py-3 text-sm`}><Link to="/auth" search={{mode:"sign-up"}}>Get started<ArrowRight className="h-3.5 w-3.5" /></Link></Button>
           </nav>
         </div>
       )}
@@ -217,16 +213,7 @@ function Nav() {
 
 function Hero() {
   return (
-    <section className="relative flex min-h-[min(680px,76svh)] flex-col items-center justify-center px-6 py-16 text-center sm:py-20">
-      <div className="mx-auto mb-6 flex max-w-2xl flex-wrap items-center justify-center gap-x-3 gap-y-1 text-sm">
-        <span className="font-bold text-primary">Now in private beta. Join the waitlist.</span>
-      </div>
-
-      <div aria-hidden className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-        <div className="ambient-blob absolute left-[8%] top-[30%] h-[520px] w-[520px] rounded-full bg-accent-coral/40 blur-[120px]" />
-        <div className="ambient-blob-slow absolute right-[6%] top-[40%] h-[560px] w-[560px] rounded-full bg-accent-cyan/25 blur-[120px]" />
-      </div>
-
+    <section className="relative flex min-h-[min(680px,76svh)] flex-col items-center justify-center px-6 py-10 text-center sm:py-12">
       <div className="relative mx-auto max-w-5xl">
         <h1 className="fade-in-up relative font-display text-5xl font-bold leading-tight tracking-tight sm:text-7xl">
           Drivable,{" "}
@@ -239,21 +226,12 @@ function Hero() {
       </p>
 
       <div className="fade-in-up relative mt-8 flex flex-wrap items-center justify-center gap-3" style={{ "--reveal-delay": "160ms" } as React.CSSProperties}>
-        <button type="button" onClick={openWaitlist}
-            className={`${BTN_PRIMARY} px-8 py-4 text-base`}
-        >
-          Join the waitlist
-          <ArrowRight className="h-4 w-4" />
-        </button>
+        <Button asChild className={`${BTN_PRIMARY} h-auto px-8 py-4 text-base`}><Link to="/auth" search={{mode:"sign-up"}}>Get started<ArrowRight className="h-4 w-4" /></Link></Button>
 
-        <a
-          href="#features"
-          className={`${BTN_SECONDARY} px-7 py-4 text-base`}
-        >
-
-          See how it works
-        </a>
+        <Button asChild variant="outline" className={`${BTN_SECONDARY} h-auto px-7 py-4 text-base`}><Link to="/demo">Try demo</Link></Button>
       </div>
+      <p className="relative mt-5 max-w-2xl text-xs leading-relaxed text-muted-foreground">Built from the official California DMV handbook · Free plan available · Pro is $9 once</p>
+      <div className="relative mt-8 w-full max-w-lg"><div className="mb-3 flex items-center justify-center gap-2 text-xs font-semibold text-muted-foreground">Driving Test Simulation <BetaBadge /></div><SimulationPreview /></div>
     </section>
   );
 }
@@ -268,7 +246,7 @@ function StatesMarquee() {
           All 50 States · Grounded in Official DMV Handbooks
         </p>
         <h2 className="mb-10 text-3xl font-semibold tracking-normal sm:text-4xl">
-          Wherever You Take the Test, We've Got You
+          Wherever You Take the Test, <span className="hero-serif-gradient">We've Got You</span>
         </h2>
       </div>
       <div
@@ -303,190 +281,27 @@ function StatesMarquee() {
 
 function Features() {
   const features = [
-    {
-      title: "Full-Length Mock Permit Exam Simulator",
-      body: "State-accurate exams with the real question count and passing score. Study at your own pace, no timer pressure.",
-      visual: "simulator",
-    },
-    {
-      title: "AI Coach",
-      body: "Handbook-based explanations for your state",
-      visual: "coach",
-    },
-    {
-      title: "Targeted Section Quizzes",
-      body: "Drill road signs, intersections, speed limits and substance laws. Your study plan adapts to your state and DMV test date.",
-      visual: "quizzes",
-    },
-    { title: "Driving Test Simulation", body: "Watch real driving situations and make the right call in a split second.", visual: "driving" },
+    {title:"Full-Length Mock Permit Exam Simulator",body:"State-accurate exams with the real question count and passing score. Study at your own pace, no timer pressure.",visual:"simulator",tone:"blue"},
+    {title:"AI Coach",body:"Handbook-based explanations for your state",visual:"coach",tone:"green"},
+    {title:"Targeted Section Quizzes",body:"Drill road signs, intersections, speed limits and substance laws. Your study plan adapts to your state and DMV test date.",visual:"quizzes",tone:"amber"},
+    {title:"Driving Test Simulation",body:"Watch real driving situations and make the right call in a split second.",visual:"driving",tone:"red"},
   ];
-
-  const grid = useReveal<HTMLDivElement>();
-
-  return (
-    <section id="features" className="px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
-      <div className="mx-auto max-w-3xl text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-[#1e40af]/18 dark:border-white/10 bg-[#1e40af]/[0.055] dark:bg-white/[0.05] px-4 py-1.5 text-sm text-[#1f2b4d]/80 dark:text-[#d1d5db]/80 backdrop-blur-xl">
-          <span className="status-dot h-1.5 w-1.5 rounded-full bg-accent-orange" />
-          State-Specific DMV Prep
+  const grid=useReveal<HTMLDivElement>();
+  const roadSign=DEMO_SIGNS.find(q=>q.sign?.shape==="diamond")?.sign ?? DEMO_SIGNS[0]?.sign;
+  return <section id="features" className="marketing-lane-divider px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
+    <div className="mx-auto max-w-3xl text-center"><p className="text-sm font-semibold text-primary">State-Specific DMV Prep</p><h2 className="mt-8 text-3xl font-semibold sm:text-5xl">Four focused tools, one outcome: <span className="hero-serif-gradient">pass on the first try.</span></h2></div>
+    <div ref={grid} className="mx-auto mt-14 grid w-full max-w-6xl gap-6 md:grid-cols-2">
+      {features.map(f=><div key={f.title} data-feature-tone={f.tone} className="reveal marketing-feature group flex h-full flex-col overflow-hidden rounded-[32px] bg-secondary p-4 transition-all duration-200 hover:-translate-y-1">
+        <div className="relative flex h-[260px] items-center justify-center overflow-hidden rounded-[24px] px-4 sm:px-6">
+          {f.visual==="simulator" && <div className="w-full max-w-[340px] rounded-lg bg-card p-5 shadow-sm"><div className="flex items-center justify-between gap-2 text-xs text-muted-foreground"><span>California · 12 / 46</span><span className="rounded-full bg-success/10 px-2 py-1 font-semibold text-success">Correct</span></div><p className="mt-4 text-sm font-semibold">A solid green arrow means…</p><p className="mt-3 rounded-lg border border-success/40 bg-success/10 p-3 text-sm text-success"><Check className="mr-2 inline size-4" />Make the protected turn</p><p className="mt-3 text-xs leading-relaxed text-muted-foreground">Turn in the arrow's direction when the path is clear.</p></div>}
+          {f.visual==="coach" && <div className="w-full max-w-[340px] space-y-3 text-sm"><div className="ml-auto max-w-[85%] rounded-lg bg-marketing-navy p-4 text-marketing-white">Why did I miss this sign question?</div><div className="max-w-[90%] rounded-lg bg-card p-4 shadow-sm"><p className="font-semibold text-success">AI Coach</p><p className="mt-2 leading-relaxed text-muted-foreground">A yellow diamond warns of conditions ahead. Follow any posted speed limit.</p></div></div>}
+          {f.visual==="quizzes" && <div className="exam-road-visual flex w-full max-w-[340px] items-center gap-4 rounded-lg bg-card p-5 shadow-sm">{roadSign && <SignVisual s={roadSign} size={100} />}<div><p className="text-sm font-semibold">Signs &amp; Markings</p><p className="mt-2 text-xs text-muted-foreground">Recognize the sign.<br />Know the next move.</p><span className="mt-3 inline-block rounded-full bg-marketing-amber/10 px-2 py-1 text-xs font-medium text-marketing-amber">Road signs</span></div></div>}
+          {f.visual==="driving" && <SimulationPreview />}
         </div>
-        <h2 className="mt-8 text-3xl font-semibold sm:text-5xl">
-          Four focused tools, one outcome:{" "}
-          <span className="text-primary font-medium">
-            pass on the first try.
-          </span>
-        </h2>
-
-      </div>
-
-      <div ref={grid} className="mx-auto mt-14 grid w-full max-w-6xl gap-6 md:grid-cols-2">
-        <style>{`
-          @keyframes heroSignalBlink { 0%, 100% { opacity: 0.12; } 50% { opacity: 0.42; } }
-          .hero-signal-glow { background: linear-gradient(to right, rgba(255,165,0,0) 82%, #ffa500 100%); animation: heroSignalBlink 0.8s ease-in-out infinite; }
-          @media (prefers-reduced-motion: reduce) { .hero-signal-glow { animation: none; opacity: 0.3; } }
-        `}</style>
-        {features.map((f, i) => (
-          <div
-            key={f.title}
-            style={{ transitionDelay: `${i * 120}ms` }}
-            className="reveal group feature-accent flex h-full flex-col overflow-hidden rounded-[32px] bg-[#f4f5f7] dark:bg-[#1c1f22] p-4 transition-all duration-500 hover:-translate-y-1 hover:bg-[#eef0f4] dark:bg-[#2a2e33] dark:hover:bg-[#22262a] hover:shadow-[0_28px_60px_-40px_rgba(15,23,42,0.35)]"
-          >
-            <div className="relative h-[260px] overflow-hidden rounded-[24px] px-6 pt-8">
-              {f.visual === "simulator" && (
-                <div className="mx-auto flex h-full w-full max-w-[340px] flex-col justify-center space-y-3">
-                  {[
-                    { label: "Question 12 of 46", tag: "Signs" },
-                    { label: "Question 13 of 46", tag: "Right of way" },
-                  ].map((q, idx) => (
-                    <div
-                      key={q.label}
-                      className={`relative overflow-hidden rounded-xl bg-white dark:bg-[#22262a] p-4 shadow-[0_18px_40px_-30px_rgba(15,23,42,0.5)] transition-transform duration-500 group-hover:scale-[1.02] ${idx === 0 ? "feature-float" : "feature-float-delay"}`}
-                    >
-                      <div className="pointer-events-none absolute inset-0 -translate-x-full overflow-hidden rounded-xl group-hover:animate-[featureShimmer_0.9s_ease_forwards]">
-                        <div className="h-full w-full bg-gradient-to-r from-transparent via-white/35 to-transparent" />
-                      </div>
-                      <div className="relative flex items-center justify-between">
-                        <p className="text-sm font-semibold text-[#0f172a] dark:text-[#f3f4f6]">{q.label}</p>
-                        <span className="rounded-md bg-[#1e40af]/10 px-2 py-0.5 text-[10px] font-semibold text-[#1e40af] dark:text-[#7ea6ff]">
-                          {q.tag}
-                        </span>
-                      </div>
-                      <div className="relative mt-3 space-y-1.5">
-                        <div className="h-1.5 w-full rounded-full bg-[#eef0f4] dark:bg-[#2a2e33]" />
-                        <div className="h-1.5 w-2/3 rounded-full bg-[#eef0f4] dark:bg-[#2a2e33]" />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {f.visual === "driving" && (
-                <div className="mx-auto flex h-full w-full max-w-[340px] flex-col justify-center gap-4">
-                  <div className="relative overflow-hidden rounded-2xl shadow-[0_18px_40px_-30px_rgba(15,23,42,0.6)] transition-transform duration-500 group-hover:scale-[1.02]">
-                    <img
-                      src={heroStill}
-                      alt="Driving simulation: approaching a green light before a right turn"
-                      className="block w-full"
-                    />
-                    <div
-                      aria-hidden
-                      className="hero-signal-glow pointer-events-none absolute inset-0 rounded-2xl"
-                    />
-                    <span className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-[#0f172a]/85 px-3 py-1 text-[11px] font-semibold text-white backdrop-blur-sm">
-                      <ArrowRight className="h-3 w-3 text-[#ffa500]" />
-                      Turning right
-                    </span>
-                  </div>
-                  <div className="flex justify-center gap-2">
-                    {[
-                      { id: "go", label: "Go", Icon: ArrowUp, color: "#16a34a" },
-                      { id: "yield", label: "Yield", Icon: Triangle, color: "#d97706" },
-                      { id: "stop", label: "Stop", Icon: Octagon, color: "#dc2626" },
-                    ].map(({ id, label, Icon, color }) => (
-                      <span
-                        key={id}
-                        className="inline-flex items-center gap-1.5 rounded-full border bg-white px-3 py-1.5 text-xs font-semibold text-[#1f2b4d]/85 shadow-sm dark:bg-[#22262a] dark:text-[#d1d5db]/85"
-                        style={{ borderColor: `${color}55` }}
-                      >
-                        <Icon className="h-3.5 w-3.5" style={{ color }} />
-                        {label}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-              {f.visual === "coach" && (
-                <div className="mx-auto flex h-full w-full max-w-[340px] flex-col justify-center space-y-3">
-                  <div className="feature-float relative ml-auto w-fit max-w-[80%] overflow-hidden rounded-2xl rounded-br-md bg-[#0f172a] px-4 py-2.5 text-sm text-white shadow-[0_18px_40px_-30px_rgba(15,23,42,0.6)] transition-transform duration-500 group-hover:translate-x-1">
-                    <div className="pointer-events-none absolute inset-0 -translate-x-full overflow-hidden rounded-2xl rounded-br-md group-hover:animate-[featureShimmer_0.9s_ease_forwards]">
-                      <div className="h-full w-full bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-                    </div>
-                    <span className="relative">Why did I miss this sign question?</span>
-                  </div>
-                  <div className="feature-float-delay relative w-fit max-w-[85%] overflow-hidden rounded-2xl rounded-bl-md bg-white dark:bg-[#22262a] px-4 py-3 shadow-[0_18px_40px_-30px_rgba(15,23,42,0.5)] transition-transform duration-500 group-hover:-translate-x-1">
-                    <div className="pointer-events-none absolute inset-0 -translate-x-full overflow-hidden rounded-2xl rounded-bl-md group-hover:animate-[featureShimmer_0.9s_ease_forwards]">
-                      <div className="h-full w-full bg-gradient-to-r from-transparent via-white/45 to-transparent" />
-                    </div>
-                    <p className="relative text-[11px] font-semibold uppercase tracking-wide text-[#10b981]">AI Coach</p>
-                    <p className="relative mt-1 text-sm leading-relaxed text-[#1f2b4d]/80 dark:text-[#d1d5db]/80">
-                      A yellow diamond warns of conditions ahead. Follow any posted speed limit.
-                    </p>
-                  </div>
-                  <div className="feature-float-delay-2 relative ml-auto w-fit overflow-hidden rounded-full bg-white dark:bg-[#22262a] px-3 py-1.5 text-[11px] font-semibold text-[#1f2b4d]/60 dark:text-[#9ca3af]/75 shadow-sm transition-transform duration-500 group-hover:scale-105">
-                    <div className="pointer-events-none absolute inset-0 -translate-x-full overflow-hidden rounded-full group-hover:animate-[featureShimmer_0.9s_ease_forwards]">
-                      <div className="h-full w-full bg-gradient-to-r from-transparent via-white/40 to-transparent" />
-                    </div>
-                    <span className="relative">Typing</span>
-                  </div>
-                </div>
-              )}
-
-              {f.visual === "quizzes" && (
-                <div className="relative mx-auto w-full max-w-[340px] overflow-hidden rounded-2xl bg-white dark:bg-[#22262a] p-5 shadow-[0_18px_40px_-30px_rgba(15,23,42,0.5)] transition-transform duration-500 group-hover:scale-[1.02]">
-                  <div className="pointer-events-none absolute inset-0 -translate-x-full overflow-hidden rounded-2xl group-hover:animate-[featureShimmer_0.9s_ease_forwards]">
-                    <div className="h-full w-full bg-gradient-to-r from-transparent via-white/35 to-transparent" />
-                  </div>
-                  <p className="relative text-sm font-semibold text-[#0f172a] dark:text-[#f3f4f6]">Section Quizzes</p>
-                  <p className="relative mt-1 text-[11px] text-[#1f2b4d]/55 dark:text-[#9ca3af]/75">Pick a pillar and start drilling</p>
-                  <div className="relative mt-4 space-y-3">
-                    {[
-                      { name: "Road Signs", score: "9.1/10" },
-                      { name: "Speed Limits", score: "7.4/10" },
-                      { name: "DUI Laws", score: "6.2/10" },
-                    ].map((row, idx) => (
-                      <div key={row.name}>
-                        <div className="flex items-center justify-between text-[11px]">
-                          <span className="font-medium text-[#1f2b4d]/80 dark:text-[#d1d5db]/80">{row.name}</span>
-                          <span className="font-semibold text-[#0f172a] dark:text-[#f3f4f6]">{row.score}</span>
-                        </div>
-                        <div className="mt-1.5 h-1.5 w-full rounded-full bg-[#eef0f4] dark:bg-[#2a2e33]">
-                          <div
-                            className="feature-progress h-1.5 rounded-full bg-accent-orange"
-                            style={{ width: ["88%", "72%", "58%"][idx] }}
-                          />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {f.visual !== "driving" && (
-                <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#f4f5f7] dark:from-[#1c1f22] to-transparent transition-colors duration-500 group-hover:from-[#eef0f4] dark:group-hover:from-[#22262a]" />
-              )}
-            </div>
-
-            <div className="px-6 pb-6 pt-6">
-              <h3 className="text-2xl font-semibold tracking-normal text-[#0f172a] dark:text-[#f3f4f6] lg:text-[28px]">
-                {f.title}
-              </h3>
-              <p className="mt-4 text-base leading-relaxed text-muted-foreground lg:text-lg">{f.body}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
+        <div className="flex flex-1 flex-col px-6 pb-6 pt-6"><h3 className="font-display text-2xl font-semibold lg:text-[28px]">{f.title}{f.visual==="driving" && <span className="ml-2"><BetaBadge /></span>}</h3><p className="mt-4 text-base leading-relaxed text-muted-foreground lg:text-lg">{f.body}</p><Button asChild variant="link" className="mt-auto h-auto justify-start px-0 pt-5 text-primary"><Link to="/auth" search={{mode:"sign-up"}}>Start practicing<ArrowRight className="size-4" /></Link></Button></div>
+      </div>)}
+    </div>
+  </section>;
 }
 
 
@@ -506,106 +321,34 @@ function Pricing() {
     "1 driving test simulation run",
   ];
 
-  return (
-    <section id="pricing" className="px-6 py-28">
-      <div className="mx-auto mb-14 max-w-3xl text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-[#1e40af]/18 dark:border-white/10 bg-[#1e40af]/[0.055] dark:bg-white/[0.05] px-4 py-1.5 text-sm text-[#1f2b4d]/80 dark:text-[#d1d5db]/80 backdrop-blur-xl">
-          <span className="status-dot h-1.5 w-1.5 rounded-full bg-[#10b981]" />
-          Two Plans
-        </div>
-        <h2 className="mt-6 text-3xl font-semibold sm:text-5xl">
-          Pick Your{" "}
-          <span className="text-primary font-medium">
-            Lane
-          </span>
-        </h2>
-        <p className="mt-4 text-[#1f2b4d]/70 dark:text-[#d1d5db]/80">Start free, or unlock the full test simulator with one payment.</p>
-      </div>
-
-      <div className="relative mx-auto max-w-5xl">
-        {/* Centered ambient backlight behind the Pro card */}
-        <div
-          aria-hidden
-          className="ambient-blob-slow absolute right-0 top-[calc(50%-260px)] -z-10 h-[520px] w-[520px] rounded-full blur-3xl"
-          style={{
-            background:
-              "radial-gradient(closest-side, rgba(30,64,175,0.35), rgba(30,64,175,0.10) 55%, transparent 75%)",
-          }}
-        />
-
-        <div className="grid gap-6 md:grid-cols-2 md:items-stretch">
-          {/* Free Pass */}
-          <div className="lift relative flex flex-col rounded-[28px] border border-[#1e40af]/18 dark:border-white/10 bg-white/80 dark:bg-[#16191c]/85 p-8 backdrop-blur-xl">
-            <div className="rounded-2xl border border-[#1e40af]/18 dark:border-white/10 bg-[#1e40af]/[0.045] dark:bg-white/[0.04] p-7">
-              <div className="text-lg font-medium text-[#1f2b4d]/90 dark:text-[#d1d5db]/80">Free Pass</div>
-              <div className="mt-8 flex items-end gap-2 text-[#0f172a] dark:text-[#f3f4f6]">
-                <span className="text-6xl font-semibold tracking-normal">$0</span>
-                <span className="mb-2 text-sm text-[#1f2b4d]/85 dark:text-[#d1d5db]/80">forever free</span>
-              </div>
-              <p className="mt-2 text-sm text-[#1f2b4d]/75 dark:text-[#d1d5db]/80">Kick the tires and study the basics, no card required.</p>
-            </div>
-
-            <ul className="mt-7 space-y-3 text-[15px]">
-              {freeFeatures.map((f) => (
-                <li key={f} className="flex items-center gap-3 rounded-lg text-[#1f2b4d]/85 dark:text-[#d1d5db]/80 transition-transform duration-200 hover:-translate-y-1">
-                  <Check className="h-4 w-4 shrink-0 text-[#1f2b4d]/70 dark:text-[#d1d5db]/80" />
-                  {f}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Pro Pass */}
-          <div className="lift relative flex flex-col rounded-[28px] border border-[#3b82f6]/40 bg-white/85 dark:bg-[#16191c]/90 p-8 backdrop-blur-xl shadow-[0_0_60px_-20px_rgba(30,64,175,0.22)]">
-            <span className="bg-accent-orange absolute -top-3 left-1/2 z-10 -translate-x-1/2 rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-white whitespace-nowrap">
-              Pro Pass
-            </span>
-
-            <div className="rounded-2xl border border-[#1e40af]/18 dark:border-white/10 bg-[#1e40af]/[0.045] dark:bg-white/[0.04] p-7">
-              <div className="text-lg font-medium text-[#1f2b4d]/90 dark:text-[#d1d5db]/80">Pro Pass</div>
-              <div className="mt-8 flex items-end gap-2 text-[#0f172a] dark:text-[#f3f4f6]">
-                <span className="text-6xl font-semibold tracking-normal">$9</span>
-                <span className="mb-2 text-sm text-[#1f2b4d]/85 dark:text-[#d1d5db]/80">one-time</span>
-              </div>
-              <p className="mt-2 text-sm text-[#1f2b4d]/75 dark:text-[#d1d5db]/80">Pay once. Lifetime access to everything Drivable builds.</p>
-            </div>
-
-            <ul className="mt-7 space-y-3 text-[15px]">
-              {proFeatures.map((f) => (
-                <li key={f} className="flex items-center gap-3 rounded-lg text-[#1f2b4d]/85 dark:text-[#d1d5db]/80 transition-transform duration-200 hover:-translate-y-1">
-                  <Check className="h-4 w-4 shrink-0 text-[#1e40af] dark:text-[#7ea6ff]" />
-                  {f}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
+  return <section id="pricing" className="marketing-pricing-band marketing-lane-divider px-6 py-28">
+    <div className="mx-auto mb-14 max-w-3xl text-center"><p className="text-sm font-semibold text-marketing-white/70">Two Plans</p><h2 className="mt-6 text-3xl font-semibold sm:text-5xl">Pick Your <span className="hero-serif-gradient marketing-band-serif">Lane</span></h2><p className="mt-4 text-marketing-white/70">Practice at no cost, or unlock everything with one payment.</p></div>
+    <div className="mx-auto grid max-w-5xl gap-6 md:grid-cols-2">
+      {[{name:"Free Pass",price:"$0",period:"forever free",description:"Kick the tires and study the basics, no card required.",items:freeFeatures,pro:false},{name:"Pro Pass",price:"$9",period:"one-time",description:"Pay once. Lifetime access to everything Drivable builds.",items:proFeatures,pro:true}].map(plan=><div key={plan.name} className={plan.pro ? "marketing-pro-card lift flex flex-col rounded-[28px] border p-8" : "lift flex flex-col rounded-[28px] border border-border bg-card p-8 text-card-foreground"}>
+        <div className="flex items-center justify-between gap-2"><h3 className="text-lg font-medium">{plan.name}</h3>{plan.pro && <span className="rounded-full bg-marketing-white/10 px-3 py-1 text-xs font-semibold">Best value</span>}</div><div className="mt-8 flex items-end gap-2"><span className="font-display text-6xl font-semibold">{plan.price}</span><span className="mb-2 text-sm opacity-75">{plan.period}</span></div><p className="mt-3 text-sm leading-relaxed opacity-75">{plan.description}</p>
+        <ul className="mt-7 mb-8 space-y-3 text-[15px]">{plan.items.map(f=><li key={f} className="flex items-start gap-3"><Check className="mt-0.5 size-4 shrink-0" /><span>{f}{/simulation/i.test(f) && <span className="ml-2"><BetaBadge /></span>}</span></li>)}</ul>
+        <Button asChild variant={plan.pro ? "secondary":"default"} className="mt-auto h-12 w-full rounded-full"><Link to="/auth" search={{mode:"sign-up",...(plan.pro ? {next:"/app?intent=upgrade"}:{})}}>{plan.pro ? "Get Pro":"Start free"}<ArrowRight /></Link></Button>
+      </div>)}
+    </div>
+  </section>;
 }
 
 
 function CTA() {
   return (
     <section className="px-6 pb-24">
-      <div className="relative mx-auto max-w-5xl overflow-hidden rounded-[36px] border border-[#1e40af]/18 dark:border-white/10 bg-[#1e40af]/[0.035] dark:bg-white/[0.03] p-16 text-center text-[#0f172a] dark:text-[#f3f4f6] backdrop-blur-xl">
+      <div className="relative mx-auto max-w-5xl overflow-hidden rounded-[36px] border border-[#1e40af]/18 dark:border-white/10 bg-[#1e40af]/[0.035] dark:bg-white/[0.03] p-6 sm:p-16 text-center text-[#0f172a] dark:text-[#f3f4f6] backdrop-blur-xl">
         <h2 className="text-3xl font-semibold sm:text-5xl">
           Prepare With Confidence.
           <br />
-          <span className="text-primary font-medium">
+          <span className="hero-serif-gradient">
             One Topic at a Time.
           </span>
         </h2>
         <p className="mx-auto mt-6 max-w-xl text-[#1f2b4d]/70 dark:text-[#d1d5db]/80">
-          Drivable is in private beta. Join the waitlist to hear when it opens.
+          State-specific preparation for your permit test and driving test. Start practicing today.
         </p>
-        <button type="button" onClick={openWaitlist}
-            className={`${BTN_PRIMARY} mt-10 px-10 py-5 text-base`}
-        >
-          Join the waitlist
-          <ArrowRight className="h-4 w-4" />
-        </button>
+        <Button asChild className={`${BTN_PRIMARY} mt-10 h-auto px-10 py-5 text-base`}><Link to="/auth" search={{mode:"sign-up"}}>Get started<ArrowRight className="h-4 w-4" /></Link></Button>
       </div>
     </section>
 

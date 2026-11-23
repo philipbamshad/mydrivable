@@ -68,10 +68,23 @@
 
   --color-rose-glow: var(--rose-glow);
   --color-rose-soft: var(--rose-soft);
+  --color-marketing-navy: var(--marketing-navy);
+  --color-marketing-white: var(--marketing-white);
+  --color-marketing-blue-tint: var(--marketing-blue-tint);
+  --color-marketing-green: var(--marketing-green);
+  --color-marketing-amber: var(--marketing-amber);
+  --color-marketing-red: var(--marketing-red);
 }
 
 /* ===== Light mode (canonical) — minimalist AI aesthetic ===== */
 :root {
+  --marketing-navy: #08122B;
+  --marketing-white: #ffffff;
+  --marketing-blue-tint: #EFF4FF;
+  --marketing-green: #15803d;
+  --marketing-amber: #b45309;
+  --marketing-red: #dc2626;
+  --marketing-shadow: 0 18px 40px -24px rgb(15 23 42 / 0.3);
   --radius: 0.75rem;
   --progress-blue: #2563eb;
   --progress-text: var(--progress-blue);
@@ -886,3 +899,25 @@
 /* Calm preparation surfaces; retain only the requested turn-signal animation. */
 .ambient-blob, .ambient-blob-slow, .ambient-spin-slow, .aura-orbit, .status-dot, .text-grad, .text-grad-warm, .feature-float, .feature-float-delay, .feature-float-delay-2, .feature-progress, .feature-card::before { animation: none; }
 .simulation-game .drive-flash { display: none; }
+
+/* Homepage-only details; study surfaces retain their existing theme. */
+.marketing-feature { border-top: 3px solid var(--primary); box-shadow: var(--marketing-shadow); }
+.marketing-feature:hover { box-shadow: 0 22px 42px -20px color-mix(in srgb, var(--foreground) 28%, transparent); }
+.marketing-feature[data-feature-tone="green"] { border-top-color: var(--marketing-green); }
+.marketing-feature[data-feature-tone="amber"] { border-top-color: var(--marketing-amber); }
+.marketing-feature[data-feature-tone="red"] { border-top-color: var(--marketing-red); }
+.marketing-feature[data-feature-tone="blue"] > div:first-child { background: color-mix(in srgb, var(--primary) 5%, transparent); }
+.marketing-feature[data-feature-tone="green"] > div:first-child { background: color-mix(in srgb, var(--marketing-green) 5%, transparent); }
+.marketing-feature[data-feature-tone="amber"] > div:first-child { background: color-mix(in srgb, var(--marketing-amber) 5%, transparent); }
+.marketing-feature[data-feature-tone="red"] > div:first-child { background: color-mix(in srgb, var(--marketing-red) 5%, transparent); }
+.marketing-lane-divider { position: relative; }
+.marketing-lane-divider::before { content: ""; position: absolute; top: 0; left: 25%; width: 50%; border-top: 2px dashed color-mix(in srgb, var(--primary) 25%, transparent); }
+.marketing-pricing-band { background: var(--marketing-navy); color: var(--marketing-white); }
+.marketing-pricing-band::before { border-color: color-mix(in srgb, var(--marketing-white) 25%, transparent); }
+.marketing-pro-card { background: var(--marketing-navy); color: var(--marketing-white); border-color: color-mix(in srgb, var(--marketing-white) 35%, transparent); }
+.marketing-band-serif { color: var(--rose-soft); }
+.marketing-pricing-band .text-primary { color: var(--rose-soft); }
+.marketing-pro-card .beta-label { color: var(--marketing-white); border-color: color-mix(in srgb, var(--marketing-white) 30%, transparent); background: color-mix(in srgb, var(--marketing-white) 10%, transparent); }
+@media (prefers-reduced-motion: reduce) {
+  .marketing-feature, .reveal, .fade-in-up { transition: none; animation: none; transform: none; opacity: 1; }
+}

@@ -1,8 +1,8 @@
 import { createServerFn } from '@tanstack/react-start'
 import { z } from 'zod'
-import { requireAllowlisted } from './allowlist-middleware'
+import { requireSupabaseAuth } from '@/integrations/supabase/auth-middleware'
 export const deleteAccount = createServerFn({ method: 'POST' })
-  .middleware([requireAllowlisted])
+  .middleware([requireSupabaseAuth])
   .inputValidator(z.object({ confirmation: z.literal('DELETE') }))
   .handler(async ({ context }) => {
     const { data: verified, error: verificationError } = await context.supabase.auth.getUser()

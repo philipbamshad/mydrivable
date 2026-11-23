@@ -40,9 +40,6 @@ export const Route = createFileRoute("/api/chat")({
           return new Response("Unauthorized", { status: 401 });
         }
         const userId = userData.user.id;
-        const { data: allowed } = await supabase.rpc("is_allowlisted");
-        if (allowed !== true) return new Response("Forbidden", { status: 403 });
-
         const { data: thread } = await supabase
           .from("threads")
           .select("id, title")

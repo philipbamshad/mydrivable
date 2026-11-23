@@ -8,3 +8,7 @@ export function permitRules(state: string, under18: boolean | null) {
   }
   return rules;
 }
+
+export function setupReady(state: string | null, completedAt: string | null) {
+  return Boolean(state && completedAt);
+}

@@ -40,6 +40,7 @@ import { cn } from "@/lib/utils";
 import { AccountPanel, type AccountSection } from "@/components/dashboard/AccountPanel";
 import { useUserProfile, US_STATES } from "@/lib/user-profile";
 import { targetDateHasPassed } from "@/lib/target-date";
+import { BetaBadge } from "@/components/marketing/BetaBadge";
 import { useQueryClient } from "@tanstack/react-query";
 
 const PRIMARY_NAV = [
@@ -419,6 +420,7 @@ export function ThreadSidebar() {
             >
               Driving Test Simulation
             </span>
+            {!isCollapsed && <BetaBadge />}
           </Link>
         </nav>
       </div>
