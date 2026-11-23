@@ -139,4 +139,6 @@
 - [x] Two-step check badge and "Correct. Now choose your next action."; result chips per step; timeout never marks correct answers ✕.
 - [x] Update How it works text/icon and full-width progress bar; test all 6 scenarios timed/untimed.
 
-- [x] Ad images: added approved headlines to A/B/C square + 9:16 versions; inspected all six, retained clean originals; finished artwork awaits approval.
+- [x] Ad images: added approved headlines to A/B/C square + 9:16 versions; inspected all six, retained clean originals; all six headline pictures approved.
+
+- [x] Campaign copy: recorded approval of all six pictures; drafted and length-checked three text options for separate approval.
