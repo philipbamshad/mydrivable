@@ -918,6 +918,28 @@
 .marketing-band-serif { color: var(--rose-soft); }
 .marketing-pricing-band .text-primary { color: var(--rose-soft); }
 .marketing-pro-card .beta-label { color: var(--marketing-white); border-color: color-mix(in srgb, var(--marketing-white) 30%, transparent); background: color-mix(in srgb, var(--marketing-white) 10%, transparent); }
+.marketing-left-turn-preview {
+  --preview-signal-amber: #F59E0B;
+  --preview-signal-gradient: linear-gradient(to right, var(--preview-signal-amber), transparent 15%);
+}
+.marketing-left-turn-preview .marketing-preview-signal-glow {
+  background: var(--preview-signal-gradient);
+  animation: marketing-preview-signal-edge 1s ease-in-out infinite;
+}
+.marketing-left-turn-preview .marketing-preview-signal-arrow {
+  color: var(--preview-signal-amber);
+  animation: marketing-preview-signal-arrow 1s ease-in-out infinite;
+}
+@keyframes marketing-preview-signal-edge {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 0.4; }
+}
+@keyframes marketing-preview-signal-arrow {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
 @media (prefers-reduced-motion: reduce) {
+  .marketing-left-turn-preview .marketing-preview-signal-glow { animation: none; opacity: 0.4; }
+  .marketing-left-turn-preview .marketing-preview-signal-arrow { animation: none; opacity: 1; }
   .marketing-feature, .reveal, .fade-in-up { transition: none; animation: none; transform: none; opacity: 1; }
 }

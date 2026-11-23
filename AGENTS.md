@@ -36,4 +36,5 @@
 - Queue study answers by owner, attempt and version in browser storage; replay through an authenticated raw POST sharing the existing atomic scoring helper, and gate results on confirmed draining to preserve limits and recovery.
 - Gate app content on saved state setup; retain legacy age-band exam formats without asking new users for age, and retain the saved payload format on resume.
 - Public demo uses browser-local state and existing authored questions/media only; never reserve attempts, call live AI or write progress, so it cannot consume free allowances.
+- Scope hero-specific simulation preview scenes and signal styles through an opt-in prop so shared feature previews and live simulation remain unchanged.
 - Merge legacy exam answers only for identities missing from Hub progress, preserving recovered misses and canonical question counts.

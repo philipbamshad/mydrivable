@@ -231,7 +231,7 @@ function Hero() {
         <Button asChild variant="outline" className={`${BTN_SECONDARY} h-auto px-7 py-4 text-base`}><Link to="/demo">Try demo</Link></Button>
       </div>
       <p className="relative mt-5 max-w-2xl text-xs leading-relaxed text-muted-foreground">Built from the official California DMV handbook · Free plan available · Pro is $9 once</p>
-      <div className="relative mt-8 w-full max-w-lg"><div className="mb-3 flex items-center justify-center gap-2 text-xs font-semibold text-muted-foreground">Driving Test Simulation <BetaBadge /></div><SimulationPreview /></div>
+      <div className="relative mt-8 w-full max-w-lg"><div className="mb-3 flex items-center justify-center gap-2 text-xs font-semibold text-muted-foreground">Driving Test Simulation <BetaBadge /></div><SimulationPreview leftTurn /></div>
     </section>
   );
 }
