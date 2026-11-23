@@ -5,7 +5,6 @@ import logo from "@/assets/drivable-logo.png";
 import {
   ArrowRight,
   Check,
-  MapPin,
   Menu,
   X,
 } from "lucide-react";
@@ -265,9 +264,8 @@ function StatesMarquee() {
           {loop.map((s, i) => (
             <span
               key={`${s}-${i}`}
-              className={`inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-[13px] font-medium transition-colors hover:bg-primary/10 ${s === "California" ? "border-primary bg-primary/10 text-primary" : "border-border bg-card/75 text-muted-foreground hover:text-foreground"}`}
+              className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card/75 px-3.5 py-1.5 text-[13px] font-medium text-muted-foreground transition-colors hover:bg-primary/10 hover:text-foreground"
             >
-              {s === "California" && <MapPin className="h-3 w-3 shrink-0" />}
               {s}
             </span>
           ))}

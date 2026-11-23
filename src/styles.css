@@ -907,11 +907,13 @@
 .marketing-preview-fade { animation: marketing-preview-fade 350ms ease-in-out; }
 @keyframes marketing-preview-fade { from { opacity: 0; } to { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .marketing-preview-fade { animation: none; } }
-.marketing-feature { border-top: 3px solid var(--primary); box-shadow: var(--marketing-shadow); }
+.marketing-feature { --feature-tone: var(--primary); position: relative; box-shadow: var(--marketing-shadow); }
+.marketing-feature::after { content: ""; position: absolute; inset: 0; z-index: 1; border-radius: inherit; box-shadow: inset 0 2px 0 var(--feature-tone); pointer-events: none; }
+.lucide-octagon { stroke-linejoin: miter; }
 .marketing-feature:hover { box-shadow: 0 22px 42px -20px color-mix(in srgb, var(--foreground) 28%, transparent); }
-.marketing-feature[data-feature-tone="green"] { border-top-color: var(--marketing-green); }
-.marketing-feature[data-feature-tone="amber"] { border-top-color: var(--marketing-amber); }
-.marketing-feature[data-feature-tone="red"] { border-top-color: var(--marketing-red); }
+.marketing-feature[data-feature-tone="green"] { --feature-tone: var(--marketing-green); }
+.marketing-feature[data-feature-tone="amber"] { --feature-tone: var(--marketing-amber); }
+.marketing-feature[data-feature-tone="red"] { --feature-tone: var(--marketing-red); }
 .marketing-feature[data-feature-tone="blue"] > div:first-child { background: color-mix(in srgb, var(--primary) 5%, transparent); }
 .marketing-feature[data-feature-tone="green"] > div:first-child { background: color-mix(in srgb, var(--marketing-green) 5%, transparent); }
 .marketing-feature[data-feature-tone="amber"] > div:first-child { background: color-mix(in srgb, var(--marketing-amber) 5%, transparent); }
