@@ -1,0 +1,9 @@
+CREATE OR REPLACE FUNCTION public.is_allowlisted() RETURNS boolean LANGUAGE sql STABLE SECURITY DEFINER SET search_path=public AS $$ SELECT auth.uid() IS NOT NULL $$;
+COMMENT ON FUNCTION public.is_allowlisted() IS 'Compatibility access predicate: all authenticated accounts may use the public app; no email allowlist lookup.';
+COMMENT ON TABLE public.app_allowlist IS 'DEPRECATED for app access: retained historical tester notes; admin roles remain separate.';
+DO $$ DECLARE item record; definition text; old_check text := 'IF NOT EXISTS(SELECT 1 FROM public.app_allowlist a JOIN auth.users u ON lower(u.email)=a.email WHERE u.id=p_user) THEN RAISE EXCEPTION ''Forbidden''; END IF;'; new_check text := 'IF p_user IS NULL OR NOT EXISTS(SELECT 1 FROM public.user_profiles WHERE user_id=p_user) THEN RAISE EXCEPTION ''Forbidden''; END IF;'; BEGIN FOR item IN SELECT oid FROM pg_proc WHERE pronamespace='public'::regnamespace AND proname IN ('reserve_study_attempt','commit_study_answer') LOOP definition:=pg_get_functiondef(item.oid); IF position(old_check in definition)=0 THEN RAISE EXCEPTION 'Expected legacy access check not found'; END IF; EXECUTE replace(definition,old_check,new_check); END LOOP; END $$;
+REVOKE ALL ON FUNCTION public.reserve_study_attempt(uuid,text,text,jsonb) FROM PUBLIC, anon, authenticated;
+GRANT EXECUTE ON FUNCTION public.reserve_study_attempt(uuid,text,text,jsonb) TO service_role;
+REVOKE ALL ON FUNCTION public.commit_study_answer(uuid,uuid,integer,jsonb,integer,double precision,jsonb) FROM PUBLIC, anon, authenticated;
+GRANT EXECUTE ON FUNCTION public.commit_study_answer(uuid,uuid,integer,jsonb,integer,double precision,jsonb) TO service_role;
+COMMENT ON COLUMN public.user_profiles.under_18 IS 'Legacy self-reported exam age format retained for existing accounts; no longer requested at setup; NULL uses state default.';

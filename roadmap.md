@@ -142,3 +142,12 @@
 - [x] Ad images: added approved headlines to A/B/C square + 9:16 versions; inspected all six, retained clean originals; all six headline pictures approved.
 
 - [x] Campaign copy: recorded approval of all six pictures; drafted and length-checked three text options for separate approval.
+
+# Public launch and demo
+- [ ] Open public free signup and authenticated app access; preserve owner-only progress, Pro limits and admin permissions.
+- [ ] Remove onboarding age question; retain saved age formats for existing users.
+- [ ] Simplify homepage and add simulation Beta labels.
+- [ ] Add database-free five-tab California demo.
+- [ ] Verify signup/setup and demo desktop/mobile.
+- [ ] Launch announcement: blocked — Lovable App emails do not permit bulk product announcements.
+- [x] Record full campaign-copy approval; hold waitlist copy since new launch brief changes the offer.

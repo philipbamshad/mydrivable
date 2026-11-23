@@ -15,14 +15,13 @@ export function StateOnboardingDialog() {
   const { hydrating, onboardingCompleted, completeSetup } = useUserProfile();
   const [choice, setChoice] = useState("");
   const [date, setDate] = useState("");
-  const [age, setAge] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const open = !hydrating && !onboardingCompleted;
   const save = async () => {
-    if (!choice || !age || busy) return;
+    if (!choice || busy) return;
     setBusy(true); setError(null);
-    try { await completeSetup(choice, date || null, age === "yes"); }
+    try { await completeSetup(choice, date || null); }
     catch (cause) { setError(cause instanceof Error ? cause.message : "Unable to save setup."); }
     finally { setBusy(false); }
   };
@@ -55,10 +54,9 @@ export function StateOnboardingDialog() {
           </Select>
         </div>
         <div className="space-y-2"><Label htmlFor="onboarding-date">DMV test date (optional)</Label><Input id="onboarding-date" type="date" value={date} onChange={e => setDate(e.target.value)} /><Button variant="link" className="h-8 px-0" onClick={() => setDate("")}>Skip test date</Button></div>
-        <div className="space-y-2"><Label htmlFor="onboarding-age">Are you under 18?</Label><Select value={age} onValueChange={setAge}><SelectTrigger id="onboarding-age"><SelectValue placeholder="Select an answer" /></SelectTrigger><SelectContent><SelectItem value="yes">Yes</SelectItem><SelectItem value="no">No</SelectItem></SelectContent></Select></div>
         {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
         <DialogFooter>
-          <Button className="w-full" disabled={!choice || !age || busy} onClick={() => void save()}>
+          <Button className="w-full" disabled={!choice || busy} onClick={() => void save()}>
             {busy ? "Setting up…" : "Start studying"}
           </Button>
         </DialogFooter>
