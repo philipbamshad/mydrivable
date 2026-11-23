@@ -407,9 +407,9 @@ export function ThreadSidebar() {
               pathname === "/app/simulation" && "nav-link-active",
               isCollapsed && "justify-center px-0",
             )}
-            aria-label="Driving Sim"
+            aria-label="Driving Test Sim"
             aria-current={pathname === "/app/simulation" ? "page" : undefined}
-            title={isCollapsed ? "Driving Sim" : undefined}
+            title={isCollapsed ? "Driving Test Sim" : undefined}
           >
             <Video className="w-4 h-4 shrink-0" />
             <span
@@ -418,9 +418,9 @@ export function ThreadSidebar() {
                 isCollapsed ? "w-0 overflow-hidden opacity-0" : "flex-1",
               )}
             >
-              Driving Sim
+              Driving Test Sim
             </span>
-            {!isCollapsed && <BetaBadge />}
+            {!isCollapsed && <BetaBadge className="px-1.5 py-px text-[9px] leading-3" />}
           </Link>
         </nav>
       </div>

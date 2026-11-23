@@ -1,5 +1,8 @@
 # Design improvements
 
+# Sidebar simulation label
+- [x] Rename sidebar row to "Driving Test Sim" with a smaller Beta pill; label and pill fit one line with no truncation at 1280px and 390px, pill vertically centered. Page title stays "Driving Test Simulation".
+
 # Navigation, question variety and demo polish
 - [x] Fit sidebar labels and center homepage navigation; desktop center differs by less than 0.01px, mobile menu verified.
 - [x] Add rotating hero previews with manual stop, equal-height centered feature cards, complete simulation preview, section spacing and brand accents.
