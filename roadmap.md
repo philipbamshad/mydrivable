@@ -169,3 +169,8 @@
 # Simulation defaults and decision labels
 - [x] Default each visit to untimed while retaining the toggle within the visit.
 - [x] Label and color the existing decision buttons; verify desktop/mobile and timing tests.
+
+# Consent-gated Meta Pixel
+- [x] Install only the confirmed base pixel after explicit Marketing acceptance; no noscript bypass.
+- [x] Extend existing consent and notices, retaining refusals and separate Analytics choices.
+- [x] Test no-choice, rejection, acceptance, withdrawal and cross-tab privacy gates; record receipt limits.

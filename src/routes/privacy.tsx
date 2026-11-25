@@ -24,7 +24,7 @@ function PrivacyPage() {
     <MarketingLayout>
       <div className="mx-auto max-w-3xl px-4 py-12 text-foreground">
         <h1 className="text-4xl font-semibold tracking-tight">Privacy Policy</h1>
-        <p className="mt-2 text-sm text-muted-foreground">Last updated: November 2, 2026</p>
+        <p className="mt-2 text-sm text-muted-foreground">Last updated: November 25, 2026</p>
 
         <div className="mt-10 space-y-10 text-[15px] leading-7 text-foreground/90">
           <section>
@@ -69,8 +69,7 @@ function PrivacyPage() {
           <section>
             <h2 className="text-xl font-semibold text-[#0f172a]">5. Analytics and tracking</h2>
             <p className="mt-3">
-              We do not currently use analytics or advertising trackers. If optional tracking is
-              introduced, it will run only after you give consent through Cookie preferences.
+              Hosting analytics counts page visits without cookies or identifying you. Optional click measurement follows your Analytics choice. Only after you accept Marketing cookies, Meta Pixel reports a page visit to Meta Platforms for advertising measurement and optimization. This may share the visited URL, browser and device information, IP address and advertising-cookie identifiers. We do not send account details, study answers or payment values, or enable automatic form-data collection. Your separate Analytics choice does not authorize Meta tracking.
             </p>
           </section>
 
@@ -98,6 +97,7 @@ function PrivacyPage() {
               You can update or delete your account information at any time through the Service. If
               you would like to request deletion of your account and associated data, please contact
               us at the email address below.
+              You can withdraw optional tracking permission at any time through Cookie preferences in the footer or Cookie Policy. Withdrawal stops future Meta pixel events, and Global Privacy Control overrides acceptance. Withdrawing does not undo data already shared with Meta.
             </p>
           </section>
 

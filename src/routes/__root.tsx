@@ -1,4 +1,6 @@
 import { CookieConsent } from "@/components/CookieConsent";
+import { consentBootstrap } from "@/lib/consent-bootstrap";
+import { startMetaPixel } from "@/lib/meta-pixel";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
@@ -75,6 +77,7 @@ function ErrorComponent({ error, reset }: { error: unknown; reset: () => void })
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
+    scripts: [{ children: consentBootstrap }],
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
@@ -133,6 +136,7 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  useEffect(() => startMetaPixel(), []);
 
   return (
     <QueryClientProvider client={queryClient}>

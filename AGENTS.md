@@ -23,7 +23,8 @@
 - Keep Test Hub progress state-scoped in its owner-only table; derive mastery and missed-question recovery in the pure Hub helper, use stable question identities across answer shuffles, and await answer/score saves before advancing.
 - Derive Hub mastery from ever-correct identities divided by the canonical topic bank size; latest answer and missed recovery remain separate so later misses cannot erase mastery.
 - Use fixed semantic simulation actions with pure timing and scenario data; instruction and legend preferences are browser-only presentation state.
-- Keep timed mode in route-local state initialized from the tested untimed default, and scope labeled action colors to the live simulation row so demo and marketing controls stay unchanged.
+- Keep timing visit-local and action colors live-row-scoped to preserve other previews.
+- Gate Meta Pixel through shared per-purpose consent; revoke on withdrawal and omit noscript so no path bypasses permission.
 - Author simulation steps in scenario data; aggregate scenario correctness across every required step and reaction averages across individual decisions. Active study layouts share a viewport-bounded question frame so feedback stays visible.
 - Resolve Coach jurisdiction from the authenticated profile and consume free usage through the owner-scoped atomic RPC; client request state and browser counters are never authoritative.
 - Reserve study sessions atomically in study_attempts; service-only versioned answer commits score the server-authored payload and write history/progress together, preventing duplicate Free slots and answer edits while preserving resume state.
