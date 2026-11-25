@@ -1,4 +1,5 @@
 export const DECISION_MS = 2_500;
+export const INITIAL_TIMED_MODE = false;
 
 export type ScenarioDecision = {
   scenarioId: string;

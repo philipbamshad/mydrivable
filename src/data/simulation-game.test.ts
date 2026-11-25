@@ -1,7 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { DECISION_MS, recordDecision, decisionSummary, stepProgress, finishScenario } from "./simulation-game";
+import { DECISION_MS, INITIAL_TIMED_MODE, recordDecision, decisionSummary, stepProgress, finishScenario } from "./simulation-game";
 
 describe("simulation prep rules", () => {
+  it("starts each visit untimed and accepts decisions beyond 2.5 seconds by default", () => {
+    expect(INITIAL_TIMED_MODE).toBe(false);
+    expect(recordDecision("go", "go", "go", 20000, INITIAL_TIMED_MODE).correct).toBe(true);
+  });
   it("allows 2.5 seconds in timed mode", () => {
     expect(DECISION_MS).toBe(2500);
     expect(recordDecision("stop", "stop", "stop", 2499, true).correct).toBe(true);

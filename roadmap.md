@@ -165,3 +165,7 @@
 - [x] Ad images: added approved headlines to A/B/C square + 9:16 versions; inspected all six, retained clean originals; all six headline pictures approved.
 
 - [x] Campaign copy: recorded approval of all six pictures; drafted and length-checked three text options for separate approval.
+
+# Simulation defaults and decision labels
+- [x] Default each visit to untimed while retaining the toggle within the visit.
+- [x] Label and color the existing decision buttons; verify desktop/mobile and timing tests.

@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import { tabGlowStyle } from "@/lib/tab-glow";
 import { SIMULATION_CLIPS } from "@/data/simulation-clips";
 import { createSimulationSession, type ActionIcon, type SimulationClip } from "@/data/simulation-session";
-import { DECISION_MS, recordDecision, decisionSummary, finishScenario, stepProgress, type ScenarioDecision } from "@/data/simulation-game";
+import { DECISION_MS, INITIAL_TIMED_MODE, recordDecision, decisionSummary, finishScenario, stepProgress, type ScenarioDecision } from "@/data/simulation-game";
 import { ScenarioThumbnail } from "@/components/simulation/ScenarioThumbnail";
 import { signalDirection, signalIsActive } from "@/data/simulation-signal";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -74,7 +74,7 @@ function SimulationPage() {
   }, []);
   const [phase, setPhase] = useState<Phase>("ready");
   const phaseRef = useRef<Phase>("ready");
-  const [timed, setTimed] = useState(true);
+  const [timed, setTimed] = useState(INITIAL_TIMED_MODE);
   const [session, setSession] = useState<SimulationClip[]>([]);
   const [idx, setIdx] = useState(0);
   const [decisions, setDecisions] = useState<ScenarioDecision[]>([]);
@@ -308,7 +308,7 @@ function SimulationPage() {
                 <Button disabled={finishing} onClick={()=>void goNext()} className="mt-auto h-9 shrink-0 self-end rounded-full">{finishing ? "Finishing up…" : "Next scenario"}<ArrowRight /></Button>
               </div> : <div ref={decisionPanel} className="flex h-full flex-col gap-2">
                 <div className="min-h-[40px]">{phase === "decision" && <>{stepIndex > 0 && <p className="text-xs font-semibold text-success">Correct. Now choose your next action.</p>}<p className="text-sm font-semibold">{stepIndex === 0 ? "What do you do?" : "Then what do you do?"}{clip.steps.length > 1 && <span className="ml-2 text-xs font-normal text-muted-foreground">Step {stepIndex + 1} of {clip.steps.length}</span>}</p></>}</div>
-                <TooltipProvider delayDuration={150}><div key={`${phase}-${stepIndex}`} className={cn("sim-action-row grid grid-cols-3 gap-3 rounded-2xl", phase === "decision" && "sim-action-row-live")}>{STANDARD_ACTIONS.map(action => { const Icon = icons[action.icon]; if (!Icon) return null; const done = stepRecords.current.some(r => r.correct && r.selectedAction === action.id) && phase === "decision"; return <Tooltip key={action.id}><TooltipTrigger asChild><span className="block"><Button type="button" variant="outline" disabled={phase !== "decision"} onClick={() => answer(action.id)} aria-label={action.label} data-action={action.id} data-done={done || undefined} className="sim-action-button"><Icon className="size-9" strokeWidth={2.5} />{done && <span className="sim-action-check" aria-hidden="true"><Check className="size-3" strokeWidth={3} /></span>}</Button></span></TooltipTrigger><TooltipContent>{action.label}</TooltipContent></Tooltip>; })}</div></TooltipProvider>
+                <TooltipProvider delayDuration={150}><div key={`${phase}-${stepIndex}`} className={cn("sim-action-row simulation-labeled-actions grid grid-cols-3 gap-3 rounded-2xl", phase === "decision" && "sim-action-row-live")}>{STANDARD_ACTIONS.map(action => { const Icon = icons[action.icon]; if (!Icon) return null; const done = stepRecords.current.some(r => r.correct && r.selectedAction === action.id) && phase === "decision"; return <Tooltip key={action.id}><TooltipTrigger asChild><span className="block"><Button type="button" variant="outline" disabled={phase !== "decision"} onClick={() => answer(action.id)} aria-label={action.label} data-action={action.id} data-done={done || undefined} className="sim-action-button"><Icon aria-hidden="true" className="size-9" strokeWidth={2.5} /><span>{action.label}</span>{done && <span className="sim-action-check" aria-hidden="true"><Check className="size-3" strokeWidth={3} /></span>}</Button></span></TooltipTrigger><TooltipContent>{action.label}</TooltipContent></Tooltip>; })}</div></TooltipProvider>
               </div>}
             </div>
           </div>

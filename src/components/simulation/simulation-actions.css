@@ -19,6 +19,15 @@
 .sim-action-button:focus-visible { outline: none; box-shadow: 0 0 0 3px rgb(30 41 59 / 0.55); }
 .sim-action-button:disabled { opacity: 0.6; cursor: default; }
 .sim-action-button[data-done] { border-color: var(--success); }
+.simulation-labeled-actions .sim-action-button[data-action="go"] { --sim-accent: var(--marketing-green); }
+.simulation-labeled-actions .sim-action-button[data-action="yield"] { --sim-accent: var(--marketing-amber); }
+.simulation-labeled-actions .sim-action-button[data-action="stop"] { --sim-accent: var(--marketing-red); }
+.simulation-labeled-actions .sim-action-button {
+  gap: 4px; padding-inline: 6px; font-size: 14px; font-weight: 600;
+  color: var(--sim-accent); border-color: color-mix(in srgb, var(--sim-accent) 30%, transparent);
+}
+.simulation-labeled-actions .sim-action-button > svg:first-child { flex-shrink: 0; }
+.simulation-labeled-actions .sim-action-button:not(:disabled):hover { background: color-mix(in srgb, var(--sim-accent) 5%, var(--card)); }
 .sim-action-check { position: absolute; top: 6px; right: 6px; display: grid; place-items: center; width: 18px; height: 18px; border-radius: 9999px; background: var(--success); color: var(--card); }
 .sim-action-row-live { animation: sim-row-ring 700ms ease-out; }
 @keyframes sim-row-ring { 0% { box-shadow: 0 0 0 0 rgb(30 41 59 / 0.45); } 100% { box-shadow: 0 0 0 10px rgb(30 41 59 / 0); } }
