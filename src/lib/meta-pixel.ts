@@ -13,15 +13,33 @@ declare global {
 }
 
 /** No SDK, queue, or fallback image exists until advertising permission is explicit. */
+let ready = false;
+let lastPage: string | null = null;
+
+/** Sends a standard event only after consent loaded the pixel; never pass personal data. */
+export function trackMetaEvent(name: string, params?: Record<string, string | number>, eventId?: string) {
+  if (!ready || !window.fbq || readChoice("advertising") !== "granted") return false;
+  if (eventId) window.fbq("track", name, params ?? {}, { eventID: eventId });
+  else if (params) window.fbq("track", name, params);
+  else window.fbq("track", name);
+  return true;
+}
+
+/** One PageView per distinct page path, including client-side navigation. */
+export function trackMetaPageView(path: string) {
+  if (path === lastPage) return;
+  if (trackMetaEvent("PageView")) lastPage = path;
+}
+
 export function startMetaPixel() {
   let active = true;
   let initialized = false;
-  let pageViewed = false;
   const sync = async () => {
     const permitted = await canTrack("advertising");
     if (!active) return;
     if (!permitted || readChoice("advertising") !== "granted") {
       window.fbq?.("consent", "revoke");
+      ready = false;
       return;
     }
     if (!window.fbq) {
@@ -43,10 +61,8 @@ export function startMetaPixel() {
       window.fbq("init", META_PIXEL_ID, {}, { agent: "lovable" });
       initialized = true;
     }
-    if (!pageViewed) {
-      window.fbq("track", "PageView");
-      pageViewed = true;
-    }
+    ready = true;
+    trackMetaPageView(window.location.pathname);
   };
   void sync();
   const unsubscribe = onConsentChange(() => { void sync(); });

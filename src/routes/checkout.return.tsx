@@ -1,5 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { CheckCircle2 } from "lucide-react";
+import { useEffect } from "react";
+import { confirmCheckoutPayment } from "@/lib/payments.functions";
+import { getStripeEnvironment } from "@/lib/stripe";
+import { trackMetaEvent } from "@/lib/meta-pixel";
+
+const PURCHASE_SENT_KEY = "drivable_meta_purchase_sent";
 
 export const Route = createFileRoute("/checkout/return")({
   validateSearch: (search: Record<string, unknown>): { session_id?: string } => ({
@@ -19,6 +25,28 @@ export const Route = createFileRoute("/checkout/return")({
 
 function CheckoutReturn() {
   const { session_id: sessionId } = Route.useSearch();
+  useEffect(() => {
+    if (!sessionId) return;
+    let cancelled = false;
+    let timer: number | undefined;
+    const alreadySent = () => (localStorage.getItem(PURCHASE_SENT_KEY) ?? "").split(",").includes(sessionId);
+    void (async () => {
+      if (alreadySent()) return;
+      const result = await confirmCheckoutPayment({ data: { sessionId, environment: getStripeEnvironment() } }).catch(() => null);
+      if (cancelled || !result || !("paid" in result) || !result.paid) return;
+      let tries = 0;
+      const send = () => {
+        if (cancelled || alreadySent()) return;
+        // Session ID doubles as Meta's eventID so retries are deduplicated.
+        if (trackMetaEvent("Purchase", { value: 9, currency: "USD" }, sessionId)) {
+          const sent = (localStorage.getItem(PURCHASE_SENT_KEY) ?? "").split(",").filter(Boolean);
+          localStorage.setItem(PURCHASE_SENT_KEY, [...sent, sessionId].slice(-20).join(","));
+        } else if (++tries <= 10) timer = window.setTimeout(send, 300);
+      };
+      send();
+    })();
+    return () => { cancelled = true; if (timer) window.clearTimeout(timer); };
+  }, [sessionId]);
   return (
     <div className="min-h-screen grid place-items-center bg-background p-6">
       <div className="glass glow-strong rounded-2xl p-8 max-w-md text-center">

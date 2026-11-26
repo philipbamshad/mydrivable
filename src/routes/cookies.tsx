@@ -22,7 +22,7 @@ function CookiesPage() {
         <p>We do not currently use analytics cookies. If we add them, they will only run after you opt in.</p>
       </LegalSection>
       <LegalSection heading="Marketing cookies">
-        <p>Only after you accept Marketing cookies, Meta Pixel loads and reports a page visit. Meta may use cookies such as _fbp and _fbc to measure advertising. Rejecting or withdrawing Marketing permission stops future pixel events; your browser’s Global Privacy Control signal also blocks them. We do not enable automatic form-data collection.</p>
+        <p>Only after you accept Marketing cookies, Meta Pixel loads for advertising measurement and reports page visits, demo page views, account sign-ups and confirmed Pro Pass purchases. No emails, names or other personal details are sent. Meta may use cookies such as _fbp and _fbc to measure advertising. Rejecting or withdrawing Marketing permission stops future pixel events; your browser’s Global Privacy Control signal also blocks them. We do not enable automatic form-data collection.</p>
       </LegalSection>
       <LegalSection heading="Your choices">
         <p>You can change your choice at any time.</p>

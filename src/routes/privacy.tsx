@@ -69,7 +69,7 @@ function PrivacyPage() {
           <section>
             <h2 className="text-xl font-semibold text-[#0f172a]">5. Analytics and tracking</h2>
             <p className="mt-3">
-              Hosting analytics counts page visits without cookies or identifying you. Optional click measurement follows your Analytics choice. Only after you accept Marketing cookies, Meta Pixel reports a page visit to Meta Platforms for advertising measurement and optimization. This may share the visited URL, browser and device information, IP address and advertising-cookie identifiers. We do not send account details, study answers or payment values, or enable automatic form-data collection. Your separate Analytics choice does not authorize Meta tracking.
+              Hosting analytics counts page visits without cookies or identifying you. Optional click measurement follows your Analytics choice. Only after you accept Marketing cookies, Meta Pixel reports page visits, demo page views, account sign-ups and confirmed Pro Pass purchases (the $9 USD amount) to Meta Platforms for advertising measurement and optimization. This may share the visited URL, browser and device information, IP address and advertising-cookie identifiers. We do not send emails, names, account details, study answers or card details, or enable automatic form-data collection. Your separate Analytics choice does not authorize Meta tracking.
             </p>
           </section>
 

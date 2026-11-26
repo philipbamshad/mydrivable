@@ -135,3 +135,21 @@ export const createPortalSession = createServerFn({ method: "POST" })
       return { error: getStripeErrorMessage(error) };
     }
   });
+
+/** Confirms a finished Pro checkout with Stripe for the signed-in buyer; used to gate the Meta Purchase event. */
+export const confirmCheckoutPayment = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data: { sessionId: string; environment: StripeEnv }) =>
+    z.object({ sessionId: z.string().regex(/^cs_[A-Za-z0-9_]+$/), environment: z.enum(["sandbox", "live"]) }).parse(data))
+  .handler(async ({ data, context }): Promise<{ paid: boolean } | { error: string }> => {
+    try {
+      const { isConfirmedPayment } = await import("@/lib/order-confirmation");
+      const session = await createStripeClient(data.environment).checkout.sessions.retrieve(data.sessionId);
+      const paid = session.metadata?.userId === context.userId
+        && session.metadata?.priceId === "pro_pass_lifetime_9"
+        && isConfirmedPayment(session, data.environment);
+      return { paid };
+    } catch (error) {
+      return { error: getStripeErrorMessage(error) };
+    }
+  });

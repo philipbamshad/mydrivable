@@ -1,6 +1,6 @@
 import { CookieConsent } from "@/components/CookieConsent";
 import { consentBootstrap } from "@/lib/consent-bootstrap";
-import { startMetaPixel } from "@/lib/meta-pixel";
+import { startMetaPixel, trackMetaPageView } from "@/lib/meta-pixel";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
@@ -9,6 +9,7 @@ import {
   useRouter,
   HeadContent,
   Scripts,
+  useRouterState,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 
@@ -137,6 +138,8 @@ function RootShell({ children }: { children: ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   useEffect(() => startMetaPixel(), []);
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  useEffect(() => { trackMetaPageView(pathname); }, [pathname]);
 
   return (
     <QueryClientProvider client={queryClient}>

@@ -1,3 +1,4 @@
+import { trackMetaEvent } from '@/lib/meta-pixel';
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 import { ArrowLeft, ArrowRight, Check } from 'lucide-react';
@@ -90,6 +91,12 @@ function DemoPage() {
   const [active,setActive] = useState<DemoTab>('practice');
   const [completed,setCompleted] = useState<DemoTab[]>([]);
   const [records,setRecords] = useState<Partial<Record<DemoTab,number[]>>>({});
+  useEffect(() => {
+    // Waits briefly for a consented pixel to finish starting; skipped entirely without consent.
+    let tries = 0;
+    const id = window.setInterval(() => { if (trackMetaEvent('ViewContent', { content_name: 'Demo' }) || ++tries > 10) window.clearInterval(id); }, 300);
+    return () => window.clearInterval(id);
+  },[]);
   useEffect(() => {
     try {
       setCompleted(completedDemoTabs(localStorage.getItem(DEMO_COMPLETION_KEY)).filter(t => t !== 'progress'));

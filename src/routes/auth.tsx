@@ -1,3 +1,4 @@
+import { trackMetaEvent } from "@/lib/meta-pixel";
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { z } from "zod";
@@ -141,6 +142,7 @@ function AuthPage() {
           setLoading(false);
           return;
         }
+        trackMetaEvent("CompleteRegistration");
         if (data.session) { goNext(); return; }
         setSignupSuccess(true);
         setLoading(false);

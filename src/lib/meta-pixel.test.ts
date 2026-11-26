@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { startMetaPixel, META_PIXEL_ID } from "./meta-pixel";
+import { startMetaPixel, trackMetaEvent, trackMetaPageView, META_PIXEL_ID } from "./meta-pixel";
+let page = 0;
 
 const consent = vi.hoisted(() => ({ granted: false, listener: () => {} }));
 vi.mock("@/lib/consent", () => ({
@@ -13,7 +14,7 @@ describe("Meta base pixel consent", () => {
   beforeEach(() => {
     consent.granted = false;
     appendChild.mockClear();
-    vi.stubGlobal("window", {});
+    vi.stubGlobal("window", { location: { pathname: `/page-${++page}` } });
     vi.stubGlobal("document", { createElement: () => ({}), head: { appendChild } });
   });
   afterEach(() => vi.unstubAllGlobals());
@@ -37,6 +38,16 @@ describe("Meta base pixel consent", () => {
     consent.granted = true; consent.listener(); await flush();
     expect(window.fbq?.queue.at(-1)).toEqual(["consent", "grant"]);
     expect(window.fbq?.queue.filter(args => args[0] === "track")).toHaveLength(1); stop();
+  });
+  it("sends events only while consent is granted, without personal data", async () => {
+    expect(trackMetaEvent("ViewContent")).toBe(false);
+    consent.granted = true; const stop = startMetaPixel(); await flush();
+    expect(trackMetaEvent("Purchase", { value: 9, currency: "USD" }, "cs_1")).toBe(true);
+    expect(window.fbq?.queue).toContainEqual(["track", "Purchase", { value: 9, currency: "USD" }, { eventID: "cs_1" }]);
+    trackMetaPageView("/demo"); trackMetaPageView("/demo");
+    expect(window.fbq?.queue.filter(a => a[1] === "PageView")).toHaveLength(2);
+    consent.granted = false; consent.listener(); await flush();
+    expect(trackMetaEvent("CompleteRegistration")).toBe(false); stop();
   });
   it("does not load after a pending consent check is cancelled", async () => {
     consent.granted = true; const stop = startMetaPixel(); stop(); await flush();
