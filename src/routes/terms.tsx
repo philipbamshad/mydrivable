@@ -9,7 +9,7 @@ export const Route = createFileRoute("/terms")({
 
 function TermsPage() {
   return (
-    <LegalPage title="Terms of Service" updated="October 14, 2026">
+    <LegalPage title="Terms of Service" updated="November 26, 2026">
       <LegalSection heading="1. Agreement">
         <p>
           These Terms govern your use of Drivable (the "Service"), operated by {BUSINESS_NAME} ("we", "us"). By creating an
@@ -43,7 +43,7 @@ function TermsPage() {
       </LegalSection>
       <LegalSection heading="6. Purchases">
         <p>
-          The Drivable Pro Pass is a one-time $9 purchase that unlocks unlimited access for the life of the Service. The
+          The Drivable Pro Pass is a one-time $14 purchase that unlocks unlimited access for the life of the Service. The
           price shown at checkout is the full amount; there are no subscriptions or recurring charges. All sales are final,
           as described in our <Link to="/refunds" className="text-primary underline">Refund Policy</Link>.
         </p>

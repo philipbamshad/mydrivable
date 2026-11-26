@@ -42,8 +42,8 @@ describe("Meta base pixel consent", () => {
   it("sends events only while consent is granted, without personal data", async () => {
     expect(trackMetaEvent("ViewContent")).toBe(false);
     consent.granted = true; const stop = startMetaPixel(); await flush();
-    expect(trackMetaEvent("Purchase", { value: 9, currency: "USD" }, "cs_1")).toBe(true);
-    expect(window.fbq?.queue).toContainEqual(["track", "Purchase", { value: 9, currency: "USD" }, { eventID: "cs_1" }]);
+    expect(trackMetaEvent("Purchase", { value: 14, currency: "USD" }, "cs_1")).toBe(true);
+    expect(window.fbq?.queue).toContainEqual(["track", "Purchase", { value: 14, currency: "USD" }, { eventID: "cs_1" }]);
     trackMetaPageView("/demo"); trackMetaPageView("/demo");
     expect(window.fbq?.queue.filter(a => a[1] === "PageView")).toHaveLength(2);
     consent.granted = false; consent.listener(); await flush();

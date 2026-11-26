@@ -38,7 +38,7 @@ function CheckoutReturn() {
       const send = () => {
         if (cancelled || alreadySent()) return;
         // Session ID doubles as Meta's eventID so retries are deduplicated.
-        if (trackMetaEvent("Purchase", { value: 9, currency: "USD" }, sessionId)) {
+        if (trackMetaEvent("Purchase", { value: 14, currency: "USD" }, sessionId)) {
           const sent = (localStorage.getItem(PURCHASE_SENT_KEY) ?? "").split(",").filter(Boolean);
           localStorage.setItem(PURCHASE_SENT_KEY, [...sent, sessionId].slice(-20).join(","));
         } else if (++tries <= 10) timer = window.setTimeout(send, 300);

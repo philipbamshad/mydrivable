@@ -696,11 +696,11 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
             <DialogDescription>
               {getStripeEnvironment() === "sandbox" ? (
                 <>
-                  $9 one-time payment · lifetime access. Test mode is active in preview, use
+                  $14 one-time payment · lifetime access. Test mode is active in preview, use
                   card <span className="font-mono">4242 4242 4242 4242</span>.
                 </>
               ) : (
-                "$9 one-time payment · lifetime access."
+                "$14 one-time payment · lifetime access."
               )}
             </DialogDescription>
           </DialogHeader>
@@ -711,7 +711,7 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
                 priceId={checkoutPriceId}
                 returnUrl={
                   typeof window !== "undefined"
-                    ? `${window.location.origin}/app?checkout=success`
+                    ? `${window.location.origin}/checkout/return?session_id={CHECKOUT_SESSION_ID}`
                     : undefined
                 }
               />

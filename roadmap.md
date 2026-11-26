@@ -1,5 +1,10 @@
 # Design improvements
 
+# Pro Pass price update
+- [ ] Replace the Stripe checkout price with USD 1400 cents, retaining the old price and existing lifetime access.
+- [ ] Update public/app/legal/email prices and Meta Purchase value; audit project and database content.
+- [ ] Complete a sandbox checkout and verify charged amount, receipt and lifetime Pro access.
+
 # Homepage hero cleanup
 - [x] Replace the grey trust line with 5 amber stars plus Hudson P.'s short quote, shorten the paragraph to one sentence, drop the headline ~15% (72→61px desktop), tighten hero spacing (preview card top 514→406px, fully visible at 1226×809 and 390×844), and make both hero buttons the same 56px pill. Nothing below the hero changed.
 
@@ -80,7 +85,7 @@
 
 # Pro Pass receipt update and sandbox test
 - [x] Add actual paid amount, safe card label and optional official Stripe receipt; send only on confirmed success.
-- [x] Test $9 sandbox payment with pm_card_visa through the real Stripe success webhook; verify sent email, receipt and Pro UI, then restore Free without deleting Stripe test payment. Inbox arrival cannot be observed.
+- [x] Test the previous sandbox payment with pm_card_visa through the real Stripe success webhook; verify sent email, receipt and Pro UI, then restore Free without deleting Stripe test payment. Inbox arrival cannot be observed.
 
 # Permit and driving prep plans
 - [x] Update simulation counts/statistics, branding, homepage plans and existing welcome/waitlist/order App emails; launch campaign remains skipped by prior user choice.
@@ -104,7 +109,7 @@
 - [x] Ever-correct topic mastery and past DMV date notice.
 - [x] Fixed three-action simulation, instructions/legend, 2.5-second timing and mobile layout.
 - [x] Verify signup/signin/cookies, saved exams, Hub progress, Active-state AI and simulation on desktop/mobile; 44 rule tests passed.
-- [x] Purchase-to-Pro test: confirmed $9 sandbox payment, automatic Stripe webhook upgrade and email send, official receipt and restored Free UI.
+- [x] Purchase-to-Pro test: confirmed previous sandbox payment, automatic Stripe webhook upgrade and email send, official receipt and restored Free UI.
 - [ ] Complete manual factual review of every state question: current tests establish unique choices, not handbook accuracy.
 - [ ] Complete remaining account/date/image flow checks: signout, changing target date, and a live uploaded-image reply remain unverified.
 - [x] Tighten homepage spacing and reduce competing motion.

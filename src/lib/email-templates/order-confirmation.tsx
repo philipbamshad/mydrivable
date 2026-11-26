@@ -36,5 +36,5 @@ export const template = {
   component: OrderConfirmationEmail,
   subject: 'Your Drivable Pro Pass is active',
   displayName: 'Pro Pass order confirmation',
-  previewData: { appUrl: 'https://mydrivable.com/app', amountPaid: '$9.00', paymentMethod: 'Visa •••• 4242', orderDate: 'November 5, 2026', orderNumber: 'DRV-3F9A2C7B' },
+  previewData: { appUrl: 'https://mydrivable.com/app', amountPaid: '$14.00', paymentMethod: 'Visa •••• 4242', orderDate: 'November 5, 2026', orderNumber: 'DRV-3F9A2C7B' },
 } satisfies TemplateEntry

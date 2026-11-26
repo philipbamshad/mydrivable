@@ -3,16 +3,16 @@ import { LegalPage, LegalSection, SupportLink, legalHead } from "@/components/ma
 
 export const Route = createFileRoute("/refunds")({
   head: () =>
-    legalHead("/refunds", "Refund Policy · Drivable", "Drivable's refund policy for the one-time $9 Pro Pass."),
+    legalHead("/refunds", "Refund Policy · Drivable", "Drivable's refund policy for the one-time $14 Pro Pass."),
   component: RefundsPage,
 });
 
 function RefundsPage() {
   return (
-    <LegalPage title="Refund Policy" updated="October 14, 2026">
+    <LegalPage title="Refund Policy" updated="November 26, 2026">
       <LegalSection heading="One-time purchase">
         <p>
-          The Drivable Pro Pass costs $9, charged once. There is no subscription, so there is nothing to cancel and you
+          The Drivable Pro Pass costs $14, charged once. There is no subscription, so there is nothing to cancel and you
           will never be charged again.
         </p>
       </LegalSection>
