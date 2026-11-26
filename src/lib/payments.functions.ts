@@ -2,6 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { z } from "zod";
 import type Stripe from "stripe";
+import { isCurrentProPrice } from "@/lib/order-confirmation";
 import {
   type StripeEnv,
   createStripeClient,
@@ -65,7 +66,7 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
       const prices = await stripe.prices.list({ lookup_keys: [data.priceId] });
       if (!prices.data.length) throw new Error("Price not found");
       const stripePrice = prices.data[0];
-      const isRecurring = stripePrice.type === "recurring";
+      if (!isCurrentProPrice(stripePrice)) throw new Error("Pro Pass checkout requires the current $14.00 USD one-time price. Publish the updated Stripe catalog before accepting new payments.");
 
       const customerId = await resolveOrCreateCustomer(stripe, {
         email,
@@ -79,7 +80,7 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
 
       const params: Stripe.Checkout.SessionCreateParams & { managed_payments: { enabled: boolean } } = {
         line_items: [{ price: stripePrice.id, quantity: 1 }],
-        mode: isRecurring ? "subscription" : "payment",
+        mode: "payment",
         ui_mode: "embedded_page",
         return_url: data.returnUrl,
         customer: customerId,
@@ -88,12 +89,7 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
           priceId: data.priceId,
           productId: product.metadata?.lovable_external_id || productId,
         },
-        ...(!isRecurring && {
-          payment_intent_data: { description: product.name },
-        }),
-        ...(isRecurring && {
-          subscription_data: { metadata: { userId } },
-        }),
+        payment_intent_data: { description: product.name },
         managed_payments: { enabled: true },
       };
       const session = await stripe.checkout.sessions.create(params);

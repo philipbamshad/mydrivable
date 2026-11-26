@@ -1,3 +1,8 @@
+/** New checkout catalog entries must be the current one-time USD price. Historical fulfillment is amount-independent. */
+export function isCurrentProPrice(price: { type?: string; currency?: string; unit_amount?: number | null; recurring?: unknown }) {
+  return price.type === 'one_time' && price.currency === 'usd' && price.unit_amount === 1400 && price.recurring == null
+}
+
 /** Only Stripe-confirmed, environment-matched payments can grant access or send receipts. */
 export function isConfirmedPayment(session: { mode?: string; payment_status?: string; livemode?: boolean }, environment: 'sandbox' | 'live') {
   return session.mode === 'payment' && session.payment_status === 'paid' && session.livemode === (environment === 'live')

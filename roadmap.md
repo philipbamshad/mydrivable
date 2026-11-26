@@ -1,9 +1,9 @@
 # Design improvements
 
 # Pro Pass price update
-- [ ] Replace the Stripe checkout price with USD 1400 cents, retaining the old price and existing lifetime access.
-- [ ] Update public/app/legal/email prices and Meta Purchase value; audit project and database content.
-- [ ] Complete a sandbox checkout and verify charged amount, receipt and lifetime Pro access.
+- [x] Replace the Stripe checkout price with USD 1400 cents; old Stripe price remains and existing lifetime entitlement rows are unchanged.
+- [x] Update public/app/legal/email prices and Meta Purchase value; source/template and all 19 public-table audits found no obsolete monetary literals. Non-price timing/layout/image matches remain unchanged.
+- [x] Complete a sandbox checkout: Stripe settled 1400 USD cents with no subscription; official receipt shows the current amount, webhook granted lifetime Pro and the UI read it back. Consented Meta Purchase emitted value 14 once, with no repeat after reload. Disposable-account order email was suppressed; receipt rendering verified separately. All 147 tests passed.
 
 # Homepage hero cleanup
 - [x] Replace the grey trust line with 5 amber stars plus Hudson P.'s short quote, shorten the paragraph to one sentence, drop the headline ~15% (72→61px desktop), tighten hero spacing (preview card top 514→406px, fully visible at 1226×809 and 390×844), and make both hero buttons the same 56px pill. Nothing below the hero changed.

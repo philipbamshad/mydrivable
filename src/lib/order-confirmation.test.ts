@@ -1,7 +1,20 @@
 import { describe, expect, it } from 'vitest'
-import { isConfirmedPayment, orderConfirmationDetails } from './order-confirmation'
+import { isConfirmedPayment, isCurrentProPrice, orderConfirmationDetails } from './order-confirmation'
 
 describe('Pro Pass confirmed payment receipts', () => {
+  it('allows new checkouts only at 1400 cents USD as a one-time price', () => {
+    expect(isCurrentProPrice({ type: 'one_time', currency: 'usd', unit_amount: 1400, recurring: null })).toBe(true)
+    expect(isCurrentProPrice({ type: 'one_time', currency: 'usd', unit_amount: 1000, recurring: null })).toBe(false)
+    expect(isCurrentProPrice({ type: 'one_time', currency: 'eur', unit_amount: 1400, recurring: null })).toBe(false)
+  })
+  it('rejects subscriptions even when the amount is 1400 cents', () => {
+    expect(isCurrentProPrice({ type: 'recurring', currency: 'usd', unit_amount: 1400, recurring: { interval: 'month' } })).toBe(false)
+  })
+  it('keeps confirmed past purchases eligible independent of the current catalog price', () => {
+    const historical = { mode: 'payment', payment_status: 'paid', livemode: true, metadata: { priceId: 'pro_pass_lifetime_9' }, amount_total: 1000 }
+    expect(isConfirmedPayment(historical, 'live')).toBe(true)
+    expect(isCurrentProPrice({ type: 'one_time', currency: 'usd', unit_amount: historical.amount_total })).toBe(false)
+  })
   it('requires paid status before fulfilling', () => {
     expect(isConfirmedPayment({ mode: 'payment', payment_status: 'unpaid', livemode: false }, 'sandbox')).toBe(false)
     expect(isConfirmedPayment({ mode: 'payment', payment_status: 'paid', livemode: false }, 'sandbox')).toBe(true)
