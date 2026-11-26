@@ -22,8 +22,3 @@ export function distinctOptions<T extends QuestionLike>(question: T): T {
   });
   return { ...question, options };
 }
-
-export function orderBooleanAnswers<T extends QuestionLike>(question: T): T {
-  if (question.options.length !== 2 || !question.options.includes("True") || !question.options.includes("False")) return question;
-  return { ...question, options: ["True", "False"], correct: question.options[question.correct] === "True" ? 0 : 1 };
-}

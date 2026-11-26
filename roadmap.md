@@ -1,5 +1,10 @@
 # Design improvements
 
+# Multiple-choice-only permit questions
+- [x] Convert all 15 shared binary authored concepts to direct three-choice questions (no verified per-state option-count metadata); zero deletions, no authored Yes/No pairs. Keep explanations and concept IDs, and shuffle correct positions.
+- [x] Repair 130 question snapshots across 72 saved attempts and 27 binary progress snapshots across 10 topic rows. Verify all 85 non-simulation attempts and 239 progress entries preserve scores, answers, exam lengths, mastery and recovery; remaining stored binary counts zero. Read/commit compatibility retains original correct slots for queued answers.
+- [x] All 152 tests pass, including all-state full-length exam selection and binary-free banks/demo. Signed-in exam answered and resumed, converted school-zone question and topic feedback verified; desktop/mobile demo remains multiple choice. Preview build OK; nothing published.
+
 # Pro Pass price update
 - [x] Replace the Stripe checkout price with USD 1400 cents; old Stripe price remains and existing lifetime entitlement rows are unchanged.
 - [x] Update public/app/legal/email prices and Meta Purchase value; source/template and all 19 public-table audits found no obsolete monetary literals. Non-price timing/layout/image matches remain unchanged.

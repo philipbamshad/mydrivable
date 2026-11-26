@@ -6,10 +6,12 @@ import type { ExamQuestion } from './mock-exam';
 import {hubQuestion,type HubQuestion} from './test-hub';
 import type {SimulationClip} from '@/data/simulation-session';
 import {decisionSummary,finishScenario,recordDecision,stepProgress,type ScenarioDecision} from '@/data/simulation-game';
+import { upgradeBinaryQuestion } from '@/data/dmv/binary-question-upgrade';
 export async function commitAnswer(data:StudyAnswerInput,client:SupabaseClient<Database>,userId:string):Promise<StudyAttempt> {
     const {data:row,error}=await client.from('study_attempts').select('*').eq('id',data.id).eq('user_id',userId).single();
     if(error || !row) throw new Error('Attempt not found.');
-    const attempt=row as unknown as StudyAttempt;
+    const source=row as unknown as StudyAttempt;
+    const attempt=source.feature==='simulation' ? source : {...source,payload:source.payload.map(q=>upgradeBinaryQuestion(q as ExamQuestion|HubQuestion,source.state))};
     if(attempt.version>data.version) {
       const saved=attempt.answers[data.version];
       const same=typeof saved==='number' ? saved===data.answer : data.steps && saved && (saved.steps ?? [saved]).length===data.steps.length && (saved.steps ?? [saved]).every((step,index)=>step.selectedAction===(data.timed!==false && (data.steps?.[index]?.elapsed ?? 0)>=2500 ? null : data.steps?.[index]?.action));

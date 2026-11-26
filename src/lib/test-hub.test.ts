@@ -3,6 +3,17 @@ import { answerProgress, emptyTopic, hubQuestion, topicStats, weakestTopic, miss
 
 const question = hubQuestion({ q: "During your morning drive, what does a red light mean?", options: ["Stop", "Go"], correct: 0, explanation: "Stop at the limit line." }, "signs");
 describe("Permit Test Hub rules", () => {
+  it('upgrades legacy binary misses without losing mastery, miss counts or recovery', () => {
+    const legacy = { q: 'It is important to keep the inside and outside of your windshield clean.', options: ['True','False'], correct: 0, explanation: 'True. Sun glare and headlight scatter turn dirty glass into a visibility hazard.', topic: 'signs' as const, key: 'legacy' };
+    const normalized = normalizeTopicProgress({ ...emptyTopic('signs'), questions: { legacy: { question: legacy, correct: true, everCorrect: true, missed: true, recovery: 1, missedCount: 3, lastMissedAt: '2026-11-20T10:00:00Z' } } });
+    const question = missedQuestions([normalized])[0];
+    expect(question?.options).toHaveLength(3);
+    expect(question?.conceptId).toBe('windshield');
+    if (!question) throw new Error('Missed question missing');
+    expect(normalized.questions[question.key]).toMatchObject({ everCorrect: true, recovery: 1, missedCount: 3, lastMissedAt: '2026-11-20T10:00:00Z' });
+    expect(missedQuestions([answerProgress(normalized, question, true)])).toHaveLength(0);
+    expect(topicStats(normalized, 1).mastery).toBe(100);
+  });
   it("merges identical text with older different choices into one missed entry", () => {
     const alternate = hubQuestion({...question,options:['Stop completely','Keep driving']},'signs');
     const normalized = normalizeTopicProgress({...emptyTopic('signs'),questions:{[question.key]:{question,correct:false,missed:true,recovery:0},[alternate.key]:{question:alternate,correct:false,missed:true,recovery:0}}});

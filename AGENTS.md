@@ -44,4 +44,4 @@
 - Normalize Hub progress keys before legacy merges and on database writes; keep database concept aliases aligned with canonicalConcept, and preserve miss counts/dates across upserts and recovery.
 - Keep public demo completion/answers browser-local through the tested demo-results helper; every tab has an explicit completion screen, with no live AI or study writes.
 - Share authored marketing examples in ProductPreview; isolate its five-second rotation and manual-stop state from feature previews and study sessions.
-- Validate new prices separately to preserve past lifetime access.
+- Separate new-price checks; retain legacy binary answer slots.

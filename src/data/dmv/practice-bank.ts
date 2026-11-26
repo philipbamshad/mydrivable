@@ -151,9 +151,9 @@ const TEMPLATES: Template[] = [
   {
     conceptId: "TEMPLATES-010",
     pillar: "signs",
-    q: "You may pass another vehicle by crossing over the double solid parallel yellow lines.",
-    options: ["True", "False"],
-    correct: 1,
+    q: "What do double solid yellow center lines mean for passing?",
+    options: ["Passing is prohibited in both directions", "Passing is permitted when the road is clear", "Passing is permitted after signaling"],
+    correct: 0,
     explanation:
       "False. A double solid yellow line means passing is prohibited in both directions. Cross only for a legal left turn into a driveway.",
   },
@@ -169,8 +169,8 @@ const TEMPLATES: Template[] = [
   {
     conceptId: "TEMPLATES-012",
     pillar: "signs",
-    q: "It is important to keep the inside and outside of your windshield clean.",
-    options: ["True", "False"],
+    q: "Why should you clean both sides of your windshield?",
+    options: ["To reduce glare and improve visibility", "To reduce glare only during daytime trips", "To improve visibility only during rainy trips"],
     correct: 0,
     explanation:
       "True. Sun glare and headlight scatter turn dirty glass into a visibility hazard. Clean both sides regularly, especially before night trips.",
@@ -180,8 +180,8 @@ const TEMPLATES: Template[] = [
   {
     conceptId: "TEMPLATES-013",
     pillar: "intersections",
-    q: "You should begin a right turn in the lane nearest the curb.",
-    options: ["True", "False"],
+    q: "Which lane should you use to begin an ordinary right turn?",
+    options: ["The lane nearest the right curb", "The lane nearest the center line", "Any lane with room to complete the turn"],
     correct: 0,
     explanation:
       "True. Enter the turn from the lane closest to the curb and finish the turn into the lane closest to the curb on the receiving street.",
@@ -189,8 +189,8 @@ const TEMPLATES: Template[] = [
   {
     conceptId: "TEMPLATES-014",
     pillar: "intersections",
-    q: "Wherever there is a STOP sign in {state}, you must stop at the limit line or before entering any crosswalk.",
-    options: ["True", "False"],
+    q: "Where must you stop at a STOP sign when a limit line is marked?",
+    options: ["Before crossing the marked limit line", "After crossing the line but before traffic", "At the road edge beyond the crosswalk"],
     correct: 0,
     explanation:
       "True. In {state}, stop at the marked limit line. If there is no line, stop before the crosswalk, and if there is no crosswalk, stop before entering the intersection.",
@@ -221,9 +221,9 @@ const TEMPLATES: Template[] = [
   {
     conceptId: "TEMPLATES-017",
     pillar: "intersections",
-    q: "You see the flashing lights of an emergency vehicle in your rear view mirror. You should speed up to prevent delaying it.",
-    options: ["True", "False"],
-    correct: 1,
+    q: "An emergency vehicle approaches from behind with flashing lights. What should you do?",
+    options: ["Pull safely to the right edge and stop", "Maintain your speed until it passes you", "Speed up until the next road opens up"],
+    correct: 0,
     explanation:
       "False. Pull as close to the right edge of the road as safe and stop until the emergency vehicle passes. Never race an emergency vehicle.",
   },
@@ -248,8 +248,8 @@ const TEMPLATES: Template[] = [
   {
     conceptId: "TEMPLATES-020",
     pillar: "intersections",
-    q: "When entering an intersection on a green light, you can get a ticket if you block the intersection.",
-    options: ["True", "False"],
+    q: "The light is green, but traffic prevents you from clearing the intersection. What should you do?",
+    options: ["Wait before entering until the exit is clear", "Enter and wait behind the vehicle ahead", "Enter and move toward the crosswalk to wait"],
     correct: 0,
     explanation:
       "True. 'Do not block the box' laws let officers cite drivers who enter an intersection they cannot fully clear before the light changes.",
@@ -257,18 +257,18 @@ const TEMPLATES: Template[] = [
   {
     conceptId: "TEMPLATES-021",
     pillar: "intersections",
-    q: "If another car has stopped at a crosswalk to permit someone to walk across, you may pass that car.",
-    options: ["True", "False"],
-    correct: 1,
+    q: "A vehicle is stopped at a crosswalk for a pedestrian. What should you do?",
+    options: ["Stop behind it and wait for the crossing to clear", "Pass slowly after checking the adjacent lane", "Pass after sounding your horn to warn walkers"],
+    correct: 0,
     explanation:
       "False. Never pass a vehicle that has stopped at a crosswalk. The stopped car may be hiding a pedestrian who is already crossing.",
   },
   {
     conceptId: "TEMPLATES-022",
     pillar: "intersections",
-    q: "A pedestrian must yield the right of way at intersections where crosswalks are not marked.",
-    options: ["True", "False"],
-    correct: 1,
+    q: "How should you treat pedestrians crossing at an unmarked intersection crosswalk?",
+    options: ["Yield to pedestrians using the crosswalk", "Proceed because only painted crossings count", "Yield only if a pedestrian signal is present"],
+    correct: 0,
     explanation:
       "False. Every corner is treated as an unmarked crosswalk. Drivers must yield to pedestrians crossing at intersections whether the crosswalk is painted or not.",
   },
@@ -284,8 +284,8 @@ const TEMPLATES: Template[] = [
   {
     conceptId: "TEMPLATES-024",
     pillar: "intersections",
-    q: "Even when you have the right of way, you should never insist on taking it.",
-    options: ["True", "False"],
+    q: "Another driver fails to yield even though you have the right of way. What should you do?",
+    options: ["Yield when necessary to avoid a collision", "Continue because your legal priority protects you", "Sound your horn and maintain your current speed"],
     correct: 0,
     explanation:
       "True. Right of way is something you give, not take. Defensive driving means yielding when another road user does not, even if you are legally correct.",
@@ -302,8 +302,8 @@ const TEMPLATES: Template[] = [
   {
     conceptId: "TEMPLATES-026",
     pillar: "intersections",
-    q: "If you hit a parked car and cannot find the owner, you should leave a note giving your name and address.",
-    options: ["True", "False"],
+    q: "You hit an unattended parked car and cannot find its owner. What should you do?",
+    options: ["Leave a note with your name and contact details", "Notify your insurer without leaving your details", "Wait briefly and leave if the owner does not return"],
     correct: 0,
     explanation:
       "True. Every state treats leaving the scene of an unattended collision without a note as a hit and run. Include your name, address, and how to reach you.",
@@ -311,8 +311,8 @@ const TEMPLATES: Template[] = [
   {
     conceptId: "TEMPLATES-027",
     pillar: "intersections",
-    q: "In {state} you are required to notify the DMV by filing an accident report when a collision involves an injury or property damage over {accidentThreshold}.",
-    options: ["True", "False"],
+    q: "When does {state} require a written collision report under the handbook rule?",
+    options: ["When injury occurs or damage exceeds {accidentThreshold}", "Only when damage exceeds twice {accidentThreshold}", "Only when an officer requests a report at the scene"],
     correct: 0,
     explanation:
       "True. {state} requires a written accident report when someone is injured or when property damage exceeds {accidentThreshold}. Verify the exact figure with the current handbook.",
@@ -482,9 +482,9 @@ const TEMPLATES: Template[] = [
   {
     conceptId: "TEMPLATES-045",
     pillar: "speed",
-    q: "It is legal to sometimes exceed the maximum speed limit on a highway.",
-    options: ["True", "False"],
-    correct: 1,
+    q: "What does the posted maximum speed limit allow?",
+    options: ["No faster travel, even when road conditions are good", "Faster travel when passing a slower highway vehicle", "Faster travel when matching the speed of other traffic"],
+    correct: 0,
     explanation:
       "False. The posted maximum is the legal ceiling in all conditions. The basic speed law can require you to go slower, never faster.",
   },
@@ -500,8 +500,8 @@ const TEMPLATES: Template[] = [
   {
     conceptId: "TEMPLATES-047",
     pillar: "speed",
-    q: "Within {schoolZoneFeet} of a school in {state}, the speed limit is typically {schoolZone} unless otherwise posted.",
-    options: ["True", "False"],
+    q: "What speed commonly applies near a {state} school when children are present, unless signs say otherwise?",
+    options: ["{schoolZone} near the school when children are present", "35 mph near the school when children are present", "40 mph near the school when children are present"],
     correct: 0,
     explanation:
       "True. In {state}, school zone limits are commonly {schoolZone} within {schoolZoneFeet} of a school when children are present. Watch for posted signs and flashing beacons.",
@@ -541,9 +541,9 @@ const TEMPLATES: Template[] = [
   {
     conceptId: "TEMPLATES-051",
     pillar: "speed",
-    q: "You can use your high beams on dark city streets.",
-    options: ["True", "False"],
-    correct: 1,
+    q: "Which headlights should you use on lit city streets or near other vehicles at night?",
+    options: ["Low beams to reduce glare for other road users", "High beams to improve the view for other road users", "Parking lights to reduce glare for other road users"],
+    correct: 0,
     explanation:
       "False. On lit city streets and within roughly {highBeamFeet} of oncoming traffic or {followBeamFeet} behind another vehicle, use low beams.",
   },
@@ -568,9 +568,9 @@ const TEMPLATES: Template[] = [
   {
     conceptId: "TEMPLATES-054",
     pillar: "speed",
-    q: "You may operate a motor scooter on the street without a driver license or instruction permit.",
-    options: ["True", "False"],
-    correct: 1,
+    q: "What authorization is needed to operate a motor scooter on public streets in {state}?",
+    options: ["A valid license or instruction permit", "Only proof that the scooter is insured", "Only permission from the scooter owner"],
+    correct: 0,
     explanation:
       "False. A motor scooter is a motor vehicle. You need at least a permit or license to operate one on public streets in {state}.",
   },

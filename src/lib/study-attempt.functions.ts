@@ -14,10 +14,14 @@ import type { StudyAttempt } from './study-attempt';
 import { uniqueQuestionSession, recentQuestionHistory } from './question-session';
 import { permitRules, setupReady } from './permit-rules';
 import { withHistoricalExamAnswers } from './exam-missed';
+import { upgradeBinaryQuestion } from '@/data/dmv/binary-question-upgrade';
 export type StudyAnswerInput = {id:string;version:number;answer?:number;steps?:{action:'go'|'yield'|'stop'|null;elapsed:number}[];timed?:boolean};
 
 const feature = z.enum(['exam','signs','intersections','substances','speed','simulation','review']);
-function asAttempt(row: unknown): StudyAttempt { return row as StudyAttempt; }
+function asAttempt(row: unknown): StudyAttempt {
+  const attempt = row as StudyAttempt;
+  return attempt.feature === 'simulation' ? attempt : { ...attempt, payload: attempt.payload.map(q => upgradeBinaryQuestion(q as ExamQuestion | HubQuestion, attempt.state)) };
+}
 export const getStudyAttempts = createServerFn({method:'GET'}).middleware([requireSupabaseAuth]).handler(async ({context}) => {
   const {data,error} = await context.supabase.from('study_attempts').select('*').eq('user_id',context.userId).order('created_at',{ascending:false});
   if(error) throw new Error('Unable to load saved attempts.');

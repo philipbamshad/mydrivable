@@ -2,6 +2,7 @@ import type { PillarId, PracticeQuestion } from "@/data/dmv/practice-bank";
 import { directQuestion } from "./mock-exam";
 import { canonicalConcept } from "@/data/dmv/question-concepts";
 import { questionIdentityKeys } from "./question-session";
+import { upgradeBinaryQuestion } from "@/data/dmv/binary-question-upgrade";
 
 export const HUB_TOPICS: PillarId[] = ["signs", "intersections", "substances", "speed"];
 export const HUB_FREE_LIMIT = 1;
@@ -10,6 +11,7 @@ export type QuestionProgress = { question: HubQuestion; correct: boolean; everCo
 export type TopicProgress = { topic: PillarId; questions: Record<string, QuestionProgress>; lastScore: number | null; bestScore?: number | null };
 
 export function hubQuestion(question: PracticeQuestion, topic: PillarId): HubQuestion {
+  question = upgradeBinaryQuestion(question);
   const q = directQuestion(question.q)
     .replace(/^(?:During your morning drive|While driving home from school|While driving|On your way to school|During your commute),\s*/i, "");
   const text = q.charAt(0).toUpperCase() + q.slice(1);
