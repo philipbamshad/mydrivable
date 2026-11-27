@@ -696,11 +696,11 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
             <DialogDescription>
               {getStripeEnvironment() === "sandbox" ? (
                 <>
-                  $14 one-time payment · lifetime access. Test mode is active in preview, use
+                  $24 one-time payment · lifetime access. Test mode is active in preview, use
                   card <span className="font-mono">4242 4242 4242 4242</span>.
                 </>
               ) : (
-                "$14 one-time payment · lifetime access."
+                "$24 one-time payment · lifetime access."
               )}
             </DialogDescription>
           </DialogHeader>

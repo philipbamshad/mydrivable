@@ -241,7 +241,7 @@ function SimulationPage() {
               <p className="mt-5 text-sm leading-relaxed text-muted-foreground">Real driving decisions happen in a split second. Covers intersections, turns, right-of-way, and lane changes.</p>
               <div className="mt-5 flex items-center justify-between gap-4"><label htmlFor="timed-mode" className="text-sm font-medium">Timed mode</label><Switch id="timed-mode" checked={timed} onCheckedChange={setTimed} className="simulation-toggle" /></div>
               <Button variant="link" onClick={() => changePhase("instructions")} className="mt-3 h-9 px-0 text-sm">How it works</Button>
-              {access==="locked" && <AttemptLock onUpgrade={openCheckout}/>}
+              {access==="locked" && <AttemptLock onUpgrade={openCheckout} message="You've used your one free driving sim run. Pro includes unlimited runs."/>}
               {store.error && <p role="alert" className="mt-3 text-sm text-destructive">{store.error}</p>}
               <Button variant={access === "locked" ? "secondary" : "default"} disabled={hydrating || store.busy} onClick={requestStart} className="mt-3 h-14 w-full rounded-full text-base font-semibold"><Play />{access==="resume" ? "Resume your free attempt" : access==="locked" ? "View past results" : "Start simulation"}</Button>
             </div>
@@ -275,7 +275,8 @@ function SimulationPage() {
                 })}
               </ul>}
             </section>
-            <div className="mt-6 flex flex-col gap-3 sm:flex-row"><Button disabled={store.busy} onClick={()=>isPro ? void start() : openCheckout()} className="h-12 flex-1 rounded-full"><RotateCcw />{isPro ? "Try again" : "Upgrade to Pro"}</Button><Button variant="secondary" asChild className="h-12 flex-1 rounded-full"><Link to="/app">Back to dashboard</Link></Button></div>
+            {!isPro && <p className="mt-6 text-sm text-muted-foreground">You've used your one free driving sim run. Pro includes unlimited runs.</p>}
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row"><Button disabled={store.busy} onClick={()=>isPro ? void start() : openCheckout()} className="h-12 flex-1 rounded-full"><RotateCcw />{isPro ? "Try again" : "Get Pro – $24 once"}</Button><Button variant="secondary" asChild className="h-12 flex-1 rounded-full"><Link to="/app">Back to dashboard</Link></Button></div>
           </div>
         ) : clip ? (
           <div data-scenario={clip.id} data-phase={phase} data-step={stepIndex + 1} className="mt-4 flex min-h-0 flex-1 flex-col gap-2">

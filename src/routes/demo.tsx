@@ -27,7 +27,7 @@ const BANKS: Record<ScoredDemoTab, DemoQuestion[]> = { practice: DEMO_PRACTICE, 
 const ANSWERS_KEY = 'drivable-demo-answers-v1';
 type TabProps = { tab: ScoredDemoTab; completed: DemoTab[]; saved: number[]; onComplete: (tab: DemoTab, answers: number[]) => void; onTab: (tab: DemoTab) => void };
 
-function CreateAccount({ text = 'Get full-length exams, every topic, and save your progress.' }: { text?: string }) {
+function CreateAccount({ text = 'Save your progress with a free account. Pro adds unlimited full-length exams and practice.' }: { text?: string }) {
   return <div className="mt-6 border-t border-border pt-5 text-center"><p className="mb-3 text-sm text-muted-foreground">{text}</p><Button asChild className="h-11 rounded-full px-6"><Link to="/auth" search={{mode:'sign-up'}}>Create your account<ArrowRight /></Link></Button></div>;
 }
 function OtherTabs({ completed, current, onTab }: { completed: DemoTab[]; current: DemoTab; onTab: (t: DemoTab) => void }) {
@@ -73,7 +73,7 @@ function CoachDemo(props: TabProps) {
 
 function ProgressDemo({ completed, records, onTab }: { completed: DemoTab[]; records: Partial<Record<DemoTab,number[]>>; onTab: (t: DemoTab) => void }) {
   const p = demoProgress(BANKS, records, completed);
-  const footer = <CreateAccount text="Create a free account to save your progress and get a study plan for your test date" />;
+  const footer = <CreateAccount text="Create a free account to save your progress. Pro includes a study plan for your test date." />;
   if (!p.scores.length) return <div className="text-center"><h2 className="font-display text-xl font-bold">Try a demo tab to see your progress here</h2><div className="mt-4 flex flex-wrap justify-center gap-2">{(Object.keys(BANKS) as ScoredDemoTab[]).map(t => <Button key={t} variant="outline" className="rounded-full" onClick={() => onTab(t)}>{labels[t]}</Button>)}</div>{footer}</div>;
   return <div className="text-left" data-demo-progress>
     <h2 className="font-display text-xl font-bold">Your demo progress</h2>

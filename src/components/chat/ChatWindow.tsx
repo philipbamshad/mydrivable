@@ -28,6 +28,7 @@ import { Shimmer } from "@/components/ai-elements/shimmer";
 import { toast } from "sonner";
 import logo from "@/assets/drivable-logo.png";
 import { useUserProfile } from "@/lib/user-profile";
+import { FREE_COACH_QUESTIONS } from '@/lib/plan-rules';
 
 const SUGGESTIONS = [
   "I'm starting permit prep, where do I begin?",
@@ -50,7 +51,7 @@ export function ChatWindow({
     useUserProfile();
 
   // Daily usage is read from the authoritative server allowance.
-  const FREE_DAILY_LIMIT = 5;
+  const FREE_DAILY_LIMIT = FREE_COACH_QUESTIONS;
   // The counter itself is incremented by the /api/chat handler, which is the
   // authoritative gate; the client only reads it back for display.
   const freeUsed = freeUsage.chat;
@@ -136,13 +137,13 @@ export function ChatWindow({
         <Lock className="h-4 w-4 text-foreground" />
       </div>
       <p className="mx-auto max-w-sm text-sm font-semibold text-foreground leading-snug">
-        You've used your 5 free questions today. They reset at midnight, or upgrade to Pro for unlimited questions.
+        You've used your 3 free AI Coach questions today. They reset at midnight, or upgrade to Pro for unlimited questions.
       </p>
       <Button
         onClick={() => openCheckout()}
         className="mt-4 press rounded-2xl px-6 py-4 text-sm font-semibold"
       >
-        Upgrade to Pro
+        Get Pro – $24 once
       </Button>
     </div>
   );

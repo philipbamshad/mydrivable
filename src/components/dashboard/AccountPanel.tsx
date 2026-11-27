@@ -124,7 +124,7 @@ export function AccountPanel({ section }: { section?: AccountSection } = {}) {
             <div className="min-w-0">
               <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground">Membership</p>
               <h3 className="whitespace-normal font-display text-lg font-bold">
-                {isPro ? "Pro Pass · Lifetime" : "Free Tier · Onboarding"}
+                {isPro ? "Pro Pass · Lifetime" : "Free Pass"}
               </h3>
               <div className="flex items-center gap-2 mt-1">
                 {isPro ? (
@@ -132,11 +132,11 @@ export function AccountPanel({ section }: { section?: AccountSection } = {}) {
                     <Badge className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
                       <CheckCircle2 className="w-3 h-3" /> Active
                     </Badge>
-                    <span className="text-xs text-muted-foreground">$14 one-time · lifetime access</span>
+                    <span className="text-xs text-muted-foreground">One-time payment · lifetime access</span>
                   </>
                 ) : (
                   <Badge className="bg-muted/40 text-muted-foreground border border-border">
-                    Practice modules locked
+                    Free allowances available
                   </Badge>
                 )}
               </div>
@@ -157,6 +157,7 @@ export function AccountPanel({ section }: { section?: AccountSection } = {}) {
           )}
 
         </div>
+        <p className="mt-4 text-sm text-muted-foreground">{isPro ? "Unlimited practice, full-length mock exams, missed-question review, AI Coach, Driving Test Sim and your study plan. Pay once, use forever, no recurring fees." : "1 quiz per topic (10 questions), 1 sample exam (15 questions), 3 AI Coach questions a day and 1 driving sim run (Beta). Pro Pass: $24 once."}</p>
       </Card>
       )}
 

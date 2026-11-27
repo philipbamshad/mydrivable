@@ -360,26 +360,28 @@ function Testimonials() {
 
 function Pricing() {
   const proFeatures = [
-    "Unlimited AI Coach chat synced to your DMV handbook",
-    "Unlimited full-length state-specific Mock Permit Exams",
-    "Unlimited practice in all 4 Permit Test Hub topics, including Review missed questions",
-    "Unlimited Driving Test Simulation",
-    "All 50 state rule packs",
+    "Unlimited practice in every topic",
+    "Unlimited full-length mock exams",
+    "Review every missed question",
+    "Unlimited AI Coach",
+    "Unlimited Driving Test Sim (Beta)",
+    "Study plan for your test date",
+    "All 50 states",
     "Pay once, use forever, no recurring fees",
   ];
   const freeFeatures = [
-    "5 AI coach questions per day",
-    "1 full-length mock permit exam",
-    "1 practice test per topic",
-    "1 driving test simulation run",
+    "1 quiz per topic",
+    "1 sample exam",
+    "3 AI Coach questions a day",
+    "1 driving sim run (Beta)",
   ];
 
   return <section id="pricing" className="marketing-pricing-band marketing-lane-divider px-4 py-16 sm:px-6 sm:py-20">
     <div className="mx-auto mb-14 max-w-3xl text-center"><p className="marketing-section-label">Two Plans</p><h2 className="mt-6 text-3xl font-semibold sm:text-5xl">Pick Your <span className="hero-serif-gradient marketing-band-serif">Lane</span></h2><p className="mt-4 text-marketing-white/70">Practice at no cost, or unlock everything with one payment.</p></div>
     <div className="mx-auto grid max-w-5xl gap-6 md:grid-cols-2">
-      {[{name:"Free Pass",price:"$0",period:"forever free",description:"Kick the tires and study the basics, no card required.",items:freeFeatures,pro:false},{name:"Pro Pass",price:"$14",period:"one-time",description:"Pay once. Lifetime access to everything Drivable builds.",items:proFeatures,pro:true}].map(plan=><div key={plan.name} className={plan.pro ? "marketing-pro-card lift flex flex-col rounded-[28px] border p-8" : "lift flex flex-col rounded-[28px] border border-border bg-card p-8 text-card-foreground"}>
+      {[{name:"Free Pass",price:"$0",period:"forever free",description:"Kick the tires and study the basics, no card required.",items:freeFeatures,pro:false},{name:"Pro Pass",price:"$24",period:"one-time",description:"Pay once. Lifetime access to everything Drivable builds.",items:proFeatures,pro:true}].map(plan=><div key={plan.name} className={plan.pro ? "marketing-pro-card lift flex flex-col rounded-[28px] border p-8" : "lift flex flex-col rounded-[28px] border border-border bg-card p-8 text-card-foreground"}>
         <div className="flex items-center justify-between gap-2"><h3 className="text-lg font-medium">{plan.name}</h3>{plan.pro && <span className="rounded-full bg-marketing-white/10 px-3 py-1 text-xs font-semibold">Best value</span>}</div><div className="mt-8 flex items-end gap-2"><span className="font-display text-6xl font-semibold">{plan.price}</span><span className="mb-2 text-sm opacity-75">{plan.period}</span></div><p className="mt-3 text-sm leading-relaxed opacity-75">{plan.description}</p>
-        <ul className="mt-7 mb-8 space-y-3 text-[15px]">{plan.items.map(f=><li key={f} className="flex items-start gap-3"><Check className="mt-0.5 size-4 shrink-0" /><span>{f}{/simulation/i.test(f) && <span className="ml-2"><BetaBadge /></span>}</span></li>)}</ul>
+        <ul className="mt-7 mb-8 space-y-3 text-[15px]">{plan.items.map(f=><li key={f} className="flex items-start gap-3"><Check className="mt-0.5 size-4 shrink-0" /><span>{f}</span></li>)}</ul>
         <Button asChild variant={plan.pro ? "secondary":"default"} className="mt-auto h-12 w-full rounded-full"><Link to="/auth" search={{mode:"sign-up",...(plan.pro ? {next:"/app?intent=upgrade"}:{})}}>{plan.pro ? "Get Pro":"Start free"}<ArrowRight /></Link></Button>
       </div>)}
     </div>

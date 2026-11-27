@@ -10,8 +10,8 @@ export type StudyAttempt = {
   answers: (number | ScenarioDecision)[]; completed: boolean; score: number | null;
   average_reaction: number | null; version: number; created_at: string;
 };
-export const ATTEMPT_LOCK_MESSAGE = "You've used your free attempt. Upgrade to Pro for unlimited practice.";
-export const DAILY_AI_MESSAGE = "You've used your 5 free questions today. They reset at midnight, or upgrade to Pro for unlimited questions.";
+export const ATTEMPT_LOCK_MESSAGE = "You've used your one free attempt. Pro includes unlimited practice.";
+export const DAILY_AI_MESSAGE = "You've used your 3 free AI Coach questions today. They reset at midnight, or upgrade to Pro for unlimited questions.";
 export function attemptAccess(isPro: boolean, attempt?: Pick<StudyAttempt, 'completed'>) {
   return isPro ? 'start' : !attempt ? 'start' : attempt.completed ? 'locked' : 'resume';
 }

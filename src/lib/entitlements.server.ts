@@ -1,5 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/integrations/supabase/types";
+import { FREE_COACH_QUESTIONS } from './plan-rules';
 
 /**
  * Server side entitlement checks. The client UI also gates Pro features for a
@@ -7,7 +8,7 @@ import type { Database } from "@/integrations/supabase/types";
  * so a modified client or a direct API call cannot bypass the paywall.
  */
 
-export const FREE_CHAT_DAILY_LIMIT = 5;
+export const FREE_CHAT_DAILY_LIMIT = FREE_COACH_QUESTIONS;
 
 type AnyClient = SupabaseClient<Database>;
 
@@ -83,7 +84,7 @@ export async function consumeChatCredit(
     return {
       allowed: false,
       reason:
-        "You've used your 5 free questions today. They reset at midnight, or upgrade to Pro for unlimited questions.",
+        "You've used your 3 free AI Coach questions today. They reset at midnight, or upgrade to Pro for unlimited questions.",
       used: usage.chat,
       limit: FREE_CHAT_DAILY_LIMIT,
     };

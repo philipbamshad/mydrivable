@@ -9,7 +9,7 @@ export const Route = createFileRoute("/terms")({
 
 function TermsPage() {
   return (
-    <LegalPage title="Terms of Service" updated="November 26, 2026">
+    <LegalPage title="Terms of Service" updated="November 27, 2026">
       <LegalSection heading="1. Agreement">
         <p>
           These Terms govern your use of Drivable (the "Service"), operated by {BUSINESS_NAME} ("we", "us"). By creating an
@@ -42,11 +42,13 @@ function TermsPage() {
         </p>
       </LegalSection>
       <LegalSection heading="6. Purchases">
+        <p>Free Pass includes one 10-question quiz per topic, one 15-question sample exam, three AI Coach questions per local day and one Driving Test Sim run (Beta). Missed-question review and a study plan are Pro only. Existing progress and scores are retained when limits change.</p>
         <p>
-          The Drivable Pro Pass is a one-time $14 purchase that unlocks unlimited access for the life of the Service. The
+          The Drivable Pro Pass is a one-time $24 purchase that unlocks unlimited access for the life of the Service. The
           price shown at checkout is the full amount; there are no subscriptions or recurring charges. All sales are final,
           as described in our <Link to="/refunds" className="text-primary underline">Refund Policy</Link>.
         </p>
+        <p>Existing lifetime Pro purchases retain access. Pay once, use forever, no recurring fees.</p>
       </LegalSection>
       <LegalSection heading="7. Termination">
         <p>

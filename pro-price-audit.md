@@ -1,56 +1,65 @@
-# Pro Pass price audit — November 26, 2026
+# Drivable pricing and Free Pass audit — November 27, 2026
 
 ## Result
 
-New Pro Pass checkouts charge **$14.00 USD (1400 cents)**, once, with lifetime access and no subscription. “Pay once, use forever, no recurring fees” remains unchanged. Existing purchasers’ entitlement rows were not modified.
+Pro Pass is **$24 USD once (2400 cents)** with lifetime access and no subscription. Existing lifetime purchasers retain access. Old Stripe prices are retained without checkout lookup keys; new checkouts resolve the permanent `pro_pass_lifetime_9` catalog key to the current amount.
 
-## Every previous monetary-price location found
+## Every outdated price or Free-plan description found
 
-| Location | Verified current result |
+| Location | Updated result |
 | --- | --- |
-| `src/routes/index.tsx` — homepage pricing / Pro card | $14, one-time; verified desktop and mobile |
-| `src/lib/user-profile.tsx` — preview and live upgrade-dialog descriptions | Both say $14 one-time, lifetime access |
-| `src/components/dashboard/AccountPanel.tsx` — membership card | $14 one-time, lifetime access |
-| `src/components/dashboard/ExamProgressChart.tsx` — locked progress upgrade prompt | $14 one-time |
-| `src/routes/terms.tsx` — Purchases section | $14; no subscription or recurring charges |
-| `src/routes/refunds.tsx` — description metadata and one-time purchase section | Both say $14 |
-| `src/routes/privacy.tsx` — Meta purchase disclosure | $14 USD |
-| `src/lib/email-templates/order-confirmation.tsx` — email preview | $14.00; rendered email verified |
-| `src/lib/order-confirmation.test.ts` — receipt fixture and expected amount | 1400 cents / $14.00 |
-| `src/routes/checkout.return.tsx` — Meta Purchase event | value 14, currency USD |
-| `src/lib/meta-pixel.test.ts` — Purchase event fixture and expectation | value 14, currency USD |
-| `roadmap.md` — two earlier sandbox-payment notes | Removed obsolete monetary literals without changing historical facts |
-| Project Free Pass / Pro pricing memory | Updated to $14 USD once; previous buyers keep access |
-| Stripe sandbox catalog | New one-time price at 1400 cents; previous price retained, with no checkout lookup key |
+| Homepage pricing / Pro card (`src/routes/index.tsx`) | $24 one-time. Exact requested four Free bullets and eight Pro bullets. |
+| Checkout preview/live descriptions (`src/lib/user-profile.tsx`) | $24 one-time payment, lifetime access. |
+| Checkout price guard (`src/lib/payments.functions.ts`, `src/lib/order-confirmation.ts`) | Requires a one-time USD price of 2400 cents for new checkouts. Historical fulfillment stays amount-independent. |
+| Account/settings membership (`src/components/dashboard/AccountPanel.tsx`) | Current Free allowances and $24 upgrade offer; existing Pro displays lifetime access without falsely replacing the amount they paid. |
+| Progress upgrade prompt (`src/components/dashboard/ExamProgressChart.tsx`) | $24 one-time. |
+| Terms purchases (`src/routes/terms.tsx`) | $24, one-time/lifetime, no recurring charges; current Free limits and existing-buyer protection. |
+| Refunds copy and description (`src/routes/refunds.tsx`) | $24 once; no subscription. Existing all-sales-final policy retained. |
+| Privacy advertising disclosure (`src/routes/privacy.tsx`) | Current Purchase value is $24 USD; no personal fields added. |
+| Order-confirmation template preview (`src/lib/email-templates/order-confirmation.tsx`) | $24.00 preview; receipts continue using the actual Stripe-confirmed amount. Updated unlocked-feature list includes study plan. |
+| Receipt/price tests (`src/lib/order-confirmation.test.ts`) | 2400 cents / $24.00; historical payment eligibility remains tested. |
+| Meta success event / tests (`src/routes/checkout.return.tsx`, `src/lib/meta-pixel.test.ts`) | Purchase value 24, currency USD, after confirmed payment and advertising consent; once per checkout. |
+| Free AI allowance/message (`src/lib/entitlements.server.ts`, `src/lib/entitlements.test.ts`, `src/components/chat/ChatWindow.tsx`, `src/lib/study-attempt.ts`) | Three questions per local day, midnight reset, calm priced upgrade action. |
+| Free exam authoring (`src/lib/study-attempt.functions.ts`) | New Free exams contain exactly 15 questions; Pro retains the real state/legacy age format. |
+| Topic authoring (`src/lib/study-attempt.functions.ts`) | New Free topic quizzes contain exactly ten questions; Pro can practice the full canonical topic bank. |
+| Exam start/results (`src/components/dashboard/PermitExamSimulator.tsx`) | Clearly labeled Sample exam, 15-question score, requested upgrade message and $24 button. |
+| Hub topic/review displays (`src/components/dashboard/TestHubDashboard.tsx`) | One quiz per topic, locked count/blurred review preview, calm topic-limit upgrades. |
+| Shared lock (`src/components/dashboard/AttemptLock.tsx`) | Feature-specific explanation; Get Pro – $24 once. |
+| Simulation results/lock (`src/routes/_authenticated/app.simulation.tsx`) | One Free run, unlimited Pro, priced upgrade and navigation retained. |
+| Welcome email (`src/lib/email-templates/welcome.tsx`) | Sample exam rather than a free full exam; ten-question topics, three daily Coach questions, one sim run, $24 Pro. |
+| Seven-day reminder (`src/lib/email-templates/test-in-7-days.tsx`) | Available Free sample or unlimited full-length exams with $24 Pro. |
+| Demo account prompts (`src/routes/demo.tsx`) | Saving progress is Free; unlimited exams and test-date plan are explicitly Pro. Demo gameplay stays fully free. |
+| Previous audit and historical roadmap notes | Superseded current-price statements removed; historical tests described without relabeling past charges. |
+| Shared plan rules and study-plan display | Tested question counts/daily allowance; authenticated Pro-only study-plan read, Free locked preview. |
+| Database functions (`drizzle/migrations/0015_free_coach_three_daily_and_study_sizes.sql`) | Atomic three-credit daily cap; authoritative new Free payload sizes; reservations/resume and existing results preserved. |
 
-The existing permanent catalog key `pro_pass_lifetime_9` stays in the checkout validator, profile checkout key, payment confirmation, webhook fulfillment and historical entitlement rows. Stripe transferred its lookup key to the new price; the suffix is an identifier, not a current amount. Keeping it preserves managed sandbox-to-live catalog synchronization and historical fulfillment.
+“Pay once, use forever, no recurring fees” is retained on pricing, Terms and order email. Other FAQ/trust copy, Cookies content and email templates contain no obsolete monetary price or misleading specific Free allowance to change. General descriptions of full-length exams still describe the Pro feature accurately.
 
-## Full search scope and remaining non-price matches
+## Full audit scope and exceptions
 
-Searched all project text, including hidden project records, source, public assets, migrations and every email template, for the requested currency forms, decimal form and cents number. Excluded dependencies, repository internals, generated build/cache files and secret environment files.
+Searched project source, hidden project documents, public text/assets, current and historical migrations, every email template and **all 19 public application tables**, excluding repository internals, dependencies, caches/build output and secrets. Database searches returned counts only, not personal records. All 19 tables and current public function definitions had **zero obsolete-price/old-plan-description matches**. No database content needed rewriting.
 
-No obsolete monetary literal remains in application source or email templates. The remaining number matches are unrelated to money and were intentionally left unchanged:
+The only remaining requested number matches outside historical Stripe objects are unrelated to money:
+- `src/styles.css`: a color-shade comment.
+- `src/routes/reset-password.tsx`: a redirect delay in milliseconds.
+- `src/data/simulation-game.test.ts`: reaction-time fixtures in milliseconds.
+- Encoded favicon image data may contain incidental digit sequences, not price text.
 
-- `src/routes/reset-password.tsx`: redirect delay in milliseconds.
-- `src/styles.css`: color-shade comment.
-- `src/components/marketing/VideoShowcase.tsx`: maximum width in pixels.
-- `roadmap.md`: historical maximum-width measurement.
-- `.lovable/plan/add-a-video-to-the-drivable-site-2026-10-09.md`: historical video-width measurement.
-- `public/favicon.svg`: encoded image bytes, not displayed text or price.
+These were deliberately not changed. Applied historical migration files remain historical records; the additive migration supersedes the previous AI rule rather than modifying an already-applied migration. Permanent historical price IDs remain unchanged. Previously delivered emails and issued Stripe receipts were not rewritten or misrepresented.
 
-Database audit searched serialized content of **all 19 public application tables**, returning match counts only: zero monetary matches in every table. Public function definitions also returned zero matches. No editable database pricing content needed updating. Historical entitlement IDs remain intact. Cookies, FAQ/trust copy, other upgrade prompts and other email templates had no obsolete price to change. Previously issued Stripe receipts and delivered emails were not rewritten.
+## End-to-end verification
 
-## Checkout, receipt and access test
-
-- Completed the actual embedded checkout with Stripe’s test card as a disposable Free learner.
-- Stripe confirmed `mode=payment`, `status=complete`, `payment_status=paid`, `currency=usd`, total and amount received **1400**, quantity **1**, and **no subscription**.
-- Stripe generated an official receipt; its page returned HTTP 200 and contained the current amount.
-- Automatic payment fulfillment created active Pro with **no expiry date**; the dashboard read back **Pro** and removed the Free allowance message.
-- Existing lifetime-purchase counts/statuses were unchanged before and after testing.
-- On the Stripe-confirmed success page, advertising consent permitted a Meta Purchase call with **value 14 / USD** and the session event ID. Reload emitted no further Purchase. Meta’s external receipt of the event was not confirmed.
-- The disposable test address’s order email was suppressed; rendered confirmation content independently showed $14.00. Inbox delivery was not tested.
-- **147 automated tests passed**; preview compilation reported success; no browser runtime errors in the purchase verification.
+- Disposable Free account completed its **15-question sample exam**, all **four ten-question topic quizzes**, and **one ten-scenario simulation run**. Confirmed completion saved scores, locked each allowance and preserved View past results / navigation.
+- Free Hub showed the actual missed-question count and locked blurred preview; test-date study plan returned a locked response. Direct server review request was rejected.
+- Sent three real AI Coach questions. UI showed two remaining, then one, then the daily limit message. Direct fourth request returned **402**; persisted usage remained three. Existing local-day bucket/reset logic is retained.
+- Completed actual embedded Stripe test checkout: **2400 cents USD charged/received**, paid Charge and succeeded PaymentIntent, `mode=payment`, **no subscription**. Official receipt returned HTTP 200 with the current amount.
+- Automatic fulfillment granted active sandbox Pro with **no expiry**. The UI then opened missed review with explanations, a **46-question California full exam**, the complete topic bank, the study plan, simulation after the used Free run, and Coach after the daily cap.
+- Existing owner Pro account retained full exam, review, study-plan, simulation and unrestricted Coach access on desktop/mobile. Existing live lifetime buyer count remained unchanged. No existing purchaser entitlement was edited.
+- Consented Meta Purchase emitted **24 / USD** with checkout event ID; reload emitted no repeat. Meta SDK network was intercepted for deterministic observation; external Meta receipt is not claimed.
+- Desktop/mobile Free and Pro layouts and pricing checked; no horizontal overflow. No runtime errors occurred in Free completion tests.
+- Rendered order, welcome and reminder emails contain the current price and no obsolete price. Disposable-account delivery is suppressed; inbox delivery was not tested.
+- **159 tests passed across 25 files.** Preview compilation succeeded.
 
 ## Publishing
 
-These changes are not published. Publishing synchronizes the new Stripe price to live. A checkout guard refuses a stale catalog amount instead of charging the previous price during rollout.
+Not published. Publishing synchronizes the new Stripe catalog to live. Until synchronization, the checkout guard refuses a stale amount rather than charging the previous price. The new server/database Free limits are already applied; demos remain excluded from allowances.

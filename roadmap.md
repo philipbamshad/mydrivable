@@ -1,14 +1,19 @@
 # Design improvements
 
+# $24 Pro and new Free allowances
+- [x] Update Stripe to USD 2400 cents, displayed pricing, emails/legal and Meta value 24; preserve prior lifetime buyers and old Stripe prices.
+- [x] Enforce 10-question topic quizzes, 15-question sample exam, three daily Coach questions, one sim run, Pro review/study plan; preserve progress and free demos.
+- [x] Audit source/database/templates; real Free account completed every one-time allowance, three AI questions and server rejection of fourth/review. Sandbox paid USD 2400 cents and unlocked Pro; existing owner Pro remains unrestricted. Desktop/mobile verified; audit records exceptions and publishing requirement.
+
 # Multiple-choice-only permit questions
 - [x] Convert all 15 shared binary authored concepts to direct three-choice questions (no verified per-state option-count metadata); zero deletions, no authored Yes/No pairs. Keep explanations and concept IDs, and shuffle correct positions.
 - [x] Repair 130 question snapshots across 72 saved attempts and 27 binary progress snapshots across 10 topic rows. Verify all 85 non-simulation attempts and 239 progress entries preserve scores, answers, exam lengths, mastery and recovery; remaining stored binary counts zero. Read/commit compatibility retains original correct slots for queued answers.
 - [x] All 152 tests pass, including all-state full-length exam selection and binary-free banks/demo. Signed-in exam answered and resumed, converted school-zone question and topic feedback verified; desktop/mobile demo remains multiple choice. Preview build OK; nothing published.
 
 # Pro Pass price update
-- [x] Replace the Stripe checkout price with USD 1400 cents; old Stripe price remains and existing lifetime entitlement rows are unchanged.
+- [x] Replace the previous Stripe checkout price; old Stripe price remains and existing lifetime entitlement rows are unchanged.
 - [x] Update public/app/legal/email prices and Meta Purchase value; source/template and all 19 public-table audits found no obsolete monetary literals. Non-price timing/layout/image matches remain unchanged.
-- [x] Complete a sandbox checkout: Stripe settled 1400 USD cents with no subscription; official receipt shows the current amount, webhook granted lifetime Pro and the UI read it back. Consented Meta Purchase emitted value 14 once, with no repeat after reload. Disposable-account order email was suppressed; receipt rendering verified separately. All 147 tests passed.
+- [x] Complete a sandbox checkout at the then-current price with no subscription; official receipt showed the charged amount, webhook granted lifetime Pro and the UI read it back. Consented Meta Purchase emitted the charged value once, with no repeat after reload. Disposable-account order email was suppressed; receipt rendering verified separately. All 147 tests passed.
 
 # Homepage hero cleanup
 - [x] Replace the grey trust line with 5 amber stars plus Hudson P.'s short quote, shorten the paragraph to one sentence, drop the headline ~15% (72→61px desktop), tighten hero spacing (preview card top 514→406px, fully visible at 1226×809 and 390×844), and make both hero buttons the same 56px pill. Nothing below the hero changed.

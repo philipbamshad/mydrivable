@@ -66,7 +66,7 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
       const prices = await stripe.prices.list({ lookup_keys: [data.priceId] });
       if (!prices.data.length) throw new Error("Price not found");
       const stripePrice = prices.data[0];
-      if (!isCurrentProPrice(stripePrice)) throw new Error("Pro Pass checkout requires the current $14.00 USD one-time price. Publish the updated Stripe catalog before accepting new payments.");
+      if (!isCurrentProPrice(stripePrice)) throw new Error("Pro Pass checkout requires the current $24.00 USD one-time price. Publish the updated Stripe catalog before accepting new payments.");
 
       const customerId = await resolveOrCreateCustomer(stripe, {
         email,

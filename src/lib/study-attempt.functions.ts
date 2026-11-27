@@ -15,6 +15,7 @@ import { uniqueQuestionSession, recentQuestionHistory } from './question-session
 import { permitRules, setupReady } from './permit-rules';
 import { withHistoricalExamAnswers } from './exam-missed';
 import { upgradeBinaryQuestion } from '@/data/dmv/binary-question-upgrade';
+import { studyQuestionCount } from './plan-rules';
 export type StudyAnswerInput = {id:string;version:number;answer?:number;steps?:{action:'go'|'yield'|'stop'|null;elapsed:number}[];timed?:boolean};
 
 const feature = z.enum(['exam','signs','intersections','substances','speed','simulation','review']);
@@ -34,12 +35,14 @@ export const startStudyAttempt = createServerFn({method:'POST'}).middleware([req
     const {data:profile,error:profileError} = await context.supabase.from('user_profiles').select('active_state,under_18,onboarding_completed_at').eq('user_id',context.userId).single();
     if(profileError || !setupReady(profile.active_state,profile.onboarding_completed_at)) throw new Error('Complete your setup before practicing.');
     const state = profile.active_state;
+    const {data:pro,error:proError}=await context.supabase.rpc('has_pro_access',{p_user:context.userId});
+    if(proError) throw new Error('Unable to check your plan.');
     const {data:recentAttempts,error:recentError}=await context.supabase.from('study_attempts').select('payload,created_at,feature').eq('user_id',context.userId).eq('state',state).neq('feature','simulation').order('created_at',{ascending:false}).limit(100);
     if(recentError) throw new Error('Unable to load recent questions. Please try again.');
     const recent=recentQuestionHistory((recentAttempts??[]) as unknown as {payload:unknown[];created_at:string;feature:string}[]);
     let payload: unknown[];
     if(data.feature==='simulation') payload=createSimulationSession(SIMULATION_CLIPS);
-    else if(data.feature==='exam') payload=uniqueQuestionSession(buildExamPool(state),permitRules(state,profile.under_18).questionsCount,Math.random,recent).map(q=>shuffleAnswers(q));
+    else if(data.feature==='exam') payload=uniqueQuestionSession(buildExamPool(state),studyQuestionCount(pro===true,'exam',permitRules(state,profile.under_18).questionsCount),Math.random,recent).map(q=>shuffleAnswers(q));
     else if(data.feature==='review') {
       const {data:pro,error:proError}=await context.supabase.rpc('has_pro_access',{p_user:context.userId});
       if(proError || !pro) throw new Error('Review missed questions is Pro only.');
@@ -50,7 +53,7 @@ export const startStudyAttempt = createServerFn({method:'POST'}).middleware([req
       const merged=withHistoricalExamAnswers((rows??[]).map(r=>({state:r.state,progress:{topic:r.topic,questions:r.questions,lastScore:r.last_score} as unknown as TopicProgress})),(exams??[]) as unknown as StudyAttempt[]);
       const missed=missedQuestions(merged.map(r=>r.progress));
       payload=missed.map(q=>shuffleAnswers(q));
-    } else payload=uniqueQuestionSession(buildPillarBanks(state)[data.feature],8,Math.random,recent).map(q=>shuffleAnswers(hubQuestion(q,data.feature as HubQuestion['topic'])));
+    } else { const bank=buildPillarBanks(state)[data.feature]; payload=uniqueQuestionSession(bank,studyQuestionCount(pro===true,data.feature,bank.length),Math.random,recent).map(q=>shuffleAnswers(hubQuestion(q,data.feature as HubQuestion['topic']))); }
     if(!payload.length) throw new Error('No questions available to review.');
     const {supabaseAdmin}=await import('@/integrations/supabase/client.server');
     const {data:row,error}=await supabaseAdmin.rpc('reserve_study_attempt',{p_user:context.userId,p_feature:data.feature,p_state:state,p_payload:JSON.parse(JSON.stringify(payload))});

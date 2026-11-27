@@ -19,6 +19,7 @@ import { AttemptLock } from "./AttemptLock";
 import { RecentResultsCard } from "./RecentResultsCard";
 import { StudyQuestionFrame } from "./StudyQuestionFrame";
 import { permitRules } from "@/lib/permit-rules";
+import { isSampleExam, samplePassingCount, studyQuestionCount } from '@/lib/plan-rules';
 
 const card = "bg-card rounded-[28px] border border-border/60 p-8 shadow-lg";
 
@@ -33,7 +34,7 @@ export function PermitExamSimulator({ userId }: { userId: string }) {
   const [running, setRunning] = useState(false);
   const pack = { rules: permitRules(state, under18) };
   const stats = examHistoryStats(history, pack.rules.name);
-  if (running && attempt) { const rules=permitRules(attempt.state, attempt.state === "California" ? attempt.payload.length !== 36 : under18); return <ExamRunner key={attempt.id} attempt={attempt} state={attempt.state} count={attempt.payload.length} minCorrect={rules.minCorrectToPass} passPct={rules.passingScorePct} isPro={isPro} onUpgrade={unlockPro} onExit={() => setRunning(false)} onRestart={() => void begin()} saveError={store.error} onFinish={store.finish} onAnswer={(answer,version) => store.answer({id:attempt.id,version,answer})} />; }
+  if (running && attempt) { const rules=permitRules(attempt.state, attempt.state === "California" ? attempt.payload.length !== 36 : under18); return <ExamRunner key={attempt.id} attempt={attempt} state={attempt.state} count={attempt.payload.length} minCorrect={isSampleExam(attempt) ? samplePassingCount(attempt.payload.length,rules.passingScorePct) : rules.minCorrectToPass} passPct={rules.passingScorePct} isPro={isPro} onUpgrade={unlockPro} onExit={() => setRunning(false)} onRestart={() => void begin()} saveError={store.error} onFinish={store.finish} onAnswer={(answer,version) => store.answer({id:attempt.id,version,answer})} />; }
   const recentRows = history
     .filter(row => row.state === null || row.state === pack.rules.name)
     .sort((a, b) => b.created_at.localeCompare(a.created_at))
@@ -47,11 +48,11 @@ export function PermitExamSimulator({ userId }: { userId: string }) {
     }));
   return <div className="w-full space-y-4">
     <Card className={card}>
-      <div className="flex items-center gap-4"><div className="grid h-12 w-12 shrink-0 place-items-center rounded-[18px] border border-border bg-muted sm:h-14 sm:w-14"><Timer className="h-6 w-6" /></div><div className="min-w-0"><div className="flex flex-wrap items-center gap-2"><h3 className="font-display text-lg font-bold sm:text-xl">{pack.rules.name} DMV Permit Exam</h3><RestrictedProBadge restricted={access === "locked"}/></div><p className="mt-2 text-sm leading-relaxed text-muted-foreground">Matches the real {pack.rules.name} DMV knowledge test: {pack.rules.questionsCount} questions, {pack.rules.minCorrectToPass} correct to pass.</p></div></div>
-      <div className="mt-6 grid grid-cols-2 gap-3"><Stat label="Questions" value={String(pack.rules.questionsCount)} /><Stat label="Pass score" value={`${pack.rules.passingScorePct}%`} /></div>
+      <div className="flex items-center gap-4"><div className="grid h-12 w-12 shrink-0 place-items-center rounded-[18px] border border-border bg-muted sm:h-14 sm:w-14"><Timer className="h-6 w-6" /></div><div className="min-w-0"><div className="flex flex-wrap items-center gap-2"><h3 className="font-display text-lg font-bold sm:text-xl">{pack.rules.name} {isPro ? 'DMV Permit Exam' : 'Sample exam'}</h3><RestrictedProBadge restricted={access === "locked"}/></div><p className="mt-2 text-sm leading-relaxed text-muted-foreground">{isPro ? `Matches the real ${pack.rules.name} DMV knowledge test: ${pack.rules.questionsCount} questions, ${pack.rules.minCorrectToPass} correct to pass.` : `One 15-question sample exam. Pro includes unlimited full-length ${pack.rules.name} exams: ${pack.rules.questionsCount} questions, ${pack.rules.minCorrectToPass} correct to pass.`}</p></div></div>
+      <div className="mt-6 grid grid-cols-2 gap-3"><Stat label="Questions" value={String(freeAttempt && !isPro ? freeAttempt.payload.length : studyQuestionCount(isPro,'exam',pack.rules.questionsCount))} /><Stat label={isPro ? 'Pass score' : 'State pass score'} value={`${pack.rules.passingScorePct}%`} /></div>
       <div className="mt-3 grid grid-cols-3 gap-3"><Stat label="Best score" value={stats.best === null ? "—" : `${stats.best}%`} /><Stat label="Last score" value={stats.last === null ? "—" : `${stats.last}%`} /><Stat label="Attempts" value={stats.attempts === null ? "—" : String(stats.attempts)} /></div>
-      {access === 'locked' && <AttemptLock onUpgrade={unlockPro}/>}
-      <Button variant={access === 'locked' ? 'secondary' : 'default'} disabled={store.busy} onClick={() => void begin()} className="mt-6 h-14 w-full rounded-full text-base font-semibold">{access === 'resume' ? 'Resume your free attempt' : access === 'locked' ? 'View past results' : 'Start full-length exam'}</Button>
+      {access === 'locked' && <AttemptLock onUpgrade={unlockPro} message="You've used your one free sample exam. Pro includes unlimited full-length exams."/>}
+      <Button variant={access === 'locked' ? 'secondary' : 'default'} disabled={store.busy} onClick={() => void begin()} className="mt-6 h-14 w-full rounded-full text-base font-semibold">{access === 'resume' ? 'Resume your free attempt' : access === 'locked' ? 'View past results' : isPro ? 'Start full-length exam' : 'Start sample exam'}</Button>
       {store.error && <p role="alert" className="mt-3 text-sm text-destructive">{store.error}</p>}
     </Card>
     <RecentResultsCard rows={recentRows} />
@@ -101,10 +102,11 @@ function ExamRunner({ attempt, state, count, minCorrect, passPct, isPro, onUpgra
   const restart = () => { if(isPro) onRestart(); else onUpgrade(); };
   if (done) return <div className="w-full space-y-4">
     <Card className={card}>
-      <div className="text-center"><h2 className={cn("font-display text-4xl font-bold sm:text-5xl", summary.passed ? "text-success" : "text-destructive")}>{summary.passed ? "Passed" : "Not passed"}</h2><p className="mt-3 font-display text-2xl font-semibold text-progress-text">{summary.correct} / {questions.length} · {summary.pct}%</p></div>
+      <div className="text-center"><h2 className={cn("font-display text-4xl font-bold sm:text-5xl", isSampleExam(attempt) ? 'text-progress-text' : summary.passed ? "text-success" : "text-destructive")}>{isSampleExam(attempt) ? 'Sample exam results' : summary.passed ? "Passed" : "Not passed"}</h2><p className="mt-3 font-display text-2xl font-semibold text-progress-text">{summary.correct} / {questions.length} · {summary.pct}%</p></div>
       <div className="relative mt-6"><Meter pct={summary.pct} success={summary.passed} /><span className="absolute -top-1 h-4 w-0.5 bg-foreground" style={{ left: `${passPct}%` }} /><p className="mt-2 text-right text-xs text-muted-foreground">Pass line: {passPct}%</p></div>
       <section className="mt-7"><h3 className="font-display text-lg font-bold">By topic</h3><div className="mt-3 divide-y divide-border">{summary.topics.map(topic => <div key={topic.topic} className="py-4"><div className="flex flex-wrap items-center justify-between gap-3"><div className="flex flex-wrap items-center gap-2"><span className="text-sm font-semibold">{PILLAR_META[topic.topic].title}</span>{topic.needsWork && <Badge className="border border-destructive/30 bg-destructive/10 text-destructive">Needs work</Badge>}</div><span className="text-sm tabular-nums text-progress-text">{topic.pct === null ? "—" : `${topic.pct}%`}</span></div><div className="mt-2"><Meter pct={topic.pct ?? 0} success={!topic.needsWork} /></div>{topic.needsWork && <Button variant="secondary" asChild className="mt-3 rounded-full"><Link to="/app" search={{ tab: "test-hub", topic: topic.topic }}>Practice this<ArrowRight /></Link></Button>}</div>)}</div></section>
-      <div className="mt-6 flex flex-col gap-3 sm:flex-row"><Button onClick={restart} className="h-12 flex-1 rounded-full"><RefreshCw />{isPro ? "Retake exam" : "Upgrade to Pro"}</Button><Button variant="secondary" asChild className="h-12 flex-1 rounded-full"><Link to="/app" search={{ tab: "chat" }}>Back to dashboard</Link></Button></div>
+      {!isPro && <p className="mt-6 text-center text-sm text-muted-foreground">Ready for the real thing? Take unlimited full-length exams with Pro.</p>}
+      <div className="mt-6 flex flex-col gap-3 sm:flex-row"><Button onClick={restart} className="h-12 flex-1 rounded-full"><RefreshCw />{isPro ? "Retake exam" : "Get Pro – $24 once"}</Button><Button variant="secondary" asChild className="h-12 flex-1 rounded-full"><Link to="/app" search={{ tab: "chat" }}>Back to dashboard</Link></Button></div>
     </Card>
   </div>;
   return <StudyQuestionFrame>
