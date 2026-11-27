@@ -19,7 +19,7 @@ import { AttemptLock } from "./AttemptLock";
 import { RecentResultsCard } from "./RecentResultsCard";
 import { StudyQuestionFrame } from "./StudyQuestionFrame";
 import { permitRules } from "@/lib/permit-rules";
-import { isSampleExam, samplePassingCount, studyQuestionCount } from '@/lib/plan-rules';
+import { isSampleExam, samplePassingCount, examDisplayRules } from '@/lib/plan-rules';
 
 const card = "bg-card rounded-[28px] border border-border/60 p-8 shadow-lg";
 
@@ -33,8 +33,9 @@ export function PermitExamSimulator({ userId }: { userId: string }) {
   const { data: history } = useSuspenseQuery(examHistoryOptions(userId));
   const [running, setRunning] = useState(false);
   const pack = { rules: permitRules(state, under18) };
+  const displayRules = examDisplayRules(isPro, state, under18);
   const stats = examHistoryStats(history, pack.rules.name);
-  if (running && attempt) { const rules=permitRules(attempt.state, attempt.state === "California" ? attempt.payload.length !== 36 : under18); return <ExamRunner key={attempt.id} attempt={attempt} state={attempt.state} count={attempt.payload.length} minCorrect={isSampleExam(attempt) ? samplePassingCount(attempt.payload.length,rules.passingScorePct) : rules.minCorrectToPass} passPct={rules.passingScorePct} isPro={isPro} onUpgrade={unlockPro} onExit={() => setRunning(false)} onRestart={() => void begin()} saveError={store.error} onFinish={store.finish} onAnswer={(answer,version) => store.answer({id:attempt.id,version,answer})} />; }
+  if (running && attempt) { const rules=permitRules(attempt.state, attempt.state === "California" ? attempt.payload.length !== 36 : under18); const minCorrect = isSampleExam(attempt) ? samplePassingCount(attempt.payload.length,rules.passingScorePct) : rules.minCorrectToPass; return <ExamRunner key={attempt.id} attempt={attempt} state={attempt.state} count={attempt.payload.length} minCorrect={minCorrect} passPct={isSampleExam(attempt) ? Math.round(minCorrect / attempt.payload.length * 100) : rules.passingScorePct} isPro={isPro} onUpgrade={unlockPro} onExit={() => setRunning(false)} onRestart={() => void begin()} saveError={store.error} onFinish={store.finish} onAnswer={(answer,version) => store.answer({id:attempt.id,version,answer})} />; }
   const recentRows = history
     .filter(row => row.state === null || row.state === pack.rules.name)
     .sort((a, b) => b.created_at.localeCompare(a.created_at))
@@ -48,8 +49,8 @@ export function PermitExamSimulator({ userId }: { userId: string }) {
     }));
   return <div className="w-full space-y-4">
     <Card className={card}>
-      <div className="flex items-center gap-4"><div className="grid h-12 w-12 shrink-0 place-items-center rounded-[18px] border border-border bg-muted sm:h-14 sm:w-14"><Timer className="h-6 w-6" /></div><div className="min-w-0"><div className="flex flex-wrap items-center gap-2"><h3 className="font-display text-lg font-bold sm:text-xl">{pack.rules.name} {isPro ? 'DMV Permit Exam' : 'Sample exam'}</h3><RestrictedProBadge restricted={access === "locked"}/></div><p className="mt-2 text-sm leading-relaxed text-muted-foreground">{isPro ? `Matches the real ${pack.rules.name} DMV knowledge test: ${pack.rules.questionsCount} questions, ${pack.rules.minCorrectToPass} correct to pass.` : `One 15-question sample exam. Pro includes unlimited full-length ${pack.rules.name} exams: ${pack.rules.questionsCount} questions, ${pack.rules.minCorrectToPass} correct to pass.`}</p></div></div>
-      <div className="mt-6 grid grid-cols-2 gap-3"><Stat label="Questions" value={String(freeAttempt && !isPro ? freeAttempt.payload.length : studyQuestionCount(isPro,'exam',pack.rules.questionsCount))} /><Stat label={isPro ? 'Pass score' : 'State pass score'} value={`${pack.rules.passingScorePct}%`} /></div>
+      <div className="flex items-center gap-4"><div className="grid h-12 w-12 shrink-0 place-items-center rounded-[18px] border border-border bg-muted sm:h-14 sm:w-14"><Timer className="h-6 w-6" /></div><div className="min-w-0"><div className="flex flex-wrap items-center gap-2"><h3 className="font-display text-lg font-bold sm:text-xl">{pack.rules.name} {isPro ? 'DMV Permit Exam' : 'Sample exam'}</h3><RestrictedProBadge restricted={access === "locked"}/></div><p className="mt-2 text-sm leading-relaxed text-muted-foreground">{isPro ? `Matches the real ${pack.rules.name} DMV knowledge test: ${pack.rules.questionsCount} questions, ${pack.rules.minCorrectToPass} correct to pass.` : `One ${displayRules.questionsCount}-question sample exam. Pro includes unlimited full-length ${pack.rules.name} exams: ${pack.rules.questionsCount} questions, ${pack.rules.minCorrectToPass} correct to pass.`}</p></div></div>
+      <div className="mt-6 grid grid-cols-2 gap-3"><Stat label="Questions" value={String(displayRules.questionsCount)} /><Stat label={isPro ? 'Pass score' : 'Sample pass score'} value={`${displayRules.passingScorePct}%`} /></div>
       <div className="mt-3 grid grid-cols-3 gap-3"><Stat label="Best score" value={stats.best === null ? "—" : `${stats.best}%`} /><Stat label="Last score" value={stats.last === null ? "—" : `${stats.last}%`} /><Stat label="Attempts" value={stats.attempts === null ? "—" : String(stats.attempts)} /></div>
       {access === 'locked' && <AttemptLock onUpgrade={unlockPro} message="You've used your one free sample exam. Pro includes unlimited full-length exams."/>}
       <Button variant={access === 'locked' ? 'secondary' : 'default'} disabled={store.busy} onClick={() => void begin()} className="mt-6 h-14 w-full rounded-full text-base font-semibold">{access === 'resume' ? 'Resume your free attempt' : access === 'locked' ? 'View past results' : isPro ? 'Start full-length exam' : 'Start sample exam'}</Button>

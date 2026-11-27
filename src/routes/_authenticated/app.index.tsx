@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Button } from "@/components/ui/button";
+import { StudyPageHeader } from "@/components/dashboard/StudyPageHeader";
 import { useEffect } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
@@ -97,23 +97,7 @@ function AppDashboard() {
   return (
     <div className="flex flex-col h-full">
       <Tabs value={tab} onValueChange={(v) => setTab(v as TabId)} className="flex flex-col h-full">
-        <header className="relative z-10 shrink-0 bg-background mx-auto w-full max-w-[960px] pl-14 pr-4 pt-6 md:px-8">
-          <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
-            <div className="min-w-0">
-              <h1 className="whitespace-normal font-display font-bold text-xl leading-tight">
-                {TABS.find((t) => t.id === tab)?.label}
-              </h1>
-            </div>
-            {!isPro && (
-              <Button
-                onClick={() => openCheckout()}
-                className="flex items-center gap-2 rounded-full bg-action text-action-foreground h-9 px-4 text-sm md:h-10 md:px-5 md:text-base font-semibold shadow-[0_4px_14px_-6px_var(--color-action)] hover:bg-action-hover transition-all shrink-0"
-              >
-                Upgrade
-              </Button>
-            )}
-          </div>
-        </header>
+        <StudyPageHeader title={TABS.find((t) => t.id === tab)?.label} isPro={isPro} onUpgrade={openCheckout} />
 
         <TabsList className="hidden">
           {TABS.map(({ id, label }) => (

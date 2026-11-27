@@ -1,8 +1,14 @@
 import { describe, expect, it } from 'vitest';
-import { studyQuestionCount, isSampleExam, samplePassingCount, FREE_COACH_QUESTIONS, studyPlanAllowed } from './plan-rules';
+import { studyQuestionCount, isSampleExam, samplePassingCount, FREE_COACH_QUESTIONS, studyPlanAllowed, examDisplayRules } from './plan-rules';
 import { permitRules } from './permit-rules';
 import { ALL_STATES } from '@/data/dmv';
 describe('Free Pass and lifetime Pro', () => {
+  it('displays fifteen sample questions even when an old saved exam has a different length', () => {
+    expect(examDisplayRules(false, 'California', null)).toMatchObject({questionsCount:15,minCorrectToPass:13,passingScorePct:87});
+  });
+  it('displays the canonical California Pro exam and pass score', () => {
+    expect(examDisplayRules(true, 'California', null)).toMatchObject({questionsCount:46,minCorrectToPass:38,passingScorePct:83});
+  });
   it('gives Free exactly ten questions per topic', () => {
     for (const topic of ['signs','speed','intersections','substances']) expect(studyQuestionCount(false, topic, 80)).toBe(10);
   });

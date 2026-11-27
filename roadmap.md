@@ -1,5 +1,11 @@
 # Design improvements
 
+# App header and study displays
+- [x] Align and shrink the shared Upgrade control inside every study header; desktop, 390px and 320px checked.
+- [x] Show current sample/state exam numbers without relabeling legacy saved attempts; California Pro 46/38/83 and Free 15 tested.
+- [x] Hide review locks when no questions are missed; completed all four Free topic quizzes and verified available recommendations and exhausted upgrade state after reload.
+- [x] Run focused rule tests and signed-in desktop/mobile checks; no runtime errors. Existing owner is Free in preview, so Pro display is covered by pure rule tests, not a paid-account browser check.
+
 # $24 Pro and new Free allowances
 - [x] Update Stripe to USD 2400 cents, displayed pricing, emails/legal and Meta value 24; preserve prior lifetime buyers and old Stripe prices.
 - [x] Enforce 10-question topic quizzes, 15-question sample exam, three daily Coach questions, one sim run, Pro review/study plan; preserve progress and free demos.

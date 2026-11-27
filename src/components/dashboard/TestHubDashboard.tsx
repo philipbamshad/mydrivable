@@ -10,7 +10,7 @@ import { useUserProfile } from "@/lib/user-profile";
 import { StudyQuestionFrame } from "./StudyQuestionFrame";
 import { HubQuestionVisual } from "./HubQuestionVisual";
 import { buildPillarBanks, PILLAR_META, type PillarId } from "@/data/dmv/practice-bank";
-import { HUB_TOPICS, hubQuestion, emptyTopic, topicStats, weakestTopic, missedQuestions, type HubQuestion, type TopicProgress } from "@/lib/test-hub";
+import { HUB_TOPICS, hubQuestion, emptyTopic, topicStats, recommendedTopic, missedReviewState, missedQuestions, type HubQuestion, type TopicProgress } from "@/lib/test-hub";
 import { useStudyAttempts } from "@/lib/use-study-attempt";
 import { attemptAccess, type StudyAttempt, type StudyFeature } from "@/lib/study-attempt";
 import { AttemptLock } from "./AttemptLock";
@@ -34,7 +34,8 @@ export function TestHubDashboard({ initialTopic, userId }: { initialTopic?: Pill
     return Object.fromEntries(HUB_TOPICS.map(topic => [topic, [...new Map(raw[topic].map(q => { const item = hubQuestion(q, topic); return [item.key, item]; })).values()]])) as Record<PillarId, HubQuestion[]>;
   }, [state]);
   const totals = Object.fromEntries(HUB_TOPICS.map(topic => [topic, banks[topic].length]));
-  const weakest = weakestTopic(progress, totals);
+  const weakest = recommendedTopic(progress, totals, isPro, store.attempts);
+  const reviewState = missedReviewState(isPro, missed.length);
 
   if (active && attempt) return <QuizRunner key={attempt.id} mode={active} banks={banks} missed={missed} progress={progress}
     attempt={attempt} isPro={isPro} stateName={attempt.state} onExit={() => setActive(null)} onUpgrade={unlockPro}
@@ -46,16 +47,23 @@ export function TestHubDashboard({ initialTopic, userId }: { initialTopic?: Pill
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <Card className="bg-card rounded-[28px] border-border/60 p-4 sm:p-6 flex flex-col gap-3 shadow-md">
         <div className="flex items-center gap-2"><Target className="h-5 w-5" /><h2 className="font-display font-bold">Recommended for you</h2></div>
-        <p className="font-semibold">{PILLAR_META[weakest].title} <RestrictedProBadge restricted={attemptAccess(isPro,store.attempts.find(a=>a.feature===weakest && a.free_slot)) === "locked"}/></p>
-        <p className="text-sm text-progress-text">Mastery {topicStats(progress.find(p => p.topic === weakest) ?? emptyTopic(weakest), banks[weakest].length).mastery}%</p>
-        <Button className={cn(actionClass, "mt-auto h-11")} disabled={store.busy} onClick={() => void begin(weakest)}>Practice now</Button>
+        {weakest ? <>
+          <p className="font-semibold">{PILLAR_META[weakest].title}</p>
+          <p className="text-sm text-progress-text">Mastery {topicStats(progress.find(p => p.topic === weakest) ?? emptyTopic(weakest), banks[weakest].length).mastery}%</p>
+          <Button className={cn(actionClass, "mt-auto h-11")} disabled={store.busy} onClick={() => void begin(weakest)}>{attemptAccess(isPro, store.attempts.find(a => a.feature === weakest && a.free_slot)) === 'resume' ? 'Resume your free attempt' : 'Practice now'}</Button>
+        </> : <>
+          <p className="text-sm text-muted-foreground">You've used all your free topic quizzes. Pro includes unlimited practice.</p>
+          <Button className={cn(actionClass, "mt-auto h-11")} onClick={unlockPro}>Get Pro – $24 once</Button>
+        </>}
       </Card>
       <Card className="bg-card rounded-[28px] border-border/60 p-4 sm:p-6 flex flex-col gap-3 shadow-md">
-        <div className="flex items-center gap-2"><BookOpen className="h-5 w-5" /><h2 className="font-display font-bold">Review missed questions</h2><RestrictedProBadge restricted={true}/></div>
+        <div className="flex items-center gap-2"><BookOpen className="h-5 w-5 shrink-0" /><h2 className="min-w-0 font-display font-bold">Review missed questions</h2><RestrictedProBadge restricted={reviewState === 'locked'}/></div>
+        {reviewState === 'empty' ? <p className="text-sm text-muted-foreground">No missed questions yet. Take a quiz and any questions you miss will show up here.</p> : <>
         <p className="font-semibold">You missed {missed.length} {missed.length === 1 ? "question" : "questions"}.</p>
         {!isPro && <div aria-hidden="true" className="select-none space-y-2 blur-sm"><div className="h-4 w-3/4 rounded bg-muted"/><div className="h-4 w-1/2 rounded bg-muted"/></div>}
         <p className="text-sm text-muted-foreground">{!isPro ? 'See which ones and why with Pro.' : missed.length ? "Your missed questions, across all topics." : "No missed questions to review."}</p>
         <Button variant={isPro ? "outline" : "default"} className="mt-auto rounded-full h-11" disabled={isPro && !missed.length || store.busy} onClick={() => void begin("review")}>{!isPro && <Lock/>}{isPro ? "Review questions" : "Get Pro"}</Button>
+        </>}
       </Card>
     </div>
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

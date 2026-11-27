@@ -3,6 +3,7 @@ import { directQuestion } from "./mock-exam";
 import { canonicalConcept } from "@/data/dmv/question-concepts";
 import { questionIdentityKeys } from "./question-session";
 import { upgradeBinaryQuestion } from "@/data/dmv/binary-question-upgrade";
+import { attemptAccess, type StudyAttempt } from './study-attempt';
 
 export const HUB_TOPICS: PillarId[] = ["signs", "intersections", "substances", "speed"];
 export const HUB_FREE_LIMIT = 1;
@@ -47,6 +48,15 @@ export function topicStats(progress: TopicProgress, totalQuestions = Object.keys
 
 export function weakestTopic(progress: TopicProgress[], totals?: Partial<Record<PillarId, number>>): PillarId {
   return [...progress].sort((a, b) => topicStats(a, totals?.[a.topic]).mastery - topicStats(b, totals?.[b.topic]).mastery)[0]?.topic ?? "signs";
+}
+
+export function recommendedTopic(progress: TopicProgress[], totals: Partial<Record<PillarId, number>>, isPro: boolean, attempts: Pick<StudyAttempt, 'feature' | 'free_slot' | 'completed'>[]): PillarId | null {
+  const available = progress.filter(p => attemptAccess(isPro, attempts.find(a => a.feature === p.topic && a.free_slot)) !== 'locked');
+  return available.length ? weakestTopic(available, totals) : null;
+}
+
+export function missedReviewState(isPro: boolean, missedCount: number) {
+  return missedCount === 0 ? 'empty' : isPro ? 'available' : 'locked';
 }
 
 export function missedQuestions(progress: TopicProgress[]): HubQuestion[] {

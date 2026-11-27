@@ -1,8 +1,23 @@
 import { describe, it, expect } from "vitest";
-import { answerProgress, emptyTopic, hubQuestion, topicStats, weakestTopic, missedQuestions, mayAnswerHub, normalizeTopicProgress } from "./test-hub";
+import { answerProgress, emptyTopic, hubQuestion, topicStats, weakestTopic, missedQuestions, mayAnswerHub, normalizeTopicProgress, recommendedTopic, missedReviewState, HUB_TOPICS } from "./test-hub";
 
 const question = hubQuestion({ q: "During your morning drive, what does a red light mean?", options: ["Stop", "Go"], correct: 0, explanation: "Stop at the limit line." }, "signs");
 describe("Permit Test Hub rules", () => {
+  it('never recommends an exhausted Free topic', () => {
+    expect(recommendedTopic(HUB_TOPICS.map(emptyTopic), {}, false, [{feature:'signs',free_slot:true,completed:true}])).toBe('intersections');
+  });
+  it('offers upgrade rather than a topic when all Free quizzes are exhausted', () => {
+    expect(recommendedTopic(HUB_TOPICS.map(emptyTopic), {}, false, HUB_TOPICS.map(feature=>({feature,free_slot:true,completed:true})))).toBeNull();
+  });
+  it('allows resumed Free topics and all Pro topics in recommendations', () => {
+    expect(recommendedTopic(HUB_TOPICS.map(emptyTopic), {}, false, [{feature:'signs',free_slot:true,completed:false}])).toBe('signs');
+    expect(recommendedTopic(HUB_TOPICS.map(emptyTopic), {}, true, [{feature:'signs',free_slot:true,completed:true}])).toBe('signs');
+  });
+  it('shows no review restriction for zero misses and locks only positive Free misses', () => {
+    expect(missedReviewState(false,0)).toBe('empty');
+    expect(missedReviewState(false,1)).toBe('locked');
+    expect(missedReviewState(true,1)).toBe('available');
+  });
   it('upgrades legacy binary misses without losing mastery, miss counts or recovery', () => {
     const legacy = { q: 'It is important to keep the inside and outside of your windshield clean.', options: ['True','False'], correct: 0, explanation: 'True. Sun glare and headlight scatter turn dirty glass into a visibility hazard.', topic: 'signs' as const, key: 'legacy' };
     const normalized = normalizeTopicProgress({ ...emptyTopic('signs'), questions: { legacy: { question: legacy, correct: true, everCorrect: true, missed: true, recovery: 1, missedCount: 3, lastMissedAt: '2026-11-20T10:00:00Z' } } });
