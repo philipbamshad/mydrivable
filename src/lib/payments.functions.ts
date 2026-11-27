@@ -3,6 +3,7 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { z } from "zod";
 import type Stripe from "stripe";
 import { isCurrentProPrice } from "@/lib/order-confirmation";
+import { PRO_PASS_PRICE_ID } from "@/lib/checkout";
 import {
   type StripeEnv,
   createStripeClient,
@@ -53,7 +54,7 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
       returnUrl: string;
       environment: StripeEnv;
     }) => {
-      return z.object({ priceId: z.literal("pro_pass_lifetime_9"), returnUrl: z.string().url(), environment: z.enum(["sandbox", "live"]) }).parse(data);
+      return z.object({ priceId: z.literal(PRO_PASS_PRICE_ID), returnUrl: z.string().url(), environment: z.enum(["sandbox", "live"]) }).parse(data);
     },
   )
   .handler(async ({ data, context }): Promise<CheckoutSessionResult> => {
@@ -137,14 +138,15 @@ export const confirmCheckoutPayment = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((data: { sessionId: string; environment: StripeEnv }) =>
     z.object({ sessionId: z.string().regex(/^cs_[A-Za-z0-9_]+$/), environment: z.enum(["sandbox", "live"]) }).parse(data))
-  .handler(async ({ data, context }): Promise<{ paid: boolean } | { error: string }> => {
+  .handler(async ({ data, context }): Promise<{ paid: boolean; pro: boolean } | { error: string }> => {
     try {
       const { isConfirmedPayment } = await import("@/lib/order-confirmation");
       const session = await createStripeClient(data.environment).checkout.sessions.retrieve(data.sessionId);
       const paid = session.metadata?.userId === context.userId
-        && session.metadata?.priceId === "pro_pass_lifetime_9"
+        && session.metadata?.priceId === PRO_PASS_PRICE_ID
         && isConfirmedPayment(session, data.environment);
-      return { paid };
+      const { data: pro } = paid ? await context.supabase.rpc("has_pro_access", { p_user: context.userId }) : { data: false };
+      return { paid, pro: paid && pro === true };
     } catch (error) {
       return { error: getStripeErrorMessage(error) };
     }

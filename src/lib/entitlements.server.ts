@@ -14,8 +14,6 @@ type AnyClient = SupabaseClient<Database>;
 
 type FreeUsageShape = {
   chat: number;
-  exam: number;
-  pillars: Record<string, number>;
 };
 
 function toInt(value: unknown): number {
@@ -54,9 +52,7 @@ async function readFreeUsage(
     .rpc("get_daily_coach_used");
 
   if (error) throw new Error("Unable to load AI question usage.");
-  return {
-    chat: toInt(data), exam: 0, pillars: {},
-  };
+  return { chat: toInt(data) };
 }
 
 export type ChatQuota =

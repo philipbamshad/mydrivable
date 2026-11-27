@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { CheckCircle2 } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { confirmCheckoutPayment } from "@/lib/payments.functions";
 import { getStripeEnvironment } from "@/lib/stripe";
 import { trackMetaEvent } from "@/lib/meta-pixel";
@@ -25,27 +25,43 @@ export const Route = createFileRoute("/checkout/return")({
 
 function CheckoutReturn() {
   const { session_id: sessionId } = Route.useSearch();
+  const [proActive, setProActive] = useState(false);
   useEffect(() => {
     if (!sessionId) return;
     let cancelled = false;
     let timer: number | undefined;
+    let pixelTimer: number | undefined;
+    let pixelTries = 0;
     const alreadySent = () => (localStorage.getItem(PURCHASE_SENT_KEY) ?? "").split(",").includes(sessionId);
-    void (async () => {
-      if (alreadySent()) return;
+    const sendPurchase = () => {
+      if (cancelled || alreadySent()) return;
+      // Session ID doubles as Meta's eventID so retries are deduplicated.
+      if (trackMetaEvent("Purchase", { value: 24, currency: "USD" }, sessionId)) {
+        const sent = (localStorage.getItem(PURCHASE_SENT_KEY) ?? "").split(",").filter(Boolean);
+        localStorage.setItem(PURCHASE_SENT_KEY, [...sent, sessionId].slice(-20).join(","));
+        return;
+      }
+      if (++pixelTries <= 10) pixelTimer = window.setTimeout(sendPurchase, 300);
+    };
+    const check = async () => {
       const result = await confirmCheckoutPayment({ data: { sessionId, environment: getStripeEnvironment() } }).catch(() => null);
-      if (cancelled || !result || !("paid" in result) || !result.paid) return;
-      let tries = 0;
-      const send = () => {
-        if (cancelled || alreadySent()) return;
-        // Session ID doubles as Meta's eventID so retries are deduplicated.
-        if (trackMetaEvent("Purchase", { value: 24, currency: "USD" }, sessionId)) {
-          const sent = (localStorage.getItem(PURCHASE_SENT_KEY) ?? "").split(",").filter(Boolean);
-          localStorage.setItem(PURCHASE_SENT_KEY, [...sent, sessionId].slice(-20).join(","));
-        } else if (++tries <= 10) timer = window.setTimeout(send, 300);
-      };
-      send();
-    })();
-    return () => { cancelled = true; if (timer) window.clearTimeout(timer); };
+      if (cancelled || !result || !("paid" in result) || !result.paid) {
+        if (!cancelled) timer = window.setTimeout(check, 1000);
+        return;
+      }
+      if (!alreadySent()) sendPurchase();
+      if (result.pro) {
+        setProActive(true);
+        return;
+      }
+      timer = window.setTimeout(check, 1000);
+    };
+    void check();
+    return () => {
+      cancelled = true;
+      if (timer) window.clearTimeout(timer);
+      if (pixelTimer) window.clearTimeout(pixelTimer);
+    };
   }, [sessionId]);
   return (
     <div className="min-h-screen grid place-items-center bg-background p-6">
@@ -54,10 +70,12 @@ function CheckoutReturn() {
           <CheckCircle2 className="w-7 h-7 text-emerald-400" />
         </div>
         <h1 className="font-display text-2xl font-bold">
-          {sessionId ? "Payment complete" : "Returned from checkout"}
+          {proActive ? "Pro Pass active" : sessionId ? "Payment complete" : "Returned from checkout"}
         </h1>
         <p className="text-sm text-muted-foreground mt-2">
-          Your Pro Pass is being activated. You can head back to the app now.
+          {proActive
+            ? "Your $24 lifetime Pro Pass is ready. Unlimited practice is now available."
+            : "We're confirming your payment and activating Pro. This usually takes a few seconds."}
         </p>
         <Link
           to="/app"

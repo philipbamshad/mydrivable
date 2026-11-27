@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/dialog";
 import { StripeEmbeddedCheckout } from "@/components/payments/StripeEmbeddedCheckout";
 import { getStripeEnvironment } from "@/lib/stripe";
+import { PRO_PASS_PRICE_ID, resolveCheckoutPriceId } from "@/lib/checkout";
 
 export type DriveEnvironment = "city" | "highway" | "rural";
 export type DriveConditions = "day" | "night";
@@ -40,18 +41,13 @@ export type SkillMasteryEntry = {
   verified: boolean;
 };
 
-export type FreeUsageKind = "chat" | "exam" | `pillar:${string}`;
-
 export type FreeUsage = {
   chat: number;
-  exam: number;
-  pillars: Record<string, number>;
 };
 
 export type ProfileState = {
   state: string;
   targetDate: string | null;
-  under18: boolean | null;
   onboardingCompleted: boolean;
   quizScores: number[];
   driveSessions: DriveSession[];
@@ -87,17 +83,15 @@ type ProfileContextValue = ProfileState & {
   deleteDriveSession: (id: string) => void;
   toggleDailyTask: (taskId: string, dateKey: string) => void;
   setSkillMastery: (skillId: string, patch: Partial<SkillMasteryEntry>) => void;
-  bumpFreeUsage: (kind: FreeUsageKind) => void;
   refreshFreeUsage: () => void;
   reset: () => void;
 };
 
-const DEFAULT_FREE_USAGE: FreeUsage = { chat: 0, exam: 0, pillars: {} };
+const DEFAULT_FREE_USAGE: FreeUsage = { chat: 0 };
 
 const DEFAULT: ProfileState = {
   state: "",
   targetDate: null,
-  under18: null,
   onboardingCompleted: false,
   quizScores: [],
   driveSessions: [],
@@ -107,58 +101,7 @@ const DEFAULT: ProfileState = {
   freeUsage: DEFAULT_FREE_USAGE,
 };
 
-// localStorage keys are shared with the anonymous / pre-login experience so
-// counters persist across refreshes even before we know the userId. Once the
-// user signs in we merge with the DB copy and keep both in sync.
-const LS_KEY = "drivable:free-usage:lifetime";
-
-function readLocalFreeUsage(): FreeUsage {
-  if (typeof window === "undefined") return { ...DEFAULT_FREE_USAGE, pillars: {} };
-  try {
-    const raw = window.localStorage.getItem(LS_KEY);
-    if (!raw) return { ...DEFAULT_FREE_USAGE, pillars: {} };
-    const parsed = JSON.parse(raw) as Partial<FreeUsage>;
-    return {
-      chat: Number.isFinite(parsed.chat) ? Number(parsed.chat) : 0,
-      exam: Number.isFinite(parsed.exam) ? Number(parsed.exam) : 0,
-      pillars:
-        parsed.pillars && typeof parsed.pillars === "object"
-          ? Object.fromEntries(
-              Object.entries(parsed.pillars).map(([k, v]) => [
-                k,
-                Number.isFinite(v as number) ? Number(v) : 0,
-              ]),
-            )
-          : {},
-    };
-  } catch {
-    return { ...DEFAULT_FREE_USAGE, pillars: {} };
-  }
-}
-
-function writeLocalFreeUsage(u: FreeUsage) {
-  if (typeof window === "undefined") return;
-  try {
-    window.localStorage.setItem(LS_KEY, JSON.stringify(u));
-  } catch {
-    // ignore quota errors
-  }
-}
-
-function mergeFreeUsage(a: FreeUsage, b: FreeUsage): FreeUsage {
-  const pillars: Record<string, number> = { ...a.pillars };
-  for (const [k, v] of Object.entries(b.pillars ?? {})) {
-    pillars[k] = Math.max(pillars[k] ?? 0, v);
-  }
-  return {
-    chat: b.chat,
-    exam: Math.max(a.exam, b.exam),
-    pillars,
-  };
-}
-
 const Ctx = createContext<ProfileContextValue | null>(null);
-const PRO_PASS_PRICE_ID = "pro_pass_lifetime_9";
 
 type DrivingLogRow = {
   id: string;
@@ -217,9 +160,7 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!userId) {
       activeUserRef.current = null;
-      // Even when signed out, keep the anonymous localStorage counters visible
-      // so free-tier limits carry through the auth screen.
-      setProfile({ ...DEFAULT, freeUsage: readLocalFreeUsage() });
+      setProfile(DEFAULT);
       setHydrating(false);
       return;
     }
@@ -231,7 +172,7 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
       const { data: existing } = await supabase
         .from("user_profiles" as never)
         .select(
-          "active_state, target_date, under_18, onboarding_completed_at, daily_done, daily_done_date, skill_mastery, free_usage",
+          "active_state, target_date, onboarding_completed_at, daily_done, daily_done_date, skill_mastery",
         )
         .eq("user_id", userId)
         .maybeSingle();
@@ -240,12 +181,10 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
         | {
             active_state: string;
             target_date: string | null;
-            under_18: boolean | null;
             onboarding_completed_at: string | null;
             daily_done: Record<string, boolean> | null;
             daily_done_date: string | null;
             skill_mastery: Record<string, SkillMasteryEntry> | null;
-            free_usage: Partial<FreeUsage> | null;
           }
         | null;
 
@@ -256,12 +195,10 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
         prof = {
           active_state: "",
           target_date: null,
-          under_18: null,
           onboarding_completed_at: null,
           daily_done: {},
           daily_done_date: null,
           skill_mastery: {},
-          free_usage: {},
         };
       }
 
@@ -287,31 +224,9 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
       const dailyDate = prof.daily_done_date;
       const dailyDone = dailyDate === today ? (prof.daily_done ?? {}) : {};
 
-      // Merge DB copy with any pre-login localStorage counters so the higher
-      // value always wins. This makes the lock permanent even if the user
-      // switches devices or clears one storage layer.
-      const remote: FreeUsage = {
-        chat: Number(prof.free_usage?.chat ?? 0) || 0,
-        exam: Number(prof.free_usage?.exam ?? 0) || 0,
-        pillars: (prof.free_usage?.pillars ?? {}) as Record<string, number>,
-      };
-      const merged = mergeFreeUsage(readLocalFreeUsage(), remote);
-      writeLocalFreeUsage(merged);
-      if (
-        merged.chat !== remote.chat ||
-        merged.exam !== remote.exam ||
-        JSON.stringify(merged.pillars) !== JSON.stringify(remote.pillars)
-      ) {
-        void supabase
-          .from("user_profiles" as never)
-          .update({ free_usage: merged } as never)
-          .eq("user_id", userId);
-      }
-
       setProfile({
         state: prof.active_state ?? "",
         targetDate: prof.target_date,
-        under18: prof.under_18,
         onboardingCompleted: !!prof.onboarding_completed_at,
         quizScores: ((scores as { score_pct: number }[] | null) ?? []).map(
           (r) => r.score_pct,
@@ -320,7 +235,7 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
         dailyDone,
         dailyDoneDate: dailyDate,
         skillMastery: prof.skill_mastery ?? {},
-        freeUsage: merged,
+        freeUsage: DEFAULT_FREE_USAGE,
       });
       setHydrating(false);
     })();
@@ -416,7 +331,7 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
   );
 
   const openCheckout = useCallback((priceId?: string) => {
-    setCheckoutPriceId(priceId || PRO_PASS_PRICE_ID);
+    setCheckoutPriceId(resolveCheckoutPriceId(priceId));
   }, []);
   const unlockPro = useCallback(() => openCheckout(), [openCheckout]);
   const completeSetup = useCallback(async (state: string, date: string | null) => {
@@ -592,37 +507,8 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
     [persistProfileFields],
   );
 
-  const bumpFreeUsage = useCallback(
-    (kind: FreeUsageKind) => {
-      // Pro users bypass every lifetime counter entirely — never persist.
-      if (isPro) return;
-      let nextUsage: FreeUsage = { ...DEFAULT_FREE_USAGE, pillars: {} };
-      setProfile((p) => {
-        const prev = p.freeUsage;
-        if (kind === "chat") {
-          nextUsage = { ...prev, chat: prev.chat + 1 };
-        } else if (kind === "exam") {
-          nextUsage = { ...prev, exam: prev.exam + 1 };
-        } else {
-          const pillarId = kind.slice("pillar:".length);
-          nextUsage = {
-            ...prev,
-            pillars: {
-              ...prev.pillars,
-              [pillarId]: (prev.pillars[pillarId] ?? 0) + 1,
-            },
-          };
-        }
-        return { ...p, freeUsage: nextUsage };
-      });
-      writeLocalFreeUsage(nextUsage);
-      void persistProfileFields({ free_usage: nextUsage });
-    },
-    [isPro, persistProfileFields],
-  );
-
   // The AI chat endpoint consumes free chat credits server side, so the client
-  // re reads the authoritative counter instead of incrementing it locally.
+  // rereads the authoritative counter instead of incrementing it locally.
   const refreshFreeUsage = useCallback(async () => {
     if (!userId) return;
     const { data, error } = await supabase.rpc("get_daily_coach_used");
@@ -636,11 +522,7 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
     return () => { clearInterval(interval); window.removeEventListener('focus', onFocus); };
   }, [refreshFreeUsage]);
 
-  // Error boundary reset must never wipe lifetime free usage counters.
-  const reset = useCallback(
-    () => setProfile({ ...DEFAULT, freeUsage: readLocalFreeUsage() }),
-    [],
-  );
+  const reset = useCallback(() => setProfile(DEFAULT), []);
 
   const driveHours = useMemo(
     () => profile.driveSessions.reduce((a, s) => a + s.hours, 0),
@@ -674,7 +556,6 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
     deleteDriveSession,
     toggleDailyTask,
     setSkillMastery,
-    bumpFreeUsage,
     refreshFreeUsage: () => void refreshFreeUsage(),
     reset,
   };

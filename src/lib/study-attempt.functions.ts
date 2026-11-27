@@ -6,7 +6,7 @@ import { getStatePack } from '@/data/dmv';
 import { buildExamPool, type ExamQuestion } from './mock-exam';
 import { buildPillarBanks } from '@/data/dmv/practice-bank';
 import { shuffleAnswers } from '@/data/dmv/question-generator';
-import { hubQuestion, missedQuestions, type HubQuestion, type TopicProgress } from './test-hub';
+import { HUB_TOPICS, hubQuestion, missedQuestions, type HubQuestion, type TopicProgress } from './test-hub';
 import { createSimulationSession, type SimulationClip } from '@/data/simulation-session';
 import { SIMULATION_CLIPS } from '@/data/simulation-clips';
 import { decisionSummary, finishScenario, recordDecision, stepProgress, type ScenarioDecision } from '@/data/simulation-game';
@@ -32,7 +32,7 @@ export const studyAttemptsOptions = (userId: string) => queryOptions({queryKey:[
 export const startStudyAttempt = createServerFn({method:'POST'}).middleware([requireSupabaseAuth])
   .inputValidator((input:unknown)=>z.object({feature}).parse(input))
   .handler(async ({context,data}) => {
-    const {data:profile,error:profileError} = await context.supabase.from('user_profiles').select('active_state,under_18,onboarding_completed_at').eq('user_id',context.userId).single();
+    const {data:profile,error:profileError} = await context.supabase.from('user_profiles').select('active_state,onboarding_completed_at').eq('user_id',context.userId).single();
     if(profileError || !setupReady(profile.active_state,profile.onboarding_completed_at)) throw new Error('Complete your setup before practicing.');
     const state = profile.active_state;
     const {data:pro,error:proError}=await context.supabase.rpc('has_pro_access',{p_user:context.userId});
@@ -42,7 +42,7 @@ export const startStudyAttempt = createServerFn({method:'POST'}).middleware([req
     const recent=recentQuestionHistory((recentAttempts??[]) as unknown as {payload:unknown[];created_at:string;feature:string}[]);
     let payload: unknown[];
     if(data.feature==='simulation') payload=createSimulationSession(SIMULATION_CLIPS);
-    else if(data.feature==='exam') payload=uniqueQuestionSession(buildExamPool(state),studyQuestionCount(pro===true,'exam',permitRules(state,profile.under_18).questionsCount),Math.random,recent).map(q=>shuffleAnswers(q));
+    else if(data.feature==='exam') payload=uniqueQuestionSession(buildExamPool(state),studyQuestionCount(pro===true,'exam',permitRules(state).questionsCount),Math.random,recent).map(q=>shuffleAnswers(q));
     else if(data.feature==='review') {
       const {data:pro,error:proError}=await context.supabase.rpc('has_pro_access',{p_user:context.userId});
       if(proError || !pro) throw new Error('Review missed questions is Pro only.');
@@ -51,7 +51,9 @@ export const startStudyAttempt = createServerFn({method:'POST'}).middleware([req
       const {data:exams,error:examError}=await context.supabase.from('study_attempts').select('*').eq('user_id',context.userId).eq('feature','exam').eq('state',state);
       if(examError) throw new Error('Unable to load missed exam questions.');
       const merged=withHistoricalExamAnswers((rows??[]).map(r=>({state:r.state,progress:{topic:r.topic,questions:r.questions,lastScore:r.last_score} as unknown as TopicProgress})),(exams??[]) as unknown as StudyAttempt[]);
-      const missed=missedQuestions(merged.map(r=>r.progress));
+      const banks=buildPillarBanks(state);
+      const allowed=HUB_TOPICS.flatMap(topic=>banks[topic].map(q=>hubQuestion(q,topic)));
+      const missed=missedQuestions(merged.map(r=>r.progress),allowed);
       payload=missed.map(q=>shuffleAnswers(q));
     } else { const bank=buildPillarBanks(state)[data.feature]; payload=uniqueQuestionSession(bank,studyQuestionCount(pro===true,data.feature,bank.length),Math.random,recent).map(q=>shuffleAnswers(hubQuestion(q,data.feature as HubQuestion['topic']))); }
     if(!payload.length) throw new Error('No questions available to review.');

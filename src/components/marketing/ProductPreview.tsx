@@ -7,7 +7,7 @@ import { BetaBadge } from "./BetaBadge";
 import { CoachChat, DEMO_CARD, DEMO_TAB, DEMO_TAB_LIST, QuestionCard, ScenarioPlayer } from "@/components/demo/DemoPlayers";
 import { DEMO_COACH, DEMO_SCENARIOS, type DemoQuestion } from "@/lib/demo";
 
-const PRACTICE: DemoQuestion = { topic: "Traffic signals", q: "What does a solid green arrow mean?", options: ["Make the protected turn when the path is clear", "Yield to oncoming traffic before turning", "Stop, then turn"], correct: 0, explanation: "Turn in the arrow's direction when the path is clear. Oncoming traffic has a red light." };
+const PRACTICE: DemoQuestion = { topic: "Traffic signals", q: "What does a solid green arrow mean?", options: ["Yield to oncoming traffic before turning", "Make the protected turn when the path is clear", "Stop, then turn"], correct: 1, explanation: "Turn in the arrow's direction when the path is clear. Oncoming traffic has a red light." };
 const previews = ["simulation", "practice", "coach"] as const;
 
 export function ProductPreview() {
@@ -34,7 +34,7 @@ export function ProductPreview() {
   </div>;
 }
 export function PracticePreview() {
-  return <div className="w-full rounded-lg bg-card p-5 text-left shadow-sm"><div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 text-xs text-muted-foreground"><span className="min-w-0">California · 12 / 46</span><span className="shrink-0 rounded-full bg-success/10 px-2 py-1 font-semibold text-success">Correct</span></div><p className="mt-4 text-sm font-semibold">A solid green arrow means…</p><p className="mt-3 rounded-lg border border-success/40 bg-success/10 p-3 text-sm text-success"><Check className="mr-2 inline size-4" />Make the protected turn</p><p className="mt-3 text-xs leading-relaxed text-muted-foreground">Turn in the arrow's direction when the path is clear.</p></div>;
+  return <div className="w-full rounded-lg bg-card p-5 text-left shadow-sm"><div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 text-xs text-muted-foreground"><span className="min-w-0">Question 12</span><span className="shrink-0 rounded-full bg-success/10 px-2 py-1 font-semibold text-success">Correct</span></div><p className="mt-4 text-sm font-semibold">A solid green arrow means…</p><p className="mt-3 rounded-lg border border-success/40 bg-success/10 p-3 text-sm text-success"><Check className="mr-2 inline size-4" />Make the protected turn</p><p className="mt-3 text-xs leading-relaxed text-muted-foreground">Turn in the arrow's direction when the path is clear.</p></div>;
 }
 
 export function CoachPreview() {

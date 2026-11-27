@@ -21,7 +21,7 @@
 - Keep mock-exam wording, topic analytics and limit/scoring rules in the tested exam-only helper; preserve sibling banks and use existing history rows for saved summary statistics.
 - Load exam history through authenticated route/query integration and await confirmed attempt writes; topic remediation uses a validated topic search value with existing Test Hub gates.
 - Keep Test Hub progress state-scoped in its owner-only table; derive mastery and missed-question recovery in the pure Hub helper, use stable question identities across answer shuffles, and await answer/score saves before advancing.
-- Derive Hub mastery from ever-correct identities divided by the canonical topic bank size; latest answer and missed recovery remain separate so later misses cannot erase mastery.
+- Derive Hub mastery from latest-correct identities divided by the canonical topic bank size; best scores never inflate it, and missed recovery remains separate.
 - Use fixed semantic simulation actions with pure timing and scenario data; instruction and legend preferences are browser-only presentation state.
 - Keep timing visit-local and action colors live-row-scoped to preserve other previews.
 - Gate Meta Pixel through shared per-purpose consent; revoke on withdrawal and omit noscript so no path bypasses permission.
@@ -36,7 +36,7 @@
 
 - Propagate canonical authored concept IDs through bank variations, exam selection and Hub progress so phrasing or option edits cannot duplicate concepts or change scoring identity.
 - Queue study answers by owner, attempt and version in browser storage; replay through an authenticated raw POST sharing the existing atomic scoring helper, and gate results on confirmed draining to preserve limits and recovery.
-- Gate app content on saved state setup; retain legacy age-band exam formats without asking new users for age, and retain the saved payload format on resume.
+- Gate app content on saved state setup; every state's under-18 exam format is authoritative for new sessions, and saved payload formats remain compatible on resume.
 - Public demo uses browser-local state and existing authored questions/media only; never reserve attempts, call live AI or write progress, so it cannot consume free allowances.
 - Scope hero-specific simulation preview scenes and signal styles through an opt-in prop so shared feature previews and live simulation remain unchanged.
 - Merge legacy exam answers only for identities missing from Hub progress, preserving recovered misses and canonical question counts.

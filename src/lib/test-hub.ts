@@ -39,9 +39,9 @@ export function answerProgress(progress: TopicProgress, question: HubQuestion, c
 
 export function topicStats(progress: TopicProgress, totalQuestions = Object.keys(progress.questions).length) {
   const entries = Object.values(progress.questions);
-  const everCorrect = totalQuestions ? Math.min(100, Math.round(entries.filter(q => q.everCorrect ?? q.correct).length / totalQuestions * 100)) : 0;
-  // Mastery never drops below the user's best score for the topic.
-  const mastery = Math.max(everCorrect, progress.bestScore ?? 0);
+  // Mastery reflects the learner's current answers across the canonical bank;
+  // a strong historical best cannot hide questions that are currently wrong.
+  const mastery = totalQuestions ? Math.min(100, Math.round(entries.filter(q => q.correct).length / totalQuestions * 100)) : 0;
   const practiced = entries.length > 0 || progress.lastScore !== null;
   return { mastery, practiced, needsWork: practiced && mastery < 80, mastered: mastery === 100, lastScore: progress.lastScore };
 }
@@ -59,10 +59,12 @@ export function missedReviewState(isPro: boolean, missedCount: number) {
   return missedCount === 0 ? 'empty' : isPro ? 'available' : 'locked';
 }
 
-export function missedQuestions(progress: TopicProgress[]): HubQuestion[] {
+export function missedQuestions(progress: TopicProgress[], allowedQuestions?: HubQuestion[]): HubQuestion[] {
   const seen = new Set<string>();
+  const allowed = allowedQuestions ? new Set(allowedQuestions.flatMap(questionIdentityKeys)) : null;
   return progress.flatMap(topic => Object.values(normalizeTopicProgress(topic).questions).filter(q => q.missed).map(q => q.question)).filter(question => {
     const keys = questionIdentityKeys(question);
+    if (allowed && !keys.some(key => allowed.has(key))) return false;
     if(keys.some(key => seen.has(key))) return false;
     keys.forEach(key => seen.add(key)); return true;
   });

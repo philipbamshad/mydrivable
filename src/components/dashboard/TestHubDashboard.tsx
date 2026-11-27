@@ -28,11 +28,11 @@ export function TestHubDashboard({ initialTopic, userId }: { initialTopic?: Pill
   const { data: rows } = useSuspenseQuery(hubProgressOptions(userId));
   const progress = HUB_TOPICS.map(topic => rows.find(row => row.state === state && row.progress.topic === topic)?.progress ?? emptyTopic(topic));
   const [active, setActive] = useState<PillarId | "review" | null>(null);
-  const missed = missedQuestions(progress);
   const banks = useMemo(() => {
     const raw = buildPillarBanks(state);
     return Object.fromEntries(HUB_TOPICS.map(topic => [topic, [...new Map(raw[topic].map(q => { const item = hubQuestion(q, topic); return [item.key, item]; })).values()]])) as Record<PillarId, HubQuestion[]>;
   }, [state]);
+  const missed = missedQuestions(progress, HUB_TOPICS.flatMap(topic => banks[topic]));
   const totals = Object.fromEntries(HUB_TOPICS.map(topic => [topic, banks[topic].length]));
   const weakest = recommendedTopic(progress, totals, isPro, store.attempts);
   const reviewState = missedReviewState(isPro, missed.length);
@@ -147,7 +147,7 @@ function QuizRunner({ mode, banks, missed, progress, stateName, isPro, onUpgrade
     <Meter className="study-progress" value={(idx + (reveal ? 1 : 0)) / questions.length * 100} />
     {<Card className="study-question-card bg-card border-border/60 shadow-md rounded-[28px]">
       <HubQuestionVisual question={q} />
-      <h3 className="font-display text-lg font-semibold">{q.q}</h3>
+      <h3 className="whitespace-normal break-words font-display text-lg font-semibold">{q.q}</h3>
       {missRecord && <p className="text-xs text-muted-foreground">Missed {missRecord.missedCount ?? 1} {(missRecord.missedCount ?? 1) === 1 ? 'time' : 'times'}{missRecord.lastMissedAt ? ` · Last missed ${new Date(missRecord.lastMissedAt).toLocaleDateString()}` : ''}</p>}
       <div className="study-answers">
         {q.options.map((option, i) => <Button key={i} variant="outline" disabled={reveal} onClick={() => choose(i)} aria-pressed={picked === i}

@@ -24,7 +24,7 @@ import { isSampleExam, samplePassingCount, examDisplayRules } from '@/lib/plan-r
 const card = "bg-card rounded-[28px] border border-border/60 p-8 shadow-lg";
 
 export function PermitExamSimulator({ userId }: { userId: string }) {
-  const { isPro, unlockPro, state, under18 } = useUserProfile();
+  const { isPro, unlockPro, state } = useUserProfile();
   const store = useStudyAttempts(userId);
   const [attempt, setAttempt] = useState<StudyAttempt | null>(null);
   const freeAttempt = store.attempts.find(a => a.feature === "exam" && a.free_slot);
@@ -32,10 +32,10 @@ export function PermitExamSimulator({ userId }: { userId: string }) {
   const begin = async () => { const row = await store.start("exam"); if(row) {setAttempt(row); setRunning(true);} };
   const { data: history } = useSuspenseQuery(examHistoryOptions(userId));
   const [running, setRunning] = useState(false);
-  const pack = { rules: permitRules(state, under18) };
-  const displayRules = examDisplayRules(isPro, state, under18);
+  const pack = { rules: permitRules(state) };
+  const displayRules = examDisplayRules(isPro, state);
   const stats = examHistoryStats(history, pack.rules.name);
-  if (running && attempt) { const rules=permitRules(attempt.state, attempt.state === "California" ? attempt.payload.length !== 36 : under18); const minCorrect = isSampleExam(attempt) ? samplePassingCount(attempt.payload.length,rules.passingScorePct) : rules.minCorrectToPass; return <ExamRunner key={attempt.id} attempt={attempt} state={attempt.state} count={attempt.payload.length} minCorrect={minCorrect} passPct={isSampleExam(attempt) ? Math.round(minCorrect / attempt.payload.length * 100) : rules.passingScorePct} isPro={isPro} onUpgrade={unlockPro} onExit={() => setRunning(false)} onRestart={() => void begin()} saveError={store.error} onFinish={store.finish} onAnswer={(answer,version) => store.answer({id:attempt.id,version,answer})} />; }
+  if (running && attempt) { const rules=permitRules(attempt.state); const minCorrect = isSampleExam(attempt) ? samplePassingCount(attempt.payload.length,rules.passingScorePct) : rules.minCorrectToPass; return <ExamRunner key={attempt.id} attempt={attempt} state={attempt.state} count={attempt.payload.length} minCorrect={minCorrect} passPct={rules.passingScorePct} isPro={isPro} onUpgrade={unlockPro} onExit={() => setRunning(false)} onRestart={() => void begin()} saveError={store.error} onFinish={store.finish} onAnswer={(answer,version) => store.answer({id:attempt.id,version,answer})} />; }
   const recentRows = history
     .filter(row => row.state === null || row.state === pack.rules.name)
     .sort((a, b) => b.created_at.localeCompare(a.created_at))

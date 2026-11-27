@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { getStatePack } from "@/data/dmv";
+import { ALL_STATES, getStatePack } from "@/data/dmv";
 import { buildExamPool, directQuestion, examSummary, examHistoryStats, mayAnswerExam } from "./mock-exam";
 
 describe("mock exam rules", () => {
@@ -24,6 +24,12 @@ describe("mock exam rules", () => {
     const rows = [{ id: "a", score_pct: 91, state: "California", created_at: "2026-10-01" }, { id: "b", score_pct: 87, state: "California", created_at: "2026-10-02" }, { id: "c", score_pct: 100, state: "Texas", created_at: "2026-10-03" }];
     expect(examHistoryStats(rows, "California")).toEqual({ best: 91, last: 87, attempts: 2 });
     expect(examHistoryStats([], "California")).toEqual({ best: null, last: null, attempts: null });
+  });
+  it("removes adult-only BAC and commercial-driver questions from every state", () => {
+    for (const state of ALL_STATES) {
+      const text = buildExamPool(state).map(q => `${q.q} ${q.explanation}`).join('\n');
+      expect(text).not.toMatch(/adult \(21\+\)|adult drivers \(21\+\)|commercial driver BAC|CDL operators/i);
+    }
   });
   it("keeps every exam question topic-tagged and removes filler without altering answers", () => {
     const pool = buildExamPool("California");

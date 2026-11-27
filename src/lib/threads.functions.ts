@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { z } from "zod";
+import { uniqueConversationMessages } from "./conversation";
 
 export const listThreads = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
@@ -77,7 +78,7 @@ export const getThreadMessages = createServerFn({ method: "GET" })
       .order("created_at", { ascending: true });
     if (error) throw new Error(error.message);
 
-    return (rows ?? []).map((r) => ({
+    return uniqueConversationMessages(rows ?? []).map((r) => ({
       id: r.id,
       role: r.role,
       parts: r.parts,

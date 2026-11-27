@@ -71,11 +71,11 @@ export function ChatWindow({
               "Content-Type": "application/json",
               ...(token ? { Authorization: `Bearer ${token}` } : {}),
             },
-            body: { ...body, messages, threadId, userState },
+            body: { ...body, messages, threadId },
           };
         },
       }),
-    [threadId, userState],
+    [threadId],
   );
 
   const { messages, sendMessage, status, error } = useChat({

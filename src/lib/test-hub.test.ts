@@ -84,16 +84,16 @@ describe("Permit Test Hub rules", () => {
     expect(topicStats(progress, 8).mastery).toBe(13);
     expect(topicStats(emptyTopic("signs"), 8)).toMatchObject({ mastery: 0, lastScore: null });
   });
-  it("does not lose mastery after a previously correct question is missed", () => {
+  it("lowers mastery when a previously correct question is currently wrong", () => {
     const first = answerProgress(emptyTopic("signs"), question, true);
     const later = answerProgress(first, question, false);
-    expect(topicStats(later, 1).mastery).toBe(100);
+    expect(topicStats(later, 1).mastery).toBe(0);
     expect(later.questions[question.key]?.correct).toBe(false);
     expect(missedQuestions([later])).toHaveLength(1);
   });
-  it("never lets mastery fall below the topic's best score", () => {
-    const progress = { ...answerProgress(emptyTopic("signs"), question, true), bestScore: 88 };
-    expect(topicStats(progress, 24).mastery).toBe(88);
+  it("never inflates current mastery to a historical best score", () => {
+    const progress = { ...answerProgress(emptyTopic("signs"), question, false), bestScore: 100, lastScore: 13 };
+    expect(topicStats(progress, 24).mastery).toBe(0);
     const withoutBest = answerProgress(emptyTopic("signs"), question, true);
     expect(topicStats(withoutBest, 24).mastery).toBe(4);
   });
@@ -110,8 +110,15 @@ describe("Permit Test Hub rules", () => {
     expect(hubQuestion({ ...question, sign: { shape: "octagon", letters: "STOP", fill: "var(--exam-road-red)", stroke: "var(--exam-road-white)" } }, "signs").key).not.toBe(question.key);
     expect(question.q).toBe("What does a red light mean?");
   });
-  it("preserves last score independently of live mastery", () => {
+  it("preserves last score independently of live mastery without showing 100% after a low score", () => {
     const progress = answerProgress({ ...emptyTopic("signs"), lastScore: 75 }, question, true);
-    expect(topicStats(progress)).toMatchObject({ mastery: 100, lastScore: 75, practiced: true });
+    expect(topicStats(progress, 2)).toMatchObject({ mastery: 50, lastScore: 75, practiced: true });
+  });
+  it("counts only unique current-bank misses in totals and review", () => {
+    const current = hubQuestion({...question, conceptId:'current-sign'}, 'signs');
+    const retired = hubQuestion({q:'What is the adult-only rule?',options:['A','B'],correct:0,explanation:'Retired.',conceptId:'retired-adult'}, 'signs');
+    const progress = [answerProgress(answerProgress(emptyTopic('signs'), current, false), retired, false)];
+    expect(missedQuestions(progress)).toHaveLength(2);
+    expect(missedQuestions(progress, [current])).toEqual([current]);
   });
 });

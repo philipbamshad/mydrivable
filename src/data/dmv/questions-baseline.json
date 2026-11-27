@@ -182,19 +182,6 @@
     "conceptId": "BASELINE-014"
   },
   {
-    "q": "Federal commercial driver BAC limit is…",
-    "options": [
-      "0.02%",
-      "0.04%",
-      "0.08%",
-      "0.10%"
-    ],
-    "correct": 1,
-    "explanation": "Commercial drivers: 0.04% federal limit, uniform in all states.",
-    "source": "*",
-    "conceptId": "BASELINE-015"
-  },
-  {
     "q": "Where should an opened, unsealed container of alcohol be carried in an ordinary passenger vehicle?",
     "options": [
       "In an unlocked glove compartment",

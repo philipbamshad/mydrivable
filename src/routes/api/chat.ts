@@ -5,8 +5,9 @@ import { buildSystemPrompt } from "@/lib/system-prompt";
 import { createClient } from "@supabase/supabase-js";
 import type { Database } from "@/integrations/supabase/types";
 import { consumeChatCredit } from "@/lib/entitlements.server";
+import { isDuplicateUserMessage } from "@/lib/conversation";
 
-type Body = { messages?: UIMessage[]; threadId?: string; userState?: string };
+type Body = { messages?: UIMessage[]; threadId?: string };
 
 export const Route = createFileRoute("/api/chat")({
   server: {
@@ -61,11 +62,23 @@ export const Route = createFileRoute("/api/chat")({
 
         const lastUser = [...messages].reverse().find((m) => m.role === "user");
         if (lastUser) {
-          await supabase.from("messages").insert({
-            thread_id: threadId,
-            role: "user",
-            parts: lastUser.parts as never,
-          });
+          const now = new Date().toISOString();
+          const { data: previousUser, error: previousError } = await supabase
+            .from("messages")
+            .select("role, parts, created_at")
+            .eq("thread_id", threadId)
+            .eq("role", "user")
+            .order("created_at", { ascending: false })
+            .limit(1)
+            .maybeSingle();
+          if (previousError) return new Response("Unable to save your message. Please try again.", { status: 503 });
+          if (!isDuplicateUserMessage(previousUser, { role: "user", parts: lastUser.parts, created_at: now })) {
+            await supabase.from("messages").insert({
+              thread_id: threadId,
+              role: "user",
+              parts: lastUser.parts as never,
+            });
+          }
           if (thread.title === "New chat") {
             const textPart = lastUser.parts.find(
               (p): p is { type: "text"; text: string } => p.type === "text",

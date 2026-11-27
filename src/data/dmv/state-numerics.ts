@@ -96,7 +96,11 @@ const BASE: Omit<StateNumerics, "stateName" | "stateCode" | "handbookUrl" | "exa
 
 /** Per state deltas taken from each official driver handbook. */
 const OVERRIDES: Record<string, Overrides> = {
+  Delaware: {
+    urban: "25 mph",
+  },
   California: {
+    urban: "25 mph",
     schoolZone: "25 mph",
     schoolZoneFeet: "500 feet",
     bacU21: "0.01%",

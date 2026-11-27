@@ -365,15 +365,6 @@ const TEMPLATES: Template[] = [
       "Prescription medicines and street drugs can impair reaction time, judgment, and coordination the same way alcohol does. Read every warning label.",
   },
   {
-    conceptId: "TEMPLATES-033",
-    pillar: "substances",
-    q: "The legal adult (21+) BAC limit in {state} is…",
-    options: ["0.05%", "{bacAdult}", "0.10%", "0.15%"],
-    correct: 1,
-    explanation:
-      "{state} sets the adult per se BAC limit at {bacAdult}. Utah is the outlier at 0.05%.",
-  },
-  {
     conceptId: "TEMPLATES-034",
     pillar: "substances",
     q: "Under {state}'s zero tolerance rule, the BAC limit for drivers under 21 is…",

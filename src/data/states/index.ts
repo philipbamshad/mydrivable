@@ -68,7 +68,7 @@ export const STATE_DRIVING_RULES: Record<string, StateDrivingRules> = {
   },
   California: {
     stateName: "California",
-    speedLimits: { residential: "25 mph", urban: "35 mph", highway: "65 mph" },
+    speedLimits: { residential: "25 mph", urban: "25 mph", highway: "65 mph" },
     rightOfWay: {
       fourWayStop: "The vehicle that arrives first goes first. On a tie, the driver on the right has the right of way.",
       roundabout: "Yield to traffic already in the roundabout and to pedestrians in the crosswalk before entering.",
@@ -101,7 +101,7 @@ export const STATE_DRIVING_RULES: Record<string, StateDrivingRules> = {
   },
   Delaware: {
     stateName: "Delaware",
-    speedLimits: { residential: "25 mph", urban: "50 mph", highway: "65 mph" },
+    speedLimits: { residential: "25 mph", urban: "25 mph", highway: "65 mph" },
     rightOfWay: {
       fourWayStop: "The driver who arrives first has priority. If two arrive together, yield to the vehicle on your right.",
       roundabout: "Yield to traffic already in the roundabout and to pedestrians in the crosswalk.",

@@ -1,3 +1,11 @@
+# Checkout, teen-only prep and account-scoped Free limits
+- [ ] Checkout serialization is repaired and the $24 form loads; full purchase/Pro activation remains blocked by Stripe's external test form staying on Processing in two attempts (no failed app or Stripe HTTP responses).
+- [x] Use each state's under-18 permit format throughout; remove adult-only wording/questions and keep Coach on the active state for permit and road-test help.
+- [x] Replace browser Free-usage counters with authoritative per-user server/database checks; fresh account used three Coach credits (fourth rejected), one 15-question exam and one 10-question topic quiz with matching saved counts.
+- [x] Correct sample pass lines, Hub mastery/current unique misses and full review question text.
+- [x] Make homepage previews state-neutral, vary correct-answer positions and use action-based sign questions; source audit found no copy-to-clipboard behavior to remove.
+- [x] Run all 170 tests and signed-in Free/Pro checks; existing Pro retains full 46-question access. Stripe purchase completion remains the only unverified flow.
+
 # Design improvements
 
 # App header and study displays

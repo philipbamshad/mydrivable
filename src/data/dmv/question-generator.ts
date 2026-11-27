@@ -163,11 +163,7 @@ const RULE_TEMPLATES: Template[] = [
   {
     conceptId: "RULE_TEMPLATES-007", q: "Right turn on red in {state} is permitted unless…", options: ["The intersecting road has two lanes","A sign or red arrow prohibits it","The intersection has a marked crosswalk","The signal has just changed to red"], correct: 1, explanation: "Right on red is legal after a full stop unless prohibited by signage or a red arrow." },
   {
-    conceptId: "RULE_TEMPLATES-008", q: "The legal adult (21+) BAC limit in {state} is…", options: ["{bacU21}%", "{bacAdult}%", "0.10%", "0.15%"], correct: 1, explanation: "{state} sets the adult per-se limit at {bacAdult}%." },
-  {
     conceptId: "RULE_TEMPLATES-009", q: "Under {state}'s zero-tolerance law, the BAC limit for drivers under 21 is…", options: ["0.00%", "{bacU21}%", "{bacAdult}%", "0.05%"], correct: 1, explanation: "{state}'s under-21 limit is {bacU21}%." },
-  {
-    conceptId: "RULE_TEMPLATES-010", q: "The federal commercial driver BAC limit (also enforced in {state}) is…", options: ["0.02%", "{bacCDL}%", "{bacAdult}%", "0.10%"], correct: 1, explanation: "CDL operators are held to {bacCDL}% nationwide." },
   {
     conceptId: "RULE_TEMPLATES-011", q: "Where should an opened, unsealed container of alcohol be carried in an ordinary passenger vehicle?", options: ["In an unlocked glove compartment","In the trunk","On the rear passenger seat","In the center-console storage area"], correct: 1, explanation: "Keep opened alcohol in the trunk or a non-passenger cargo area, not in the passenger compartment. Consult the {state} handbook for exceptions." },
   {

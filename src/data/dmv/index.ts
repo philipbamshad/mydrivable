@@ -41,13 +41,11 @@ function buildStateFactQuestions(r: StateRules): Question[] {
   const pctOptions = Array.from(new Set([r.passingScorePct, r.passingScorePct-5, r.passingScorePct-10, r.passingScorePct+5]))
     .sort((a, b) => a - b)
     .map((n) => `${n}%`);
-  const bacAdultOptions = ["0.05%", "0.08%", "0.10%", "0.15%"];
   const bacUnder21Options = ["0.00%", "0.01%", "0.02%", "0.05%"];
   const ageLabel = (age: number) => age % 1 === 0.5 ? `${Math.floor(age)}½` : String(age);
   const ageOptions = [...new Set([14, r.permitMinAge, 16, 17])].map(ageLabel);
 
   const passingIdx = pctOptions.indexOf(`${r.passingScorePct}%`);
-  const bacAdultIdx = bacAdultOptions.indexOf(`${r.bacAdult.toFixed(2)}%`);
   const bacUnder21Idx = bacUnder21Options.indexOf(
     `${r.bacUnder21.toFixed(2)}%`,
   );
@@ -62,18 +60,6 @@ function buildStateFactQuestions(r: StateRules): Question[] {
       options: pctOptions,
       correct: passingIdx,
       explanation: `${r.name} requires ${r.minCorrectToPass} of ${r.questionsCount} correct (${r.passingScorePct}%). Source: ${r.handbookUrl}`,
-      source: r.abbr,
-    });
-  }
-  if (bacAdultIdx >= 0) {
-    out.push({
-      conceptId: "state-fact-adult-bac",
-      q: `What is the legal BAC limit for adult drivers (21+) in ${r.name}?`,
-      options: bacAdultOptions,
-      correct: bacAdultIdx,
-      explanation: `${r.name}'s adult BAC threshold is ${r.bacAdult.toFixed(
-        2,
-      )}%${r.bacAdult === 0.05 ? " — the lowest in the US." : "."} Source: ${r.handbookUrl}`,
       source: r.abbr,
     });
   }
